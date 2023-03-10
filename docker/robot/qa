@@ -1,0 +1,69 @@
+#!/usr/bin/env bash
+
+set -e
+
+ENV_FILE='.env.test'
+ENV_FILE_EXAMPLE='.env.test.example'
+create_dotenv()
+{
+  if [ ! -f "$ENV_FILE" ]; then
+        echo "$ICON Criando arquivo de configuração $ENV_FILE..."
+        cp $ENV_FILE_EXAMPLE $ENV_FILE
+        echo
+  fi
+}
+
+build()
+{
+  docker-compose build
+}
+
+start_server_apache(){
+  docker-compose up -d web 
+  echo "Servidor disponível em localhost:2600"
+}
+
+stop_server_apache(){
+  docker-compose down -v web 
+}
+
+setup()
+{
+  create_dotenv
+  docker-compose build
+}
+
+run_tests()
+{
+  docker-compose run --rm testes
+}
+
+show_commands () {
+    echo
+    echo "$ICON Comandos disponíveis:"
+    echo
+	  echo "sh qa build             - (Re)Builda as imagens dos containers"
+	  echo "sh qa setup             - Configura o ambiente para a execução dos testes"
+	  echo "sh qa server-start      - Inicia o servidor web para ver os logs (localhost:2600)"
+    echo "sh qa server-stop       - Para o servidor web"
+	  echo "sh qa test              - Executa os testes"
+    echo
+}
+### build and run ##############################################################
+
+
+if [ $# -gt 0 ]; then
+
+    case "$1" in
+
+    "build") build ;;
+    "server-start") start_server_apache ;;
+    "setup") setup ;;
+    "server-stop") stop_server_apache ;;
+    "test") run_tests ;;
+    *) show_commands;;
+
+    esac
+else
+    show_commands
+fi

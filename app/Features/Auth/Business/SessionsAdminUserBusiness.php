@@ -1,0 +1,69 @@
+<?php
+
+namespace App\Features\Auth\Business;
+
+use App\Exceptions\AppException;
+use App\Features\Module\Modules\Helpers\ModulesHelper;
+use App\Shared\Helpers\Helpers;
+use App\Shared\Utils\Auth;
+use App\Features\Auth\Contracts\SessionsAdminUserBusinessInterface;
+use App\Features\Auth\DTO\SessionsDTO;
+use App\Features\Auth\Http\Resources\AdminAuthResource;
+use App\Features\Auth\Http\Responses\Admin\AdminAuthResponse;
+use App\Features\Auth\Services\Utils\AuthValidationsService;
+use App\Features\Users\AdminUsers\Contracts\AdminUsersRepositoryInterface;
+use App\Features\Users\Rules\Contracts\RulesRepositoryInterface;
+use App\Features\Users\Sessions\Contracts\SessionsRepositoryInterface;
+
+readonly class SessionsAdminUserBusiness implements SessionsAdminUserBusinessInterface
+{
+    public function __construct(
+        private AdminUsersRepositoryInterface $adminUsersRepository,
+        private RulesRepositoryInterface      $rulesRepository,
+        private SessionsRepositoryInterface   $sessionsRepository,
+        private AdminAuthResource             $authResource,
+    ) {}
+
+    /**
+     * @throws AppException
+     */
+    public function login(SessionsDTO $sessionsDTO): AdminAuthResponse
+    {
+        $adminUser = $this->adminUsersRepository->findByEmail($sessionsDTO->email);
+        $user      = AuthValidationsService::userExistsLogin($adminUser);
+
+        AuthValidationsService::passwordVerify($sessionsDTO->password, $user->password);
+        AuthValidationsService::isActive($user->active);
+
+        $ability = $this->findAllUserAbility($user);
+
+        $accessToken = Auth::generateAccessToken($user->id);
+        $expiresIn   = Auth::getExpiresIn();
+        $tokenType   = Auth::getTokenType();
+        $currentDate = Helpers::getCurrentTimestampCarbon();
+
+        $this->authResource->setAuthResponse(
+            $accessToken,
+            $expiresIn,
+            $tokenType,
+            $user,
+            $ability
+        );
+
+        $sessionsDTO->userId      = $user->id;
+        $sessionsDTO->initialDate = $currentDate;
+        $sessionsDTO->finalDate   = $currentDate->addDays(2);
+        $sessionsDTO->token       = $accessToken;
+
+        $this->sessionsRepository->create($sessionsDTO);
+
+        return $this->authResource->getAuthResponse();
+    }
+
+    private function findAllUserAbility(mixed $user)
+    {
+        $modulesId = ModulesHelper::getModulesIdByUser($user);
+
+        return $this->rulesRepository->findAllByUserIdAndModulesId($user->id, $modulesId);
+    }
+}

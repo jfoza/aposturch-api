@@ -1,0 +1,27 @@
+version: "3.5"
+networks:
+  traefik_network:
+    external: true
+services:
+  web:
+    image: httpd:2.4
+    volumes:
+     - ../../results:/usr/local/apache2/htdocs/
+    ports:
+     - "2600:80"    
+  testes:
+    container_name: api-vacinacao-test
+    build:
+      dockerfile: Dockerfile
+      context: .
+    image: qa/robotframework:0.2
+    env_file: 
+      - .env   
+    networks:
+      - traefik_network
+    volumes:
+      - ../../results:/opt/robotframework/reports:Z
+      - ../../tests/${TYPE}/resources:/opt/robotframework/resources:Z
+      - ../../tests/${TYPE}/specs:/opt/robotframework/tests:Z
+      - /dev/shm:/dev/shm
+    

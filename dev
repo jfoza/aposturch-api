@@ -1,0 +1,216 @@
+#!/usr/bin/env bash
+export USERID="$(id -u)"
+
+ARTISAN="docker-compose exec api php artisan"
+COMPOSER="docker-compose exec api composer"
+REDIS="docker exec -it devops_redis"
+ENV_FILE=".env"
+ENV_FILE_EXAMPLE=".env.example"
+ICON="🤖"
+
+devops_dir=~/dev/work/devops/devops-docker-compose
+project_dir=$(pwd)
+
+show_commands () {
+    echo
+    echo "$ICON Comandos disponíveis:"
+    echo
+	echo "sh dev build             - (Re)Builda as imagens dos containers"
+	echo "sh dev start-dev         - Inicia os containers em modo Dev"
+	echo "sh dev status            - Exibe o status dos containers"
+	echo "sh dev redis-clean       - Apaga os dados do Redis"
+	echo "sh dev stop              - Desliga os containers"
+	echo "sh dev logs NOME         - Exibe e acompanha os logs do container"
+	echo "sh dev artisan COMANDO   - Executa os comandos do Artisan"
+	echo "sh dev composer COMANDO  - Executa os comandos do Composer"
+	echo "sh dev test              - Executa os testes da aplicação (PHPUnit)"
+	echo "sh dev test-report       - Executa os testes unitários da aplicação (PHPUnit) mostrando a listagem de testes executados."
+    echo
+}
+
+devops_exists (){
+    if [ ! -d "$devops_dir" ]; then
+        git clone git@github.com:jfoza/devops-docker-compose.git
+    fi
+}
+
+devops_start () {
+    devops_exists
+    # shellcheck disable=SC2164
+    cd $devops_dir;
+    if  ! docker ps | grep -F -q "devops_rabbitmq"; then
+            sh dev start rabbitmq
+    fi
+    if  ! docker ps | grep -F -q "devops_traefik"; then
+        sh dev start traefik
+    fi
+    if  ! docker ps | grep -F -q "devops_mailhog"; then
+        sh dev start mailhog
+    fi
+    if  ! docker ps | grep -F -q "devops_redis"; then
+        sh dev start redis
+    fi
+    if  ! docker ps | grep -F -q "postgresql10"; then
+        sh dev start postgresql10
+    fi
+    # shellcheck disable=SC2164
+    cd $project_dir
+}
+
+compose_build () {
+    echo
+    echo "$ICON Buildando as imagens..."
+    echo
+    check_env_exists
+    docker-compose build
+}
+
+compose_up_dev () {
+    echo
+    echo "$ICON Iniciando os containers em modo Dev..."
+    echo
+    check_env_exists
+    docker-compose up -d api nginx scheduler supervisord-email
+    execute_composer_install
+}
+
+execute_composer_install () {
+    echo
+    echo "$ICON Instalando dependências PHP (vendor)..."
+    echo
+    $COMPOSER install
+}
+
+compose_status () {
+    echo
+	echo "$ICON Exibindo o status dos containers..."
+    echo
+	docker-compose ps
+}
+
+compose_down () {
+    echo
+	echo "$ICON Parando os containers..."
+    echo
+	docker-compose down
+}
+
+compose_logs () {
+    shift 1
+
+    if [ $# -gt 0 ]; then
+        echo
+        echo "$ICON Exibindo logs do container $@"
+        echo
+	    docker-compose logs -f $@
+    else
+        echo
+	    echo "$ICON Exibindo logs de todos os containers"
+        echo
+	    docker-compose logs -f
+    fi
+}
+
+check_api_is_up () {
+    if ! docker-compose ps | grep -F -q "api"; then
+        echo
+        echo "$ICON Você precisa iniciar os containers da aplicação!"
+        echo "$ICON Comandos: sh dev start-dev"
+        echo
+        exit 1
+    fi
+}
+
+execute_artisan () {
+    check_api_is_up
+    echo
+    echo "$ICON Executando Artisan..."
+    echo
+    shift 1
+    $ARTISAN $@
+}
+
+execute_composer () {
+    check_api_is_up
+    echo
+    echo "$ICON Executando Composer..."
+    echo
+    shift 1
+    $COMPOSER $@
+}
+
+execute_unit_tests () {
+    check_api_is_up
+    echo
+    echo "$ICON Executando testes..."
+    echo
+    $ARTISAN test --filter 'Tests\\Unit'
+}
+
+execute_integration_tests () {
+    check_api_is_up
+    echo
+    echo "$ICON Executando testes..."
+    echo
+    $ARTISAN test --filter 'Tests\\Feature'
+}
+
+execute_tests_with_report () {
+    check_api_is_up
+    echo
+    echo "$ICON Executando testes..."
+    echo
+    shift 1
+    docker-compose exec api ./vendor/bin/phpunit --filter 'Tests\\Unit' --testdox $@
+}
+
+start_dev () {
+    compose_down
+    devops_start
+    compose_up_dev
+    $ARTISAN custom:clear-policy-cache
+    $ARTISAN custom:create-queue-rabbitmq
+    echo
+    echo "$ICON Iniciando aplicação em modo Dev"
+    echo
+    docker-compose logs -f api
+}
+
+check_env_exists () {
+    if [ ! -f "$ENV_FILE" ]; then
+        echo "$ICON Criando arquivo de configuração $ENV_FILE..."
+        cp $ENV_FILE_EXAMPLE $ENV_FILE
+        echo
+    fi
+}
+
+redis_clean () {
+    echo
+    echo "$ICON Limpando dados do Redis"
+    echo
+    $REDIS redis-cli -a redis flushall
+}
+
+if [ $# -gt 0 ]; then
+
+    case "$1" in
+
+    "build") compose_build ;;
+    "start-dev") start_dev ;;
+    "status") compose_status ;;
+    "stop") compose_down ;;
+    "redis-clean") redis_clean ;;
+    "logs") compose_logs $@ ;;
+    "artisan") execute_artisan $@ ;;
+    "composer") execute_composer $@ ;;
+    "test-unit") execute_unit_tests $@ ;;
+    "test-integration") execute_integration_tests $@ ;;
+    "test-report") execute_tests_with_report $@ ;;
+    *) show_commands;;
+
+    esac
+
+else
+    show_commands
+fi
+
