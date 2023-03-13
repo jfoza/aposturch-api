@@ -141,5 +141,21 @@ DO $$
             (_profile1, _rule16),
             (_profile1, _rule17),
             (_profile1, _rule18),
-            (_profile1, _rule19);
+            (_profile1, _rule19),
+
+            (_profile2, _rule1),
+            (_profile2, _rule2),
+            (_profile2, _rule3),
+            (_profile2, _rule4),
+            (_profile2, _rule5),
+            (_profile2, _rule9),
+            (_profile2, _rule10),
+            (_profile2, _rule11),
+            (_profile2, _rule12),
+            (_profile2, _rule13),
+            (_profile2, _rule14),
+            (_profile2, _rule15),
+            (_profile2, _rule17),
+            (_profile2, _rule18),
+            (_profile2, _rule19);
     END $$;

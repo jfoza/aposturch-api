@@ -4,6 +4,7 @@ namespace App\Exceptions;
 
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\Exceptions\ThrottleRequestsException;
 use Illuminate\Http\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -65,6 +66,7 @@ class Handler extends ExceptionHandler
             QueryException::class                => HandlerExceptions::returnQueryException($e),
             AppException::class                  => HandlerExceptions::returnAppException($e),
             UnauthorizedHttpException::class     => HandlerExceptions::returnUnauthorizedHttpException(),
+            ThrottleRequestsException::class     => HandlerExceptions::returnThrottleRequestsException(),
             default                              => HandlerExceptions::returnDefaultException($e)
         };
     }

@@ -1,16 +1,13 @@
 <?php
 
-namespace App\Features\Users\AdminUsers\Services;
+namespace App\Features\Users\AdminUsers\Validations;
 
-use App\Shared\Enums\MessagesEnum;
 use App\Exceptions\AppException;
-use App\Features\Persons\Contracts\PersonsRepositoryInterface;
 use App\Features\Users\AdminUsers\Contracts\AdminUsersRepositoryInterface;
-use App\Features\Users\Profiles\Contracts\ProfilesRepositoryInterface;
-use App\Features\Users\Users\Contracts\UsersRepositoryInterface;
+use App\Shared\Enums\MessagesEnum;
 use Symfony\Component\HttpFoundation\Response;
 
-class AdminUsersValidationsService
+class AdminUsersValidations
 {
     /**
      * @throws AppException

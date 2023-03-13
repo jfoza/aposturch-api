@@ -9,6 +9,7 @@ enum MessagesEnum: string {
     case INTERNAL_SERVER_ERROR = 'Internal server error.';
     case UNAUTHORIZED = 'Unauthorized.';
     case NOT_FOUND = 'Not found.';
+    case TOO_MANY_REQUESTS = 'Too Many Attempts.';
 
     case REGISTER_NOT_FOUND = 'Registro não encontrado.';
     case INVALID_UUID = 'O valor enviado não é um Uuid válido.';

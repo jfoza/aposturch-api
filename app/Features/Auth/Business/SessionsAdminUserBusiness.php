@@ -3,7 +3,7 @@
 namespace App\Features\Auth\Business;
 
 use App\Exceptions\AppException;
-use App\Features\Module\Modules\Helpers\ModulesHelper;
+use App\Features\Users\Users\Traits\UserAbilityTrait;
 use App\Shared\Helpers\Helpers;
 use App\Shared\Utils\Auth;
 use App\Features\Auth\Contracts\SessionsAdminUserBusinessInterface;
@@ -17,6 +17,8 @@ use App\Features\Users\Sessions\Contracts\SessionsRepositoryInterface;
 
 readonly class SessionsAdminUserBusiness implements SessionsAdminUserBusinessInterface
 {
+    use UserAbilityTrait;
+
     public function __construct(
         private AdminUsersRepositoryInterface $adminUsersRepository,
         private RulesRepositoryInterface      $rulesRepository,
@@ -35,7 +37,7 @@ readonly class SessionsAdminUserBusiness implements SessionsAdminUserBusinessInt
         AuthValidationsService::passwordVerify($sessionsDTO->password, $user->password);
         AuthValidationsService::isActive($user->active);
 
-        $ability = $this->findAllUserAbility($user);
+        $ability = $this->findAllUserAbility($user, $this->rulesRepository);
 
         $accessToken = Auth::generateAccessToken($user->id);
         $expiresIn   = Auth::getExpiresIn();
@@ -58,12 +60,5 @@ readonly class SessionsAdminUserBusiness implements SessionsAdminUserBusinessInt
         $this->sessionsRepository->create($sessionsDTO);
 
         return $this->authResource->getAuthResponse();
-    }
-
-    private function findAllUserAbility(mixed $user)
-    {
-        $modulesId = ModulesHelper::getModulesIdByUser($user);
-
-        return $this->rulesRepository->findAllByUserIdAndModulesId($user->id, $modulesId);
     }
 }

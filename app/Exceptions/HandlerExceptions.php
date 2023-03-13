@@ -54,16 +54,16 @@ class HandlerExceptions
     public static function returnUnauthorizedHttpException(): JsonResponse
     {
         return response()->json(
-            ['error' => "Unauthorized"],
+            ['error' => MessagesEnum::UNAUTHORIZED],
             Response::HTTP_UNAUTHORIZED
         );
     }
 
-    public static function returnJWTException(): JsonResponse
+    public static function returnThrottleRequestsException(): JsonResponse
     {
         return response()->json(
-            ['error' => "Unauthorized"],
-            Response::HTTP_UNAUTHORIZED
+            ['error' => MessagesEnum::TOO_MANY_REQUESTS],
+            Response::HTTP_TOO_MANY_REQUESTS
         );
     }
 

@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use App\Features\Module\Modules\Infra\Models\Module;
 use App\Features\Users\AdminUsers\Infra\Models\AdminUser;
-use App\Features\Users\ModulesUsers\Infra\Models\ModuleRule;
+use App\Features\Users\ModulesUsers\Infra\Models\ModuleUser;
 use App\Features\Users\Profiles\Infra\Models\Profile;
 use App\Features\Users\ProfilesUsers\Infra\Models\ProfileUser;
 use App\Features\Users\Users\Infra\Models\User;
@@ -52,9 +52,9 @@ class CreateUsers extends Seeder
 
             foreach ($modules as $module)
             {
-                ModuleRule::create([
-                    ModuleRule::USER_ID => $uuid,
-                    ModuleRule::MODULE_ID => $module->id,
+                ModuleUser::create([
+                    ModuleUser::USER_ID => $uuid,
+                    ModuleUser::MODULE_ID => $module->id,
                 ]);
             }
 

@@ -17,7 +17,7 @@ class Auth
 
     public static function getExpiresIn(): string
     {
-        return env('JWT_TTL').' min';
+        return config('general.jwt.ttl').' min';
     }
 
     public static function getTokenType(): string
@@ -33,22 +33,6 @@ class Auth
     public static function getUser(): ?Authenticatable
     {
         return auth()->user();
-    }
-
-    /**
-     * @throws AppException
-     */
-    public static function getCustomerUserId()
-    {
-        if(!$customerUser = auth()->user()->customerUser)
-        {
-            throw new AppException(
-                MessagesEnum::USER_NOT_FOUND,
-                Response::HTTP_NOT_FOUND
-            );
-        }
-
-        return $customerUser;
     }
 
     /**

@@ -2,8 +2,7 @@
 
 namespace App\Features\Users\AdminUsers\Http\Controllers;
 
-use App\Features\Users\AdminUsers\Contracts\AdminUsersListBusinessInterface;
-use App\Features\Users\AdminUsers\Contracts\AdminUsersPersistenceBusinessInterface;
+use App\Features\Users\AdminUsers\Contracts\AdminUsersBusinessInterface;
 use App\Features\Users\AdminUsers\DTO\AdminUsersFiltersDTO;
 use App\Features\Users\AdminUsers\Http\Requests\AdminUsersFiltersRequest;
 use App\Features\Users\Users\DTO\UserDTO;
@@ -16,8 +15,7 @@ use Symfony\Component\HttpFoundation\Response;
 readonly class AdminUsersController
 {
     public function __construct(
-        private AdminUsersListBusinessInterface        $adminUsersListBusiness,
-        private AdminUsersPersistenceBusinessInterface $adminUsersPersistenceBusiness,
+        private AdminUsersBusinessInterface $adminUsersBusiness
     ) {}
 
     public function index(
@@ -32,14 +30,14 @@ readonly class AdminUsersController
         $adminUsersFiltersDTO->name  = $adminUsersFiltersRequest->name;
         $adminUsersFiltersDTO->email = $adminUsersFiltersRequest->email;
 
-        $users = $this->adminUsersListBusiness->findAll($adminUsersFiltersDTO);
+        $users = $this->adminUsersBusiness->findAll($adminUsersFiltersDTO);
 
         return response()->json($users, Response::HTTP_OK);
     }
 
     public function showLoggedUserResource(): JsonResponse
     {
-        $user = $this->adminUsersListBusiness->findLoggedUser(true);
+        $user = $this->adminUsersBusiness->findLoggedUser();
 
         return response()->json($user, Response::HTTP_OK);
     }
@@ -51,7 +49,7 @@ readonly class AdminUsersController
     {
         $adminUsersFiltersDTO->userId = $request->id;
 
-        $user = $this->adminUsersListBusiness->findByUserId($adminUsersFiltersDTO);
+        $user = $this->adminUsersBusiness->findByUserId($adminUsersFiltersDTO);
 
         return response()->json($user, Response::HTTP_OK);
     }
@@ -67,7 +65,7 @@ readonly class AdminUsersController
         $userDTO->active    = $insertUserRequest->active;
         $userDTO->profileId = $insertUserRequest->profileId;
 
-        $newAdminUser = $this->adminUsersPersistenceBusiness->create($userDTO);
+        $newAdminUser = $this->adminUsersBusiness->create($userDTO);
 
         return response()->json($newAdminUser, Response::HTTP_OK);
     }
@@ -83,7 +81,7 @@ readonly class AdminUsersController
         $userDTO->active    = $updateUserRequest->active;
         $userDTO->profileId = $updateUserRequest->profileId;
 
-        $updated = $this->adminUsersPersistenceBusiness->save($userDTO);
+        $updated = $this->adminUsersBusiness->save($userDTO);
 
         return response()->json($updated, Response::HTTP_OK);
     }
