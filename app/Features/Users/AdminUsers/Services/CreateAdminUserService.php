@@ -41,16 +41,21 @@ class CreateAdminUserService implements CreateAdminUserServiceInterface
     {
         $this->userDTO = $userDTO;
 
+        return match (true) {
+            $policy->haveRule(RulesEnum::ADMIN_USERS_ADMIN_MASTER_INSERT->value) => $this->createByAdminMaster(),
+            $policy->haveRule(RulesEnum::ADMIN_USERS_EMPLOYEE_INSERT->value)     => $this->createByEmployee(),
+            default                                                              => $policy->dispatchErrorForbidden(),
+        };
+    }
+
+    /**
+     * @throws AppException
+     */
+    private function handleValidations()
+    {
         UsersValidationsService::emailAlreadyExists($this->usersRepository, $this->userDTO->email);
 
         $this->profile = UsersValidationsService::returnProfileExists($this->profilesRepository, $this->userDTO->profileId);
-
-        $this->userDTO->newPasswordGenerationsDTO->passwordEncrypt = HashService::generateHash($this->userDTO->password);
-
-        return match (true) {
-            $policy->haveRule(RulesEnum::ADMIN_USERS_ADMIN_MASTER_VIEW->value) => $this->createByAdminMaster(),
-            $policy->haveRule(RulesEnum::ADMIN_USERS_EMPLOYEE_VIEW->value)     => $this->createByEmployee(),
-        };
     }
 
     /**
@@ -58,6 +63,8 @@ class CreateAdminUserService implements CreateAdminUserServiceInterface
      */
     private function createByAdminMaster(): AdminUserResponse
     {
+        $this->handleValidations();
+
         return $this->baseInsertOperation();
     }
 
@@ -66,6 +73,8 @@ class CreateAdminUserService implements CreateAdminUserServiceInterface
      */
     private function createByEmployee(): AdminUserResponse
     {
+        $this->handleValidations();
+
         AllowedProfilesValidations::validateEmployeeProfile($this->profile->unique_name);
 
         return $this->baseInsertOperation();
@@ -80,6 +89,8 @@ class CreateAdminUserService implements CreateAdminUserServiceInterface
         Transaction::beginTransaction();
 
         try {
+            $this->userDTO->newPasswordGenerationsDTO->passwordEncrypt = HashService::generateHash($this->userDTO->password);
+
             $user = $this->usersRepository->create($this->userDTO);
             $this->userDTO->id = $user->id;
 

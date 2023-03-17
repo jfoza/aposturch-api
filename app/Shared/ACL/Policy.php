@@ -18,8 +18,20 @@ class Policy
     /**
      * @throws AppException
      */
-    public function havePermission(mixed $rule = null): void {
+    public function havePermission(string|null $rule = null): void {
         if(!$this->haveRule($rule)) {
+            $this->dispatchErrorForbidden();
+        }
+    }
+
+    /**
+     * @throws AppException
+     */
+    public function havePermissionAndModule(
+        string|null $rule = null,
+        string|null $moduleRule = null
+    ): void {
+        if(!$this->haveRuleAndModule($rule, $moduleRule)) {
             $this->dispatchErrorForbidden();
         }
     }
@@ -28,9 +40,22 @@ class Policy
      * @param string|null $rule
      * @return bool
      */
-    public function haveRule(mixed $rule = null): bool
+    public function haveRule(string|null $rule = null): bool
     {
         return in_array($rule, $this->rules);
+    }
+
+    /**
+     * @param string|null $rule
+     * @param string|null $moduleRule
+     * @return bool
+     */
+    public function haveRuleAndModule(
+        string|null $rule = null,
+        string|null $moduleRule = null
+    ): bool
+    {
+        return in_array($rule, $this->rules) && in_array($moduleRule, $this->rules);
     }
 
     /**

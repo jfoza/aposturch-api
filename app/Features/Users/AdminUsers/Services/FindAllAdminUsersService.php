@@ -2,6 +2,7 @@
 
 namespace App\Features\Users\AdminUsers\Services;
 
+use App\Exceptions\AppException;
 use App\Features\Users\AdminUsers\Contracts\AdminUsersRepositoryInterface;
 use App\Features\Users\AdminUsers\Contracts\FindAllAdminUsersServiceInterface;
 use App\Features\Users\AdminUsers\DTO\AdminUsersFiltersDTO;
@@ -17,6 +18,9 @@ class FindAllAdminUsersService implements FindAllAdminUsersServiceInterface
         private readonly AdminUsersRepositoryInterface $adminUsersRepository,
     ) {}
 
+    /**
+     * @throws AppException
+     */
     public function execute(
         AdminUsersFiltersDTO $adminUsersFiltersDTO,
         Policy $policy
@@ -27,6 +31,7 @@ class FindAllAdminUsersService implements FindAllAdminUsersServiceInterface
         return match (true) {
             $policy->haveRule(RulesEnum::ADMIN_USERS_ADMIN_MASTER_VIEW->value) => $this->findByAdminMaster(),
             $policy->haveRule(RulesEnum::ADMIN_USERS_EMPLOYEE_VIEW->value)     => $this->findByEmployee(),
+            default                                                            => $policy->dispatchErrorForbidden(),
         };
     }
 

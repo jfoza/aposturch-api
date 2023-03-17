@@ -42,14 +42,22 @@ class UpdateAdminUserService implements UpdateAdminUserServiceInterface
     {
         $this->userDTO = $userDTO;
 
-        AdminUsersValidations::adminUserIdExists($this->adminUsersRepository, $this->userDTO->id);
-        UsersValidationsService::emailAlreadyExistsUpdate($this->usersRepository, $this->userDTO->id, $this->userDTO->email);
-        $this->profile = UsersValidationsService::returnProfileExists($this->profilesRepository, $this->userDTO->profileId);
-
         return match (true) {
             $policy->haveRule(RulesEnum::ADMIN_USERS_ADMIN_MASTER_UPDATE->value) => $this->updateByAdminMaster(),
             $policy->haveRule(RulesEnum::ADMIN_USERS_EMPLOYEE_UPDATE->value)     => $this->updateByEmployee(),
+            default                                                              => $policy->dispatchErrorForbidden(),
         };
+    }
+
+    /**
+     * @throws AppException
+     */
+    private function handleValidations()
+    {
+        AdminUsersValidations::adminUserIdExists($this->adminUsersRepository, $this->userDTO->id);
+        UsersValidationsService::emailAlreadyExistsUpdate($this->usersRepository, $this->userDTO->id, $this->userDTO->email);
+
+        $this->profile = UsersValidationsService::returnProfileExists($this->profilesRepository, $this->userDTO->profileId);
     }
 
     /**
@@ -57,6 +65,8 @@ class UpdateAdminUserService implements UpdateAdminUserServiceInterface
      */
     private function updateByAdminMaster(): AdminUserResponse
     {
+        $this->handleValidations();
+
         return $this->updateBaseOperation();
     }
 
@@ -65,6 +75,8 @@ class UpdateAdminUserService implements UpdateAdminUserServiceInterface
      */
     private function updateByEmployee(): AdminUserResponse
     {
+        $this->handleValidations();
+
         AllowedProfilesValidations::validateEmployeeProfile($this->profile->unique_name);
 
         return $this->updateBaseOperation();

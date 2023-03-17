@@ -3,16 +3,16 @@
 namespace App\Features\Auth\Business;
 
 use App\Exceptions\AppException;
-use App\Shared\Helpers\Helpers;
-use App\Shared\Helpers\RandomStringHelper;
 use App\Features\Auth\Contracts\ForgotPasswordBusinessInterface;
 use App\Features\Auth\Contracts\ForgotPasswordRepositoryInterface;
 use App\Features\Auth\DTO\ForgotPasswordDTO;
 use App\Features\Auth\Jobs\SendEmailForgotPasswordJob;
-use App\Features\Auth\Services\Utils\AuthValidationsService;
+use App\Features\Auth\Validations\AuthValidations;
 use App\Features\Users\CustomerUsers\Contracts\CustomerUsersRepositoryInterface;
 use App\Features\Users\Users\Contracts\UsersRepositoryInterface;
 use App\Features\Users\Users\Services\Utils\HashService;
+use App\Shared\Helpers\Helpers;
+use App\Shared\Helpers\RandomStringHelper;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Response;
@@ -35,9 +35,9 @@ class ForgotPasswordBusiness implements ForgotPasswordBusinessInterface
     public function sendEmailForgotPassword(ForgotPasswordDTO $forgotPasswordDTO): void
     {
         $customerUser = $this->customerUsersRepository->findByUserEmail($forgotPasswordDTO->email);
-        $user         = AuthValidationsService::userExistsForgotPassword($customerUser);
+        $user         = AuthValidations::userExistsForgotPassword($customerUser);
 
-        AuthValidationsService::validateIfUserHasAlreadyVerifiedEmail($customerUser->verified_email, false);
+        AuthValidations::validateIfUserHasAlreadyVerifiedEmail($customerUser->verified_email, false);
 
         $forgotPasswordDTO->userId   = $user->id;
         $forgotPasswordDTO->code     = RandomStringHelper::uuidv4Generate();
@@ -59,9 +59,9 @@ class ForgotPasswordBusiness implements ForgotPasswordBusinessInterface
     {
         $forgotPassword = $this->forgotPasswordRepository->findByCode($forgotPasswordDTO->code);
 
-        AuthValidationsService::forgotPasswordExists($forgotPassword);
+        AuthValidations::forgotPasswordExists($forgotPassword);
 
-        AuthValidationsService::isValidForgotPassword(
+        AuthValidations::isValidForgotPassword(
             $this->currentDate,
             $forgotPassword->validate,
             $forgotPassword->active

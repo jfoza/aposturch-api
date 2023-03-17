@@ -8,10 +8,10 @@ use App\Features\Users\Profiles\Enums\ProfileUniqueNameEnum;
 use App\Shared\ACL\Policy;
 use App\Shared\Enums\RulesEnum;
 
-readonly class FindAllProfilesByUserAbilityService implements FindAllProfilesByUserAbilityServiceInterface
+class FindAllProfilesByUserAbilityService implements FindAllProfilesByUserAbilityServiceInterface
 {
     public function __construct(
-        private ProfilesRepositoryInterface $profileRepository,
+        private readonly ProfilesRepositoryInterface $profileRepository,
     ) {}
 
     public function execute(Policy $policy)

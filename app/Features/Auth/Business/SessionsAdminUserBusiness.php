@@ -3,17 +3,17 @@
 namespace App\Features\Auth\Business;
 
 use App\Exceptions\AppException;
-use App\Features\Users\Users\Traits\UserAbilityTrait;
-use App\Shared\Helpers\Helpers;
-use App\Shared\Utils\Auth;
 use App\Features\Auth\Contracts\SessionsAdminUserBusinessInterface;
 use App\Features\Auth\DTO\SessionsDTO;
 use App\Features\Auth\Http\Resources\AdminAuthResource;
 use App\Features\Auth\Http\Responses\Admin\AdminAuthResponse;
-use App\Features\Auth\Services\Utils\AuthValidationsService;
+use App\Features\Auth\Validations\AuthValidations;
 use App\Features\Users\AdminUsers\Contracts\AdminUsersRepositoryInterface;
 use App\Features\Users\Rules\Contracts\RulesRepositoryInterface;
 use App\Features\Users\Sessions\Contracts\SessionsRepositoryInterface;
+use App\Features\Users\Users\Traits\UserAbilityTrait;
+use App\Shared\Helpers\Helpers;
+use App\Shared\Utils\Auth;
 
 readonly class SessionsAdminUserBusiness implements SessionsAdminUserBusinessInterface
 {
@@ -32,10 +32,10 @@ readonly class SessionsAdminUserBusiness implements SessionsAdminUserBusinessInt
     public function login(SessionsDTO $sessionsDTO): AdminAuthResponse
     {
         $adminUser = $this->adminUsersRepository->findByEmail($sessionsDTO->email);
-        $user      = AuthValidationsService::userExistsLogin($adminUser);
+        $user      = AuthValidations::userExistsLogin($adminUser);
 
-        AuthValidationsService::passwordVerify($sessionsDTO->password, $user->password);
-        AuthValidationsService::isActive($user->active);
+        AuthValidations::passwordVerify($sessionsDTO->password, $user->password);
+        AuthValidations::isActive($user->active);
 
         $ability = $this->findAllUserAbility($user, $this->rulesRepository);
 

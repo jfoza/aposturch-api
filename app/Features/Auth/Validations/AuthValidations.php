@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Features\Auth\Services\Utils;
+namespace App\Features\Auth\Validations;
 
-use App\Shared\Enums\MessagesEnum;
 use App\Exceptions\AppException;
 use App\Features\Users\Users\Services\Utils\HashService;
+use App\Shared\Enums\MessagesEnum;
 use Carbon\Carbon;
 use Symfony\Component\HttpFoundation\Response;
 
-class AuthValidationsService
+class AuthValidations
 {
     /**
      * @throws AppException

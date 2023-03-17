@@ -30,7 +30,7 @@ class Auth
         auth()->logout();
     }
 
-    public static function getUser(): ?Authenticatable
+    public static function getUser(): ?object
     {
         return auth()->user();
     }

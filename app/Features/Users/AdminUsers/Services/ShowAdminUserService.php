@@ -33,6 +33,7 @@ class ShowAdminUserService implements ShowAdminUserServiceInterface
         $adminUser = match (true) {
             $policy->haveRule(RulesEnum::ADMIN_USERS_ADMIN_MASTER_VIEW->value) => $this->findByAdminMaster(),
             $policy->haveRule(RulesEnum::ADMIN_USERS_EMPLOYEE_VIEW->value)     => $this->findByEmployee(),
+            default                                                            => $policy->dispatchErrorForbidden(),
         };
 
         if(empty($adminUser)) {

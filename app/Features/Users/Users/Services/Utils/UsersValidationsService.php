@@ -91,9 +91,7 @@ class UsersValidationsService
         string $profileId,
     )
     {
-        $profile = $profilesRepository->findById($profileId);
-
-        if(empty($profile)) {
+        if(!$profile = $profilesRepository->findById($profileId)) {
             throw new AppException(
                 MessagesEnum::PROFILE_NOT_FOUND,
                 Response::HTTP_NOT_FOUND
