@@ -15,6 +15,7 @@ DO $$
         _module3 uuid := uuid_generate_v4();
         _module4 uuid := uuid_generate_v4();
         _module5 uuid := uuid_generate_v4();
+        _module6 uuid := uuid_generate_v4();
 
         -- RULES
         _module_rule1 uuid := uuid_generate_v4();
@@ -22,6 +23,7 @@ DO $$
         _module_rule3 uuid := uuid_generate_v4();
         _module_rule4 uuid := uuid_generate_v4();
         _module_rule5 uuid := uuid_generate_v4();
+        _module_rule6 uuid := uuid_generate_v4();
 
         _rule1 uuid := uuid_generate_v4();
         _rule2 uuid := uuid_generate_v4();
@@ -46,21 +48,23 @@ DO $$
     BEGIN
         INSERT INTO module.modules (id,description, active)
         VALUES
-            (_module1, 'FINANCE', true),
-            (_module2, 'MEMBERS', true),
-            (_module3, 'BOOKSTORE', true),
-            (_module4, 'GROUPS', true),
-            (_module5, 'SCHEDULE', true);
+            (_module1, 'USERS', true),
+            (_module2, 'FINANCE', true),
+            (_module3, 'MEMBERS', true),
+            (_module4, 'BOOKSTORE', true),
+            (_module5, 'GROUPS', true),
+            (_module6, 'SCHEDULE', true);
 
         INSERT INTO users.rules (id,description, subject, action)
         VALUES
-            (_module_rule1, 'FINANCE_VIEW', 'FINANCE', 'VIEW'),
-            (_module_rule2, 'MEMBERS_VIEW', 'MEMBERS', 'VIEW'),
-            (_module_rule3, 'BOOKSTORE_VIEW', 'BOOKSTORE', 'VIEW'),
-            (_module_rule4, 'GROUPS_VIEW', 'GROUPS', 'VIEW'),
-            (_module_rule5, 'SCHEDULE_VIEW', 'SCHEDULE', 'VIEW'),
+            (_module_rule1, 'USERS_MODULE_VIEW', 'USERS_MODULE', 'VIEW'),
+            (_module_rule2, 'FINANCE_MODULE_VIEW', 'FINANCE_MODULE', 'VIEW'),
+            (_module_rule3, 'MEMBERS_MODULE_VIEW', 'MEMBERS_MODULE', 'VIEW'),
+            (_module_rule4, 'BOOKSTORE_MODULE_VIEW', 'BOOKSTORE_MODULE', 'VIEW'),
+            (_module_rule5, 'GROUPS_MODULE_VIEW', 'GROUPS_MODULE', 'VIEW'),
+            (_module_rule6, 'SCHEDULE_MODULE_VIEW', 'SCHEDULE_MODULE', 'VIEW'),
 
-            (_rule1, 'APOSTURCH_VIEW', 'APOSTURCH', 'VIEW'),
+            (_rule1, 'ROOT', 'ROOT', 'VIEW'),
             (_rule2, 'USERS_VIEW', 'USERS', 'VIEW'),
             (_rule3, 'ADMIN_USERS_VIEW', 'ADMIN_USERS_VIEW', 'VIEW'),
             (_rule4, 'ADMIN_USERS_INSERT', 'ADMIN_USERS_INSERT', 'INSERT'),
@@ -86,7 +90,8 @@ DO $$
             (_module_rule2, _module2),
             (_module_rule3, _module3),
             (_module_rule4, _module4),
-            (_module_rule5, _module5);
+            (_module_rule5, _module5),
+            (_module_rule6, _module6);
 
         INSERT INTO users.profile_types (id, description)
         VALUES
