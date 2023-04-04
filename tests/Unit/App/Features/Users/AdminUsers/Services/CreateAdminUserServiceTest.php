@@ -63,50 +63,46 @@ class CreateAdminUserServiceTest extends TestCase
         $this->userDtoMock->profileId = $profileId;
     }
 
-    public function test_should_create_new_admin_user_by_admin_master_rule()
+    public function dataProviderInsertAdminUser(): array
     {
-        $profileId = Uuid::uuid4()->toString();
-
-        $this->populateUsersDTO($profileId);
-
-        $policy = new Policy([
-            RulesEnum::ADMIN_USERS_ADMIN_MASTER_INSERT->value
-        ]);
-
-        $this
-            ->usersRepositoryMock
-            ->method('findByEmail')
-            ->willReturn(null);
-
-        $this
-            ->profilesRepositoryMock
-            ->method('findById')
-            ->willReturn(ProfilesLists::getEmployeeProfile($profileId));
-
-        $this
-            ->usersRepositoryMock
-            ->method('create')
-            ->willReturn(UsersLists::getUser());
-
-        $createAdminUserService = $this->getCreateAdminUserService();
-
-        $adminUserCreated = $createAdminUserService->execute(
-            $this->userDtoMock,
-            $policy
-        );
-
-        $this->assertInstanceOf(AdminUserResponse::class, $adminUserCreated);
+        return [
+            'By Admin Master Rule'     => [
+                RulesEnum::ADMIN_USERS_ADMIN_MASTER_INSERT->value,
+                ProfilesLists::getAdminMasterProfile()
+            ],
+            'By Admin Church Rule'     => [
+                RulesEnum::ADMIN_USERS_ADMIN_CHURCH_INSERT->value,
+                ProfilesLists::getAdminChurchProfile()
+            ],
+            'By Admin Department Rule' => [
+                RulesEnum::ADMIN_USERS_ADMIN_DEPARTMENT_INSERT->value,
+                ProfilesLists::getAdminDepartmentProfile()
+            ],
+            'By Assistant Rule'        => [
+                RulesEnum::ADMIN_USERS_ASSISTANT_INSERT->value,
+                ProfilesLists::getAssistantProfile()
+            ],
+        ];
     }
 
-    public function test_should_create_new_admin_user_by_employee_rule()
+    /**
+     * @dataProvider dataProviderInsertAdminUser
+     *
+     * @param string $rule
+     * @param mixed $profile
+     * @return void
+     * @throws AppException
+     */
+    public function test_should_create_new_admin_user(
+        string $rule,
+        mixed $profile
+    ): void
     {
         $profileId = Uuid::uuid4()->toString();
 
         $this->populateUsersDTO($profileId);
 
-        $policy = new Policy([
-            RulesEnum::ADMIN_USERS_EMPLOYEE_INSERT->value
-        ]);
+        $policy = new Policy([$rule]);
 
         $this
             ->usersRepositoryMock
@@ -116,7 +112,7 @@ class CreateAdminUserServiceTest extends TestCase
         $this
             ->profilesRepositoryMock
             ->method('findById')
-            ->willReturn(ProfilesLists::getEmployeeProfile($profileId));
+            ->willReturn($profile);
 
         $this
             ->usersRepositoryMock
@@ -140,7 +136,7 @@ class CreateAdminUserServiceTest extends TestCase
         $this->populateUsersDTO($profileId);
 
         $policy = new Policy([
-            RulesEnum::ADMIN_USERS_EMPLOYEE_INSERT->value
+            RulesEnum::ADMIN_USERS_ADMIN_MASTER_INSERT->value
         ]);
 
         $this
@@ -166,7 +162,7 @@ class CreateAdminUserServiceTest extends TestCase
         $this->populateUsersDTO($profileId);
 
         $policy = new Policy([
-            RulesEnum::ADMIN_USERS_EMPLOYEE_INSERT->value
+            RulesEnum::ADMIN_USERS_ADMIN_MASTER_INSERT->value
         ]);
 
         $this
@@ -197,7 +193,7 @@ class CreateAdminUserServiceTest extends TestCase
         $this->populateUsersDTO($profileId);
 
         $policy = new Policy([
-            RulesEnum::ADMIN_USERS_EMPLOYEE_INSERT->value
+            RulesEnum::ADMIN_USERS_ADMIN_DEPARTMENT_INSERT->value
         ]);
 
         $this

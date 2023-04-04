@@ -35,32 +35,26 @@ class ShowAdminUserServiceTest extends TestCase
         );
     }
 
-    public function test_should_to_return_unique_admin_user_by_admin_user_rule()
+    public function dataProviderShowAdminUser(): array
     {
-        $policy = new Policy([
-            RulesEnum::ADMIN_USERS_ADMIN_MASTER_VIEW->value
-        ]);
-
-        $this
-            ->adminUsersRepositoryMock
-            ->method('findByUserIdAndProfileUniqueName')
-            ->willReturn(AdminUsersLists::getUniqueAdminUser());
-
-        $showAdminUserService = $this->getShowAdminUserService();
-
-        $adminUsers = $showAdminUserService->execute(
-            $this->adminUsersFiltersDtoMock,
-            $policy
-        );
-
-        $this->assertInstanceOf(Collection::class, $adminUsers);
+        return [
+            'By Admin Master Rule'     => [RulesEnum::ADMIN_USERS_ADMIN_MASTER_VIEW->value],
+            'By Admin Church Rule'     => [RulesEnum::ADMIN_USERS_ADMIN_CHURCH_VIEW->value],
+            'By Admin Department Rule' => [RulesEnum::ADMIN_USERS_ADMIN_DEPARTMENT_VIEW->value],
+            'By Assistant Rule'        => [RulesEnum::ADMIN_USERS_ASSISTANT_VIEW->value],
+        ];
     }
 
-    public function test_should_to_return_unique_admin_user_by_employee_rule()
+    /**
+     * @dataProvider dataProviderShowAdminUser
+     *
+     * @param string $rule
+     * @return void
+     * @throws AppException
+     */
+    public function test_should_to_return_unique_admin_user(string $rule): void
     {
-        $policy = new Policy([
-            RulesEnum::ADMIN_USERS_EMPLOYEE_VIEW->value
-        ]);
+        $policy = new Policy([$rule]);
 
         $this
             ->adminUsersRepositoryMock

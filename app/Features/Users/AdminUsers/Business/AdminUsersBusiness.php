@@ -7,10 +7,12 @@ use App\Features\Users\AdminUsers\Contracts\AdminUsersBusinessInterface;
 use App\Features\Users\AdminUsers\Contracts\CreateAdminUserServiceInterface;
 use App\Features\Users\AdminUsers\Contracts\FindAllAdminUsersServiceInterface;
 use App\Features\Users\AdminUsers\Contracts\ShowAdminUserServiceInterface;
+use App\Features\Users\AdminUsers\Contracts\ShowCountAdminUsersByProfileInterface;
 use App\Features\Users\AdminUsers\Contracts\ShowLoggedUserServiceInterface;
 use App\Features\Users\AdminUsers\Contracts\UpdateAdminUserServiceInterface;
 use App\Features\Users\AdminUsers\DTO\AdminUsersFiltersDTO;
 use App\Features\Users\AdminUsers\Http\Responses\AdminUserResponse;
+use App\Features\Users\AdminUsers\Http\Responses\CountAdminUsersResponse;
 use App\Features\Users\AdminUsers\Http\Responses\LoggedUserResponse;
 use App\Features\Users\Users\DTO\UserDTO;
 
@@ -22,6 +24,7 @@ class AdminUsersBusiness extends Business implements AdminUsersBusinessInterface
         private readonly ShowLoggedUserServiceInterface $showLoggedUserService,
         private readonly CreateAdminUserServiceInterface $createAdminUserService,
         private readonly UpdateAdminUserServiceInterface $updateAdminUserService,
+        private readonly ShowCountAdminUsersByProfileInterface $showCountAdminUsersByProfile,
     ) {}
 
     public function findAll(AdminUsersFiltersDTO $adminUsersFiltersDTO)
@@ -36,6 +39,13 @@ class AdminUsersBusiness extends Business implements AdminUsersBusinessInterface
     {
         return $this->showAdminUserService->execute(
             $adminUsersFiltersDTO,
+            $this->getPolicy()
+        );
+    }
+
+    public function findCountByProfiles(): CountAdminUsersResponse
+    {
+        return $this->showCountAdminUsersByProfile->execute(
             $this->getPolicy()
         );
     }

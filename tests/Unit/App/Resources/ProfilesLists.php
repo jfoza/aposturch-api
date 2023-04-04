@@ -17,11 +17,11 @@ class ProfilesLists
         return (object) ([
             Profile::ID          => $profileId,
             Profile::DESCRIPTION => 'Admin Master',
-            Profile::UNIQUE_NAME => 'admin-master',
+            Profile::UNIQUE_NAME => 'ADMIN_MASTER',
         ]);
     }
 
-    public static function getEmployeeProfile(string|null $profileId): object
+    public static function getAdminChurchProfile(string $profileId = null): object
     {
         if(is_null($profileId))
         {
@@ -30,8 +30,36 @@ class ProfilesLists
 
         return (object) ([
             Profile::ID          => $profileId,
-            Profile::DESCRIPTION => 'Colaborador',
-            Profile::UNIQUE_NAME => 'employee',
+            Profile::DESCRIPTION => 'Admin Igreja',
+            Profile::UNIQUE_NAME => 'ADMIN_CHURCH',
+        ]);
+    }
+
+    public static function getAdminDepartmentProfile(string $profileId = null): object
+    {
+        if(is_null($profileId))
+        {
+            $profileId = Uuid::uuid4()->toString();
+        }
+
+        return (object) ([
+            Profile::ID          => $profileId,
+            Profile::DESCRIPTION => 'Admin Departamento',
+            Profile::UNIQUE_NAME => 'ADMIN_DEPARTMENT',
+        ]);
+    }
+
+    public static function getAssistantProfile(string $profileId = null): object
+    {
+        if(is_null($profileId))
+        {
+            $profileId = Uuid::uuid4()->toString();
+        }
+
+        return (object) ([
+            Profile::ID          => $profileId,
+            Profile::DESCRIPTION => 'Auxiliar',
+            Profile::UNIQUE_NAME => 'ASSISTANT',
         ]);
     }
 }

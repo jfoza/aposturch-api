@@ -3,6 +3,7 @@
 namespace App\Features\Users\AdminUsers\Http\Requests;
 
 use App\Features\Base\Http\Requests\FormRequest;
+use App\Shared\Rules\Uuidv4Rule;
 
 class AdminUsersFiltersRequest extends FormRequest
 {
@@ -16,16 +17,18 @@ class AdminUsersFiltersRequest extends FormRequest
         $nullableString = 'nullable|string';
 
         return $this->mergePaginationOrderRules([
-            'personName'  => $nullableString,
-            'userEmail'   => 'nullable|email:rfc,dns',
+            'name'      => $nullableString,
+            'profileId' => ['nullable', 'string', new Uuidv4Rule],
+            'email'     => 'nullable|email:rfc,dns',
         ]);
     }
 
     public function attributes(): array
     {
         return $this->mergePaginationOrderAttributes([
-            'personName'  => 'Person Name',
-            'userEmail'   => 'Email',
+            'name'      => 'Person Name',
+            'profileId' => 'Profile Id',
+            'email'     => 'Email',
         ]);
     }
 }

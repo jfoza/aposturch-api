@@ -8,6 +8,7 @@ use App\Features\Users\AdminUsers\DTO\AdminUsersFiltersDTO;
 use App\Features\Users\AdminUsers\Infra\Models\AdminUser;
 use App\Features\Users\AdminUsers\Traits\AdminUsersListTrait;
 use App\Features\Users\Profiles\Infra\Models\Profile;
+use App\Features\Users\ProfilesUsers\Infra\Models\ProfileUser;
 use App\Features\Users\Users\Infra\Models\User;
 
 class AdminUsersRepository implements AdminUsersRepositoryInterface

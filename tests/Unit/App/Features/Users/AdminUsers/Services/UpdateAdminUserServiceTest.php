@@ -63,55 +63,46 @@ class UpdateAdminUserServiceTest extends TestCase
         $this->userDtoMock->profileId = $profileId;
     }
 
-    public function test_should_update_admin_user_by_admin_master_rule()
+    public function dataProviderUpdateAdminUser(): array
     {
-        $profileId = Uuid::uuid4()->toString();
-
-        $this->populateUsersDTO($profileId);
-
-        $policy = new Policy([
-            RulesEnum::ADMIN_USERS_ADMIN_MASTER_UPDATE->value
-        ]);
-
-        $this
-            ->adminUsersRepositoryMock
-            ->method('findByUserId')
-            ->willReturn(UsersLists::getUser());
-
-        $this
-            ->usersRepositoryMock
-            ->method('findByEmail')
-            ->willReturn(null);
-
-        $this
-            ->profilesRepositoryMock
-            ->method('findById')
-            ->willReturn(ProfilesLists::getAdminMasterProfile($profileId));
-
-        $this
-            ->usersRepositoryMock
-            ->method('create')
-            ->willReturn(UsersLists::getUser());
-
-        $updateAdminUserService = $this->getUpdateAdminUserService();
-
-        $adminUser = $updateAdminUserService->execute(
-            $this->userDtoMock,
-            $policy
-        );
-
-        $this->assertInstanceOf(AdminUserResponse::class, $adminUser);
+        return [
+            'By Admin Master Rule'     => [
+                RulesEnum::ADMIN_USERS_ADMIN_MASTER_UPDATE->value,
+                ProfilesLists::getAdminMasterProfile()
+            ],
+            'By Admin Church Rule'     => [
+                RulesEnum::ADMIN_USERS_ADMIN_CHURCH_UPDATE->value,
+                ProfilesLists::getAdminChurchProfile()
+            ],
+            'By Admin Department Rule' => [
+                RulesEnum::ADMIN_USERS_ADMIN_DEPARTMENT_UPDATE->value,
+                ProfilesLists::getAdminDepartmentProfile()
+            ],
+            'By Assistant Rule'        => [
+                RulesEnum::ADMIN_USERS_ASSISTANT_UPDATE->value,
+                ProfilesLists::getAssistantProfile()
+            ],
+        ];
     }
 
-    public function test_should_update_admin_user_by_employee_rule()
+    /**
+     * @dataProvider dataProviderUpdateAdminUser
+     *
+     * @param string $rule
+     * @param mixed $profile
+     * @return void
+     * @throws AppException
+     */
+    public function test_should_update_admin_user(
+        string $rule,
+        mixed $profile
+    ): void
     {
         $profileId = Uuid::uuid4()->toString();
 
         $this->populateUsersDTO($profileId);
 
-        $policy = new Policy([
-            RulesEnum::ADMIN_USERS_EMPLOYEE_UPDATE->value
-        ]);
+        $policy = new Policy([$rule]);
 
         $this
             ->adminUsersRepositoryMock
@@ -126,7 +117,7 @@ class UpdateAdminUserServiceTest extends TestCase
         $this
             ->profilesRepositoryMock
             ->method('findById')
-            ->willReturn(ProfilesLists::getEmployeeProfile($profileId));
+            ->willReturn($profile);
 
         $this
             ->usersRepositoryMock
@@ -150,7 +141,7 @@ class UpdateAdminUserServiceTest extends TestCase
         $this->populateUsersDTO($profileId);
 
         $policy = new Policy([
-            RulesEnum::ADMIN_USERS_EMPLOYEE_UPDATE->value
+            RulesEnum::ADMIN_USERS_ADMIN_DEPARTMENT_UPDATE->value
         ]);
 
         $this
@@ -176,7 +167,7 @@ class UpdateAdminUserServiceTest extends TestCase
         $this->populateUsersDTO($profileId);
 
         $policy = new Policy([
-            RulesEnum::ADMIN_USERS_EMPLOYEE_UPDATE->value
+            RulesEnum::ADMIN_USERS_ADMIN_DEPARTMENT_UPDATE->value
         ]);
 
         $this
@@ -207,7 +198,7 @@ class UpdateAdminUserServiceTest extends TestCase
         $this->populateUsersDTO($profileId);
 
         $policy = new Policy([
-            RulesEnum::ADMIN_USERS_EMPLOYEE_UPDATE->value
+            RulesEnum::ADMIN_USERS_ADMIN_DEPARTMENT_UPDATE->value
         ]);
 
         $this
@@ -243,7 +234,7 @@ class UpdateAdminUserServiceTest extends TestCase
         $this->populateUsersDTO($profileId);
 
         $policy = new Policy([
-            RulesEnum::ADMIN_USERS_EMPLOYEE_UPDATE->value
+            RulesEnum::ADMIN_USERS_ADMIN_DEPARTMENT_UPDATE->value
         ]);
 
         $this

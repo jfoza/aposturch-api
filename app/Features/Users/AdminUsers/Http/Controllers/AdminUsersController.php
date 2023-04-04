@@ -27,8 +27,9 @@ readonly class AdminUsersController
         $adminUsersFiltersDTO->paginationOrder->setColumnName($adminUsersFiltersRequest->columnName);
         $adminUsersFiltersDTO->paginationOrder->setPerPage($adminUsersFiltersRequest->perPage);
 
-        $adminUsersFiltersDTO->name  = $adminUsersFiltersRequest->name;
-        $adminUsersFiltersDTO->email = $adminUsersFiltersRequest->email;
+        $adminUsersFiltersDTO->name      = $adminUsersFiltersRequest->name;
+        $adminUsersFiltersDTO->profileId = $adminUsersFiltersRequest->profileId;
+        $adminUsersFiltersDTO->email     = $adminUsersFiltersRequest->email;
 
         $users = $this->adminUsersBusiness->findAll($adminUsersFiltersDTO);
 
@@ -52,6 +53,13 @@ readonly class AdminUsersController
         $user = $this->adminUsersBusiness->findByUserId($adminUsersFiltersDTO);
 
         return response()->json($user, Response::HTTP_OK);
+    }
+
+    public function showCountByProfiles(): JsonResponse
+    {
+        $counts = $this->adminUsersBusiness->findCountByProfiles();
+
+        return response()->json($counts, Response::HTTP_OK);
     }
 
     public function insert(

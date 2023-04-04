@@ -35,32 +35,26 @@ class FindAllAdminUsersServiceTest extends TestCase
         );
     }
 
-    public function test_should_to_return_admin_users_list_by_admin_user_rule()
+    public function dataProviderFindAllAdminUsers(): array
     {
-        $policy = new Policy([
-            RulesEnum::ADMIN_USERS_ADMIN_MASTER_VIEW->value
-        ]);
-
-        $this
-            ->adminUsersRepositoryMock
-            ->method('findAll')
-            ->willReturn(AdminUsersLists::getAllAdminUsers());
-
-        $findAllAdminUsersService = $this->getFindAllAdminUsersService();
-
-        $adminUsers = $findAllAdminUsersService->execute(
-            $this->adminUsersFiltersDtoMock,
-            $policy
-        );
-
-        $this->assertInstanceOf(Collection::class, $adminUsers);
+        return [
+            'By Admin Master Rule'     => [RulesEnum::ADMIN_USERS_ADMIN_MASTER_VIEW->value],
+            'By Admin Church Rule'     => [RulesEnum::ADMIN_USERS_ADMIN_CHURCH_VIEW->value],
+            'By Admin Department Rule' => [RulesEnum::ADMIN_USERS_ADMIN_DEPARTMENT_VIEW->value],
+            'By Assistant Rule'        => [RulesEnum::ADMIN_USERS_ASSISTANT_VIEW->value],
+        ];
     }
 
-    public function test_should_to_return_admin_users_list_by_employee_rule()
+    /**
+     * @dataProvider dataProviderFindAllAdminUsers
+     *
+     * @param string $rule
+     * @return void
+     * @throws AppException
+     */
+    public function test_should_to_return_admin_users_list(string $rule): void
     {
-        $policy = new Policy([
-            RulesEnum::ADMIN_USERS_EMPLOYEE_VIEW->value
-        ]);
+        $policy = new Policy([$rule]);
 
         $this
             ->adminUsersRepositoryMock

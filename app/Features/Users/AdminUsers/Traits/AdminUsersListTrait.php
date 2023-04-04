@@ -40,18 +40,24 @@ trait AdminUsersListTrait
             )
             ->when(isset($adminUsersFiltersDTO->email),
                 function($q) use($adminUsersFiltersDTO) {
-                    return $q->whereRelation(
-                        'user',
-                        User::EMAIL,
+                    return $q->where(
+                        User::tableField(User::EMAIL),
                         $adminUsersFiltersDTO->email
+                    );
+                }
+            )
+            ->when(isset($adminUsersFiltersDTO->profileId),
+                function($q) use($adminUsersFiltersDTO) {
+                    return $q->where(
+                        Profile::tableField(Profile::ID),
+                        $adminUsersFiltersDTO->profileId
                     );
                 }
             )
             ->when(isset($adminUsersFiltersDTO->name),
                 function($q) use($adminUsersFiltersDTO) {
-                    return $q->whereRelation(
-                        'user',
-                        User::NAME,
+                    return $q->where(
+                        User::tableField(User::NAME),
                         'ilike',
                         "%{$adminUsersFiltersDTO->name}%"
                     );

@@ -42,10 +42,61 @@ class CreateAdminUserService implements CreateAdminUserServiceInterface
         $this->userDTO = $userDTO;
 
         return match (true) {
-            $policy->haveRule(RulesEnum::ADMIN_USERS_ADMIN_MASTER_INSERT->value) => $this->createByAdminMaster(),
-            $policy->haveRule(RulesEnum::ADMIN_USERS_EMPLOYEE_INSERT->value)     => $this->createByEmployee(),
-            default                                                              => $policy->dispatchErrorForbidden(),
+            $policy->haveRule(RulesEnum::ADMIN_USERS_ADMIN_MASTER_INSERT->value)     => $this->createByAdminMaster(),
+            $policy->haveRule(RulesEnum::ADMIN_USERS_ADMIN_CHURCH_INSERT->value)     => $this->createByAdminChurch(),
+            $policy->haveRule(RulesEnum::ADMIN_USERS_ADMIN_DEPARTMENT_INSERT->value) => $this->createByAdminDepartment(),
+            $policy->haveRule(RulesEnum::ADMIN_USERS_ASSISTANT_INSERT->value)        => $this->createByAssistant(),
+
+            default  => $policy->dispatchErrorForbidden(),
         };
+    }
+
+    /**
+     * @throws AppException
+     */
+    private function createByAdminMaster(): AdminUserResponse
+    {
+        $this->handleValidations();
+
+        AllowedProfilesValidations::validateAdminMasterProfile($this->profile->unique_name);
+
+        return $this->baseInsertOperation();
+    }
+
+    /**
+     * @throws AppException
+     */
+    private function createByAdminChurch(): AdminUserResponse
+    {
+        $this->handleValidations();
+
+        AllowedProfilesValidations::validateAdminChurchProfile($this->profile->unique_name);
+
+        return $this->baseInsertOperation();
+    }
+
+    /**
+     * @throws AppException
+     */
+    private function createByAdminDepartment(): AdminUserResponse
+    {
+        $this->handleValidations();
+
+        AllowedProfilesValidations::validateAdminDepartmentProfile($this->profile->unique_name);
+
+        return $this->baseInsertOperation();
+    }
+
+    /**
+     * @throws AppException
+     */
+    private function createByAssistant(): AdminUserResponse
+    {
+        $this->handleValidations();
+
+        AllowedProfilesValidations::validateAssistantProfile($this->profile->unique_name);
+
+        return $this->baseInsertOperation();
     }
 
     /**
@@ -59,28 +110,6 @@ class CreateAdminUserService implements CreateAdminUserServiceInterface
     }
 
     /**
-     * @throws AppException
-     */
-    private function createByAdminMaster(): AdminUserResponse
-    {
-        $this->handleValidations();
-
-        return $this->baseInsertOperation();
-    }
-
-    /**
-     * @throws AppException
-     */
-    private function createByEmployee(): AdminUserResponse
-    {
-        $this->handleValidations();
-
-        AllowedProfilesValidations::validateEmployeeProfile($this->profile->unique_name);
-
-        return $this->baseInsertOperation();
-    }
-
-    /**
      * @return AdminUserResponse
      * @throws AppException
      */
@@ -88,7 +117,8 @@ class CreateAdminUserService implements CreateAdminUserServiceInterface
     {
         Transaction::beginTransaction();
 
-        try {
+        try
+        {
             $this->userDTO->newPasswordGenerationsDTO->passwordEncrypt = HashService::generateHash($this->userDTO->password);
 
             $user = $this->usersRepository->create($this->userDTO);
@@ -108,7 +138,9 @@ class CreateAdminUserService implements CreateAdminUserServiceInterface
             $this->adminUserResponse->profileDescription = $this->profile->description;
 
             return $this->adminUserResponse;
-        } catch(\Exception $e) {
+        }
+        catch(\Exception $e)
+        {
             Transaction::rollback();
 
             $this->dispatchException($e);

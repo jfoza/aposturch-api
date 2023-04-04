@@ -4,6 +4,7 @@ namespace App\Features\Users\Profiles\Infra\Repositories;
 
 use App\Features\Users\Profiles\Contracts\ProfilesRepositoryInterface;
 use App\Features\Users\Profiles\Infra\Models\Profile;
+use App\Features\Users\ProfilesUsers\Infra\Models\ProfileUser;
 
 class ProfilesRepository implements ProfilesRepositoryInterface
 {
@@ -37,5 +38,19 @@ class ProfilesRepository implements ProfilesRepositoryInterface
         return Profile::where(Profile::ID, $id)
             ->whereIn(Profile::UNIQUE_NAME, $uniqueName)
             ->first();
+    }
+
+    public function findCountUsersByProfile(string $profile)
+    {
+        return ProfileUser::where(
+                Profile::tableField(Profile::UNIQUE_NAME),
+                $profile
+            )
+            ->leftJoin(
+                Profile::tableName(),
+                Profile::tableField(Profile::ID),
+                ProfileUser::tableField(ProfileUser::PROFILE_ID)
+            )
+            ->count();
     }
 }

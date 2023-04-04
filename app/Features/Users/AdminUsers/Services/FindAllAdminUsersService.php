@@ -29,9 +29,12 @@ class FindAllAdminUsersService implements FindAllAdminUsersServiceInterface
         $this->adminUsersFiltersDTO = $adminUsersFiltersDTO;
 
         return match (true) {
-            $policy->haveRule(RulesEnum::ADMIN_USERS_ADMIN_MASTER_VIEW->value) => $this->findByAdminMaster(),
-            $policy->haveRule(RulesEnum::ADMIN_USERS_EMPLOYEE_VIEW->value)     => $this->findByEmployee(),
-            default                                                            => $policy->dispatchErrorForbidden(),
+            $policy->haveRule(RulesEnum::ADMIN_USERS_ADMIN_MASTER_VIEW->value)     => $this->findByAdminMaster(),
+            $policy->haveRule(RulesEnum::ADMIN_USERS_ADMIN_CHURCH_VIEW->value)     => $this->findByAdminChurch(),
+            $policy->haveRule(RulesEnum::ADMIN_USERS_ADMIN_DEPARTMENT_VIEW->value) => $this->findByAdminDepartment(),
+            $policy->haveRule(RulesEnum::ADMIN_USERS_ASSISTANT_VIEW->value)        => $this->findByAssistant(),
+
+            default  => $policy->dispatchErrorForbidden(),
         };
     }
 
@@ -39,16 +42,43 @@ class FindAllAdminUsersService implements FindAllAdminUsersServiceInterface
     {
         $this->adminUsersFiltersDTO->profileUniqueName = [
             ProfileUniqueNameEnum::ADMIN_MASTER,
-            ProfileUniqueNameEnum::EMPLOYEE,
+            ProfileUniqueNameEnum::ADMIN_CHURCH,
+            ProfileUniqueNameEnum::ADMIN_DEPARTMENT,
+            ProfileUniqueNameEnum::ASSISTANT,
+            ProfileUniqueNameEnum::MEMBER,
         ];
 
         return $this->adminUsersRepository->findAll($this->adminUsersFiltersDTO);
     }
 
-    private function findByEmployee()
+    private function findByAdminChurch()
     {
         $this->adminUsersFiltersDTO->profileUniqueName = [
-            ProfileUniqueNameEnum::EMPLOYEE,
+            ProfileUniqueNameEnum::ADMIN_CHURCH,
+            ProfileUniqueNameEnum::ADMIN_DEPARTMENT,
+            ProfileUniqueNameEnum::ASSISTANT,
+            ProfileUniqueNameEnum::MEMBER,
+        ];
+
+        return $this->adminUsersRepository->findAll($this->adminUsersFiltersDTO);
+    }
+
+    private function findByAdminDepartment()
+    {
+        $this->adminUsersFiltersDTO->profileUniqueName = [
+            ProfileUniqueNameEnum::ADMIN_DEPARTMENT,
+            ProfileUniqueNameEnum::ASSISTANT,
+            ProfileUniqueNameEnum::MEMBER,
+        ];
+
+        return $this->adminUsersRepository->findAll($this->adminUsersFiltersDTO);
+    }
+
+    private function findByAssistant()
+    {
+        $this->adminUsersFiltersDTO->profileUniqueName = [
+            ProfileUniqueNameEnum::ASSISTANT,
+            ProfileUniqueNameEnum::MEMBER,
         ];
 
         return $this->adminUsersRepository->findAll($this->adminUsersFiltersDTO);

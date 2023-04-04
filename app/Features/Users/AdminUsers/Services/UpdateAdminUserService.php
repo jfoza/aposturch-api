@@ -43,10 +43,61 @@ class UpdateAdminUserService implements UpdateAdminUserServiceInterface
         $this->userDTO = $userDTO;
 
         return match (true) {
-            $policy->haveRule(RulesEnum::ADMIN_USERS_ADMIN_MASTER_UPDATE->value) => $this->updateByAdminMaster(),
-            $policy->haveRule(RulesEnum::ADMIN_USERS_EMPLOYEE_UPDATE->value)     => $this->updateByEmployee(),
-            default                                                              => $policy->dispatchErrorForbidden(),
+            $policy->haveRule(RulesEnum::ADMIN_USERS_ADMIN_MASTER_UPDATE->value)     => $this->updateByAdminMaster(),
+            $policy->haveRule(RulesEnum::ADMIN_USERS_ADMIN_CHURCH_UPDATE->value)     => $this->updateByAdminChurch(),
+            $policy->haveRule(RulesEnum::ADMIN_USERS_ADMIN_DEPARTMENT_UPDATE->value) => $this->updateByAdminDepartment(),
+            $policy->haveRule(RulesEnum::ADMIN_USERS_ASSISTANT_UPDATE->value)        => $this->updateByAssistant(),
+
+            default  => $policy->dispatchErrorForbidden(),
         };
+    }
+
+    /**
+     * @throws AppException
+     */
+    private function updateByAdminMaster(): AdminUserResponse
+    {
+        $this->handleValidations();
+
+        AllowedProfilesValidations::validateAdminMasterProfile($this->profile->unique_name);
+
+        return $this->updateBaseOperation();
+    }
+
+    /**
+     * @throws AppException
+     */
+    private function updateByAdminChurch(): AdminUserResponse
+    {
+        $this->handleValidations();
+
+        AllowedProfilesValidations::validateAdminChurchProfile($this->profile->unique_name);
+
+        return $this->updateBaseOperation();
+    }
+
+    /**
+     * @throws AppException
+     */
+    private function updateByAdminDepartment(): AdminUserResponse
+    {
+        $this->handleValidations();
+
+        AllowedProfilesValidations::validateAdminDepartmentProfile($this->profile->unique_name);
+
+        return $this->updateBaseOperation();
+    }
+
+    /**
+     * @throws AppException
+     */
+    private function updateByAssistant(): AdminUserResponse
+    {
+        $this->handleValidations();
+
+        AllowedProfilesValidations::validateAssistantProfile($this->profile->unique_name);
+
+        return $this->updateBaseOperation();
     }
 
     /**
@@ -58,28 +109,6 @@ class UpdateAdminUserService implements UpdateAdminUserServiceInterface
         UsersValidationsService::emailAlreadyExistsUpdate($this->usersRepository, $this->userDTO->id, $this->userDTO->email);
 
         $this->profile = UsersValidationsService::returnProfileExists($this->profilesRepository, $this->userDTO->profileId);
-    }
-
-    /**
-     * @throws AppException
-     */
-    private function updateByAdminMaster(): AdminUserResponse
-    {
-        $this->handleValidations();
-
-        return $this->updateBaseOperation();
-    }
-
-    /**
-     * @throws AppException
-     */
-    private function updateByEmployee(): AdminUserResponse
-    {
-        $this->handleValidations();
-
-        AllowedProfilesValidations::validateEmployeeProfile($this->profile->unique_name);
-
-        return $this->updateBaseOperation();
     }
 
     /**

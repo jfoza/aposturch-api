@@ -8,9 +8,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Module extends Register
 {
-    const ID          = 'id';
-    const DESCRIPTION = 'description';
-    const ACTIVE      = 'active';
+    const ID                 = 'id';
+    const MODULE_DESCRIPTION = 'module_description';
+    const MODULE_UNIQUE_NAME = 'module_unique_name';
+    const ACTIVE             = 'active';
 
     protected $table = 'module.modules';
 
@@ -19,7 +20,8 @@ class Module extends Register
     protected $keyType = 'string';
 
     protected $fillable = [
-        self::DESCRIPTION,
+        self::MODULE_DESCRIPTION,
+        self::MODULE_UNIQUE_NAME,
         self::ACTIVE,
     ];
 

@@ -10,4 +10,5 @@ interface ProfilesRepositoryInterface
     public function findById(string $id);
     public function findByIds(array $ids);
     public function findByIdAndUniqueName(string $id, array $uniqueName);
+    public function findCountUsersByProfile(string $profile);
 }

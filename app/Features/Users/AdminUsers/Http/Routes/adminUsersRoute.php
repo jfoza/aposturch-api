@@ -8,7 +8,9 @@ Route::get('/', [AdminUsersController::class, 'index']);
 
 Route::get('/me', [AdminUsersController::class, 'showLoggedUserResource']);
 
-Route::get('/{id}', [AdminUsersController::class, 'showById'])->middleware([MiddlewareEnum::UUID->value]);
+Route::get('/count/profiles', [AdminUsersController::class, 'showCountByProfiles']);
+
+Route::get('/id/{id}', [AdminUsersController::class, 'showById'])->middleware([MiddlewareEnum::UUID->value]);
 
 Route::post('/', [AdminUsersController::class, 'insert']);
 
