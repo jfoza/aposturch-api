@@ -43,10 +43,10 @@ class UpdateAdminUserService implements UpdateAdminUserServiceInterface
         $this->userDTO = $userDTO;
 
         return match (true) {
-            $policy->haveRule(RulesEnum::ADMIN_USERS_ADMIN_MASTER_UPDATE->value)     => $this->updateByAdminMaster(),
-            $policy->haveRule(RulesEnum::ADMIN_USERS_ADMIN_CHURCH_UPDATE->value)     => $this->updateByAdminChurch(),
-            $policy->haveRule(RulesEnum::ADMIN_USERS_ADMIN_DEPARTMENT_UPDATE->value) => $this->updateByAdminDepartment(),
-            $policy->haveRule(RulesEnum::ADMIN_USERS_ASSISTANT_UPDATE->value)        => $this->updateByAssistant(),
+            $policy->haveRule(RulesEnum::ADMIN_USERS_ADMIN_MASTER_UPDATE->value) => $this->updateByAdminMaster(),
+            $policy->haveRule(RulesEnum::ADMIN_USERS_ADMIN_CHURCH_UPDATE->value) => $this->updateByAdminChurch(),
+            $policy->haveRule(RulesEnum::ADMIN_USERS_ADMIN_MODULE_UPDATE->value) => $this->updateByAdminModule(),
+            $policy->haveRule(RulesEnum::ADMIN_USERS_ASSISTANT_UPDATE->value)    => $this->updateByAssistant(),
 
             default  => $policy->dispatchErrorForbidden(),
         };
@@ -79,11 +79,11 @@ class UpdateAdminUserService implements UpdateAdminUserServiceInterface
     /**
      * @throws AppException
      */
-    private function updateByAdminDepartment(): AdminUserResponse
+    private function updateByAdminModule(): AdminUserResponse
     {
         $this->handleValidations();
 
-        AllowedProfilesValidations::validateAdminDepartmentProfile($this->profile->unique_name);
+        AllowedProfilesValidations::validateAdminModuleProfile($this->profile->unique_name);
 
         return $this->updateBaseOperation();
     }

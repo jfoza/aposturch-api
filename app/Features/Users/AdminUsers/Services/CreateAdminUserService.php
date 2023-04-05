@@ -42,10 +42,10 @@ class CreateAdminUserService implements CreateAdminUserServiceInterface
         $this->userDTO = $userDTO;
 
         return match (true) {
-            $policy->haveRule(RulesEnum::ADMIN_USERS_ADMIN_MASTER_INSERT->value)     => $this->createByAdminMaster(),
-            $policy->haveRule(RulesEnum::ADMIN_USERS_ADMIN_CHURCH_INSERT->value)     => $this->createByAdminChurch(),
-            $policy->haveRule(RulesEnum::ADMIN_USERS_ADMIN_DEPARTMENT_INSERT->value) => $this->createByAdminDepartment(),
-            $policy->haveRule(RulesEnum::ADMIN_USERS_ASSISTANT_INSERT->value)        => $this->createByAssistant(),
+            $policy->haveRule(RulesEnum::ADMIN_USERS_ADMIN_MASTER_INSERT->value) => $this->createByAdminMaster(),
+            $policy->haveRule(RulesEnum::ADMIN_USERS_ADMIN_CHURCH_INSERT->value) => $this->createByAdminChurch(),
+            $policy->haveRule(RulesEnum::ADMIN_USERS_ADMIN_MODULE_INSERT->value) => $this->createByAdminModule(),
+            $policy->haveRule(RulesEnum::ADMIN_USERS_ASSISTANT_INSERT->value)    => $this->createByAssistant(),
 
             default  => $policy->dispatchErrorForbidden(),
         };
@@ -78,11 +78,11 @@ class CreateAdminUserService implements CreateAdminUserServiceInterface
     /**
      * @throws AppException
      */
-    private function createByAdminDepartment(): AdminUserResponse
+    private function createByAdminModule(): AdminUserResponse
     {
         $this->handleValidations();
 
-        AllowedProfilesValidations::validateAdminDepartmentProfile($this->profile->unique_name);
+        AllowedProfilesValidations::validateAdminModuleProfile($this->profile->unique_name);
 
         return $this->baseInsertOperation();
     }

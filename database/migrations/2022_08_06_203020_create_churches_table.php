@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
@@ -12,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        $path = 'database/migrations/scripts/base_structure_cities.sql';
+        $path = 'database/migrations/scripts/create_churches_table.sql';
         DB::unprepared(file_get_contents($path));
     }
 
@@ -23,6 +24,6 @@ return new class extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('members.churches');
     }
 };

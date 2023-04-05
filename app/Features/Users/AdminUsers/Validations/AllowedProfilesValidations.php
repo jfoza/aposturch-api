@@ -52,7 +52,7 @@ class AllowedProfilesValidations
     /**
      * @throws AppException
      */
-    public static function validateAdminDepartmentProfile(string $profileUniqueName): void
+    public static function validateAdminModuleProfile(string $profileUniqueName): void
     {
         $profilesNotAllowed = [
             ProfileUniqueNameEnum::TECHNICAL_SUPPORT,
@@ -74,7 +74,7 @@ class AllowedProfilesValidations
             ProfileUniqueNameEnum::TECHNICAL_SUPPORT,
             ProfileUniqueNameEnum::ADMIN_MASTER,
             ProfileUniqueNameEnum::ADMIN_CHURCH,
-            ProfileUniqueNameEnum::ADMIN_DEPARTMENT,
+            ProfileUniqueNameEnum::ADMIN_MODULE,
         ];
 
         if(in_array($profileUniqueName, $profilesNotAllowed)) {

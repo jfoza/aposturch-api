@@ -66,19 +66,19 @@ class UpdateAdminUserServiceTest extends TestCase
     public function dataProviderUpdateAdminUser(): array
     {
         return [
-            'By Admin Master Rule'     => [
+            'By Admin Master Rule'  => [
                 RulesEnum::ADMIN_USERS_ADMIN_MASTER_UPDATE->value,
                 ProfilesLists::getAdminMasterProfile()
             ],
-            'By Admin Church Rule'     => [
+            'By Admin Church Rule'  => [
                 RulesEnum::ADMIN_USERS_ADMIN_CHURCH_UPDATE->value,
                 ProfilesLists::getAdminChurchProfile()
             ],
-            'By Admin Department Rule' => [
-                RulesEnum::ADMIN_USERS_ADMIN_DEPARTMENT_UPDATE->value,
-                ProfilesLists::getAdminDepartmentProfile()
+            'By Admin Module Rule' => [
+                RulesEnum::ADMIN_USERS_ADMIN_MODULE_UPDATE->value,
+                ProfilesLists::getAdminModuleProfile()
             ],
-            'By Assistant Rule'        => [
+            'By Assistant Rule'    => [
                 RulesEnum::ADMIN_USERS_ASSISTANT_UPDATE->value,
                 ProfilesLists::getAssistantProfile()
             ],
@@ -141,7 +141,7 @@ class UpdateAdminUserServiceTest extends TestCase
         $this->populateUsersDTO($profileId);
 
         $policy = new Policy([
-            RulesEnum::ADMIN_USERS_ADMIN_DEPARTMENT_UPDATE->value
+            RulesEnum::ADMIN_USERS_ADMIN_MODULE_UPDATE->value
         ]);
 
         $this
@@ -167,7 +167,7 @@ class UpdateAdminUserServiceTest extends TestCase
         $this->populateUsersDTO($profileId);
 
         $policy = new Policy([
-            RulesEnum::ADMIN_USERS_ADMIN_DEPARTMENT_UPDATE->value
+            RulesEnum::ADMIN_USERS_ADMIN_MODULE_UPDATE->value
         ]);
 
         $this
@@ -198,7 +198,7 @@ class UpdateAdminUserServiceTest extends TestCase
         $this->populateUsersDTO($profileId);
 
         $policy = new Policy([
-            RulesEnum::ADMIN_USERS_ADMIN_DEPARTMENT_UPDATE->value
+            RulesEnum::ADMIN_USERS_ADMIN_MODULE_UPDATE->value
         ]);
 
         $this
@@ -234,7 +234,7 @@ class UpdateAdminUserServiceTest extends TestCase
         $this->populateUsersDTO($profileId);
 
         $policy = new Policy([
-            RulesEnum::ADMIN_USERS_ADMIN_DEPARTMENT_UPDATE->value
+            RulesEnum::ADMIN_USERS_ADMIN_MODULE_UPDATE->value
         ]);
 
         $this

@@ -37,10 +37,10 @@ class ShowCountAdminUsersByProfileTest extends TestCase
     public function dataProviderCount(): array
     {
         return [
-            'By Admin Master Rule'     => [RulesEnum::COUNT_USERS_ADMIN_MASTER_VIEW->value],
-            'By Admin Church Rule'     => [RulesEnum::COUNT_USERS_ADMIN_CHURCH_VIEW->value],
-            'By Admin Department Rule' => [RulesEnum::COUNT_USERS_ADMIN_DEPARTMENT_VIEW->value],
-            'By Assistant Rule'        => [RulesEnum::COUNT_USERS_ASSISTANT_VIEW->value],
+            'By Admin Master Rule' => [RulesEnum::COUNT_USERS_ADMIN_MASTER_VIEW->value],
+            'By Admin Church Rule' => [RulesEnum::COUNT_USERS_ADMIN_CHURCH_VIEW->value],
+            'By Admin Module Rule' => [RulesEnum::COUNT_USERS_ADMIN_MODULE_VIEW->value],
+            'By Assistant Rule'    => [RulesEnum::COUNT_USERS_ASSISTANT_VIEW->value],
         ];
     }
 

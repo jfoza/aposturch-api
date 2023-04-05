@@ -29,10 +29,10 @@ class FindAllAdminUsersService implements FindAllAdminUsersServiceInterface
         $this->adminUsersFiltersDTO = $adminUsersFiltersDTO;
 
         return match (true) {
-            $policy->haveRule(RulesEnum::ADMIN_USERS_ADMIN_MASTER_VIEW->value)     => $this->findByAdminMaster(),
-            $policy->haveRule(RulesEnum::ADMIN_USERS_ADMIN_CHURCH_VIEW->value)     => $this->findByAdminChurch(),
-            $policy->haveRule(RulesEnum::ADMIN_USERS_ADMIN_DEPARTMENT_VIEW->value) => $this->findByAdminDepartment(),
-            $policy->haveRule(RulesEnum::ADMIN_USERS_ASSISTANT_VIEW->value)        => $this->findByAssistant(),
+            $policy->haveRule(RulesEnum::ADMIN_USERS_ADMIN_MASTER_VIEW->value) => $this->findByAdminMaster(),
+            $policy->haveRule(RulesEnum::ADMIN_USERS_ADMIN_CHURCH_VIEW->value) => $this->findByAdminChurch(),
+            $policy->haveRule(RulesEnum::ADMIN_USERS_ADMIN_MODULE_VIEW->value) => $this->findByAdminModule(),
+            $policy->haveRule(RulesEnum::ADMIN_USERS_ASSISTANT_VIEW->value)    => $this->findByAssistant(),
 
             default  => $policy->dispatchErrorForbidden(),
         };
@@ -43,7 +43,7 @@ class FindAllAdminUsersService implements FindAllAdminUsersServiceInterface
         $this->adminUsersFiltersDTO->profileUniqueName = [
             ProfileUniqueNameEnum::ADMIN_MASTER,
             ProfileUniqueNameEnum::ADMIN_CHURCH,
-            ProfileUniqueNameEnum::ADMIN_DEPARTMENT,
+            ProfileUniqueNameEnum::ADMIN_MODULE,
             ProfileUniqueNameEnum::ASSISTANT,
             ProfileUniqueNameEnum::MEMBER,
         ];
@@ -55,7 +55,7 @@ class FindAllAdminUsersService implements FindAllAdminUsersServiceInterface
     {
         $this->adminUsersFiltersDTO->profileUniqueName = [
             ProfileUniqueNameEnum::ADMIN_CHURCH,
-            ProfileUniqueNameEnum::ADMIN_DEPARTMENT,
+            ProfileUniqueNameEnum::ADMIN_MODULE,
             ProfileUniqueNameEnum::ASSISTANT,
             ProfileUniqueNameEnum::MEMBER,
         ];
@@ -63,10 +63,10 @@ class FindAllAdminUsersService implements FindAllAdminUsersServiceInterface
         return $this->adminUsersRepository->findAll($this->adminUsersFiltersDTO);
     }
 
-    private function findByAdminDepartment()
+    private function findByAdminModule()
     {
         $this->adminUsersFiltersDTO->profileUniqueName = [
-            ProfileUniqueNameEnum::ADMIN_DEPARTMENT,
+            ProfileUniqueNameEnum::ADMIN_MODULE,
             ProfileUniqueNameEnum::ASSISTANT,
             ProfileUniqueNameEnum::MEMBER,
         ];

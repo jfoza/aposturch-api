@@ -23,10 +23,10 @@ class ShowCountAdminUsersByProfile implements ShowCountAdminUsersByProfileInterf
     public function execute(Policy $policy): CountAdminUsersResponse
     {
         match (true) {
-            $policy->haveRule(RulesEnum::COUNT_USERS_ADMIN_MASTER_VIEW->value)     => $this->findByAdminMaster(),
-            $policy->haveRule(RulesEnum::COUNT_USERS_ADMIN_CHURCH_VIEW->value)     => $this->findByAdminChurch(),
-            $policy->haveRule(RulesEnum::COUNT_USERS_ADMIN_DEPARTMENT_VIEW->value) => $this->findByAdminDepartment(),
-            $policy->haveRule(RulesEnum::COUNT_USERS_ASSISTANT_VIEW->value)        => $this->findByAssistant(),
+            $policy->haveRule(RulesEnum::COUNT_USERS_ADMIN_MASTER_VIEW->value) => $this->findByAdminMaster(),
+            $policy->haveRule(RulesEnum::COUNT_USERS_ADMIN_CHURCH_VIEW->value) => $this->findByAdminChurch(),
+            $policy->haveRule(RulesEnum::COUNT_USERS_ADMIN_MODULE_VIEW->value) => $this->findByAdminModule(),
+            $policy->haveRule(RulesEnum::COUNT_USERS_ASSISTANT_VIEW->value)    => $this->findByAssistant(),
 
             default => $policy->dispatchErrorForbidden(),
         };
@@ -42,8 +42,8 @@ class ShowCountAdminUsersByProfile implements ShowCountAdminUsersByProfileInterf
         $this->countAdminUsersResponse->adminChurchCount =
             $this->profilesRepository->findCountUsersByProfile(ProfileUniqueNameEnum::ADMIN_CHURCH);
 
-        $this->countAdminUsersResponse->adminDepartmentCount =
-            $this->profilesRepository->findCountUsersByProfile(ProfileUniqueNameEnum::ADMIN_DEPARTMENT);
+        $this->countAdminUsersResponse->adminModuleCount =
+            $this->profilesRepository->findCountUsersByProfile(ProfileUniqueNameEnum::ADMIN_MODULE);
 
         $this->countAdminUsersResponse->assistantCount =
             $this->profilesRepository->findCountUsersByProfile(ProfileUniqueNameEnum::ASSISTANT);
@@ -57,8 +57,8 @@ class ShowCountAdminUsersByProfile implements ShowCountAdminUsersByProfileInterf
         $this->countAdminUsersResponse->adminChurchCount =
             $this->profilesRepository->findCountUsersByProfile(ProfileUniqueNameEnum::ADMIN_CHURCH);
 
-        $this->countAdminUsersResponse->adminDepartmentCount =
-            $this->profilesRepository->findCountUsersByProfile(ProfileUniqueNameEnum::ADMIN_DEPARTMENT);
+        $this->countAdminUsersResponse->adminModuleCount =
+            $this->profilesRepository->findCountUsersByProfile(ProfileUniqueNameEnum::ADMIN_MODULE);
 
         $this->countAdminUsersResponse->assistantCount =
             $this->profilesRepository->findCountUsersByProfile(ProfileUniqueNameEnum::ASSISTANT);
@@ -67,10 +67,10 @@ class ShowCountAdminUsersByProfile implements ShowCountAdminUsersByProfileInterf
             $this->profilesRepository->findCountUsersByProfile(ProfileUniqueNameEnum::MEMBER);
     }
 
-    private function findByAdminDepartment(): void
+    private function findByAdminModule(): void
     {
-        $this->countAdminUsersResponse->adminDepartmentCount =
-            $this->profilesRepository->findCountUsersByProfile(ProfileUniqueNameEnum::ADMIN_DEPARTMENT);
+        $this->countAdminUsersResponse->adminModuleCount =
+            $this->profilesRepository->findCountUsersByProfile(ProfileUniqueNameEnum::ADMIN_MODULE);
 
         $this->countAdminUsersResponse->assistantCount =
             $this->profilesRepository->findCountUsersByProfile(ProfileUniqueNameEnum::ASSISTANT);

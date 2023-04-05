@@ -66,19 +66,19 @@ class CreateAdminUserServiceTest extends TestCase
     public function dataProviderInsertAdminUser(): array
     {
         return [
-            'By Admin Master Rule'     => [
+            'By Admin Master Rule' => [
                 RulesEnum::ADMIN_USERS_ADMIN_MASTER_INSERT->value,
                 ProfilesLists::getAdminMasterProfile()
             ],
-            'By Admin Church Rule'     => [
+            'By Admin Church Rule' => [
                 RulesEnum::ADMIN_USERS_ADMIN_CHURCH_INSERT->value,
                 ProfilesLists::getAdminChurchProfile()
             ],
-            'By Admin Department Rule' => [
-                RulesEnum::ADMIN_USERS_ADMIN_DEPARTMENT_INSERT->value,
-                ProfilesLists::getAdminDepartmentProfile()
+            'By Admin Module Rule' => [
+                RulesEnum::ADMIN_USERS_ADMIN_MODULE_INSERT->value,
+                ProfilesLists::getAdminModuleProfile()
             ],
-            'By Assistant Rule'        => [
+            'By Assistant Rule'    => [
                 RulesEnum::ADMIN_USERS_ASSISTANT_INSERT->value,
                 ProfilesLists::getAssistantProfile()
             ],
@@ -193,7 +193,7 @@ class CreateAdminUserServiceTest extends TestCase
         $this->populateUsersDTO($profileId);
 
         $policy = new Policy([
-            RulesEnum::ADMIN_USERS_ADMIN_DEPARTMENT_INSERT->value
+            RulesEnum::ADMIN_USERS_ADMIN_MODULE_INSERT->value
         ]);
 
         $this

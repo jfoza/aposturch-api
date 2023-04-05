@@ -35,7 +35,7 @@ class ProfilesLists
         ]);
     }
 
-    public static function getAdminDepartmentProfile(string $profileId = null): object
+    public static function getAdminModuleProfile(string $profileId = null): object
     {
         if(is_null($profileId))
         {
@@ -44,8 +44,8 @@ class ProfilesLists
 
         return (object) ([
             Profile::ID          => $profileId,
-            Profile::DESCRIPTION => 'Admin Departamento',
-            Profile::UNIQUE_NAME => 'ADMIN_DEPARTMENT',
+            Profile::DESCRIPTION => 'Admin Módulo',
+            Profile::UNIQUE_NAME => 'ADMIN_MODULE',
         ]);
     }
 

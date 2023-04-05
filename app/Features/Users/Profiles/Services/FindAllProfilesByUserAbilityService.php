@@ -21,10 +21,10 @@ class FindAllProfilesByUserAbilityService implements FindAllProfilesByUserAbilit
     public function execute(Policy $policy)
     {
         return match (true) {
-            $policy->haveRule(RulesEnum::PROFILES_ADMIN_MASTER_VIEW->value)     => $this->findAllByAdminMaster(),
-            $policy->haveRule(RulesEnum::PROFILES_ADMIN_CHURCH_VIEW->value)     => $this->findAllByAdminChurch(),
-            $policy->haveRule(RulesEnum::PROFILES_ADMIN_DEPARTMENT_VIEW->value) => $this->findAllByAdminDepartment(),
-            $policy->haveRule(RulesEnum::PROFILES_ASSISTANT_VIEW->value)        => $this->findAllByAssistant(),
+            $policy->haveRule(RulesEnum::PROFILES_ADMIN_MASTER_VIEW->value) => $this->findAllByAdminMaster(),
+            $policy->haveRule(RulesEnum::PROFILES_ADMIN_CHURCH_VIEW->value) => $this->findAllByAdminChurch(),
+            $policy->haveRule(RulesEnum::PROFILES_ADMIN_MODULE_VIEW->value) => $this->findAllByAdminModule(),
+            $policy->haveRule(RulesEnum::PROFILES_ASSISTANT_VIEW->value)    => $this->findAllByAssistant(),
 
             default  => $policy->dispatchErrorForbidden(),
         };
@@ -35,7 +35,7 @@ class FindAllProfilesByUserAbilityService implements FindAllProfilesByUserAbilit
         return $this->profileRepository->findAllByUniqueName([
             ProfileUniqueNameEnum::ADMIN_MASTER,
             ProfileUniqueNameEnum::ADMIN_CHURCH,
-            ProfileUniqueNameEnum::ADMIN_DEPARTMENT,
+            ProfileUniqueNameEnum::ADMIN_MODULE,
             ProfileUniqueNameEnum::ASSISTANT,
             ProfileUniqueNameEnum::MEMBER,
         ]);
@@ -45,16 +45,16 @@ class FindAllProfilesByUserAbilityService implements FindAllProfilesByUserAbilit
     {
         return $this->profileRepository->findAllByUniqueName([
             ProfileUniqueNameEnum::ADMIN_CHURCH,
-            ProfileUniqueNameEnum::ADMIN_DEPARTMENT,
+            ProfileUniqueNameEnum::ADMIN_MODULE,
             ProfileUniqueNameEnum::ASSISTANT,
             ProfileUniqueNameEnum::MEMBER,
         ]);
     }
 
-    private function findAllByAdminDepartment()
+    private function findAllByAdminModule()
     {
         return $this->profileRepository->findAllByUniqueName([
-            ProfileUniqueNameEnum::ADMIN_DEPARTMENT,
+            ProfileUniqueNameEnum::ADMIN_MODULE,
             ProfileUniqueNameEnum::ASSISTANT,
             ProfileUniqueNameEnum::MEMBER,
         ]);

@@ -77,7 +77,7 @@ DO $$
             (_module1, 'Usuários', 'USERS', true),
             (_module2, 'Financeiro', 'FINANCE', true),
             (_module3, 'Membresia', 'MEMBERS', true),
-            (_module4, 'Livraria', 'BOOKSTORE', true),
+            (_module4, 'Livraria', 'STORE', true),
             (_module5, 'Grupos', 'GROUPS', true),
             (_module6, 'Agenda', 'SCHEDULE', true),
             (_module7, 'Patrimônio', 'PATRIMONY', true);
@@ -87,7 +87,7 @@ DO $$
             (_module_rule1, 'USERS_MODULE_VIEW', 'USERS_MODULE', 'VIEW'),
             (_module_rule2, 'FINANCE_MODULE_VIEW', 'FINANCE_MODULE', 'VIEW'),
             (_module_rule3, 'MEMBERS_MODULE_VIEW', 'MEMBERS_MODULE', 'VIEW'),
-            (_module_rule4, 'BOOKSTORE_MODULE_VIEW', 'BOOKSTORE_MODULE', 'VIEW'),
+            (_module_rule4, 'STORE_MODULE_VIEW', 'STORE_MODULE', 'VIEW'),
             (_module_rule5, 'GROUPS_MODULE_VIEW', 'GROUPS_MODULE', 'VIEW'),
             (_module_rule6, 'SCHEDULE_MODULE_VIEW', 'SCHEDULE_MODULE', 'VIEW'),
             (_module_rule7, 'PATRIMONY_MODULE_VIEW', 'PATRIMONY_MODULE', 'VIEW'),
@@ -110,10 +110,10 @@ DO $$
             (_rule12, 'ADMIN_USERS_ADMIN_CHURCH_UPDATE', 'ADMIN_USERS_ADMIN_CHURCH', 'UPDATE'),
             (_rule13, 'ADMIN_USERS_ADMIN_CHURCH_DELETE', 'ADMIN_USERS_ADMIN_CHURCH', 'DELETE'),
 
-            (_rule14, 'ADMIN_USERS_ADMIN_DEPARTMENT_VIEW', 'ADMIN_USERS_ADMIN_DEPARTMENT', 'VIEW'),
-            (_rule15, 'ADMIN_USERS_ADMIN_DEPARTMENT_INSERT', 'ADMIN_USERS_ADMIN_DEPARTMENT', 'INSERT'),
-            (_rule16, 'ADMIN_USERS_ADMIN_DEPARTMENT_UPDATE', 'ADMIN_USERS_ADMIN_DEPARTMENT', 'UPDATE'),
-            (_rule17, 'ADMIN_USERS_ADMIN_DEPARTMENT_DELETE', 'ADMIN_USERS_ADMIN_DEPARTMENT', 'DELETE'),
+            (_rule14, 'ADMIN_USERS_ADMIN_MODULE_VIEW', 'ADMIN_USERS_ADMIN_MODULE', 'VIEW'),
+            (_rule15, 'ADMIN_USERS_ADMIN_MODULE_INSERT', 'ADMIN_USERS_ADMIN_MODULE', 'INSERT'),
+            (_rule16, 'ADMIN_USERS_ADMIN_MODULE_UPDATE', 'ADMIN_USERS_ADMIN_MODULE', 'UPDATE'),
+            (_rule17, 'ADMIN_USERS_ADMIN_MODULE_DELETE', 'ADMIN_USERS_ADMIN_MODULE', 'DELETE'),
 
             (_rule18, 'ADMIN_USERS_ASSISTANT_VIEW', 'ADMIN_USERS_ADMIN_ASSISTANT', 'VIEW'),
             (_rule19, 'ADMIN_USERS_ASSISTANT_INSERT', 'ADMIN_USERS_ADMIN_ASSISTANT', 'INSERT'),
@@ -127,17 +127,17 @@ DO $$
 
             (_rule26, 'PROFILES_ADMIN_MASTER_VIEW', 'PROFILES_ADMIN_MASTER', 'VIEW'),
             (_rule27, 'PROFILES_ADMIN_CHURCH_VIEW', 'PROFILES_ADMIN_MASTER', 'VIEW'),
-            (_rule28, 'PROFILES_ADMIN_DEPARTMENT_VIEW', 'PROFILES_ADMIN_MASTER', 'VIEW'),
+            (_rule28, 'PROFILES_ADMIN_MODULE_VIEW', 'PROFILES_ADMIN_MASTER', 'VIEW'),
             (_rule29, 'PROFILES_ASSISTANT_VIEW', 'PROFILES_ADMIN_MASTER', 'VIEW'),
             (_rule30, 'PROFILES_MEMBER_VIEW', 'PROFILES_ADMIN_MASTER', 'VIEW'),
 
             (_rule31, 'CITIES_VIEW', 'CITIES', 'VIEW' ),
             (_rule32, 'STATES_VIEW', 'STATES', 'VIEW'),
 
-            (_rule33, 'COUNT_USERS_ADMIN_MASTER_VIEW',     'COUNT_USERS_ADMIN_MASTER', 'VIEW'),
-            (_rule34, 'COUNT_USERS_ADMIN_CHURCH_VIEW',     'COUNT_USERS_ADMIN_CHURCH', 'VIEW'),
-            (_rule35, 'COUNT_USERS_ADMIN_DEPARTMENT_VIEW', 'COUNT_USERS_ADMIN_DEPARTMENT', 'VIEW'),
-            (_rule36, 'COUNT_USERS_ASSISTANT_VIEW',        'COUNT_USERS_ASSISTANT', 'VIEW');
+            (_rule33, 'COUNT_USERS_ADMIN_MASTER_VIEW', 'COUNT_USERS_ADMIN_MASTER', 'VIEW'),
+            (_rule34, 'COUNT_USERS_ADMIN_CHURCH_VIEW', 'COUNT_USERS_ADMIN_CHURCH', 'VIEW'),
+            (_rule35, 'COUNT_USERS_ADMIN_MODULE_VIEW', 'COUNT_USERS_ADMIN_MODULE', 'VIEW'),
+            (_rule36, 'COUNT_USERS_ASSISTANT_VIEW',    'COUNT_USERS_ASSISTANT', 'VIEW');
 
         INSERT INTO users.modules_rules (rule_id, module_id)
         VALUES
@@ -187,8 +187,8 @@ DO $$
             (
                 _profile4,
                 _profile_type2,
-                'Admin Departamento',
-                'ADMIN_DEPARTMENT'
+                'Admin Módulo',
+                'ADMIN_MODULE'
             ),
             (
                 _profile5,
@@ -250,15 +250,77 @@ DO $$
             (_profile2, _rule36),
 
             -- ADMIN CHURCH
+            (_profile3, _rule1),
+            (_profile3, _rule2),
+            (_profile3, _rule3),
+            (_profile3, _rule4),
+            (_profile3, _rule5),
+            (_profile3, _rule6),
+            (_profile3, _rule10),
+            (_profile3, _rule11),
+            (_profile3, _rule12),
+            (_profile3, _rule13),
+            (_profile3, _rule14),
+            (_profile3, _rule15),
+            (_profile3, _rule16),
+            (_profile3, _rule17),
+            (_profile3, _rule18),
+            (_profile3, _rule19),
+            (_profile3, _rule20),
+            (_profile3, _rule21),
+            (_profile3, _rule22),
+            (_profile3, _rule23),
+            (_profile3, _rule24),
+            (_profile3, _rule25),
+            (_profile3, _rule27),
             (_profile3, _rule34),
             (_profile3, _rule35),
             (_profile3, _rule36),
 
-            -- ADMIN DEPARTMENT
+            -- ADMIN MODULE
+            (_profile4, _rule1),
+            (_profile4, _rule2),
+            (_profile4, _rule3),
+            (_profile4, _rule4),
+            (_profile4, _rule5),
+            (_profile4, _rule6),
+            (_profile4, _rule14),
+            (_profile4, _rule15),
+            (_profile4, _rule16),
+            (_profile4, _rule17),
+            (_profile4, _rule18),
+            (_profile4, _rule19),
+            (_profile4, _rule20),
+            (_profile4, _rule21),
+            (_profile4, _rule22),
+            (_profile4, _rule23),
+            (_profile4, _rule24),
+            (_profile4, _rule25),
+            (_profile4, _rule28),
             (_profile4, _rule35),
             (_profile4, _rule36),
 
             -- ASSISTANT
-            (_profile5, _rule36);
+            (_profile5, _rule1),
+            (_profile5, _rule2),
+            (_profile5, _rule3),
+            (_profile5, _rule4),
+            (_profile5, _rule5),
+            (_profile5, _rule6),
+            (_profile5, _rule18),
+            (_profile5, _rule19),
+            (_profile5, _rule20),
+            (_profile5, _rule21),
+            (_profile5, _rule22),
+            (_profile5, _rule23),
+            (_profile5, _rule24),
+            (_profile5, _rule25),
+            (_profile5, _rule29),
+            (_profile5, _rule36),
+
+            -- MEMBER
+            (_profile6, _rule1),
+            (_profile6, _rule31),
+            (_profile6, _rule32);
 
     END $$;

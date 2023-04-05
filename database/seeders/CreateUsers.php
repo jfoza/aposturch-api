@@ -66,10 +66,18 @@ class CreateUsers extends Seeder
                 'name' => 'Fábio Dutra Silveira',
                 'email' => 'fabio-dutra@hotmail.com',
                 'profile' => $profiles
-                    ->where(Profile::UNIQUE_NAME, ProfileUniqueNameEnum::ADMIN_DEPARTMENT)
+                    ->where(Profile::UNIQUE_NAME, ProfileUniqueNameEnum::ADMIN_MODULE)
                     ->first()
                     ->id,
-                'modules' => $modules->pluck(Module::ID)->toArray(),
+                'modules' => $modules
+                    ->whereIn(Module::MODULE_UNIQUE_NAME,
+                        [
+                            ModulesEnum::USERS->value,
+                            ModulesEnum::FINANCE->value,
+                        ]
+                    )
+                    ->pluck(Module::ID)
+                    ->toArray(),
             ],
 
             [
@@ -82,15 +90,14 @@ class CreateUsers extends Seeder
                     ->id,
 
                 'modules' => $modules
-                        ->whereIn(Module::MODULE_UNIQUE_NAME,
-                            [
-                                ModulesEnum::FINANCE->value,
-                                ModulesEnum::SCHEDULE->value,
-                                ModulesEnum::BOOKSTORE->value
-                            ]
-                        )
-                        ->pluck(Module::ID)
-                        ->toArray(),
+                    ->whereIn(Module::MODULE_UNIQUE_NAME,
+                        [
+                            ModulesEnum::USERS->value,
+                            ModulesEnum::FINANCE->value,
+                        ]
+                    )
+                    ->pluck(Module::ID)
+                    ->toArray(),
 
             ],
 
@@ -106,6 +113,7 @@ class CreateUsers extends Seeder
                     ->whereIn(Module::MODULE_UNIQUE_NAME,
                         [
                             ModulesEnum::SCHEDULE->value,
+                            ModulesEnum::STORE->value,
                         ]
                     )
                     ->pluck(Module::ID)
