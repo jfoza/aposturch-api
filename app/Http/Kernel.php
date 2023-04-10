@@ -68,5 +68,6 @@ class Kernel extends HttpKernel
         'uuid' => \App\Http\Middleware\Uuid::class,
         'forgot.password.code' => \App\Http\Middleware\ForgotPasswordCode::class,
         'valid.email' => \App\Http\Middleware\Email::class,
+        'module.access' => \App\Http\Middleware\ModuleAccessValidation::class,
     ];
 }

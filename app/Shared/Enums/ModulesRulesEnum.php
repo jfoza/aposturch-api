@@ -1,0 +1,13 @@
+<?php
+
+namespace App\Shared\Enums;
+
+enum ModulesRulesEnum: string {
+    case USERS_MODULE_VIEW     = 'USERS_MODULE_VIEW';
+    case FINANCE_MODULE_VIEW   = 'FINANCE_MODULE_VIEW';
+    case MEMBERS_MODULE_VIEW   = 'MEMBERS_MODULE_VIEW';
+    case STORE_MODULE_VIEW     = 'STORE_MODULE_VIEW';
+    case GROUPS_MODULE_VIEW    = 'GROUPS_MODULE_VIEW';
+    case SCHEDULE_MODULE_VIEW  = 'SCHEDULE_MODULE_VIEW';
+    case PATRIMONY_MODULE_VIEW = 'PATRIMONY_MODULE_VIEW';
+}

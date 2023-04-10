@@ -6,6 +6,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/uf/{uf}', [CityController::class, 'showByUF']);
 
-Route::get('/id/{id}', [CityController::class, 'showById'])->middleware([MiddlewareEnum::UUID->value]);
+Route::get('/id/{id}', [CityController::class, 'showById'])->middleware([MiddlewareEnum::UUID]);
 
 Route::get('/in-persons', [CityController::class, 'showInPersons']);

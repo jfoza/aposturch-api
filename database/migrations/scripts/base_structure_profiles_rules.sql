@@ -70,6 +70,8 @@ DO $$
         _rule36 uuid := uuid_generate_v4();
         _rule37 uuid := uuid_generate_v4();
         _rule38 uuid := uuid_generate_v4();
+        _rule39 uuid := uuid_generate_v4();
+        _rule40 uuid := uuid_generate_v4();
 
     BEGIN
         INSERT INTO module.modules (id, module_description, module_unique_name, active)
@@ -137,7 +139,12 @@ DO $$
             (_rule33, 'COUNT_USERS_ADMIN_MASTER_VIEW', 'COUNT_USERS_ADMIN_MASTER', 'VIEW'),
             (_rule34, 'COUNT_USERS_ADMIN_CHURCH_VIEW', 'COUNT_USERS_ADMIN_CHURCH', 'VIEW'),
             (_rule35, 'COUNT_USERS_ADMIN_MODULE_VIEW', 'COUNT_USERS_ADMIN_MODULE', 'VIEW'),
-            (_rule36, 'COUNT_USERS_ASSISTANT_VIEW',    'COUNT_USERS_ASSISTANT', 'VIEW');
+            (_rule36, 'COUNT_USERS_ASSISTANT_VIEW',    'COUNT_USERS_ASSISTANT', 'VIEW'),
+
+            (_rule37, 'MEMBERS_MODULE_CHURCH_VIEW', 'MEMBERS_MODULE_CHURCH', 'VIEW'),
+            (_rule38, 'MEMBERS_MODULE_CHURCH_INSERT', 'MEMBERS_MODULE_CHURCH', 'INSERT'),
+            (_rule39, 'MEMBERS_MODULE_CHURCH_UPDATE', 'MEMBERS_MODULE_CHURCH', 'UPDATE'),
+            (_rule40, 'MEMBERS_MODULE_CHURCH_DELETE', 'MEMBERS_MODULE_CHURCH', 'DELETE');
 
         INSERT INTO users.modules_rules (rule_id, module_id)
         VALUES
@@ -248,6 +255,10 @@ DO $$
             (_profile2, _rule34),
             (_profile2, _rule35),
             (_profile2, _rule36),
+            (_profile2, _rule37),
+            (_profile2, _rule38),
+            (_profile2, _rule39),
+            (_profile2, _rule40),
 
             -- ADMIN CHURCH
             (_profile3, _rule1),
@@ -276,6 +287,7 @@ DO $$
             (_profile3, _rule34),
             (_profile3, _rule35),
             (_profile3, _rule36),
+            (_profile3, _rule37),
 
             -- ADMIN MODULE
             (_profile4, _rule1),
@@ -299,6 +311,7 @@ DO $$
             (_profile4, _rule28),
             (_profile4, _rule35),
             (_profile4, _rule36),
+            (_profile4, _rule37),
 
             -- ASSISTANT
             (_profile5, _rule1),
@@ -317,10 +330,7 @@ DO $$
             (_profile5, _rule25),
             (_profile5, _rule29),
             (_profile5, _rule36),
+            (_profile5, _rule37);
 
             -- MEMBER
-            (_profile6, _rule1),
-            (_profile6, _rule31),
-            (_profile6, _rule32);
-
     END $$;

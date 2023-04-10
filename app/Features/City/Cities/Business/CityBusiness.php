@@ -2,6 +2,7 @@
 
 namespace App\Features\City\Cities\Business;
 
+use App\Features\City\Cities\Validations\CityValidations;
 use App\Shared\Enums\CacheEnum;
 use App\Shared\Enums\MessagesEnum;
 use App\Shared\Enums\StatesEnum;
@@ -25,15 +26,7 @@ readonly class CityBusiness implements CityBusinessInterface
     {
         $uf = strtoupper($uf);
 
-        $states = array_column(StatesEnum::cases(), 'value');
-
-        if(!in_array($uf, $states))
-        {
-            throw new AppException(
-                MessagesEnum::INVALID_UF,
-                Response::HTTP_NOT_FOUND
-            );
-        }
+        CityValidations::stateExists($uf);
 
         return Cache::rememberForever(
             'CITIES_BY_'.$uf,
@@ -48,19 +41,10 @@ readonly class CityBusiness implements CityBusinessInterface
      */
     public function findById(string $id)
     {
-        $city = $this->cityRepository->findById($id);
-
-        if(empty($city)) {
-            throw new AppException(
-                [
-                    'field'   => 'cities',
-                    'message' => MessagesEnum::REGISTER_NOT_FOUND,
-                ],
-                Response::HTTP_NOT_FOUND
-            );
-        }
-
-        return $city;
+        return CityValidations::cityIdExists(
+            $this->cityRepository,
+            $id
+        );
     }
 
     public function findAllInPersons()

@@ -14,6 +14,8 @@ use App\Features\Users\NewPasswordGenerations\Infra\Models\NewPasswordGeneration
 use App\Features\Users\Profiles\Infra\Models\Profile;
 use App\Features\Users\ProfilesUsers\Infra\Models\ProfileUser;
 use App\Features\Users\Sessions\Infra\Models\Session;
+use App\Features\Users\UserChurch\Infra\Models\UserChurch;
+use App\Modules\Members\Church\Models\Church;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizeContract;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticateContract;

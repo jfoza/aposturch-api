@@ -51,4 +51,11 @@ class Auth
     {
         return auth()->id();
     }
+
+    public static function getChurchesByLoggedUser()
+    {
+        $user = auth()->user();
+
+        return $user['church'];
+    }
 }

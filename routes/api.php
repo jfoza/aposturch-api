@@ -1,6 +1,8 @@
 <?php
 
 use App\Shared\Enums\MiddlewareEnum;
+use App\Shared\Enums\ModulesRulesEnum;
+use App\Shared\Helpers\MiddlewareHelper;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -36,11 +38,10 @@ Route::prefix('/customers')
 // ADMIN
 Route::prefix('admin')
     ->middleware([
-        MiddlewareEnum::JWT_AUTH->value,
-        MiddlewareEnum::ACTIVE_USER->value
+        MiddlewareEnum::JWT_AUTH,
+        MiddlewareEnum::ACTIVE_USER
     ])
     ->group(function () {
-
         Route::prefix('/users')
             ->group(app_path('Features/Users/Users/Http/Routes/usersRoute.php'));
 
@@ -50,6 +51,8 @@ Route::prefix('admin')
         Route::prefix('/profiles')
             ->group(app_path('Features/Users/Profiles/Http/Routes/profilesRoute.php'));
 
-        Route::prefix('/customers')
-            ->group(app_path('Features/Users/CustomerUsers/Http/Routes/customerUsersRoute.php'));
+        // MODULES
+        Route::prefix('/modules/members/churches')
+            ->middleware(MiddlewareHelper::getModuleAccess(ModulesRulesEnum::MEMBERS_MODULE_VIEW->value))
+            ->group(app_path('Modules/Members/Church/Routes/churchRoute.php'));
     });

@@ -37,7 +37,7 @@ class AdminUsersRepository implements AdminUsersRepositoryInterface
 
     public function findByUserId(string $userId)
     {
-        return AdminUser::with(['user.profile'])
+        return AdminUser::with(['user.profile', 'church'])
             ->whereRelation(
                 'user',
                 User::ID,
@@ -51,6 +51,7 @@ class AdminUsersRepository implements AdminUsersRepositoryInterface
     {
         return $this
             ->baseQuery($adminUsersFiltersDTO)
+            ->with('church')
             ->where(
                 User::tableField(User::ID),
                 $adminUsersFiltersDTO->userId

@@ -18,21 +18,13 @@ class Policy
     /**
      * @throws AppException
      */
-    public function havePermission(string|null $rule = null): void {
-        if(!$this->haveRule($rule)) {
-            $this->dispatchErrorForbidden();
-        }
-    }
-
-    /**
-     * @throws AppException
-     */
-    public function havePermissionAndModule(
+    public function havePermission(
         string|null $rule = null,
-        string|null $moduleRule = null
-    ): void {
-        if(!$this->haveRuleAndModule($rule, $moduleRule)) {
-            $this->dispatchErrorForbidden();
+        bool $isModule = false
+    ): void
+    {
+        if(!$this->haveRule($rule)) {
+            $this->dispatchErrorForbidden($isModule);
         }
     }
 
@@ -46,25 +38,12 @@ class Policy
     }
 
     /**
-     * @param string|null $rule
-     * @param string|null $moduleRule
-     * @return bool
-     */
-    public function haveRuleAndModule(
-        string|null $rule = null,
-        string|null $moduleRule = null
-    ): bool
-    {
-        return in_array($rule, $this->rules) && in_array($moduleRule, $this->rules);
-    }
-
-    /**
      * @throws AppException
      */
-    public function dispatchErrorForbidden()
+    public function dispatchErrorForbidden(bool $isModule = false)
     {
         throw new AppException(
-            MessagesEnum::NOT_AUTHORIZED,
+            $isModule ? MessagesEnum::MODULE_NOT_AUTHORIZED : MessagesEnum::NOT_AUTHORIZED,
             Response::HTTP_FORBIDDEN
         );
     }

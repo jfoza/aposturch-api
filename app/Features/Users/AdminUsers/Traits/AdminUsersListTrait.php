@@ -14,6 +14,7 @@ trait AdminUsersListTrait
     {
         return AdminUser::select(
                 AdminUser::tableField(AdminUser::ID). ' AS admin_user_id',
+                AdminUser::tableField(AdminUser::CHURCH_ID). ' AS church_id',
                 User::tableField(User::ID).' AS user_id',
                 User::tableField(User::NAME).' AS user_name',
                 User::tableField(User::EMAIL).' AS user_email',

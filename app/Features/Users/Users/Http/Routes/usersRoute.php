@@ -12,4 +12,4 @@ Route::get(
 Route::put(
     '/password/{id}',
     [UsersController::class, 'updatePassword']
-)->middleware([MiddlewareEnum::UUID->value]);
+)->middleware([MiddlewareEnum::UUID]);

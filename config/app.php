@@ -1,5 +1,6 @@
 <?php
 
+use App\Shared\Helpers\PathHelpers;
 use Illuminate\Support\Facades\Facade;
 
 return [
@@ -211,6 +212,11 @@ return [
         \App\Features\Users\NewPasswordGenerations\Providers\NewPasswordGenerationsProvider::class,
         \App\Features\Users\CustomerUsers\Providers\PublicCustomerUsersBusinessProvider::class,
         \App\Features\Users\EmailVerification\Providers\EmailVerificationProvider::class,
+
+        /*
+         * Modules...
+         */
+        \App\Modules\Members\Church\Providers\ChurchProvider::class
     ],
 
     /*

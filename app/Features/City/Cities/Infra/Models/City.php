@@ -4,6 +4,8 @@ namespace App\Features\City\Cities\Infra\Models;
 
 use App\Features\Base\Infra\Models\Register;
 use App\Features\Persons\Infra\Models\Person;
+use App\Modules\Members\Church\Models\Church;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class City extends Register
 {
@@ -26,7 +28,12 @@ class City extends Register
         self::ACTIVE,
     ];
 
-    public function person() {
+    public function person(): HasMany
+    {
         return $this->hasMany(Person::class, Person::CITY_ID, self::ID);
+    }
+
+    public function church(): HasMany {
+        return $this->hasMany(Church::class, Church::CITY_ID, self::ID);
     }
 }

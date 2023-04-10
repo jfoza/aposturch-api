@@ -16,6 +16,7 @@ enum MessagesEnum: string {
     case INVALID_EMAIL = 'O valor enviado não é um E-mail válido.';
     case INVALID_UNIQUE_NAME = 'O valor enviado não é um nome único de produto válido.';
     case NOT_AUTHORIZED = 'Você não tem permissão para acessar este recurso.';
+    case MODULE_NOT_AUTHORIZED = 'Você não tem permissão para acessar este módulo.';
     case NOT_ENABLED = 'Você não tem permissão para acessar a plataforma. \n Para liberar ou verificar seu acesso entre em contato com o suporte.';
 
     // Sessions
@@ -37,20 +38,6 @@ enum MessagesEnum: string {
     case INVALID_CURRENT_PASSWORD = 'Senha atual inválida';
     case PERSON_NOT_FOUND = 'Registro Pessoa não encontrado.';
 
-    // Products
-    case THEME_HAS_CATEGORIES_IN_DELETE = 'Não é possível excluir um tema com categorias vinculadas a ele.';
-    case CATEGORY_HAS_PRODUCTS_IN_DELETE = 'Não é possível excluir uma categoria com produtos vinculados a ela.';
-    case THEME_NOT_FOUND = 'Tema não encontrado';
-    case CATEGORY_NOT_FOUND = 'Categoria não encontrada';
-    case CATEGORY_INVALID_UUID = 'A categoria informada deve ser um uuid válido.';
-    case PRODUCT_DESCRIPTION_ALREADY_EXISTS = 'Já existe um produto cadastrado com este nome.';
-    case FAVORITE_PRODUCT_ALREADY_EXISTS = 'Este produto já está cadstrado na sua lista de favoritos.';
-    case PRODUCT_NOT_FOUND = 'Produto não encontrado ou inativo.';
-
-    // Events
-    case EVENT_NOT_FOUND = 'Evento não encontrado.';
-    case EVENT_HAS_PRODUCTS_IN_DELETE = 'Não é possível excluir um evento com produtos vinculados a ele.';
-    case EVENT_INVALID_UUID = 'O evento informado deve ser um uuid válido.';
 
     // City
     case CITY_NOT_FOUND = 'Cidade não encontrada.';
@@ -63,4 +50,7 @@ enum MessagesEnum: string {
     case PRODUCT_IMAGE_ALREADY_EXISTS = 'Já existe uma imagem vinculada a este produto.';
     case IMAGE_NOT_FOUND = 'Imagem não encontrada.';
     case IMAGE_DOES_NOT_BELONG_TO_THE_PRODUCT = 'Esta imagem não pertece ao produto informado.';
+
+    // MODULES - MEMBERS
+    case CHURCH_HAS_MEMBERS_IN_DELETE = 'Não é possível excluir uma igreja com membros vinculados.';
 }

@@ -10,9 +10,9 @@ use App\Shared\ACL\Policy;
 use App\Shared\Cache\PolicyCache;
 use App\Shared\Utils\Auth;
 
-trait PolicyTrait
+trait PolicyGenerationTrait
 {
-    public function generatePolicy(): Policy
+    public function generatePolicyUser(): Policy
     {
         $rules = [];
 

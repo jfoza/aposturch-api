@@ -10,4 +10,4 @@ Route::post('/password/forgot',
 
 Route::put('/password/reset/{code}',
     [ForgotPasswordController::class, 'resetPassword']
-)->middleware([MiddlewareEnum::CODE->value]);
+)->middleware([MiddlewareEnum::CODE]);
