@@ -30,6 +30,11 @@ readonly class ChurchController
         ChurchFiltersDTO $churchFiltersDTO
     ): JsonResponse
     {
+        $churchFiltersDTO->paginationOrder->setPage($churchFiltersRequest->page);
+        $churchFiltersDTO->paginationOrder->setPerPage($churchFiltersRequest->perPage);
+        $churchFiltersDTO->paginationOrder->setColumnOrder($churchFiltersRequest->columnOrder);
+        $churchFiltersDTO->paginationOrder->setColumnName($churchFiltersRequest->columnName);
+
         $churchFiltersDTO->name   = $churchFiltersRequest->name;
         $churchFiltersDTO->cityId = $churchFiltersRequest->cityId;
 

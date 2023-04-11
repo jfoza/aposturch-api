@@ -35,6 +35,9 @@ Route::prefix('/states')
 Route::prefix('/customers')
     ->group(app_path('Features/Users/CustomerUsers/Http/Routes/publicCustomerUsersRoute.php'));
 
+Route::prefix('/zip-code')
+    ->group(app_path('Features/ZipCode/Http/Routes/zipCodeRoute.php'));
+
 // ADMIN
 Route::prefix('admin')
     ->middleware([

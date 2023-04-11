@@ -3,29 +3,16 @@
 namespace App\Shared\Rules;
 
 use App\Shared\Helpers\ValidationDocsHelper;
-use Illuminate\Contracts\Validation\Rule;
+use Closure;
+use Illuminate\Contracts\Validation\ValidationRule;
 
-class CnpjRule implements Rule
+class CnpjRule implements ValidationRule
 {
-    /**
-     * Determine if the validation rule passes.
-     *
-     * @param  string  $attribute
-     * @param  mixed  $value
-     * @return bool
-     */
-    public function passes($attribute, $value): bool
+    public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        return ValidationDocsHelper::validateCNPJ($value);
-    }
-
-    /**
-     * Get the validation error message.
-     *
-     * @return string
-     */
-    public function message(): string
-    {
-        return ':attribute inválido.';
+        if(ValidationDocsHelper::validateCNPJ($value))
+        {
+            $fail("O campo {$attribute} é inválido.");
+        }
     }
 }

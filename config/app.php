@@ -212,6 +212,7 @@ return [
         \App\Features\Users\NewPasswordGenerations\Providers\NewPasswordGenerationsProvider::class,
         \App\Features\Users\CustomerUsers\Providers\PublicCustomerUsersBusinessProvider::class,
         \App\Features\Users\EmailVerification\Providers\EmailVerificationProvider::class,
+        \App\Features\ZipCode\Providers\ZipCodeProvider::class,
 
         /*
          * Modules...

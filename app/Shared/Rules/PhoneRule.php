@@ -2,37 +2,19 @@
 
 namespace App\Shared\Rules;
 
-use Illuminate\Contracts\Validation\Rule;
+use Closure;
+use Illuminate\Contracts\Validation\ValidationRule;
 
-class PhoneRule implements Rule
+class PhoneRule implements ValidationRule
 {
-    /**
-     * Determine if the validation rule passes.
-     *
-     * @param  string  $attribute
-     * @param  mixed  $value
-     * @return bool
-     */
-    public function passes($attribute, $value): bool
+    public function validate(string $attribute, mixed $value, Closure $fail): void
     {
         if(!is_numeric($value)) {
-            return false;
+            $fail("O campo {$attribute} é inválido.");
         }
 
         if(strlen($value) < 10 || strlen($value) > 11) {
-            return false;
+            $fail("O campo {$attribute} é inválido.");
         }
-
-        return true;
-    }
-
-    /**
-     * Get the validation error message.
-     *
-     * @return string
-     */
-    public function message(): string
-    {
-        return 'Invalid :attribute.';
     }
 }

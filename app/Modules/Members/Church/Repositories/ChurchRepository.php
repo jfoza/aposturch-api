@@ -2,6 +2,7 @@
 
 namespace App\Modules\Members\Church\Repositories;
 
+use App\Features\Base\Traits\BuilderTrait;
 use App\Modules\Members\Church\Contracts\ChurchRepositoryInterface;
 use App\Modules\Members\Church\DTO\ChurchDTO;
 use App\Modules\Members\Church\DTO\ChurchFiltersDTO;
@@ -9,36 +10,39 @@ use App\Modules\Members\Church\Models\Church;
 
 class ChurchRepository implements ChurchRepositoryInterface
 {
+    use BuilderTrait;
+
     public function findAll(ChurchFiltersDTO $churchFiltersDTO)
     {
-        return Church::when(isset($churchFiltersDTO->name),
-                function($q) use($churchFiltersDTO) {
-                    return $q->where(
-                        Church::tableField(Church::NAME),
-                        $churchFiltersDTO->name
-                    );
-                }
-            )
-            ->when(isset($churchFiltersDTO->cityId),
-                function($q) use($churchFiltersDTO) {
-                    return $q->where(
-                        Church::tableField(Church::CITY_ID),
-                        $churchFiltersDTO->cityId
-                    );
-                }
-            )
-            ->get()
-            ->toArray();
+        $builder = Church::with(['city'])
+            ->when(isset($churchFiltersDTO->name),
+                    function($q) use($churchFiltersDTO) {
+                        return $q->where(
+                            Church::tableField(Church::NAME),
+                            $churchFiltersDTO->name
+                        );
+                    }
+                )
+                ->when(isset($churchFiltersDTO->cityId),
+                    function($q) use($churchFiltersDTO) {
+                        return $q->where(
+                            Church::tableField(Church::CITY_ID),
+                            $churchFiltersDTO->cityId
+                        );
+                    }
+                );
+
+        return $this->paginateOrGet($builder, $churchFiltersDTO->paginationOrder);
     }
 
     public function findById(string $churchId, bool $listMembers = false): mixed
     {
         if($listMembers)
         {
-            return Church::with(['adminUser'])->where(Church::ID, $churchId)->first();
+            return Church::with(['adminUser', 'city'])->where(Church::ID, $churchId)->first();
         }
 
-        return Church::where(Church::ID, $churchId)->first();
+        return Church::with(['city'])->where(Church::ID, $churchId)->first();
     }
 
     public function create(ChurchDTO $churchDTO): Church

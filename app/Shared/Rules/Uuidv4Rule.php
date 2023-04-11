@@ -2,44 +2,18 @@
 
 namespace App\Shared\Rules;
 
-use Illuminate\Contracts\Validation\Rule;
+use App\Shared\Enums\MessagesEnum;
+use Closure;
+use Illuminate\Contracts\Validation\ValidationRule;
 use Ramsey\Uuid\Uuid;
 
-class Uuidv4Rule implements Rule
+class Uuidv4Rule implements ValidationRule
 {
-    /**
-     * Determine if the validation rule passes.
-     *
-     * @param  string  $attribute
-     * @param  mixed  $value
-     * @return bool
-     */
-    public function passes($attribute, $value): bool
+    public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        if(is_array($value)) {
-            foreach ($value as $uuid) {
-                if(is_null($uuid)) {
-                    return false;
-                }
-
-                return Uuid::isValid($uuid);
-            }
+        if(!Uuid::isValid($value))
+        {
+            $fail(MessagesEnum::INVALID_UUID->value);
         }
-
-        if(is_string($value) && !empty($value)) {
-            return Uuid::isValid($value);
-        }
-
-        return true;
-    }
-
-    /**
-     * Get the validation error message.
-     *
-     * @return string
-     */
-    public function message(): string
-    {
-        return 'O valor informado não é um UUID válido.';
     }
 }
