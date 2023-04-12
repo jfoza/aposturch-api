@@ -14,4 +14,4 @@ Route::get('/id/{id}', [AdminUsersController::class, 'showById'])->middleware([M
 
 Route::post('/', [AdminUsersController::class, 'insert']);
 
-Route::put('/{id}', [AdminUsersController::class, 'update'])->middleware([MiddlewareEnum::UUID]);
+Route::put('/id/{id}', [AdminUsersController::class, 'update'])->middleware([MiddlewareEnum::UUID]);
