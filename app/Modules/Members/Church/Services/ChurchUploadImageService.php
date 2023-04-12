@@ -10,13 +10,15 @@ use App\Features\General\Images\Enums\TypeUploadImageEnum;
 use App\Features\General\Images\Infra\Models\Image;
 use App\Modules\Members\Church\Contracts\ChurchRepositoryInterface;
 use App\Modules\Members\Church\Contracts\ChurchUploadImageServiceInterface;
+use App\Modules\Members\Church\Traits\ChurchOperationsTrait;
 use App\Modules\Members\Church\Validations\ChurchValidations;
 use App\Shared\Enums\RulesEnum;
 use App\Shared\Utils\Transaction;
-use Illuminate\Support\Facades\Storage;
 
 class ChurchUploadImageService extends Service implements ChurchUploadImageServiceInterface
 {
+    use ChurchOperationsTrait;
+
     public function __construct(
         private readonly ChurchRepositoryInterface $churchRepository,
         private readonly ImagesRepositoryInterface $imagesRepository,
@@ -38,7 +40,11 @@ class ChurchUploadImageService extends Service implements ChurchUploadImageServi
 
         try
         {
-            $this->removeImageIfAlreadyExists($church);
+            $this->removeImageIfAlreadyExists(
+                $church,
+                $this->churchRepository,
+                $this->imagesRepository
+            );
 
             $imagesDTO->type = TypeUploadImageEnum::PRODUCT->value;
             $imagesDTO->path = $imagesDTO->image->store(TypeUploadImageEnum::CHURCH->value);
@@ -56,20 +62,6 @@ class ChurchUploadImageService extends Service implements ChurchUploadImageServi
             Transaction::rollback();
 
             $this->dispatchException($e);
-        }
-    }
-
-    private function removeImageIfAlreadyExists(object $church): void
-    {
-        if($images = $church->imagesChurch) {
-            $this->churchRepository->saveImages($church->id, []);
-
-            foreach ($images as $image)
-            {
-                $this->imagesRepository->remove($image->id);
-
-                Storage::delete($image->path);
-            }
         }
     }
 }

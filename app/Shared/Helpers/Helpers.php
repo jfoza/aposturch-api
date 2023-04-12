@@ -34,11 +34,11 @@ class Helpers
 
     public static function getApiUrl(string $element = null): string
     {
-        return env('API_URL')."/{$element}";
+        return config('general.app_url')."/{$element}";
     }
 
     public static function getAppWebUrl(string $element = null): string
     {
-        return env('APP_WEB_URL')."/{$element}";
+        return config('general.app_web_url')."/{$element}";
     }
 }

@@ -9,7 +9,6 @@ create table "members".churches
     youtube varchar,
     facebook varchar,
     instagram varchar,
-    image varchar,
     zip_code varchar(8),
     address varchar,
     number_address varchar,
