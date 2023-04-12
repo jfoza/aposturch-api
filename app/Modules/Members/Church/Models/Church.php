@@ -4,13 +4,12 @@ namespace App\Modules\Members\Church\Models;
 
 use App\Features\Base\Infra\Models\Register;
 use App\Features\City\Cities\Infra\Models\City;
-use App\Features\Users\AdminUsers\Infra\Models\AdminUser;
+use App\Features\General\Images\Infra\Models\Image;
 use App\Features\Users\UserChurch\Infra\Models\UserChurch;
 use App\Features\Users\Users\Infra\Models\User;
+use App\Modules\Members\ChurchesImages\Models\ChurchImage;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Church extends Register
 {
@@ -21,7 +20,6 @@ class Church extends Register
     const YOUTUBE        = 'youtube';
     const FACEBOOK       = 'facebook';
     const INSTAGRAM      = 'instagram';
-    const IMAGE          = 'image';
     const ZIP_CODE       = 'zip_code';
     const ADDRESS        = 'address';
     const NUMBER_ADDRESS = 'number_address';
@@ -37,8 +35,6 @@ class Church extends Register
 
     protected $keyType = 'string';
 
-    public $hidden = ['pivot'];
-
     protected $fillable = [
         self::NAME,
         self::PHONE,
@@ -46,7 +42,6 @@ class Church extends Register
         self::YOUTUBE,
         self::FACEBOOK,
         self::INSTAGRAM,
-        self::IMAGE,
         self::ZIP_CODE,
         self::ADDRESS,
         self::NUMBER_ADDRESS,
@@ -62,8 +57,23 @@ class Church extends Register
         return $this->belongsTo(City::class, self::CITY_ID, City::ID);
     }
 
-    public function adminUser(): HasMany
+    public function user(): BelongsToMany
     {
-        return $this->hasMany(AdminUser::class);
+        return $this->belongsToMany(
+            User::class,
+            UserChurch::tableName(),
+            UserChurch::CHURCH_ID,
+            UserChurch::USER_ID,
+        );
+    }
+
+    public function imagesChurch(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            Image::class,
+            ChurchImage::class,
+            ChurchImage::CHURCH_ID,
+            ChurchImage::IMAGE_ID,
+        );
     }
 }

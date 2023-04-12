@@ -4,7 +4,6 @@ namespace Tests\Unit\App\Modules\Members\Services;
 
 use App\Exceptions\AppException;
 use App\Modules\Members\Church\Contracts\ChurchRepositoryInterface;
-use App\Modules\Members\Church\Models\Church;
 use App\Modules\Members\Church\Repositories\ChurchRepository;
 use App\Modules\Members\Church\Services\ShowByChurchIdService;
 use App\Shared\ACL\Policy;
@@ -52,7 +51,7 @@ class ShowByChurchIdServiceTest extends TestCase
 
         $church = $showByChurchIdService->execute($id);
 
-        $this->assertInstanceOf(Church::class, $church);
+        $this->assertIsObject($church);
     }
 
     public function test_should_return_exception_if_church_id_not_exists()

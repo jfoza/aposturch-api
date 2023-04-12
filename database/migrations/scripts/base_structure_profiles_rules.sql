@@ -72,6 +72,7 @@ DO $$
         _rule38 uuid := uuid_generate_v4();
         _rule39 uuid := uuid_generate_v4();
         _rule40 uuid := uuid_generate_v4();
+        _rule41 uuid := uuid_generate_v4();
 
     BEGIN
         INSERT INTO module.modules (id, module_description, module_unique_name, active)
@@ -144,7 +145,8 @@ DO $$
             (_rule37, 'MEMBERS_MODULE_CHURCH_VIEW', 'MEMBERS_MODULE_CHURCH', 'VIEW'),
             (_rule38, 'MEMBERS_MODULE_CHURCH_INSERT', 'MEMBERS_MODULE_CHURCH', 'INSERT'),
             (_rule39, 'MEMBERS_MODULE_CHURCH_UPDATE', 'MEMBERS_MODULE_CHURCH', 'UPDATE'),
-            (_rule40, 'MEMBERS_MODULE_CHURCH_DELETE', 'MEMBERS_MODULE_CHURCH', 'DELETE');
+            (_rule40, 'MEMBERS_MODULE_CHURCH_DELETE', 'MEMBERS_MODULE_CHURCH', 'DELETE'),
+            (_rule41, 'MEMBERS_MODULE_CHURCH_IMAGE_UPLOAD', 'MEMBERS_MODULE_CHURCH', 'UPLOAD');
 
         INSERT INTO users.modules_rules (rule_id, module_id)
         VALUES
@@ -259,6 +261,7 @@ DO $$
             (_profile2, _rule38),
             (_profile2, _rule39),
             (_profile2, _rule40),
+            (_profile2, _rule41),
 
             -- ADMIN CHURCH
             (_profile3, _rule1),
@@ -288,6 +291,7 @@ DO $$
             (_profile3, _rule35),
             (_profile3, _rule36),
             (_profile3, _rule37),
+            (_profile3, _rule41),
 
             -- ADMIN MODULE
             (_profile4, _rule1),

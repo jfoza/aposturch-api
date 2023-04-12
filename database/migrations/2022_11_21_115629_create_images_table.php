@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        $path = 'database/migrations/scripts/create_user_church_table.sql';
+        $path = 'database/migrations/scripts/create_images_table.sql';
         DB::unprepared(file_get_contents($path));
     }
 
@@ -24,7 +24,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropColumns('users.user_church', ['user_id', 'church_id']);
-        Schema::dropIfExists('users.user_church');
+        Schema::dropIfExists('general.images');
     }
 };

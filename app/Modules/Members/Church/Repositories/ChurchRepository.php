@@ -35,14 +35,16 @@ class ChurchRepository implements ChurchRepositoryInterface
         return $this->paginateOrGet($builder, $churchFiltersDTO->paginationOrder);
     }
 
-    public function findById(string $churchId, bool $listMembers = false): mixed
+    public function findById(string $churchId, bool $listMembers = false): object|null
     {
+        $relations = ['imagesChurch', 'city'];
+
         if($listMembers)
         {
-            return Church::with(['adminUser', 'city'])->where(Church::ID, $churchId)->first();
+            $relations[] = 'user';
         }
 
-        return Church::with(['city'])->where(Church::ID, $churchId)->first();
+        return Church::with($relations)->find($churchId);
     }
 
     public function create(ChurchDTO $churchDTO): Church
@@ -93,5 +95,10 @@ class ChurchRepository implements ChurchRepositoryInterface
     public function remove(string $churchId): void
     {
         Church::where(Church::ID, $churchId)->delete();
+    }
+
+    public function saveImages(string $churchId, array $images)
+    {
+        Church::find($churchId)->imagesChurch()->sync($images);
     }
 }

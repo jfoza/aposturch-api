@@ -19,7 +19,7 @@ class ShowByChurchIdService extends Service implements ShowByChurchIdServiceInte
     /**
      * @throws AppException
      */
-    public function execute(string $churchId): ?Church
+    public function execute(string $churchId): object
     {
         $this->getPolicy()->havePermission(RulesEnum::MEMBERS_MODULE_CHURCH_VIEW->value);
 

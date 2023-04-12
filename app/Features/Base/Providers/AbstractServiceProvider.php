@@ -12,12 +12,16 @@ abstract class AbstractServiceProvider extends ServiceProvider
     public function bind(
         mixed $abstractServiceClass,
         mixed $concreteServiceClass,
-    ) {
-        $this->app->bind($abstractServiceClass, function() use ($concreteServiceClass) {
-            $business = $this->app->make($concreteServiceClass);
-            $business->setPolicy($this->generatePolicyUser());
+    ): void
+    {
+        $this->app->bind(
+            $abstractServiceClass,
+            function() use ($concreteServiceClass) {
+                $service = $this->app->make($concreteServiceClass);
+                $service->setPolicy($this->generatePolicyUser());
 
-            return $business;
-        });
+                return $service;
+            }
+        );
     }
 }

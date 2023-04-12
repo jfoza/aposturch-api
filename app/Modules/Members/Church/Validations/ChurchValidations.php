@@ -6,6 +6,8 @@ use App\Exceptions\AppException;
 use App\Modules\Members\Church\Contracts\ChurchRepositoryInterface;
 use App\Modules\Members\Church\Models\Church;
 use App\Shared\Enums\MessagesEnum;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Symfony\Component\HttpFoundation\Response;
 
 class ChurchValidations
@@ -16,7 +18,7 @@ class ChurchValidations
     public static function churchIdExists(
         ChurchRepositoryInterface $churchRepository,
         string $churchId
-    ): ?Church
+    ): object|null
     {
         if(!$church = $churchRepository->findById($churchId))
         {
@@ -35,7 +37,7 @@ class ChurchValidations
     public static function churchExistsAndHasMembers(
         ChurchRepositoryInterface $churchRepository,
         string $churchId
-    ): mixed
+    ): object|null
     {
         if(!$church = $churchRepository->findById($churchId, true))
         {
@@ -45,7 +47,7 @@ class ChurchValidations
             );
         }
 
-        if(count($church->adminUser) > 0)
+        if(count($church->user) > 0)
         {
             throw new AppException(
                 MessagesEnum::CHURCH_HAS_MEMBERS_IN_DELETE,

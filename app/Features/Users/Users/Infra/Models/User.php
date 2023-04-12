@@ -122,4 +122,14 @@ class User
             ModuleUser::MODULE_ID
         );
     }
+
+    public function church(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            Church::class,
+            UserChurch::tableName(),
+            UserChurch::USER_ID,
+            UserChurch::CHURCH_ID
+        );
+    }
 }

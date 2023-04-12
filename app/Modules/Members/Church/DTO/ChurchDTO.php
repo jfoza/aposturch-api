@@ -11,7 +11,6 @@ class ChurchDTO
     public string|null $youtube;
     public string|null $facebook;
     public string|null $instagram;
-    public string|null $image;
     public string|null $zipCode;
     public string|null $address;
     public string|null $numberAddress;

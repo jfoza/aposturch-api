@@ -10,7 +10,7 @@ class UserChurch extends Register
     const CHURCH_ID = 'church_id';
     const USER_ID   = 'user_id';
 
-    protected $table = 'users.user_church';
+    protected $table = 'users.users_churches';
 
     protected $primaryKey = self::ID;
 
