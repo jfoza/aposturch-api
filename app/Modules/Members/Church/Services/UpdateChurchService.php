@@ -13,6 +13,7 @@ use App\Modules\Members\Church\DTO\ChurchDTO;
 use App\Modules\Members\Church\Models\Church;
 use App\Modules\Members\Church\Validations\ChurchValidations;
 use App\Shared\Enums\RulesEnum;
+use App\Shared\Helpers\Helpers;
 use App\Shared\Utils\Transaction;
 
 class UpdateChurchService extends Service implements UpdateChurchServiceInterface
@@ -40,6 +41,8 @@ class UpdateChurchService extends Service implements UpdateChurchServiceInterfac
             $this->cityRepository,
             $churchDTO->cityId
         );
+
+        $churchDTO->uniqueName = Helpers::stringUniqueName($churchDTO->name);
 
         Transaction::beginTransaction();
 

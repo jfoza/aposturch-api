@@ -14,7 +14,7 @@ enum MessagesEnum: string {
     case REGISTER_NOT_FOUND = 'Registro não encontrado.';
     case INVALID_UUID = 'O valor enviado não é um Uuid válido.';
     case INVALID_EMAIL = 'O valor enviado não é um E-mail válido.';
-    case INVALID_UNIQUE_NAME = 'O valor enviado não é um nome único de produto válido.';
+    case INVALID_UNIQUE_NAME = 'O valor enviado não é um nome válido.';
     case NOT_AUTHORIZED = 'Você não tem permissão para acessar este recurso.';
     case MODULE_NOT_AUTHORIZED = 'Você não tem permissão para acessar este módulo.';
     case NOT_ENABLED = 'Você não tem permissão para acessar a plataforma. \n Para liberar ou verificar seu acesso entre em contato com o suporte.';

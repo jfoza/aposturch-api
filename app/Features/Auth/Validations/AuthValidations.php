@@ -3,8 +3,8 @@
 namespace App\Features\Auth\Validations;
 
 use App\Exceptions\AppException;
-use App\Features\Users\Users\Services\Utils\HashService;
 use App\Shared\Enums\MessagesEnum;
+use App\Shared\Utils\Hash;
 use Carbon\Carbon;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -45,7 +45,7 @@ class AuthValidations
      */
     public static function passwordVerify(string $payload, string $hashed): void
     {
-        if(!HashService::compareHash($payload, $hashed)) {
+        if(!Hash::compareHash($payload, $hashed)) {
             throw new AppException(
                 MessagesEnum::LOGIN_ERROR,
                 Response::HTTP_UNAUTHORIZED

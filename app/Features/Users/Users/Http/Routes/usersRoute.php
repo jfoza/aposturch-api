@@ -5,8 +5,8 @@ use App\Features\Users\Users\Http\Controllers\UsersController;
 use Illuminate\Support\Facades\Route;
 
 Route::get(
-    '/{id}',
-    [UsersController::class, 'showById']
+    '/',
+    [UsersController::class, 'index']
 );
 
 Route::put(

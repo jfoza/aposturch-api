@@ -34,6 +34,25 @@ class ChurchValidations
     /**
      * @throws AppException
      */
+    public static function churchUniqueNameExists(
+        ChurchRepositoryInterface $churchRepository,
+        string $churchUniqueName
+    ): object|null
+    {
+        if(!$church = $churchRepository->findByUniqueName($churchUniqueName))
+        {
+            throw new AppException(
+                MessagesEnum::REGISTER_NOT_FOUND,
+                Response::HTTP_NOT_FOUND
+            );
+        }
+
+        return $church;
+    }
+
+    /**
+     * @throws AppException
+     */
     public static function churchExistsAndHasMembers(
         ChurchRepositoryInterface $churchRepository,
         string $churchId

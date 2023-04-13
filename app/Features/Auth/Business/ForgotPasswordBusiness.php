@@ -10,9 +10,9 @@ use App\Features\Auth\Jobs\SendEmailForgotPasswordJob;
 use App\Features\Auth\Validations\AuthValidations;
 use App\Features\Users\CustomerUsers\Contracts\CustomerUsersRepositoryInterface;
 use App\Features\Users\Users\Contracts\UsersRepositoryInterface;
-use App\Features\Users\Users\Services\Utils\HashService;
 use App\Shared\Helpers\Helpers;
 use App\Shared\Helpers\RandomStringHelper;
+use App\Shared\Utils\Hash;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Response;
@@ -68,7 +68,7 @@ class ForgotPasswordBusiness implements ForgotPasswordBusinessInterface
         );
 
         $forgotPasswordDTO->userId = $forgotPassword->user->id;
-        $forgotPasswordDTO->newPassword = HashService::generateHash($forgotPasswordDTO->newPassword);
+        $forgotPasswordDTO->newPassword = Hash::generateHash($forgotPasswordDTO->newPassword);
 
         DB::beginTransaction();
 

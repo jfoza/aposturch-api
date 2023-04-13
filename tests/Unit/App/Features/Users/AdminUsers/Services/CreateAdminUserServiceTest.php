@@ -117,7 +117,7 @@ class CreateAdminUserServiceTest extends TestCase
         $this
             ->usersRepositoryMock
             ->method('create')
-            ->willReturn(UsersLists::getUser());
+            ->willReturn(UsersLists::showUser());
 
         $createAdminUserService = $this->getCreateAdminUserService();
 
@@ -142,7 +142,7 @@ class CreateAdminUserServiceTest extends TestCase
         $this
             ->usersRepositoryMock
             ->method('findByEmail')
-            ->willReturn(UsersLists::getUser());
+            ->willReturn(UsersLists::showUser());
 
         $createAdminUserService = $this->getCreateAdminUserService();
 

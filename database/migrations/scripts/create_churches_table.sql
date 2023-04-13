@@ -4,6 +4,7 @@ create table "members".churches
 (
     id uuid default uuid_generate_v4() not null primary key,
     name varchar not null,
+    unique_name varchar not null,
     phone varchar,
     email varchar,
     youtube varchar,

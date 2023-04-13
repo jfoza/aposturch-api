@@ -2,12 +2,12 @@
 
 namespace App\Features\Users\Users\Services;
 
-use App\Shared\Cache\PolicyCache;
 use App\Exceptions\AppException;
 use App\Features\Users\Users\Contracts\UsersRepositoryInterface;
 use App\Features\Users\Users\DTO\PasswordDTO;
-use App\Features\Users\Users\Services\Utils\HashService;
-use App\Features\Users\Users\Services\Utils\UsersValidationsService;
+use App\Features\Users\Users\Validations\UsersValidationsService;
+use App\Shared\Cache\PolicyCache;
+use App\Shared\Utils\Hash;
 
 class UpdateUserPasswordService
 {
@@ -30,7 +30,7 @@ class UpdateUserPasswordService
             $user->password
         );
 
-        $passwordDTO->newPassword = HashService::generateHash($passwordDTO->newPassword);
+        $passwordDTO->newPassword = Hash::generateHash($passwordDTO->newPassword);
 
         $this->usersRepository->saveNewPassword(
             $passwordDTO->userId,

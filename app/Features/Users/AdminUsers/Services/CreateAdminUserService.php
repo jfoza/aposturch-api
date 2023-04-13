@@ -11,10 +11,10 @@ use App\Features\Users\AdminUsers\Validations\AllowedProfilesValidations;
 use App\Features\Users\Profiles\Contracts\ProfilesRepositoryInterface;
 use App\Features\Users\Users\Contracts\UsersRepositoryInterface;
 use App\Features\Users\Users\DTO\UserDTO;
-use App\Features\Users\Users\Services\Utils\HashService;
-use App\Features\Users\Users\Services\Utils\UsersValidationsService;
+use App\Features\Users\Users\Validations\UsersValidationsService;
 use App\Shared\ACL\Policy;
 use App\Shared\Enums\RulesEnum;
+use App\Shared\Utils\Hash;
 use App\Shared\Utils\Transaction;
 
 class CreateAdminUserService implements CreateAdminUserServiceInterface
@@ -119,7 +119,7 @@ class CreateAdminUserService implements CreateAdminUserServiceInterface
 
         try
         {
-            $this->userDTO->newPasswordGenerationsDTO->passwordEncrypt = HashService::generateHash($this->userDTO->password);
+            $this->userDTO->newPasswordGenerationsDTO->passwordEncrypt = Hash::generateHash($this->userDTO->password);
 
             $user = $this->usersRepository->create($this->userDTO);
             $this->userDTO->id = $user->id;

@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Features\Users\Users\Services\Utils;
+namespace App\Features\Users\Users\Validations;
 
-use App\Shared\Enums\MessagesEnum;
 use App\Exceptions\AppException;
 use App\Features\Users\Profiles\Contracts\ProfilesRepositoryInterface;
 use App\Features\Users\Users\Contracts\UsersRepositoryInterface;
+use App\Shared\Enums\MessagesEnum;
+use App\Shared\Utils\Hash;
 use Symfony\Component\HttpFoundation\Response;
 
 class UsersValidationsService
@@ -37,7 +38,7 @@ class UsersValidationsService
         string $hashed
     ): void
     {
-        if(!HashService::compareHash($payload, $hashed))
+        if(!Hash::compareHash($payload, $hashed))
         {
             throw new AppException(
                 MessagesEnum::INVALID_CURRENT_PASSWORD,

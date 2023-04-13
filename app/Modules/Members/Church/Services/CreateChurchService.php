@@ -12,6 +12,7 @@ use App\Modules\Members\Church\Contracts\CreateChurchServiceInterface;
 use App\Modules\Members\Church\DTO\ChurchDTO;
 use App\Modules\Members\Church\Models\Church;
 use App\Shared\Enums\RulesEnum;
+use App\Shared\Helpers\Helpers;
 use App\Shared\Utils\Transaction;
 
 class CreateChurchService extends Service implements CreateChurchServiceInterface
@@ -34,6 +35,8 @@ class CreateChurchService extends Service implements CreateChurchServiceInterfac
             $this->cityRepository,
             $churchDTO->cityId
         );
+
+        $churchDTO->uniqueName = Helpers::stringUniqueName($churchDTO->name);
 
         Transaction::beginTransaction();
 

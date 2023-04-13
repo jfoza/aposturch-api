@@ -15,8 +15,8 @@ use App\Features\Users\Profiles\Contracts\ProfilesRepositoryInterface;
 use App\Features\Users\Profiles\Enums\ProfileUniqueNameEnum;
 use App\Features\Users\Users\Contracts\UsersRepositoryInterface;
 use App\Features\Users\Users\DTO\UserDTO;
-use App\Features\Users\Users\Services\Utils\HashService;
-use App\Features\Users\Users\Services\Utils\UsersValidationsService;
+use App\Features\Users\Users\Validations\UsersValidationsService;
+use App\Shared\Utils\Hash;
 use App\Shared\Utils\Transaction;
 
 ;
@@ -61,7 +61,7 @@ class CreateCustomerService
         {
             $userDTO->newPasswordGenerationsDTO->email           = $userDTO->email;
             $userDTO->newPasswordGenerationsDTO->password        = $userDTO->password;
-            $userDTO->newPasswordGenerationsDTO->passwordEncrypt = HashService::generateHash($userDTO->password);
+            $userDTO->newPasswordGenerationsDTO->passwordEncrypt = Hash::generateHash($userDTO->password);
 
             $person = $this->personsRepository->create($userDTO->person);
             $userDTO->personId = $person->id;

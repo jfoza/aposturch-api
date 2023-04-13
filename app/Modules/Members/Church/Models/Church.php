@@ -15,6 +15,7 @@ class Church extends Register
 {
     const ID             = 'id';
     const NAME           = 'name';
+    const UNIQUE_NAME    = 'unique_name';
     const PHONE          = 'phone';
     const EMAIL          = 'email';
     const YOUTUBE        = 'youtube';
@@ -37,6 +38,7 @@ class Church extends Register
 
     protected $fillable = [
         self::NAME,
+        self::UNIQUE_NAME,
         self::PHONE,
         self::EMAIL,
         self::YOUTUBE,

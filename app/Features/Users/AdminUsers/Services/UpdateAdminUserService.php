@@ -12,7 +12,7 @@ use App\Features\Users\AdminUsers\Validations\AllowedProfilesValidations;
 use App\Features\Users\Profiles\Contracts\ProfilesRepositoryInterface;
 use App\Features\Users\Users\Contracts\UsersRepositoryInterface;
 use App\Features\Users\Users\DTO\UserDTO;
-use App\Features\Users\Users\Services\Utils\UsersValidationsService;
+use App\Features\Users\Users\Validations\UsersValidationsService;
 use App\Shared\ACL\Policy;
 use App\Shared\Cache\PolicyCache;
 use App\Shared\Enums\RulesEnum;

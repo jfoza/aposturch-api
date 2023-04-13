@@ -3,6 +3,8 @@
 namespace Tests\Unit\App\Modules\Members\Services;
 
 use App\Exceptions\AppException;
+use App\Features\General\Images\Contracts\ImagesRepositoryInterface;
+use App\Features\General\Images\Infra\Repositories\ImagesRepository;
 use App\Modules\Members\Church\Contracts\ChurchRepositoryInterface;
 use App\Modules\Members\Church\Repositories\ChurchRepository;
 use App\Modules\Members\Church\Services\RemoveChurchService;
@@ -17,18 +19,21 @@ use Tests\Unit\App\Resources\ChurchLists;
 class RemoveChurchServiceTest extends TestCase
 {
     private MockObject|ChurchRepositoryInterface $churchRepositoryMock;
+    private MockObject|ImagesRepositoryInterface $imagesRepository;
 
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->churchRepositoryMock = $this->createMock(ChurchRepository::class);
+        $this->imagesRepository     = $this->createMock(ImagesRepository::class);
     }
 
     public function getRemoveChurchService(): RemoveChurchService
     {
         return new RemoveChurchService(
-            $this->churchRepositoryMock
+            $this->churchRepositoryMock,
+            $this->imagesRepository
         );
     }
 

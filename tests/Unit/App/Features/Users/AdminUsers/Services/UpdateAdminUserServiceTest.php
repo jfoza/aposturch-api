@@ -107,7 +107,7 @@ class UpdateAdminUserServiceTest extends TestCase
         $this
             ->adminUsersRepositoryMock
             ->method('findByUserId')
-            ->willReturn(UsersLists::getUser());
+            ->willReturn(UsersLists::showUser());
 
         $this
             ->usersRepositoryMock
@@ -122,7 +122,7 @@ class UpdateAdminUserServiceTest extends TestCase
         $this
             ->usersRepositoryMock
             ->method('create')
-            ->willReturn(UsersLists::getUser());
+            ->willReturn(UsersLists::showUser());
 
         $updateAdminUserService = $this->getUpdateAdminUserService();
 
@@ -173,12 +173,12 @@ class UpdateAdminUserServiceTest extends TestCase
         $this
             ->adminUsersRepositoryMock
             ->method('findByUserId')
-            ->willReturn(UsersLists::getUser());
+            ->willReturn(UsersLists::showUser());
 
         $this
             ->usersRepositoryMock
             ->method('findByEmail')
-            ->willReturn(UsersLists::getUser());
+            ->willReturn(UsersLists::showUser());
 
         $updateAdminUserService = $this->getUpdateAdminUserService();
 
@@ -204,7 +204,7 @@ class UpdateAdminUserServiceTest extends TestCase
         $this
             ->adminUsersRepositoryMock
             ->method('findByUserId')
-            ->willReturn(UsersLists::getUser());
+            ->willReturn(UsersLists::showUser());
 
         $this
             ->usersRepositoryMock
@@ -240,7 +240,7 @@ class UpdateAdminUserServiceTest extends TestCase
         $this
             ->adminUsersRepositoryMock
             ->method('findByUserId')
-            ->willReturn(UsersLists::getUser());
+            ->willReturn(UsersLists::showUser());
 
         $this
             ->usersRepositoryMock
@@ -255,7 +255,7 @@ class UpdateAdminUserServiceTest extends TestCase
         $this
             ->usersRepositoryMock
             ->method('create')
-            ->willReturn(UsersLists::getUser());
+            ->willReturn(UsersLists::showUser());
 
         $updateAdminUserService = $this->getUpdateAdminUserService();
 

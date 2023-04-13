@@ -4,6 +4,7 @@ namespace App\Modules\Members\Church\Traits;
 
 use App\Features\General\Images\Contracts\ImagesRepositoryInterface;
 use App\Modules\Members\Church\Contracts\ChurchRepositoryInterface;
+use App\Shared\Helpers\Helpers;
 use Illuminate\Support\Facades\Storage;
 
 trait ChurchOperationsTrait

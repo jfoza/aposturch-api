@@ -6,6 +6,7 @@ use App\Modules\Members\Church\Contracts\CreateChurchServiceInterface;
 use App\Modules\Members\Church\Contracts\FindAllChurchesServiceInterface;
 use App\Modules\Members\Church\Contracts\RemoveChurchServiceInterface;
 use App\Modules\Members\Church\Contracts\ShowByChurchIdServiceInterface;
+use App\Modules\Members\Church\Contracts\ShowByChurchUniqueNameServiceInterface;
 use App\Modules\Members\Church\Contracts\UpdateChurchServiceInterface;
 use App\Modules\Members\Church\DTO\ChurchDTO;
 use App\Modules\Members\Church\DTO\ChurchFiltersDTO;
@@ -18,11 +19,12 @@ use Symfony\Component\HttpFoundation\Response;
 readonly class ChurchController
 {
     public function __construct(
-        private FindAllChurchesServiceInterface $findAllChurchesService,
-        private ShowByChurchIdServiceInterface  $showByChurchIdService,
-        private CreateChurchServiceInterface    $createChurchService,
-        private UpdateChurchServiceInterface    $updateChurchService,
-        private RemoveChurchServiceInterface    $removeChurchService
+        private FindAllChurchesServiceInterface        $findAllChurchesService,
+        private ShowByChurchIdServiceInterface         $showByChurchIdService,
+        private ShowByChurchUniqueNameServiceInterface $showByChurchUniqueNameService,
+        private CreateChurchServiceInterface           $createChurchService,
+        private UpdateChurchServiceInterface           $updateChurchService,
+        private RemoveChurchServiceInterface           $removeChurchService
     ) {}
 
     public function index(
@@ -46,6 +48,13 @@ readonly class ChurchController
     public function show(Request $request): JsonResponse
     {
         $church = $this->showByChurchIdService->execute($request->id);
+
+        return response()->json($church, Response::HTTP_OK);
+    }
+
+    public function showByUniqueName(Request $request): JsonResponse
+    {
+        $church = $this->showByChurchUniqueNameService->execute($request->uniqueName);
 
         return response()->json($church, Response::HTTP_OK);
     }

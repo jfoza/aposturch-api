@@ -69,5 +69,6 @@ class Kernel extends HttpKernel
         'forgot.password.code' => \App\Http\Middleware\ForgotPasswordCode::class,
         'valid.email' => \App\Http\Middleware\Email::class,
         'module.access' => \App\Http\Middleware\ModuleAccessValidation::class,
+        'church.unique.name' => \App\Http\Middleware\ChurchUniqueName::class,
     ];
 }

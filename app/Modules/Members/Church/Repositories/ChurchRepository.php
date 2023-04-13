@@ -47,10 +47,18 @@ class ChurchRepository implements ChurchRepositoryInterface
         return Church::with($relations)->find($churchId);
     }
 
+    public function findByUniqueName(string $uniqueName): object|null
+    {
+        return Church::with(['imagesChurch', 'city'])
+            ->where(Church::UNIQUE_NAME, $uniqueName)
+            ->first();
+    }
+
     public function create(ChurchDTO $churchDTO): Church
     {
         return Church::create([
             Church::NAME           => $churchDTO->name,
+            Church::UNIQUE_NAME    => $churchDTO->uniqueName,
             Church::PHONE          => $churchDTO->phone,
             Church::EMAIL          => $churchDTO->email,
             Church::YOUTUBE        => $churchDTO->youtube,
@@ -72,6 +80,7 @@ class ChurchRepository implements ChurchRepositoryInterface
         $update = [
             Church::ID             => $churchDTO->id,
             Church::NAME           => $churchDTO->name,
+            Church::UNIQUE_NAME    => $churchDTO->uniqueName,
             Church::PHONE          => $churchDTO->phone,
             Church::EMAIL          => $churchDTO->email,
             Church::YOUTUBE        => $churchDTO->youtube,

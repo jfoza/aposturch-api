@@ -1,6 +1,5 @@
 <?php
 
-use App\Shared\Helpers\PathHelpers;
 use Illuminate\Support\Facades\Facade;
 
 return [
@@ -203,7 +202,7 @@ return [
         \App\Features\Auth\Providers\SessionsCustomerUserBusinessProvider::class,
         \App\Features\Auth\Providers\ForgotPasswordBusinessProvider::class,
         \App\Features\Users\AdminUsers\Providers\AdminUsersBusinessProvider::class,
-        \App\Features\Users\Users\Providers\UsersBusinessProvider::class,
+        \App\Features\Users\Users\Providers\UsersProvider::class,
         \App\Features\Users\CustomerUsers\Providers\CustomerUsersBusinessProvider::class,
         \App\Features\Users\Profiles\Providers\ProfilesBusinessProvider::class,
         \App\Features\Persons\Providers\PersonsProvider::class,

@@ -3,12 +3,51 @@
 namespace App\Features\Users\Users\Infra\Repositories;
 
 use App\Features\Users\Users\Contracts\UsersRepositoryInterface;
-use App\Features\Users\Users\DTO\PasswordDTO;
 use App\Features\Users\Users\DTO\UserDTO;
+use App\Features\Users\Users\DTO\UserFiltersDTO;
 use App\Features\Users\Users\Infra\Models\User;
+use App\Modules\Members\Church\Models\Church;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
 
 class UsersRepository implements UsersRepositoryInterface
 {
+    public function findAll(UserFiltersDTO $userFiltersDTO): LengthAwarePaginator|Collection
+    {
+        return User::with(['person'])
+        ->select(
+            User::tableField(User::ID),
+            User::tableField(User::PERSON_ID),
+            User::tableField(User::NAME),
+            User::tableField(User::EMAIL),
+        )
+        ->when(isset($userFiltersDTO->name),
+            function($q) use($userFiltersDTO) {
+                return $q->where(
+                    User::tableField(User::NAME),
+                    'ilike',
+                    "%{$userFiltersDTO->name}%"
+                );
+            }
+        )
+        ->when(isset($userFiltersDTO->churchId),
+            function($q) use($userFiltersDTO) {
+                return $q->whereRelation(
+                    'church',
+                    Church::tableField(Church::ID),
+                    $userFiltersDTO->churchId
+                );
+            }
+        )
+        ->whereRelation(
+            'church',
+            Church::tableField(Church::ID),
+            '!=',
+            null
+        )
+        ->paginate($userFiltersDTO->paginationOrder->getPerPage());
+    }
+
     public function findById(string $id): mixed
     {
         return User::where(User::ID, $id)->first();

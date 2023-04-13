@@ -12,6 +12,7 @@ use App\Modules\Members\Church\Repositories\ChurchRepository;
 use App\Modules\Members\Church\Services\UpdateChurchService;
 use App\Shared\ACL\Policy;
 use App\Shared\Enums\RulesEnum;
+use App\Shared\Helpers\RandomStringHelper;
 use PHPUnit\Framework\MockObject\MockObject;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\Response;
@@ -37,6 +38,7 @@ class UpdateChurchServiceTest extends TestCase
 
         $this->churchDtoMock->id     = Uuid::uuid4()->toString();
         $this->churchDtoMock->cityId = Uuid::uuid4()->toString();
+        $this->churchDtoMock->name = RandomStringHelper::alnumGenerate(6);
     }
 
     public function getUpdateChurchService(): UpdateChurchService
