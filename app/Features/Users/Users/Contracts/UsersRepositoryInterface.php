@@ -16,4 +16,5 @@ interface UsersRepositoryInterface
     public function save(UserDTO $userDTO);
     public function saveProfiles(string $userId, array $profiles): void;
     public function saveNewPassword(string $userId, string $password);
+    public function removeChurchRelationship(string $userId): void;
 }

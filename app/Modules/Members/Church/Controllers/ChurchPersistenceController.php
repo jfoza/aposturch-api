@@ -3,61 +3,23 @@
 namespace App\Modules\Members\Church\Controllers;
 
 use App\Modules\Members\Church\Contracts\CreateChurchServiceInterface;
-use App\Modules\Members\Church\Contracts\FindAllChurchesServiceInterface;
 use App\Modules\Members\Church\Contracts\RemoveChurchServiceInterface;
-use App\Modules\Members\Church\Contracts\ShowByChurchIdServiceInterface;
-use App\Modules\Members\Church\Contracts\ShowByChurchUniqueNameServiceInterface;
+use App\Modules\Members\Church\Contracts\RemoveUserChurchRelationshipServiceInterface;
 use App\Modules\Members\Church\Contracts\UpdateChurchServiceInterface;
 use App\Modules\Members\Church\DTO\ChurchDTO;
-use App\Modules\Members\Church\DTO\ChurchFiltersDTO;
-use App\Modules\Members\Church\Requests\ChurchFiltersRequest;
 use App\Modules\Members\Church\Requests\ChurchRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-readonly class ChurchController
+readonly class ChurchPersistenceController
 {
     public function __construct(
-        private FindAllChurchesServiceInterface        $findAllChurchesService,
-        private ShowByChurchIdServiceInterface         $showByChurchIdService,
-        private ShowByChurchUniqueNameServiceInterface $showByChurchUniqueNameService,
-        private CreateChurchServiceInterface           $createChurchService,
-        private UpdateChurchServiceInterface           $updateChurchService,
-        private RemoveChurchServiceInterface           $removeChurchService
+        private CreateChurchServiceInterface $createChurchService,
+        private UpdateChurchServiceInterface $updateChurchService,
+        private RemoveChurchServiceInterface $removeChurchService,
+        private RemoveUserChurchRelationshipServiceInterface $removeUserChurchRelationshipService,
     ) {}
-
-    public function index(
-        ChurchFiltersRequest $churchFiltersRequest,
-        ChurchFiltersDTO $churchFiltersDTO
-    ): JsonResponse
-    {
-        $churchFiltersDTO->paginationOrder->setPage($churchFiltersRequest->page);
-        $churchFiltersDTO->paginationOrder->setPerPage($churchFiltersRequest->perPage);
-        $churchFiltersDTO->paginationOrder->setColumnOrder($churchFiltersRequest->columnOrder);
-        $churchFiltersDTO->paginationOrder->setColumnName($churchFiltersRequest->columnName);
-
-        $churchFiltersDTO->name   = $churchFiltersRequest->name;
-        $churchFiltersDTO->cityId = $churchFiltersRequest->cityId;
-
-        $churches = $this->findAllChurchesService->execute($churchFiltersDTO);
-
-        return response()->json($churches, Response::HTTP_OK);
-    }
-
-    public function show(Request $request): JsonResponse
-    {
-        $church = $this->showByChurchIdService->execute($request->id);
-
-        return response()->json($church, Response::HTTP_OK);
-    }
-
-    public function showByUniqueName(Request $request): JsonResponse
-    {
-        $church = $this->showByChurchUniqueNameService->execute($request->uniqueName);
-
-        return response()->json($church, Response::HTTP_OK);
-    }
 
     public function insert(
         ChurchDTO $churchDTO,
@@ -87,6 +49,13 @@ readonly class ChurchController
     public function delete(Request $request): JsonResponse
     {
         $this->removeChurchService->execute($request->id);
+
+        return response()->json([], Response::HTTP_NO_CONTENT);
+    }
+
+    public function deleteRelationship(Request $request): JsonResponse
+    {
+        $this->removeUserChurchRelationshipService->execute($request->id);
 
         return response()->json([], Response::HTTP_NO_CONTENT);
     }

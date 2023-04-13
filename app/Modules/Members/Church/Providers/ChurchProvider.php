@@ -9,6 +9,7 @@ use App\Modules\Members\Church\Contracts\ChurchUploadImageServiceInterface;
 use App\Modules\Members\Church\Contracts\CreateChurchServiceInterface;
 use App\Modules\Members\Church\Contracts\FindAllChurchesServiceInterface;
 use App\Modules\Members\Church\Contracts\RemoveChurchServiceInterface;
+use App\Modules\Members\Church\Contracts\RemoveUserChurchRelationshipServiceInterface;
 use App\Modules\Members\Church\Contracts\ShowByChurchIdServiceInterface;
 use App\Modules\Members\Church\Contracts\ShowByChurchUniqueNameServiceInterface;
 use App\Modules\Members\Church\Contracts\UpdateChurchServiceInterface;
@@ -17,6 +18,7 @@ use App\Modules\Members\Church\Services\ChurchUploadImageService;
 use App\Modules\Members\Church\Services\CreateChurchService;
 use App\Modules\Members\Church\Services\FindAllChurchesService;
 use App\Modules\Members\Church\Services\RemoveChurchService;
+use App\Modules\Members\Church\Services\RemoveUserChurchRelationshipService;
 use App\Modules\Members\Church\Services\ShowByChurchIdService;
 use App\Modules\Members\Church\Services\ShowByChurchUniqueNameService;
 use App\Modules\Members\Church\Services\UpdateChurchService;
@@ -64,6 +66,11 @@ class ChurchProvider extends AbstractServiceProvider
         $this->bind(
             ChurchUploadImageServiceInterface::class,
             ChurchUploadImageService::class
+        );
+
+        $this->bind(
+            RemoveUserChurchRelationshipServiceInterface::class,
+            RemoveUserChurchRelationshipService::class
         );
     }
 }

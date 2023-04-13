@@ -97,4 +97,9 @@ class UsersRepository implements UsersRepositoryInterface
         return User::where(User::ID, $userId)
             ->update([User::PASSWORD => $password]);
     }
+
+    public function removeChurchRelationship(string $userId): void
+    {
+        User::find($userId)->church()->sync([]);
+    }
 }
