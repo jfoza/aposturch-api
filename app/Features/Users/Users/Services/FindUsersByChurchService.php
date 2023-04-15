@@ -7,6 +7,8 @@ use App\Features\Base\Services\Service;
 use App\Features\Users\Users\Contracts\FindUsersByChurchServiceInterface;
 use App\Features\Users\Users\Contracts\UsersRepositoryInterface;
 use App\Features\Users\Users\DTO\UserFiltersDTO;
+use App\Modules\Members\Church\Contracts\ChurchRepositoryInterface;
+use App\Modules\Members\Church\Validations\ChurchValidations;
 use App\Shared\Enums\RulesEnum;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
@@ -16,7 +18,8 @@ class FindUsersByChurchService extends Service implements FindUsersByChurchServi
     private UserFiltersDTO $userFiltersDTO;
 
     public function __construct(
-        private readonly UsersRepositoryInterface $usersRepository
+        private readonly UsersRepositoryInterface $usersRepository,
+        private readonly ChurchRepositoryInterface $churchRepository,
     ) {}
 
     /**
@@ -29,32 +32,48 @@ class FindUsersByChurchService extends Service implements FindUsersByChurchServi
         $policy = $this->getPolicy();
 
         return match (true) {
-            $policy->haveRule(RulesEnum::ADMIN_USERS_ADMIN_MASTER_VIEW->value) => $this->findByAdminMaster(),
-            $policy->haveRule(RulesEnum::ADMIN_USERS_ADMIN_CHURCH_VIEW->value) => $this->findByAdminChurch(),
-            $policy->haveRule(RulesEnum::ADMIN_USERS_ADMIN_MODULE_VIEW->value) => $this->findByAdminModule(),
-            $policy->haveRule(RulesEnum::ADMIN_USERS_ASSISTANT_VIEW->value)    => $this->findByAssistant(),
+            $policy->haveRule(RulesEnum::MEMBERS_MODULE_CHURCH_ADMIN_MASTER_DETAILS_VIEW->value) => $this->findByAdminMaster(),
+            $policy->haveRule(RulesEnum::MEMBERS_MODULE_CHURCH_ADMIN_CHURCH_DETAILS_VIEW->value) => $this->findByAdminChurch(),
 
             default  => $policy->dispatchErrorForbidden(),
         };
     }
 
-    private function findByAdminMaster()
+    /**
+     * @throws AppException
+     */
+    private function findByAdminMaster(): LengthAwarePaginator|Collection
     {
+        $this->handleValidations();
 
+        return $this->usersRepository->findAllByChurch($this->userFiltersDTO);
     }
 
-    private function findByAdminChurch()
+    /**
+     * @throws AppException
+     */
+    private function findByAdminChurch(): LengthAwarePaginator|Collection
     {
+        $this->handleValidations();
 
+        $church = $this->getChurchUserAuth();
+
+        if($church->id != $this->userFiltersDTO->churchId)
+        {
+            $this->getPolicy()->dispatchErrorForbidden();
+        }
+
+        return $this->usersRepository->findAllByChurch($this->userFiltersDTO);
     }
 
-    private function findByAdminModule()
+    /**
+     * @throws AppException
+     */
+    private function handleValidations()
     {
-
-    }
-
-    private function findByAssistant()
-    {
-
+        ChurchValidations::churchIdExists(
+            $this->churchRepository,
+            $this->userFiltersDTO->churchId
+        );
     }
 }
