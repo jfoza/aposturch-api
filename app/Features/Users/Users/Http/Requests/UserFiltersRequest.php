@@ -2,7 +2,6 @@
 
 namespace App\Features\Users\Users\Http\Requests;
 
-use App\Shared\Rules\Uuidv4Rule;
 use App\Features\Base\Http\Requests\FormRequest;
 
 class UserFiltersRequest extends FormRequest
@@ -14,18 +13,20 @@ class UserFiltersRequest extends FormRequest
 
     public function rules(): array
     {
-        return [
-            'name'     => 'nullable|string',
-            'churchId' => ['nullable', 'string', new Uuidv4Rule],
-        ];
+        return $this->mergePaginationOrderRules(
+            [
+                'name' => 'nullable|string',
+            ]
+        );
     }
 
     public function attributes(): array
     {
-        return [
-            'name'     => 'Name',
-            'churchId' => 'Profile',
-        ];
+        return $this->mergePaginationOrderAttributes(
+            [
+                'name' => 'Name',
+            ]
+        );
     }
 }
 

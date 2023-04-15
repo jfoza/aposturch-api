@@ -29,7 +29,7 @@ class CreateChurchService extends Service implements CreateChurchServiceInterfac
      */
     public function execute(ChurchDTO $churchDTO): Church
     {
-        $this->getPolicy()->havePermission(RulesEnum::MEMBERS_MODULE_CHURCH_INSERT->value);
+        $this->getPolicy()->havePermission(RulesEnum::MEMBERS_MODULE_CHURCH_ADMIN_MASTER_INSERT->value);
 
         CityValidations::cityIdExists(
             $this->cityRepository,

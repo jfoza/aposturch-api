@@ -19,6 +19,10 @@ class ChurchUploadImageService extends Service implements ChurchUploadImageServi
 {
     use ChurchOperationsTrait;
 
+    private ImagesDTO $imagesDTO;
+    private string $churchId;
+    private object $church;
+
     public function __construct(
         private readonly ChurchRepositoryInterface $churchRepository,
         private readonly ImagesRepositoryInterface $imagesRepository,
@@ -29,29 +33,81 @@ class ChurchUploadImageService extends Service implements ChurchUploadImageServi
      */
     public function execute(ImagesDTO $imagesDTO, string $churchId): Image
     {
-        $this->getPolicy()->havePermission(RulesEnum::MEMBERS_MODULE_CHURCH_IMAGE_UPLOAD->value);
+        $this->imagesDTO = $imagesDTO;
+        $this->churchId = $churchId;
 
-        $church = ChurchValidations::churchIdExists(
+        $policy = $this->getPolicy();
+
+        return match (true)
+        {
+            $policy->haveRule(RulesEnum::MEMBERS_MODULE_CHURCH_ADMIN_MASTER_IMAGE_UPLOAD->value) => $this->uploadByAdminMaster(),
+            $policy->haveRule(RulesEnum::MEMBERS_MODULE_CHURCH_ADMIN_CHURCH_IMAGE_UPLOAD->value) => $this->uploadByAdminChurch(),
+
+            default => $policy->dispatchErrorForbidden()
+        };
+    }
+
+    /**
+     * @throws AppException
+     */
+    private function uploadByAdminMaster(): ?Image
+    {
+        $this->handleValidations();
+
+        return $this->baseUploadOperation();
+    }
+
+    /**
+     * @throws AppException
+     */
+    private function uploadByAdminChurch(): ?Image
+    {
+        $this->handleValidations();
+
+        $church = $this->getChurchUserAuth();
+
+        if($church->id != $this->churchId)
+        {
+            $this->getPolicy()->dispatchErrorForbidden();
+        }
+
+        return $this->baseUploadOperation();
+    }
+
+    /**
+     * @throws AppException
+     */
+    private function handleValidations(): ?object
+    {
+        $this->church = ChurchValidations::churchIdExists(
             $this->churchRepository,
-            $churchId,
+            $this->churchId,
         );
 
+        return $this->church;
+    }
+
+    /**
+     * @throws AppException
+     */
+    private function baseUploadOperation(): ?Image
+    {
         Transaction::beginTransaction();
 
         try
         {
             $this->removeImageIfAlreadyExists(
-                $church,
+                $this->church,
                 $this->churchRepository,
                 $this->imagesRepository
             );
 
-            $imagesDTO->type = TypeUploadImageEnum::PRODUCT->value;
-            $imagesDTO->path = $imagesDTO->image->store(TypeUploadImageEnum::CHURCH->value);
+            $this->imagesDTO->type = TypeUploadImageEnum::PRODUCT->value;
+            $this->imagesDTO->path = $this->imagesDTO->image->store(TypeUploadImageEnum::CHURCH->value);
 
-            $imageData = $this->imagesRepository->create($imagesDTO);
+            $imageData = $this->imagesRepository->create($this->imagesDTO);
 
-            $this->churchRepository->saveImages($churchId, [$imageData->id]);
+            $this->churchRepository->saveImages($this->churchId, [$imageData->id]);
 
             Transaction::commit();
 

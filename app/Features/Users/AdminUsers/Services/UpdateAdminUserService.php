@@ -12,7 +12,7 @@ use App\Features\Users\AdminUsers\Validations\AllowedProfilesValidations;
 use App\Features\Users\Profiles\Contracts\ProfilesRepositoryInterface;
 use App\Features\Users\Users\Contracts\UsersRepositoryInterface;
 use App\Features\Users\Users\DTO\UserDTO;
-use App\Features\Users\Users\Validations\UsersValidationsService;
+use App\Features\Users\Users\Validations\UsersValidations;
 use App\Shared\ACL\Policy;
 use App\Shared\Cache\PolicyCache;
 use App\Shared\Enums\RulesEnum;
@@ -106,9 +106,9 @@ class UpdateAdminUserService implements UpdateAdminUserServiceInterface
     private function handleValidations()
     {
         AdminUsersValidations::adminUserIdExists($this->adminUsersRepository, $this->userDTO->id);
-        UsersValidationsService::emailAlreadyExistsUpdate($this->usersRepository, $this->userDTO->id, $this->userDTO->email);
+        UsersValidations::emailAlreadyExistsUpdate($this->usersRepository, $this->userDTO->id, $this->userDTO->email);
 
-        $this->profile = UsersValidationsService::returnProfileExists($this->profilesRepository, $this->userDTO->profileId);
+        $this->profile = UsersValidations::returnProfileExists($this->profilesRepository, $this->userDTO->profileId);
     }
 
     /**

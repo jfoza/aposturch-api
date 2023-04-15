@@ -43,7 +43,7 @@ class RemoveChurchServiceTest extends TestCase
 
         $removeChurchService->setPolicy(
             new Policy([
-                RulesEnum::MEMBERS_MODULE_CHURCH_DELETE->value
+                RulesEnum::MEMBERS_MODULE_CHURCH_ADMIN_MASTER_DELETE->value
             ])
         );
 
@@ -64,7 +64,7 @@ class RemoveChurchServiceTest extends TestCase
         $removeChurchService = $this->getRemoveChurchService();
 
         $removeChurchService->setPolicy(new Policy([
-            RulesEnum::MEMBERS_MODULE_CHURCH_DELETE->value
+            RulesEnum::MEMBERS_MODULE_CHURCH_ADMIN_MASTER_DELETE->value
         ]));
 
         $this
@@ -83,7 +83,7 @@ class RemoveChurchServiceTest extends TestCase
         $removeChurchService = $this->getRemoveChurchService();
 
         $removeChurchService->setPolicy(new Policy([
-            RulesEnum::MEMBERS_MODULE_CHURCH_DELETE->value
+            RulesEnum::MEMBERS_MODULE_CHURCH_ADMIN_MASTER_DELETE->value
         ]));
 
         $this

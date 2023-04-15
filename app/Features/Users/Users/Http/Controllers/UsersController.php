@@ -2,7 +2,7 @@
 
 namespace App\Features\Users\Users\Http\Controllers;
 
-use App\Features\Users\Users\Contracts\FindAllUsersServiceInterface;
+use App\Features\Users\Users\Contracts\FindUsersByChurchServiceInterface;
 use App\Features\Users\Users\DTO\UserFiltersDTO;
 use App\Features\Users\Users\Http\Requests\UserFiltersRequest;
 use Illuminate\Http\JsonResponse;
@@ -11,10 +11,10 @@ use Symfony\Component\HttpFoundation\Response;
 readonly class UsersController
 {
     public function __construct(
-        private FindAllUsersServiceInterface $findAllUsersService,
+        private FindUsersByChurchServiceInterface $findUsersByChurchService,
     ) {}
 
-    public function index(
+    public function findAllByChurch(
         UserFiltersRequest $userFiltersRequest,
         UserFiltersDTO $userFiltersDTO,
     ): JsonResponse
@@ -24,9 +24,9 @@ readonly class UsersController
         $userFiltersDTO->paginationOrder->setPerPage($userFiltersRequest->perPage);
 
         $userFiltersDTO->name     = $userFiltersRequest->name;
-        $userFiltersDTO->churchId = $userFiltersRequest->churchId;
+        $userFiltersDTO->churchId = $userFiltersRequest->id;
 
-        $users = $this->findAllUsersService->execute($userFiltersDTO);
+        $users = $this->findUsersByChurchService->execute($userFiltersDTO);
 
         return response()->json($users, Response::HTTP_OK);
     }

@@ -6,7 +6,7 @@ use App\Features\Users\Users\DTO\UserFiltersDTO;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 
-interface FindAllUsersServiceInterface
+interface FindUsersByChurchServiceInterface
 {
     public function execute(UserFiltersDTO $userFiltersDTO): LengthAwarePaginator|Collection;
 }

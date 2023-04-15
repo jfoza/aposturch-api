@@ -14,11 +14,14 @@ use App\Modules\Members\Church\Models\Church;
 use App\Modules\Members\Church\Validations\ChurchValidations;
 use App\Shared\Enums\RulesEnum;
 use App\Shared\Helpers\Helpers;
+use App\Shared\Utils\Auth;
 use App\Shared\Utils\Transaction;
 
 class UpdateChurchService extends Service implements UpdateChurchServiceInterface
 {
     use DispatchExceptionTrait;
+
+    private ChurchDTO $churchDTO;
 
     public function __construct(
         private readonly ChurchRepositoryInterface $churchRepository,
@@ -30,27 +33,78 @@ class UpdateChurchService extends Service implements UpdateChurchServiceInterfac
      */
     public function execute(ChurchDTO $churchDTO): Church
     {
-        $this->getPolicy()->havePermission(RulesEnum::MEMBERS_MODULE_CHURCH_UPDATE->value);
+        $this->churchDTO = $churchDTO;
 
+        $policy = $this->getPolicy();
+
+        return match (true)
+        {
+            $policy->haveRule(RulesEnum::MEMBERS_MODULE_CHURCH_ADMIN_MASTER_UPDATE->value) => $this->updateByAdminMaster(),
+            $policy->haveRule(RulesEnum::MEMBERS_MODULE_CHURCH_ADMIN_CHURCH_UPDATE->value) => $this->updateByAdminChurch(),
+
+            default => $policy->dispatchErrorForbidden()
+        };
+    }
+
+    /**
+     * @throws AppException
+     */
+    private function updateByAdminMaster(): ?Church
+    {
+        $this->handleValidations();
+
+        return $this->baseUpdateOperation();
+    }
+
+    /**
+     * @throws AppException
+     */
+    private function updateByAdminChurch(): ?Church
+    {
+        $this->handleValidations();
+
+        $church = $this->getChurchUserAuth();
+
+        if($church->id != $this->churchDTO->id)
+        {
+            $this->getPolicy()->dispatchErrorForbidden();
+        }
+
+        return $this->baseUpdateOperation();
+    }
+
+    /**
+     * @throws AppException
+     */
+    private function handleValidations()
+    {
         ChurchValidations::churchIdExists(
             $this->churchRepository,
-            $churchDTO->id
+            $this->churchDTO->id
         );
 
         CityValidations::cityIdExists(
             $this->cityRepository,
-            $churchDTO->cityId
+            $this->churchDTO->cityId
         );
 
-        $churchDTO->uniqueName = Helpers::stringUniqueName($churchDTO->name);
+        $this->churchDTO->uniqueName = Helpers::stringUniqueName($this->churchDTO->name);
+    }
 
+    /**
+     * @throws AppException
+     */
+    private function baseUpdateOperation()
+    {
         Transaction::beginTransaction();
 
         try
         {
-            $updated = $this->churchRepository->save($churchDTO);
+            $updated = $this->churchRepository->save($this->churchDTO);
 
             Transaction::commit();
+
+            return $updated;
         }
         catch (\Exception $e)
         {
@@ -58,7 +112,5 @@ class UpdateChurchService extends Service implements UpdateChurchServiceInterfac
 
             $this->dispatchException($e);
         }
-
-        return $updated;
     }
 }

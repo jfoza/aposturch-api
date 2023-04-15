@@ -15,7 +15,7 @@ use App\Features\Users\Profiles\Contracts\ProfilesRepositoryInterface;
 use App\Features\Users\Profiles\Enums\ProfileUniqueNameEnum;
 use App\Features\Users\Users\Contracts\UsersRepositoryInterface;
 use App\Features\Users\Users\DTO\UserDTO;
-use App\Features\Users\Users\Validations\UsersValidationsService;
+use App\Features\Users\Users\Validations\UsersValidations;
 use App\Shared\Utils\Hash;
 use App\Shared\Utils\Transaction;
 
@@ -40,7 +40,7 @@ class CreateCustomerService
      */
     public function execute(UserDTO $userDTO): CustomerUserResponse
     {
-        UsersValidationsService::emailAlreadyExists(
+        UsersValidations::emailAlreadyExists(
             $this->usersRepository,
             $userDTO->email
         );

@@ -28,12 +28,7 @@ readonly class CityBusiness implements CityBusinessInterface
 
         CityValidations::stateExists($uf);
 
-        return Cache::rememberForever(
-            'CITIES_BY_'.$uf,
-            function() use($uf) {
-                return $this->cityRepository->findByUF($uf);
-            }
-        );
+        return $this->cityRepository->findByUF($uf);
     }
 
     /**

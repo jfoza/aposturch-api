@@ -1,15 +1,10 @@
 <?php
 
-use App\Shared\Enums\MiddlewareEnum;
 use App\Features\Users\Users\Http\Controllers\UsersController;
+use App\Shared\Enums\MiddlewareEnum;
 use Illuminate\Support\Facades\Route;
 
 Route::get(
-    '/',
-    [UsersController::class, 'index']
-);
-
-Route::put(
-    '/password/{id}',
-    [UsersController::class, 'updatePassword']
+    '/church/{id}',
+    [UsersController::class, 'findAllByChurch']
 )->middleware([MiddlewareEnum::UUID]);

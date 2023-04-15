@@ -9,7 +9,7 @@ use App\Shared\Enums\MessagesEnum;
 use App\Shared\Utils\Hash;
 use Symfony\Component\HttpFoundation\Response;
 
-class UsersValidationsService
+class UsersValidations
 {
     /**
      * @throws AppException
@@ -17,12 +17,39 @@ class UsersValidationsService
     public static function validateUserExistsById(
         string $userId,
         UsersRepositoryInterface $usersRepository
-    )
+    ): object
     {
         if(!$user = $usersRepository->findById($userId))
         {
             throw new AppException(
                 MessagesEnum::USER_NOT_FOUND,
+                Response::HTTP_NOT_FOUND
+            );
+        }
+
+        return $user;
+    }
+
+    /**
+     * @throws AppException
+     */
+    public static function validateUserExistsByIdAndHasChurch(
+        string $userId,
+        UsersRepositoryInterface $usersRepository
+    ): object
+    {
+        if(!$user = $usersRepository->findById($userId))
+        {
+            throw new AppException(
+                MessagesEnum::USER_NOT_FOUND,
+                Response::HTTP_NOT_FOUND
+            );
+        }
+
+        if(empty($user->church))
+        {
+            throw new AppException(
+                MessagesEnum::USER_CHURCH_RELATIONSHIP_NOT_FOUND,
                 Response::HTTP_NOT_FOUND
             );
         }

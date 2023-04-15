@@ -11,7 +11,7 @@ use App\Features\Users\AdminUsers\Validations\AllowedProfilesValidations;
 use App\Features\Users\Profiles\Contracts\ProfilesRepositoryInterface;
 use App\Features\Users\Users\Contracts\UsersRepositoryInterface;
 use App\Features\Users\Users\DTO\UserDTO;
-use App\Features\Users\Users\Validations\UsersValidationsService;
+use App\Features\Users\Users\Validations\UsersValidations;
 use App\Shared\ACL\Policy;
 use App\Shared\Enums\RulesEnum;
 use App\Shared\Utils\Hash;
@@ -104,9 +104,9 @@ class CreateAdminUserService implements CreateAdminUserServiceInterface
      */
     private function handleValidations()
     {
-        UsersValidationsService::emailAlreadyExists($this->usersRepository, $this->userDTO->email);
+        UsersValidations::emailAlreadyExists($this->usersRepository, $this->userDTO->email);
 
-        $this->profile = UsersValidationsService::returnProfileExists($this->profilesRepository, $this->userDTO->profileId);
+        $this->profile = UsersValidations::returnProfileExists($this->profilesRepository, $this->userDTO->profileId);
     }
 
     /**

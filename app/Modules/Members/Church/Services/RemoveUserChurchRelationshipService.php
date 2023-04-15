@@ -5,15 +5,17 @@ namespace App\Modules\Members\Church\Services;
 use App\Exceptions\AppException;
 use App\Features\Base\Services\Service;
 use App\Features\Users\Users\Contracts\UsersRepositoryInterface;
-use App\Features\Users\Users\Validations\UsersValidationsService;
+use App\Features\Users\Users\Validations\UsersValidations;
 use App\Modules\Members\Church\Contracts\RemoveUserChurchRelationshipServiceInterface;
 use App\Shared\Enums\RulesEnum;
 use App\Shared\Utils\Transaction;
 
 class RemoveUserChurchRelationshipService extends Service implements RemoveUserChurchRelationshipServiceInterface
 {
+    private string $userId;
+    private object $churchUserPayload;
     public function __construct(
-        private readonly UsersRepositoryInterface $usersRepository
+        private readonly UsersRepositoryInterface $usersRepository,
     ) {}
 
     /**
@@ -21,18 +23,72 @@ class RemoveUserChurchRelationshipService extends Service implements RemoveUserC
      */
     public function execute(string $userId)
     {
-        $this->getPolicy()->havePermission(RulesEnum::MEMBERS_MODULE_CHURCH_USER_RELATIONSHIP_DELETE->value);
+        $this->userId = $userId;
 
-        UsersValidationsService::validateUserExistsById(
-            $userId,
+        $policy = $this->getPolicy();
+
+        match (true)
+        {
+            $policy->haveRule(RulesEnum::MEMBERS_MODULE_CHURCH_ADMIN_MASTER_USER_RELATIONSHIP_DELETE->value)
+                => $this->deleteByAdminMaster(),
+
+            $policy->haveRule(RulesEnum::MEMBERS_MODULE_CHURCH_ADMIN_CHURCH_USER_RELATIONSHIP_DELETE->value)
+                => $this->deleteByAdminChurch(),
+
+            default => $policy->dispatchErrorForbidden()
+        };
+    }
+
+    /**
+     * @throws AppException
+     */
+    private function deleteByAdminMaster()
+    {
+        $this->handleValidations();
+
+        $this->baseDeleteOperation();
+    }
+
+    /**
+     * @throws AppException
+     */
+    private function deleteByAdminChurch()
+    {
+        $this->handleValidations();
+
+        $churchUserLogged = $this->getChurchUserAuth();
+
+        if($this->churchUserPayload->id != $churchUserLogged->id)
+        {
+            $this->getPolicy()->dispatchErrorForbidden();
+        }
+
+        $this->baseDeleteOperation();
+    }
+
+    /**
+     * @throws AppException
+     */
+    private function handleValidations()
+    {
+        $user = UsersValidations::validateUserExistsByIdAndHasChurch(
+            $this->userId,
             $this->usersRepository
         );
 
+        $this->churchUserPayload = $user->church->first();
+    }
+
+    /**
+     * @throws AppException
+     */
+    private function baseDeleteOperation()
+    {
         Transaction::beginTransaction();
 
         try
         {
-            $this->usersRepository->removeChurchRelationship($userId);
+            $this->usersRepository->removeChurchRelationship($this->userId, $this->churchUserPayload->id);
 
             Transaction::commit();
         }

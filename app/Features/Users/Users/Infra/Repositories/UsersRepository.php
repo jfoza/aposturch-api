@@ -2,6 +2,7 @@
 
 namespace App\Features\Users\Users\Infra\Repositories;
 
+use App\Features\Users\UserChurch\Infra\Models\UserChurch;
 use App\Features\Users\Users\Contracts\UsersRepositoryInterface;
 use App\Features\Users\Users\DTO\UserDTO;
 use App\Features\Users\Users\DTO\UserFiltersDTO;
@@ -12,7 +13,7 @@ use Illuminate\Support\Collection;
 
 class UsersRepository implements UsersRepositoryInterface
 {
-    public function findAll(UserFiltersDTO $userFiltersDTO): LengthAwarePaginator|Collection
+    public function findAllByChurch(UserFiltersDTO $userFiltersDTO): LengthAwarePaginator|Collection
     {
         return User::with(['person'])
         ->select(
@@ -30,27 +31,19 @@ class UsersRepository implements UsersRepositoryInterface
                 );
             }
         )
-        ->when(isset($userFiltersDTO->churchId),
-            function($q) use($userFiltersDTO) {
-                return $q->whereRelation(
-                    'church',
-                    Church::tableField(Church::ID),
-                    $userFiltersDTO->churchId
-                );
-            }
-        )
         ->whereRelation(
             'church',
             Church::tableField(Church::ID),
-            '!=',
-            null
+            $userFiltersDTO->churchId
         )
         ->paginate($userFiltersDTO->paginationOrder->getPerPage());
     }
 
-    public function findById(string $id): mixed
+    public function findById(string $id): ?object
     {
-        return User::where(User::ID, $id)->first();
+        return User::with(['church'])
+            ->where(User::ID, $id)
+            ->first();
     }
 
     public function findByEmail(string $email): mixed
@@ -98,8 +91,11 @@ class UsersRepository implements UsersRepositoryInterface
             ->update([User::PASSWORD => $password]);
     }
 
-    public function removeChurchRelationship(string $userId): void
+    public function removeChurchRelationship(string $userId, string $churchId): void
     {
-        User::find($userId)->church()->sync([]);
+        UserChurch::where([
+            UserChurch::USER_ID => $userId,
+            UserChurch::CHURCH_ID => $churchId,
+        ])->delete();
     }
 }

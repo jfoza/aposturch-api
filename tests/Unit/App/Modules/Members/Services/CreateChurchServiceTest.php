@@ -52,7 +52,7 @@ class CreateChurchServiceTest extends TestCase
         $createChurchService = $this->getCreateChurchService();
 
         $createChurchService->setPolicy(new Policy([
-            RulesEnum::MEMBERS_MODULE_CHURCH_INSERT->value
+            RulesEnum::MEMBERS_MODULE_CHURCH_ADMIN_MASTER_INSERT->value
         ]));
 
         $this
@@ -70,7 +70,7 @@ class CreateChurchServiceTest extends TestCase
         $createChurchService = $this->getCreateChurchService();
 
         $createChurchService->setPolicy(new Policy([
-            RulesEnum::MEMBERS_MODULE_CHURCH_INSERT->value
+            RulesEnum::MEMBERS_MODULE_CHURCH_ADMIN_MASTER_INSERT->value
         ]));
 
         $this

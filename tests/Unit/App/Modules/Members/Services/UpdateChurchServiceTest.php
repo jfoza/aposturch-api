@@ -49,18 +49,35 @@ class UpdateChurchServiceTest extends TestCase
         );
     }
 
-    public function test_should_update_church()
+    public function dataProviderUpdateChurch(): array
+    {
+        return [
+            'By Admin Master Rule' => [RulesEnum::MEMBERS_MODULE_CHURCH_ADMIN_MASTER_UPDATE->value],
+            'By Admin Church Rule' => [RulesEnum::MEMBERS_MODULE_CHURCH_ADMIN_CHURCH_UPDATE->value],
+        ];
+    }
+
+    /**
+     * @dataProvider dataProviderUpdateChurch
+     *
+     * @param string $rule
+     * @return void
+     * @throws AppException
+     */
+    public function test_should_update_church(string $rule): void
     {
         $updateChurchService = $this->getUpdateChurchService();
 
-        $updateChurchService->setPolicy(new Policy([
-            RulesEnum::MEMBERS_MODULE_CHURCH_UPDATE->value
-        ]));
+        $updateChurchService->setPolicy(new Policy([$rule]));
+
+        $updateChurchService->setChurchUserAuth(
+            ChurchLists::showChurch($this->churchDtoMock->id)
+        );
 
         $this
             ->churchRepositoryMock
             ->method('findById')
-            ->willReturn(ChurchLists::showChurch());
+            ->willReturn(ChurchLists::showChurch($this->churchDtoMock->id));
 
         $this
             ->cityRepositoryMock
@@ -77,8 +94,12 @@ class UpdateChurchServiceTest extends TestCase
         $updateChurchService = $this->getUpdateChurchService();
 
         $updateChurchService->setPolicy(new Policy([
-            RulesEnum::MEMBERS_MODULE_CHURCH_UPDATE->value
+            RulesEnum::MEMBERS_MODULE_CHURCH_ADMIN_CHURCH_UPDATE->value
         ]));
+
+        $updateChurchService->setChurchUserAuth(
+            ChurchLists::showChurch($this->churchDtoMock->id)
+        );
 
         $this
             ->churchRepositoryMock
@@ -96,8 +117,12 @@ class UpdateChurchServiceTest extends TestCase
         $updateChurchService = $this->getUpdateChurchService();
 
         $updateChurchService->setPolicy(new Policy([
-            RulesEnum::MEMBERS_MODULE_CHURCH_UPDATE->value
+            RulesEnum::MEMBERS_MODULE_CHURCH_ADMIN_CHURCH_UPDATE->value
         ]));
+
+        $updateChurchService->setChurchUserAuth(
+            ChurchLists::showChurch($this->churchDtoMock->id)
+        );
 
         $this
             ->churchRepositoryMock
@@ -111,6 +136,34 @@ class UpdateChurchServiceTest extends TestCase
 
         $this->expectException(AppException::class);
         $this->expectExceptionCode(Response::HTTP_NOT_FOUND);
+
+        $updateChurchService->execute($this->churchDtoMock);
+    }
+
+    public function test_should_return_exception_if_user_tries_to_update_a_church_other_than_his()
+    {
+        $updateChurchService = $this->getUpdateChurchService();
+
+        $updateChurchService->setPolicy(new Policy([
+            RulesEnum::MEMBERS_MODULE_CHURCH_ADMIN_CHURCH_UPDATE->value
+        ]));
+
+        $updateChurchService->setChurchUserAuth(
+            ChurchLists::showChurch(Uuid::uuid4()->toString())
+        );
+
+        $this
+            ->churchRepositoryMock
+            ->method('findById')
+            ->willReturn(ChurchLists::showChurch($this->churchDtoMock->id));
+
+        $this
+            ->cityRepositoryMock
+            ->method('findById')
+            ->willReturn(CitiesLists::showCityById());
+
+        $this->expectException(AppException::class);
+        $this->expectExceptionCode(Response::HTTP_FORBIDDEN);
 
         $updateChurchService->execute($this->churchDtoMock);
     }

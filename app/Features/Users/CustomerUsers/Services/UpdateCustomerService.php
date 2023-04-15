@@ -15,7 +15,7 @@ use App\Features\Users\CustomerUsers\Services\Utils\CustomerUsersValidationsServ
 use App\Features\Users\Profiles\Contracts\ProfilesRepositoryInterface;
 use App\Features\Users\Users\Contracts\UsersRepositoryInterface;
 use App\Features\Users\Users\DTO\UserDTO;
-use App\Features\Users\Users\Validations\UsersValidationsService;
+use App\Features\Users\Users\Validations\UsersValidations;
 use App\Shared\Cache\PolicyCache;
 
 class UpdateCustomerService
@@ -42,7 +42,7 @@ class UpdateCustomerService
             $userDTO->id
         );
 
-        $user = UsersValidationsService::emailAlreadyExistsUpdate(
+        $user = UsersValidations::emailAlreadyExistsUpdate(
             $this->usersRepository,
             $userDTO->id,
             $userDTO->email
@@ -60,7 +60,7 @@ class UpdateCustomerService
 
         if($public)
         {
-            UsersValidationsService::isActiveUser($user->active);
+            UsersValidations::isActiveUser($user->active);
             $userDTO->active = $user->active;
         }
 

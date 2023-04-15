@@ -9,9 +9,12 @@ use App\Modules\Members\Church\Contracts\ShowByChurchIdServiceInterface;
 use App\Modules\Members\Church\Validations\ChurchValidations;
 use App\Shared\Enums\RulesEnum;
 use App\Shared\Helpers\Helpers;
+use App\Shared\Utils\Auth;
 
 class ShowByChurchIdService extends Service implements ShowByChurchIdServiceInterface
 {
+    private string $churchId;
+
     public function __construct(
         private readonly ChurchRepositoryInterface $churchRepository,
     ) {}
@@ -21,12 +24,16 @@ class ShowByChurchIdService extends Service implements ShowByChurchIdServiceInte
      */
     public function execute(string $churchId): object
     {
-        $this->getPolicy()->havePermission(RulesEnum::MEMBERS_MODULE_CHURCH_VIEW->value);
+        $this->churchId = $churchId;
 
-        $church = ChurchValidations::churchIdExists(
-            $this->churchRepository,
-            $churchId
-        );
+        $policy = $this->getPolicy();
+
+        $church = match (true) {
+            $policy->haveRule(RulesEnum::MEMBERS_MODULE_CHURCH_ADMIN_MASTER_VIEW->value) => $this->showByAdminMaster(),
+            $policy->haveRule(RulesEnum::MEMBERS_MODULE_CHURCH_ADMIN_CHURCH_VIEW->value) => $this->showByAdminChurch(),
+
+            default => $policy->dispatchErrorForbidden(),
+        };
 
         if(count($church->imagesChurch) > 0)
         {
@@ -36,5 +43,34 @@ class ShowByChurchIdService extends Service implements ShowByChurchIdServiceInte
         }
 
         return $church;
+    }
+
+    /**
+     * @throws AppException
+     */
+    private function showByAdminMaster(): ?object
+    {
+        return ChurchValidations::churchIdExists(
+            $this->churchRepository,
+            $this->churchId
+        );
+    }
+
+    /**
+     * @throws AppException
+     */
+    private function showByAdminChurch(): ?object
+    {
+        $church = $this->getChurchUserAuth();
+
+        if($church->id != $this->churchId)
+        {
+            $this->getPolicy()->dispatchErrorForbidden();
+        }
+
+        return ChurchValidations::churchIdExists(
+            $this->churchRepository,
+            $this->churchId
+        );
     }
 }

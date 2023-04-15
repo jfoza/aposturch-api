@@ -5,7 +5,7 @@ namespace App\Features\Users\Users\Services;
 use App\Exceptions\AppException;
 use App\Features\Users\Users\Contracts\UsersRepositoryInterface;
 use App\Features\Users\Users\DTO\PasswordDTO;
-use App\Features\Users\Users\Validations\UsersValidationsService;
+use App\Features\Users\Users\Validations\UsersValidations;
 use App\Shared\Cache\PolicyCache;
 use App\Shared\Utils\Hash;
 
@@ -20,12 +20,12 @@ class UpdateUserPasswordService
      */
     public function execute(PasswordDTO $passwordDTO): void
     {
-        $user = UsersValidationsService::validateUserExistsById(
+        $user = UsersValidations::validateUserExistsById(
             $passwordDTO->userId,
             $this->usersRepository
         );
 
-        UsersValidationsService::checkIfPasswordsMatch(
+        UsersValidations::checkIfPasswordsMatch(
             $passwordDTO->currentPassword,
             $user->password
         );

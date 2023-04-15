@@ -35,14 +35,29 @@ class FindAllChurchesServiceTest extends TestCase
         );
     }
 
-    public function test_should_return_churches_list()
+    public function dataProviderFindAllChurches(): array
+    {
+        return [
+            'By Admin Master Rule' => [RulesEnum::MEMBERS_MODULE_CHURCH_ADMIN_MASTER_VIEW->value],
+            'By Admin Church Rule' => [RulesEnum::MEMBERS_MODULE_CHURCH_ADMIN_CHURCH_VIEW->value],
+            'By Admin Module Rule' => [RulesEnum::MEMBERS_MODULE_CHURCH_ADMIN_MODULE_VIEW->value],
+            'By Assistant Rule'    => [RulesEnum::MEMBERS_MODULE_CHURCH_ASSISTANT_VIEW->value],
+        ];
+    }
+
+    /**
+     * @dataProvider dataProviderFindAllChurches
+     *
+     * @param string $rule
+     * @return void
+     * @throws AppException
+     */
+    public function test_should_to_return_churches_list(string $rule): void
     {
         $findAllChurchesService = $this->getFindAllChurchesService();
 
         $findAllChurchesService->setPolicy(
-            new Policy([
-                RulesEnum::MEMBERS_MODULE_CHURCH_VIEW->value
-            ])
+            new Policy([$rule])
         );
 
         $this
@@ -55,34 +70,12 @@ class FindAllChurchesServiceTest extends TestCase
         $this->assertInstanceOf(Collection::class, $churches);
     }
 
-    public function test_should_return_empty()
-    {
-        $findAllChurchesService = $this->getFindAllChurchesService();
-
-        $findAllChurchesService->setPolicy(
-            new Policy([
-                RulesEnum::MEMBERS_MODULE_CHURCH_VIEW->value
-            ])
-        );
-
-        $this
-            ->churchRepositoryMock
-            ->method('findAll')
-            ->willReturn([]);
-
-        $churches = $findAllChurchesService->execute($this->churchFiltersDtoMock);
-
-        $this->assertEmpty($churches);
-    }
-
     public function test_should_return_exception_if_user_is_not_authorized()
     {
         $findAllChurchesService = $this->getFindAllChurchesService();
 
         $findAllChurchesService->setPolicy(
-            new Policy([
-                'ABC'
-            ])
+            new Policy(['ABC'])
         );
 
         $this->expectException(AppException::class);

@@ -53,4 +53,6 @@ enum MessagesEnum: string {
 
     // MODULES - MEMBERS
     case CHURCH_HAS_MEMBERS_IN_DELETE = 'Não é possível excluir uma igreja com membros vinculados.';
+    case USER_CHURCH_RELATIONSHIP_NOT_FOUND = 'Este usuário não possui vínculo com esta igreja.';
+    case USER_HAS_NO_CHURCH = 'Usuário não possui vínculo com nenhuma igreja.';
 }

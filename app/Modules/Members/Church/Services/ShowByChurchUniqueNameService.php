@@ -12,6 +12,8 @@ use App\Shared\Helpers\Helpers;
 
 class ShowByChurchUniqueNameService extends Service implements ShowByChurchUniqueNameServiceInterface
 {
+    private string $churchUniqueName;
+
     public function __construct(
         private readonly ChurchRepositoryInterface $churchRepository
     ) {}
@@ -19,14 +21,18 @@ class ShowByChurchUniqueNameService extends Service implements ShowByChurchUniqu
     /**
      * @throws AppException
      */
-    public function execute(string $uniqueName): object
+    public function execute(string $churchUniqueName): object
     {
-        $this->getPolicy()->havePermission(RulesEnum::MEMBERS_MODULE_CHURCH_VIEW->value);
+        $this->churchUniqueName = $churchUniqueName;
 
-        $church = ChurchValidations::churchUniqueNameExists(
-            $this->churchRepository,
-            $uniqueName
-        );
+        $policy = $this->getPolicy();
+
+        $church = match (true) {
+            $policy->haveRule(RulesEnum::MEMBERS_MODULE_CHURCH_ADMIN_MASTER_DETAILS_VIEW->value) => $this->showByAdminMaster(),
+            $policy->haveRule(RulesEnum::MEMBERS_MODULE_CHURCH_ADMIN_CHURCH_DETAILS_VIEW->value) => $this->showByAdminChurch(),
+
+            default  => $policy->dispatchErrorForbidden(),
+        };
 
         if(count($church->imagesChurch) > 0)
         {
@@ -36,5 +42,34 @@ class ShowByChurchUniqueNameService extends Service implements ShowByChurchUniqu
         }
 
         return $church;
+    }
+
+    /**
+     * @throws AppException
+     */
+    private function showByAdminMaster(): ?object
+    {
+        return ChurchValidations::churchUniqueNameExists(
+            $this->churchRepository,
+            $this->churchUniqueName
+        );
+    }
+
+    /**
+     * @throws AppException
+     */
+    private function showByAdminChurch(): ?object
+    {
+        $church = $this->getChurchUserAuth();
+
+        if($church->unique_name != $this->churchUniqueName)
+        {
+            $this->getPolicy()->dispatchErrorForbidden();
+        }
+
+        return ChurchValidations::churchUniqueNameExists(
+            $this->churchRepository,
+            $this->churchUniqueName
+        );
     }
 }

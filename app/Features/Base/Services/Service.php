@@ -10,6 +10,23 @@ abstract class Service
     use DispatchExceptionTrait;
 
     private Policy $policy;
+    private mixed $churchUserAuth;
+
+    /**
+     * @return mixed
+     */
+    public function getChurchUserAuth(): mixed
+    {
+        return $this->churchUserAuth;
+    }
+
+    /**
+     * @param mixed $churchUserAuth
+     */
+    public function setChurchUserAuth(mixed $churchUserAuth): void
+    {
+        $this->churchUserAuth = $churchUserAuth;
+    }
 
     /**
      * @return Policy

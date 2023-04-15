@@ -2,10 +2,7 @@
 
 namespace App\Shared\Utils;
 
-use App\Shared\Enums\MessagesEnum;
-use App\Exceptions\AppException;
 use Illuminate\Contracts\Auth\Authenticatable;
-use Symfony\Component\HttpFoundation\Response;
 use Tymon\JWTAuth\Exceptions\UserNotDefinedException;
 
 class Auth
@@ -38,7 +35,7 @@ class Auth
     /**
      * @throws UserNotDefinedException
      */
-    public static function authenticate(): Authenticatable
+    public static function authenticate(): object
     {
         if (!$user = auth()->user()) {
             throw new UserNotDefinedException;
@@ -50,12 +47,5 @@ class Auth
     public static function getId(): int|string|null
     {
         return auth()->id();
-    }
-
-    public static function getChurchesByLoggedUser()
-    {
-        $user = auth()->user();
-
-        return $user['church'];
     }
 }

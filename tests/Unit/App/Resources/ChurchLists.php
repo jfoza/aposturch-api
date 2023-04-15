@@ -62,6 +62,35 @@ class ChurchLists
         ]);
     }
 
+    public static function showChurchByUniqueName(?string $uniqueName = null): object
+    {
+        if(is_null($uniqueName))
+        {
+            $uniqueName = 'test';
+        }
+
+        return (object) ([
+            Church::ID             => Uuid::uuid4()->toString(),
+            Church::NAME           => 'test',
+            Church::UNIQUE_NAME    => $uniqueName,
+            Church::PHONE          => '51999999999',
+            Church::EMAIL          => 'test@test.com',
+            Church::FACEBOOK       => '',
+            Church::INSTAGRAM      => '',
+            Church::YOUTUBE        => '',
+            Church::ZIP_CODE       => '99999999',
+            Church::ADDRESS        => 'test',
+            Church::NUMBER_ADDRESS => 'test',
+            Church::COMPLEMENT     => 'test',
+            Church::DISTRICT       => 'test',
+            Church::UF             => 'RS',
+            Church::CITY_ID        => Uuid::uuid4()->toString(),
+            Church::ACTIVE         => true,
+            'user' => [],
+            'imagesChurch' => [],
+        ]);
+    }
+
     public static function showChurchWithImage(?string $imageId = null): object
     {
         $id = Uuid::uuid4()->toString();

@@ -53,9 +53,13 @@ readonly class ChurchPersistenceController
         return response()->json([], Response::HTTP_NO_CONTENT);
     }
 
-    public function deleteRelationship(Request $request): JsonResponse
+    public function deleteRelationship(
+        Request $request
+    ): JsonResponse
     {
-        $this->removeUserChurchRelationshipService->execute($request->id);
+        $userId = $request->id;
+
+        $this->removeUserChurchRelationshipService->execute($userId);
 
         return response()->json([], Response::HTTP_NO_CONTENT);
     }

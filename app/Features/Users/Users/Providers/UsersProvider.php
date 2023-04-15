@@ -3,10 +3,10 @@
 namespace App\Features\Users\Users\Providers;
 
 use App\Features\Base\Providers\AbstractServiceProvider;
-use App\Features\Users\Users\Contracts\FindAllUsersServiceInterface;
+use App\Features\Users\Users\Contracts\FindUsersByChurchServiceInterface;
 use App\Features\Users\Users\Contracts\UsersRepositoryInterface;
 use App\Features\Users\Users\Infra\Repositories\UsersRepository;
-use App\Features\Users\Users\Services\FindAllUsersService;
+use App\Features\Users\Users\Services\FindUsersByChurchService;
 
 class UsersProvider extends AbstractServiceProvider
 {
@@ -17,8 +17,8 @@ class UsersProvider extends AbstractServiceProvider
     public function register()
     {
         $this->bind(
-            FindAllUsersServiceInterface::class,
-            FindAllUsersService::class,
+            FindUsersByChurchServiceInterface::class,
+            FindUsersByChurchService::class,
         );
     }
 }
