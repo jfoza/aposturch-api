@@ -5,6 +5,7 @@ namespace App\Features\City\Cities\Infra\Repositories;
 use App\Features\City\Cities\Contracts\CityRepositoryInterface;
 use App\Features\City\Cities\Infra\Models\City;
 use App\Features\Persons\Infra\Models\Person;
+use App\Modules\Members\Church\Models\Church;
 
 class CityRepository implements CityRepositoryInterface
 {
@@ -54,6 +55,23 @@ class CityRepository implements CityRepositoryInterface
             ->join(
                 Person::tableName(),
                 Person::tableField(Person::CITY_ID),
+                City::tableField(City::ID)
+            )
+            ->groupBy(City::tableField(City::ID))
+            ->orderBy(City::tableField(City::DESCRIPTION), 'ASC')
+            ->get();
+    }
+
+    public function findAllInChurches()
+    {
+        return City::select(
+                City::tableField(City::ID),
+                City::tableField(City::DESCRIPTION),
+                City::tableField(City::UF),
+            )
+            ->join(
+                Church::tableName(),
+                Church::tableField(Church::CITY_ID),
                 City::tableField(City::ID)
             )
             ->groupBy(City::tableField(City::ID))

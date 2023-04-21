@@ -63,12 +63,10 @@ class UpdateChurchService extends Service implements UpdateChurchServiceInterfac
     {
         $this->handleValidations();
 
-        $church = $this->getChurchUserAuth();
-
-        if($church->id != $this->churchDTO->id)
-        {
-            $this->getPolicy()->dispatchErrorForbidden();
-        }
+        $this->userHasChurch(
+            Church::ID,
+            $this->churchDTO->id
+        );
 
         return $this->baseUpdateOperation();
     }

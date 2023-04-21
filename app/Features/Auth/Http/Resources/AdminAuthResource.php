@@ -43,6 +43,7 @@ readonly class AdminAuthResource
         $this->authResponse->user->fullName = $user->name;
         $this->authResponse->user->role     = $user->profile;
         $this->authResponse->user->status   = $user->active;
+        $this->authResponse->user->churches = $user->church;
 
         $this->authResponse->user->ability = $ability;
     }

@@ -23,6 +23,16 @@ DO $$
         _profile varchar := 'ADMIN_MASTER';
         _profile_uuid uuid;
 
+        _church1 varchar = 'igreja-biblica-viver-nh';
+        _church2 varchar = 'igreja-biblica-viver-caxias';
+        _church3 varchar = 'igreja-teste-1';
+        _church4 varchar = 'igreja-teste-2';
+
+        _church_id1 uuid;
+        _church_id2 uuid;
+        _church_id3 uuid;
+        _church_id4 uuid;
+
         _module1 uuid;
         _module2 uuid;
         _module3 uuid;
@@ -34,6 +44,11 @@ DO $$
     BEGIN
         SELECT id INTO _profile_uuid FROM users.profiles WHERE unique_name = _profile;
         SELECT id INTO _city_id FROM city.cities WHERE description = _city;
+
+        SELECT id INTO _church_id1 FROM members.churches WHERE unique_name = _church1;
+        SELECT id INTO _church_id2 FROM members.churches WHERE unique_name = _church2;
+        SELECT id INTO _church_id3 FROM members.churches WHERE unique_name = _church3;
+        SELECT id INTO _church_id4 FROM members.churches WHERE unique_name = _church4;
 
         SELECT id INTO _module1 FROM module.modules WHERE module_unique_name = 'USERS';
         SELECT id INTO _module2 FROM module.modules WHERE module_unique_name = 'FINANCE';
@@ -87,6 +102,25 @@ DO $$
             (
                 _profile_uuid,
                 _user_uuid
+            );
+
+        INSERT INTO users.users_churches (user_id, church_id)
+        VALUES
+            (
+                _user_uuid,
+                _church_id1
+            ),
+            (
+                _user_uuid,
+                _church_id2
+            ),
+            (
+                _user_uuid,
+                _church_id3
+            ),
+            (
+                _user_uuid,
+                _church_id4
             );
     END $$;
 commit;
@@ -117,6 +151,16 @@ DO $$
         _profile varchar := 'ADMIN_MASTER';
         _profile_uuid uuid;
 
+        _church1 varchar = 'igreja-biblica-viver-nh';
+        _church2 varchar = 'igreja-biblica-viver-caxias';
+        _church3 varchar = 'igreja-teste-1';
+        _church4 varchar = 'igreja-teste-2';
+
+        _church_id1 uuid;
+        _church_id2 uuid;
+        _church_id3 uuid;
+        _church_id4 uuid;
+
         _module1 uuid;
         _module2 uuid;
         _module3 uuid;
@@ -128,6 +172,11 @@ DO $$
     BEGIN
         SELECT id INTO _profile_uuid FROM users.profiles WHERE unique_name = _profile;
         SELECT id INTO _city_id FROM city.cities WHERE description = _city;
+
+        SELECT id INTO _church_id1 FROM members.churches WHERE unique_name = _church1;
+        SELECT id INTO _church_id2 FROM members.churches WHERE unique_name = _church2;
+        SELECT id INTO _church_id3 FROM members.churches WHERE unique_name = _church3;
+        SELECT id INTO _church_id4 FROM members.churches WHERE unique_name = _church4;
 
         SELECT id INTO _module1 FROM module.modules WHERE module_unique_name = 'USERS';
         SELECT id INTO _module2 FROM module.modules WHERE module_unique_name = 'FINANCE';
@@ -181,6 +230,25 @@ DO $$
             (
                 _profile_uuid,
                 _user_uuid
+            );
+
+        INSERT INTO users.users_churches (user_id, church_id)
+        VALUES
+            (
+                _user_uuid,
+                _church_id1
+            ),
+            (
+                _user_uuid,
+                _church_id2
+            ),
+            (
+                _user_uuid,
+                _church_id3
+            ),
+            (
+                _user_uuid,
+                _church_id4
             );
     END $$;
 commit;
@@ -210,6 +278,9 @@ DO $$
         _profile varchar := 'ADMIN_CHURCH';
         _profile_uuid uuid;
 
+        _church_unique_name varchar = 'igreja-biblica-viver-caxias';
+        _church_id uuid;
+
         _module1 uuid;
         _module2 uuid;
         _module3 uuid;
@@ -221,6 +292,7 @@ DO $$
     BEGIN
         SELECT id INTO _profile_uuid FROM users.profiles WHERE unique_name = _profile;
         SELECT id INTO _city_id FROM city.cities WHERE description = _city;
+        SELECT id INTO _church_id FROM members.churches WHERE unique_name = _church_unique_name;
 
         SELECT id INTO _module1 FROM module.modules WHERE module_unique_name = 'USERS';
         SELECT id INTO _module2 FROM module.modules WHERE module_unique_name = 'FINANCE';
@@ -275,6 +347,13 @@ DO $$
                 _profile_uuid,
                 _user_uuid
             );
+
+        INSERT INTO users.users_churches (user_id, church_id)
+        VALUES
+            (
+                _user_uuid,
+                _church_id
+            );
     END $$;
 commit;
 
@@ -303,12 +382,16 @@ DO $$
         _profile varchar := 'ADMIN_MODULE';
         _profile_uuid uuid;
 
+        _church_unique_name varchar = 'igreja-biblica-viver-nh';
+        _church_id uuid;
+
         _module1 uuid;
         _module6 uuid;
 
     BEGIN
         SELECT id INTO _profile_uuid FROM users.profiles WHERE unique_name = _profile;
         SELECT id INTO _city_id FROM city.cities WHERE description = _city;
+        SELECT id INTO _church_id FROM members.churches WHERE unique_name = _church_unique_name;
 
         SELECT id INTO _module1 FROM module.modules WHERE module_unique_name = 'USERS';
         SELECT id INTO _module6 FROM module.modules WHERE module_unique_name = 'SCHEDULE';
@@ -352,6 +435,13 @@ DO $$
             (
                 _profile_uuid,
                 _user_uuid
+            );
+
+        INSERT INTO users.users_churches (user_id, church_id)
+        VALUES
+            (
+                _user_uuid,
+                _church_id
             );
     END $$;
 commit;
@@ -381,12 +471,16 @@ DO $$
         _profile varchar := 'ASSISTANT';
         _profile_uuid uuid;
 
+        _church_unique_name varchar = 'igreja-teste-1';
+        _church_id uuid;
+
         _module1 uuid;
         _module6 uuid;
 
     BEGIN
         SELECT id INTO _profile_uuid FROM users.profiles WHERE unique_name = _profile;
         SELECT id INTO _city_id FROM city.cities WHERE description = _city;
+        SELECT id INTO _church_id FROM members.churches WHERE unique_name = _church_unique_name;
 
         SELECT id INTO _module1 FROM module.modules WHERE module_unique_name = 'USERS';
         SELECT id INTO _module6 FROM module.modules WHERE module_unique_name = 'SCHEDULE';
@@ -430,6 +524,13 @@ DO $$
             (
                 _profile_uuid,
                 _user_uuid
+            );
+
+        INSERT INTO users.users_churches (user_id, church_id)
+        VALUES
+            (
+                _user_uuid,
+                _church_id
             );
     END $$;
 commit;

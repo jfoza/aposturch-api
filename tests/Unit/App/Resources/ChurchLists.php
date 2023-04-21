@@ -34,6 +34,53 @@ class ChurchLists
         ]);
     }
 
+    public static function getChurchesById(string $churchId): Collection
+    {
+        return Collection::make([
+            [
+                Church::ID             => $churchId,
+                Church::NAME           => 'test',
+                Church::PHONE          => '51999999999',
+                Church::EMAIL          => 'test@test.com',
+                Church::FACEBOOK       => '',
+                Church::INSTAGRAM      => '',
+                Church::YOUTUBE        => '',
+                Church::ZIP_CODE       => '99999999',
+                Church::ADDRESS        => 'test',
+                Church::NUMBER_ADDRESS => 'test',
+                Church::COMPLEMENT     => 'test',
+                Church::DISTRICT       => 'test',
+                Church::UF             => 'RS',
+                Church::CITY_ID        => Uuid::uuid4()->toString(),
+                Church::ACTIVE         => true,
+            ]
+        ]);
+    }
+
+    public static function getChurchesByUniqueName(string $uniqueName): Collection
+    {
+        return Collection::make([
+            [
+                Church::ID             => Uuid::uuid4()->toString(),
+                Church::NAME           => 'test',
+                Church::UNIQUE_NAME    => $uniqueName,
+                Church::PHONE          => '51999999999',
+                Church::EMAIL          => 'test@test.com',
+                Church::FACEBOOK       => '',
+                Church::INSTAGRAM      => '',
+                Church::YOUTUBE        => '',
+                Church::ZIP_CODE       => '99999999',
+                Church::ADDRESS        => 'test',
+                Church::NUMBER_ADDRESS => 'test',
+                Church::COMPLEMENT     => 'test',
+                Church::DISTRICT       => 'test',
+                Church::UF             => 'RS',
+                Church::CITY_ID        => Uuid::uuid4()->toString(),
+                Church::ACTIVE         => true,
+            ]
+        ]);
+    }
+
     public static function showChurch(?string $id = null): object
     {
         if(is_null($id))

@@ -10,6 +10,7 @@ use App\Features\General\Images\Enums\TypeUploadImageEnum;
 use App\Features\General\Images\Infra\Models\Image;
 use App\Modules\Members\Church\Contracts\ChurchRepositoryInterface;
 use App\Modules\Members\Church\Contracts\ChurchUploadImageServiceInterface;
+use App\Modules\Members\Church\Models\Church;
 use App\Modules\Members\Church\Traits\ChurchOperationsTrait;
 use App\Modules\Members\Church\Validations\ChurchValidations;
 use App\Shared\Enums\RulesEnum;
@@ -64,12 +65,10 @@ class ChurchUploadImageService extends Service implements ChurchUploadImageServi
     {
         $this->handleValidations();
 
-        $church = $this->getChurchUserAuth();
-
-        if($church->id != $this->churchId)
-        {
-            $this->getPolicy()->dispatchErrorForbidden();
-        }
+        $this->userHasChurch(
+            Church::ID,
+            $this->churchId
+        );
 
         return $this->baseUploadOperation();
     }

@@ -6,6 +6,7 @@ use App\Exceptions\AppException;
 use App\Features\Base\Services\Service;
 use App\Modules\Members\Church\Contracts\ChurchRepositoryInterface;
 use App\Modules\Members\Church\Contracts\ShowByChurchUniqueNameServiceInterface;
+use App\Modules\Members\Church\Models\Church;
 use App\Modules\Members\Church\Validations\ChurchValidations;
 use App\Shared\Enums\RulesEnum;
 use App\Shared\Helpers\Helpers;
@@ -60,16 +61,16 @@ class ShowByChurchUniqueNameService extends Service implements ShowByChurchUniqu
      */
     private function showByAdminChurch(): ?object
     {
-        $church = $this->getChurchUserAuth();
-
-        if($church->unique_name != $this->churchUniqueName)
-        {
-            $this->getPolicy()->dispatchErrorForbidden();
-        }
-
-        return ChurchValidations::churchUniqueNameExists(
+        $church = ChurchValidations::churchUniqueNameExists(
             $this->churchRepository,
             $this->churchUniqueName
         );
+
+        $this->userHasChurch(
+            Church::UNIQUE_NAME,
+            $this->churchUniqueName
+        );
+
+        return $church;
     }
 }

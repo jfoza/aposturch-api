@@ -68,8 +68,8 @@ class FindUsersByChurchServiceTest extends TestCase
             new Policy([$rule])
         );
 
-        $findUsersByChurchService->setChurchUserAuth(
-            ChurchLists::showChurch($this->userFiltersDtoMock->churchId)
+        $findUsersByChurchService->setChurchesUserAuth(
+            ChurchLists::getChurchesById($this->userFiltersDtoMock->churchId)
         );
 
         $this
@@ -95,8 +95,8 @@ class FindUsersByChurchServiceTest extends TestCase
             new Policy([RulesEnum::MEMBERS_MODULE_CHURCH_ADMIN_MASTER_DETAILS_VIEW->value])
         );
 
-        $findUsersByChurchService->setChurchUserAuth(
-            ChurchLists::showChurch($this->userFiltersDtoMock->churchId)
+        $findUsersByChurchService->setChurchesUserAuth(
+            ChurchLists::getChurchesById($this->userFiltersDtoMock->churchId)
         );
 
         $this
@@ -118,8 +118,8 @@ class FindUsersByChurchServiceTest extends TestCase
             new Policy([RulesEnum::MEMBERS_MODULE_CHURCH_ADMIN_CHURCH_DETAILS_VIEW->value])
         );
 
-        $findUsersByChurchService->setChurchUserAuth(
-            ChurchLists::showChurch(Uuid::uuid4()->toString())
+        $findUsersByChurchService->setChurchesUserAuth(
+            ChurchLists::getChurchesById(Uuid::uuid4()->toString())
         );
 
         $this

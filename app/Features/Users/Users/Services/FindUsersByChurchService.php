@@ -8,6 +8,7 @@ use App\Features\Users\Users\Contracts\FindUsersByChurchServiceInterface;
 use App\Features\Users\Users\Contracts\UsersRepositoryInterface;
 use App\Features\Users\Users\DTO\UserFiltersDTO;
 use App\Modules\Members\Church\Contracts\ChurchRepositoryInterface;
+use App\Modules\Members\Church\Models\Church;
 use App\Modules\Members\Church\Validations\ChurchValidations;
 use App\Shared\Enums\RulesEnum;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
@@ -32,8 +33,11 @@ class FindUsersByChurchService extends Service implements FindUsersByChurchServi
         $policy = $this->getPolicy();
 
         return match (true) {
-            $policy->haveRule(RulesEnum::MEMBERS_MODULE_CHURCH_ADMIN_MASTER_DETAILS_VIEW->value) => $this->findByAdminMaster(),
-            $policy->haveRule(RulesEnum::MEMBERS_MODULE_CHURCH_ADMIN_CHURCH_DETAILS_VIEW->value) => $this->findByAdminChurch(),
+            $policy->haveRule(RulesEnum::MEMBERS_MODULE_CHURCH_ADMIN_MASTER_DETAILS_VIEW->value)
+                => $this->findByAdminMaster(),
+
+            $policy->haveRule(RulesEnum::MEMBERS_MODULE_CHURCH_ADMIN_CHURCH_DETAILS_VIEW->value)
+                => $this->findByAdminChurch(),
 
             default  => $policy->dispatchErrorForbidden(),
         };
@@ -56,12 +60,10 @@ class FindUsersByChurchService extends Service implements FindUsersByChurchServi
     {
         $this->handleValidations();
 
-        $church = $this->getChurchUserAuth();
-
-        if($church->id != $this->userFiltersDTO->churchId)
-        {
-            $this->getPolicy()->dispatchErrorForbidden();
-        }
+        $this->userHasChurch(
+            Church::ID,
+            $this->userFiltersDTO->churchId
+        );
 
         return $this->usersRepository->findAllByChurch($this->userFiltersDTO);
     }

@@ -2,30 +2,44 @@
 
 namespace App\Features\Base\Services;
 
+use App\Exceptions\AppException;
 use App\Features\Base\Traits\DispatchExceptionTrait;
+use App\Modules\Members\Church\Models\Church;
 use App\Shared\ACL\Policy;
+use Illuminate\Support\Collection;
 
 abstract class Service
 {
     use DispatchExceptionTrait;
 
     private Policy $policy;
-    private mixed $churchUserAuth;
+    private Collection $churchesUserAuth;
 
     /**
      * @return mixed
      */
-    public function getChurchUserAuth(): mixed
+    public function getChurchesUserAuth(): Collection
     {
-        return $this->churchUserAuth;
+        return $this->churchesUserAuth;
     }
 
     /**
-     * @param mixed $churchUserAuth
+     * @param mixed $churchesUserAuth
      */
-    public function setChurchUserAuth(mixed $churchUserAuth): void
+    public function setChurchesUserAuth(Collection $churchesUserAuth): void
     {
-        $this->churchUserAuth = $churchUserAuth;
+        $this->churchesUserAuth = $churchesUserAuth;
+    }
+
+    /**
+     * @throws AppException
+     */
+    public function userHasChurch(string $key, string $value): void
+    {
+        if(!$this->churchesUserAuth->where($key, $value)->first())
+        {
+            $this->getPolicy()->dispatchErrorForbidden();
+        }
     }
 
     /**

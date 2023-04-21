@@ -59,7 +59,9 @@ class ShowByChurchIdServiceTest extends TestCase
             new Policy([$rule])
         );
 
-        $showByChurchIdService->setChurchUserAuth(ChurchLists::showChurch($this->churchId));
+        $showByChurchIdService->setChurchesUserAuth(
+            ChurchLists::getChurchesById($this->churchId)
+        );
 
         $this
             ->churchRepositoryMock
@@ -79,7 +81,9 @@ class ShowByChurchIdServiceTest extends TestCase
             new Policy([RulesEnum::MEMBERS_MODULE_CHURCH_ADMIN_MASTER_VIEW->value])
         );
 
-        $showByChurchIdService->setChurchUserAuth(ChurchLists::showChurch($this->churchId));
+        $showByChurchIdService->setChurchesUserAuth(
+            ChurchLists::getChurchesById($this->churchId)
+        );
 
         $this
             ->churchRepositoryMock
@@ -100,7 +104,9 @@ class ShowByChurchIdServiceTest extends TestCase
             new Policy([RulesEnum::MEMBERS_MODULE_CHURCH_ADMIN_CHURCH_VIEW->value])
         );
 
-        $showByChurchIdService->setChurchUserAuth(ChurchLists::showChurch());
+        $showByChurchIdService->setChurchesUserAuth(
+            ChurchLists::getChurchesById('abc')
+        );
 
         $this
             ->churchRepositoryMock

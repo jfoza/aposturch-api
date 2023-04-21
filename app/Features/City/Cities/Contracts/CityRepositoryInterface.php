@@ -7,4 +7,5 @@ interface CityRepositoryInterface
     public function findById(string $id);
     public function findByDescription(string $description, string $uf);
     public function findAllInPersons();
+    public function findAllInChurches();
 }

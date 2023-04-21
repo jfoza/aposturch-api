@@ -6,10 +6,10 @@ use App\Exceptions\AppException;
 use App\Features\Base\Services\Service;
 use App\Modules\Members\Church\Contracts\ChurchRepositoryInterface;
 use App\Modules\Members\Church\Contracts\ShowByChurchIdServiceInterface;
+use App\Modules\Members\Church\Models\Church;
 use App\Modules\Members\Church\Validations\ChurchValidations;
 use App\Shared\Enums\RulesEnum;
 use App\Shared\Helpers\Helpers;
-use App\Shared\Utils\Auth;
 
 class ShowByChurchIdService extends Service implements ShowByChurchIdServiceInterface
 {
@@ -61,16 +61,16 @@ class ShowByChurchIdService extends Service implements ShowByChurchIdServiceInte
      */
     private function showByAdminChurch(): ?object
     {
-        $church = $this->getChurchUserAuth();
-
-        if($church->id != $this->churchId)
-        {
-            $this->getPolicy()->dispatchErrorForbidden();
-        }
-
-        return ChurchValidations::churchIdExists(
+        $church = ChurchValidations::churchIdExists(
             $this->churchRepository,
             $this->churchId
         );
+
+        $this->userHasChurch(
+            Church::ID,
+            $this->churchId
+        );
+
+        return $church;
     }
 }

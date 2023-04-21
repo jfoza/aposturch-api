@@ -33,4 +33,11 @@ readonly class CityController
 
         return response()->json($cities, Response::HTTP_OK);
     }
+
+    public function showInChurches(): JsonResponse
+    {
+        $cities = $this->cityBusiness->findAllInChurches();
+
+        return response()->json($cities, Response::HTTP_OK);
+    }
 }

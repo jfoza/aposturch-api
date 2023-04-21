@@ -5,7 +5,9 @@ namespace Tests\Unit\App\Resources;
 use App\Features\Users\AdminUsers\Infra\Models\AdminUser;
 use App\Features\Users\Profiles\Infra\Models\Profile;
 use App\Features\Users\Users\Infra\Models\User;
+use App\Modules\Members\Church\Models\Church;
 use Illuminate\Database\Eloquent\Collection;
+use Ramsey\Uuid\Uuid;
 
 class AdminUsersLists
 {
@@ -62,6 +64,9 @@ class AdminUsersLists
                     Profile::UNIQUE_NAME => "employee",
                     Profile::ACTIVE => true,
                 ]),
+                "church" => [
+                    [Church::ID => Uuid::uuid4()->toString()]
+                ],
                 "module" => self::getModules(),
             ])
         ]);

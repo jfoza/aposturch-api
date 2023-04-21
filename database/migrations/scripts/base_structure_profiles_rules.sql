@@ -33,7 +33,6 @@ DO $$
         _module_rule7 uuid := uuid_generate_v4();
 
         _rule1 uuid := uuid_generate_v4();
-        _rule2 uuid := uuid_generate_v4();
         _rule3 uuid := uuid_generate_v4();
         _rule4 uuid := uuid_generate_v4();
         _rule5 uuid := uuid_generate_v4();
@@ -84,6 +83,10 @@ DO $$
         _rule50 uuid := uuid_generate_v4();
         _rule51 uuid := uuid_generate_v4();
         _rule52 uuid := uuid_generate_v4();
+        _rule53 uuid := uuid_generate_v4();
+        _rule54 uuid := uuid_generate_v4();
+        _rule55 uuid := uuid_generate_v4();
+        _rule56 uuid := uuid_generate_v4();
 
     BEGIN
         INSERT INTO module.modules (id, module_description, module_unique_name, active)
@@ -170,7 +173,12 @@ DO $$
             (_rule50, 'MEMBERS_MODULE_CHURCH_ASSISTANT_DETAILS_VIEW', 'MEMBERS_MODULE_CHURCH_ASSISTANT_DETAILS', 'VIEW'),
 
             (_rule51, 'MEMBERS_MODULE_CHURCH_ADMIN_MASTER_USER_RELATIONSHIP_DELETE', 'MEMBERS_MODULE_CHURCH_ADMIN_MASTER_USER_RELATIONSHIP_DELETE', 'DELETE'),
-            (_rule52, 'MEMBERS_MODULE_CHURCH_ADMIN_CHURCH_USER_RELATIONSHIP_DELETE', 'MEMBERS_MODULE_CHURCH_ADMIN_CHURCH_USER_RELATIONSHIP_DELETE', 'DELETE');
+            (_rule52, 'MEMBERS_MODULE_CHURCH_ADMIN_CHURCH_USER_RELATIONSHIP_DELETE', 'MEMBERS_MODULE_CHURCH_ADMIN_CHURCH_USER_RELATIONSHIP_DELETE', 'DELETE'),
+
+            (_rule53, 'MEMBERS_MODULE_CHURCH_VIEW',         'MEMBERS_MODULE_CHURCH', 'VIEW'),
+            (_rule54, 'MEMBERS_MODULE_CHURCH_DETAILS_VIEW', 'MEMBERS_MODULE_CHURCH_DETAILS', 'VIEW'),
+            (_rule55, 'MEMBERS_MODULE_CHURCH_INSERT',       'MEMBERS_MODULE_CHURCH', 'INSERT'),
+            (_rule56, 'MEMBERS_MODULE_CHURCH_UPDATE',       'MEMBERS_MODULE_CHURCH', 'UPDATE');
 
         INSERT INTO users.modules_rules (rule_id, module_id)
         VALUES
@@ -287,6 +295,10 @@ DO $$
             (_profile2, _rule41),
             (_profile2, _rule42),
             (_profile2, _rule51),
+            (_profile2, _rule53),
+            (_profile2, _rule54),
+            (_profile2, _rule55),
+            (_profile2, _rule56),
 
             -- ADMIN CHURCH
             (_profile3, _rule1),
@@ -319,6 +331,9 @@ DO $$
             (_profile3, _rule45),
             (_profile3, _rule46),
             (_profile3, _rule52),
+            (_profile3, _rule53),
+            (_profile3, _rule54),
+            (_profile3, _rule56),
 
             -- ADMIN MODULE
             (_profile4, _rule1),
@@ -343,6 +358,7 @@ DO $$
             (_profile4, _rule36),
             (_profile4, _rule47),
             (_profile4, _rule48),
+            (_profile4, _rule53),
 
             -- ASSISTANT
             (_profile5, _rule1),
@@ -361,7 +377,8 @@ DO $$
             (_profile5, _rule29),
             (_profile5, _rule36),
             (_profile5, _rule49),
-            (_profile5, _rule50);
+            (_profile5, _rule50),
+            (_profile5, _rule53);
 
             -- MEMBER
     END $$;

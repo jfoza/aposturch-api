@@ -46,4 +46,9 @@ readonly class CityBusiness implements CityBusinessInterface
     {
         return $this->cityRepository->findAllInPersons();
     }
+
+    public function findAllInChurches()
+    {
+        return $this->cityRepository->findAllInChurches();
+    }
 }

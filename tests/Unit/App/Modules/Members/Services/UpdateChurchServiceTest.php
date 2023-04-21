@@ -70,8 +70,8 @@ class UpdateChurchServiceTest extends TestCase
 
         $updateChurchService->setPolicy(new Policy([$rule]));
 
-        $updateChurchService->setChurchUserAuth(
-            ChurchLists::showChurch($this->churchDtoMock->id)
+        $updateChurchService->setChurchesUserAuth(
+            ChurchLists::getChurchesById($this->churchDtoMock->id)
         );
 
         $this
@@ -97,8 +97,8 @@ class UpdateChurchServiceTest extends TestCase
             RulesEnum::MEMBERS_MODULE_CHURCH_ADMIN_CHURCH_UPDATE->value
         ]));
 
-        $updateChurchService->setChurchUserAuth(
-            ChurchLists::showChurch($this->churchDtoMock->id)
+        $updateChurchService->setChurchesUserAuth(
+            ChurchLists::getChurchesById($this->churchDtoMock->id)
         );
 
         $this
@@ -120,8 +120,8 @@ class UpdateChurchServiceTest extends TestCase
             RulesEnum::MEMBERS_MODULE_CHURCH_ADMIN_CHURCH_UPDATE->value
         ]));
 
-        $updateChurchService->setChurchUserAuth(
-            ChurchLists::showChurch($this->churchDtoMock->id)
+        $updateChurchService->setChurchesUserAuth(
+            ChurchLists::getChurchesById($this->churchDtoMock->id)
         );
 
         $this
@@ -148,8 +148,8 @@ class UpdateChurchServiceTest extends TestCase
             RulesEnum::MEMBERS_MODULE_CHURCH_ADMIN_CHURCH_UPDATE->value
         ]));
 
-        $updateChurchService->setChurchUserAuth(
-            ChurchLists::showChurch(Uuid::uuid4()->toString())
+        $updateChurchService->setChurchesUserAuth(
+            ChurchLists::getChurchesById('abc')
         );
 
         $this

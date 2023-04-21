@@ -19,7 +19,8 @@ class ChurchRepository implements ChurchRepositoryInterface
                     function($q) use($churchFiltersDTO) {
                         return $q->where(
                             Church::tableField(Church::NAME),
-                            $churchFiltersDTO->name
+                            'ilike',
+                            "%{$churchFiltersDTO->name}%"
                         );
                     }
                 )

@@ -66,7 +66,11 @@ class AdminUsersRepository implements AdminUsersRepositoryInterface
     {
         return AdminUser::with([
             'user' => function($q) {
-                return $q->with(['profile', 'module']);
+                return $q->with([
+                    'profile',
+                    'module',
+                    'church'
+                ]);
             }
         ])
         ->whereRelation(

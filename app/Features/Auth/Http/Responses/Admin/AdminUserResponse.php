@@ -10,5 +10,6 @@ class AdminUserResponse
     public string|null $fullName;
     public object|null $role;
     public bool|null   $status;
+    public mixed $churches;
     public array|null  $ability;
 }

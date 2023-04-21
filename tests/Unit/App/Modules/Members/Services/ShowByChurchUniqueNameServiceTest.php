@@ -58,8 +58,8 @@ class ShowByChurchUniqueNameServiceTest extends TestCase
             new Policy([$rule])
         );
 
-        $showByChurchUniqueNameService->setChurchUserAuth(
-            ChurchLists::showChurchByUniqueName($this->churchUniqueName)
+        $showByChurchUniqueNameService->setChurchesUserAuth(
+            ChurchLists::getChurchesByUniqueName($this->churchUniqueName)
         );
 
         $this
@@ -82,8 +82,8 @@ class ShowByChurchUniqueNameServiceTest extends TestCase
             new Policy([RulesEnum::MEMBERS_MODULE_CHURCH_ADMIN_MASTER_DETAILS_VIEW->value])
         );
 
-        $showByChurchUniqueNameService->setChurchUserAuth(
-            ChurchLists::showChurchByUniqueName($this->churchUniqueName)
+        $showByChurchUniqueNameService->setChurchesUserAuth(
+            ChurchLists::getChurchesByUniqueName($this->churchUniqueName)
         );
 
         $this
@@ -105,8 +105,15 @@ class ShowByChurchUniqueNameServiceTest extends TestCase
             new Policy([RulesEnum::MEMBERS_MODULE_CHURCH_ADMIN_CHURCH_DETAILS_VIEW->value])
         );
 
-        $showByChurchUniqueNameService->setChurchUserAuth(
-            ChurchLists::showChurchByUniqueName('other')
+        $this
+            ->churchRepositoryMock
+            ->method('findByUniqueName')
+            ->willReturn(
+                ChurchLists::showChurchByUniqueName($this->churchUniqueName)
+            );
+
+        $showByChurchUniqueNameService->setChurchesUserAuth(
+            ChurchLists::getChurchesByUniqueName('abc')
         );
 
         $this->expectException(AppException::class);

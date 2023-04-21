@@ -7,6 +7,7 @@ use App\Features\Base\Services\Service;
 use App\Features\Users\Users\Contracts\UsersRepositoryInterface;
 use App\Features\Users\Users\Validations\UsersValidations;
 use App\Modules\Members\Church\Contracts\RemoveUserChurchRelationshipServiceInterface;
+use App\Modules\Members\Church\Models\Church;
 use App\Shared\Enums\RulesEnum;
 use App\Shared\Utils\Transaction;
 
@@ -56,12 +57,10 @@ class RemoveUserChurchRelationshipService extends Service implements RemoveUserC
     {
         $this->handleValidations();
 
-        $churchUserLogged = $this->getChurchUserAuth();
-
-        if($this->churchUserPayload->id != $churchUserLogged->id)
-        {
-            $this->getPolicy()->dispatchErrorForbidden();
-        }
+        $this->userHasChurch(
+            Church::ID,
+            $this->churchUserPayload->id
+        );
 
         $this->baseDeleteOperation();
     }
