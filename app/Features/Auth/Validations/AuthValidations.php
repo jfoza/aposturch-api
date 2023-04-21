@@ -69,6 +69,20 @@ class AuthValidations
     /**
      * @throws AppException
      */
+    public static function userHasChurch(mixed $user): void
+    {
+        if($user->church->isEmpty())
+        {
+            throw new AppException(
+                MessagesEnum::USER_HAS_NO_CHURCH,
+                Response::HTTP_UNAUTHORIZED
+            );
+        }
+    }
+
+    /**
+     * @throws AppException
+     */
     public static function forgotPasswordExists(mixed $forgotPassword): void
     {
         if(empty($forgotPassword)) {
@@ -101,14 +115,6 @@ class AuthValidations
                 MessagesEnum::UNVERIFIED_EMAIL,
                 $login ? Response::HTTP_UNAUTHORIZED : Response::HTTP_BAD_REQUEST
             );
-        }
-    }
-
-    public static function userHasModules(mixed $user)
-    {
-        if(!$modules = $user->module)
-        {
-
         }
     }
 }

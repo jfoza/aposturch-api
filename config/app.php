@@ -198,9 +198,7 @@ return [
         /*
          * Features...
          */
-        \App\Features\Auth\Providers\SessionsAdminUserBusinessProvider::class,
-        \App\Features\Auth\Providers\SessionsCustomerUserBusinessProvider::class,
-        \App\Features\Auth\Providers\ForgotPasswordBusinessProvider::class,
+        \App\Features\Auth\Providers\AuthProvider::class,
         \App\Features\Users\AdminUsers\Providers\AdminUsersBusinessProvider::class,
         \App\Features\Users\Users\Providers\UsersProvider::class,
         \App\Features\Users\CustomerUsers\Providers\CustomerUsersBusinessProvider::class,

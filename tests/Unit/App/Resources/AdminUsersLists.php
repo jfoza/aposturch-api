@@ -6,7 +6,7 @@ use App\Features\Users\AdminUsers\Infra\Models\AdminUser;
 use App\Features\Users\Profiles\Infra\Models\Profile;
 use App\Features\Users\Users\Infra\Models\User;
 use App\Modules\Members\Church\Models\Church;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Collection;
 use Ramsey\Uuid\Uuid;
 
 class AdminUsersLists
@@ -64,9 +64,36 @@ class AdminUsersLists
                     Profile::UNIQUE_NAME => "employee",
                     Profile::ACTIVE => true,
                 ]),
-                "church" => [
-                    [Church::ID => Uuid::uuid4()->toString()]
-                ],
+                "church" => Collection::make([
+                        [Church::ID => Uuid::uuid4()->toString()]
+                    ]),
+                "module" => self::getModules(),
+            ])
+        ]);
+    }
+
+    public static function getUnchurchedAdminUserByEmail(bool $active = true): object
+    {
+        return (object) ([
+            AdminUser::ID      => "48fdcbba-86e2-4567-8999-dda3c3e5279c",
+            AdminUser::USER_ID => "edd710bb-55d3-4e0e-8027-d5d68cd1a0f9",
+
+            "user" => (object) ([
+                User::ID => "edd710bb-55d3-4e0e-8027-d5d68cd1a0f9",
+                User::PERSON_ID => null,
+                User::NAME      => "Name User",
+                User::EMAIL     => "usuario@email.com",
+                User::PASSWORD  => "$2a$12$8O6CjzAHu5UY9VtGxNwJH.29v2Qu6Q28IR7CKNESVwKdH5uMbrFmC",
+                User::AVATAR    => null,
+                User::ACTIVE    => $active,
+                "profile" => (object) ([
+                    Profile::ID => "7f94247d-38a7-424b-ae7a-bb3262a587b9",
+                    Profile::PROFILE_TYPE_ID => "3facf59b-175a-4b08-8a85-e1d6cb5b4b06",
+                    Profile::DESCRIPTION => "Funcionário",
+                    Profile::UNIQUE_NAME => "employee",
+                    Profile::ACTIVE => true,
+                ]),
+                "church" => Collection::empty(),
                 "module" => self::getModules(),
             ])
         ]);

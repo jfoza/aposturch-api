@@ -14,16 +14,16 @@ Route::get('/', function () {
 
 // AUTH
 Route::prefix('/auth')
-    ->group(app_path('Features/Auth/Http/Routes/forgotPasswordRoute.php'));
+    ->group(app_path('Features/Auth/Routes/forgotPasswordRoute.php'));
 
 Route::prefix('/auth')
-    ->group(app_path('Features/Auth/Http/Routes/sessionDestroyRoute.php'));
+    ->group(app_path('Features/Auth/Routes/sessionDestroyRoute.php'));
 
 Route::prefix('/auth')
-    ->group(app_path('Features/Auth/Http/Routes/customerUserSessionsRoute.php'));
+    ->group(app_path('Features/Auth/Routes/customerUserSessionsRoute.php'));
 
 Route::prefix('/admin/auth')
-    ->group(app_path('Features/Auth/Http/Routes/adminUserSessionsRoute.php'));
+    ->group(app_path('Features/Auth/Routes/adminUsersAuthRoute.php'));
 
 // PUBLIC
 Route::prefix('/cities')

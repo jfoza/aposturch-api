@@ -9,7 +9,7 @@ use App\Features\Users\AdminUsers\Infra\Repositories\AdminUsersRepository;
 use App\Features\Users\AdminUsers\Services\ShowAdminUserService;
 use App\Shared\ACL\Policy;
 use App\Shared\Enums\RulesEnum;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Collection;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
