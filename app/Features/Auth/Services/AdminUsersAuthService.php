@@ -10,15 +10,20 @@ use App\Features\Auth\Responses\Admin\AdminAuthResponse;
 use App\Features\Auth\Validations\AuthValidations;
 use App\Features\Base\Services\Service;
 use App\Features\Users\AdminUsers\Contracts\AdminUsersRepositoryInterface;
+use App\Features\Users\Profiles\Enums\ProfileUniqueNameEnum;
+use App\Features\Users\Profiles\Infra\Models\Profile;
 use App\Features\Users\Rules\Contracts\RulesRepositoryInterface;
 use App\Features\Users\Sessions\Contracts\SessionsRepositoryInterface;
 use App\Features\Users\Users\Traits\UserAbilityTrait;
 use App\Shared\Helpers\Helpers;
 use App\Shared\Utils\Auth;
+use Illuminate\Database\Eloquent\Collection;
 
 class AdminUsersAuthService extends Service implements AdminUsersAuthServiceInterface
 {
     use UserAbilityTrait;
+
+    private Collection $profiles;
 
     public function __construct(
         private readonly AdminUsersRepositoryInterface $adminUsersRepository,
@@ -35,9 +40,15 @@ class AdminUsersAuthService extends Service implements AdminUsersAuthServiceInte
         $adminUser = $this->adminUsersRepository->findByEmail($sessionsDTO->email);
         $user      = AuthValidations::userExistsLogin($adminUser);
 
+        $this->profiles = $user->profile;
+
         AuthValidations::passwordVerify($sessionsDTO->password, $user->password);
         AuthValidations::isActive($user->active);
-        AuthValidations::userHasChurch($user);
+
+        if(!$this->isAdminMasterProfile())
+        {
+            AuthValidations::userHasChurch($user);
+        }
 
         $ability = $this->findAllUserAbility($user, $this->rulesRepository);
 
@@ -62,5 +73,10 @@ class AdminUsersAuthService extends Service implements AdminUsersAuthServiceInte
         $this->sessionsRepository->create($sessionsDTO);
 
         return $this->authResource->getAuthResponse();
+    }
+
+    private function isAdminMasterProfile(): bool
+    {
+        return !! $this->profiles->where(Profile::UNIQUE_NAME, ProfileUniqueNameEnum::ADMIN_MASTER)->first();
     }
 }

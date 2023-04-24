@@ -6,14 +6,15 @@ use App\Features\Users\AdminUsers\Infra\Models\AdminUser;
 use App\Features\Users\Profiles\Infra\Models\Profile;
 use App\Features\Users\Users\Infra\Models\User;
 use App\Modules\Members\Church\Models\Church;
-use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Collection as CollectionDatabase;
+use Illuminate\Support\Collection as CollectionSupport;
 use Ramsey\Uuid\Uuid;
 
 class AdminUsersLists
 {
-    public static function getAllAdminUsers(): Collection
+    public static function getAllAdminUsers(): CollectionSupport
     {
-        return Collection::make([
+        return CollectionSupport::make([
             [
                 "admin_user_id"       => "cacdd8aa-ee9d-4008-8bcc-27cb8fd8ae88",
                 "user_id"             => "9d13e085-20f9-4668-b427-7e9142fd7cfe",
@@ -28,9 +29,9 @@ class AdminUsersLists
         ]);
     }
 
-    public static function getUniqueAdminUser(): Collection
+    public static function getUniqueAdminUser(): CollectionSupport
     {
-        return Collection::make([
+        return CollectionSupport::make([
             "admin_user_id"       => "cacdd8aa-ee9d-4008-8bcc-27cb8fd8ae88",
             "user_id"             => "9d13e085-20f9-4668-b427-7e9142fd7cfe",
             "user_name"           => "Kainara Appelt 30",
@@ -57,14 +58,16 @@ class AdminUsersLists
                 User::PASSWORD  => "$2a$12$8O6CjzAHu5UY9VtGxNwJH.29v2Qu6Q28IR7CKNESVwKdH5uMbrFmC",
                 User::AVATAR    => null,
                 User::ACTIVE    => $active,
-                "profile" => (object) ([
-                    Profile::ID => "7f94247d-38a7-424b-ae7a-bb3262a587b9",
-                    Profile::PROFILE_TYPE_ID => "3facf59b-175a-4b08-8a85-e1d6cb5b4b06",
-                    Profile::DESCRIPTION => "Funcionário",
-                    Profile::UNIQUE_NAME => "employee",
-                    Profile::ACTIVE => true,
+                "profile" => CollectionDatabase::make([
+                    (object) ([
+                        Profile::ID => "7f94247d-38a7-424b-ae7a-bb3262a587b9",
+                        Profile::PROFILE_TYPE_ID => "3facf59b-175a-4b08-8a85-e1d6cb5b4b06",
+                        Profile::DESCRIPTION => "Admin Master",
+                        Profile::UNIQUE_NAME => "ADMIN_MASTER",
+                        Profile::ACTIVE => true,
+                    ])
                 ]),
-                "church" => Collection::make([
+                "church" => CollectionSupport::make([
                         [Church::ID => Uuid::uuid4()->toString()]
                     ]),
                 "module" => self::getModules(),
@@ -86,14 +89,16 @@ class AdminUsersLists
                 User::PASSWORD  => "$2a$12$8O6CjzAHu5UY9VtGxNwJH.29v2Qu6Q28IR7CKNESVwKdH5uMbrFmC",
                 User::AVATAR    => null,
                 User::ACTIVE    => $active,
-                "profile" => (object) ([
-                    Profile::ID => "7f94247d-38a7-424b-ae7a-bb3262a587b9",
-                    Profile::PROFILE_TYPE_ID => "3facf59b-175a-4b08-8a85-e1d6cb5b4b06",
-                    Profile::DESCRIPTION => "Funcionário",
-                    Profile::UNIQUE_NAME => "employee",
-                    Profile::ACTIVE => true,
+                "profile" => CollectionDatabase::make([
+                    (object) ([
+                        Profile::ID => "7f94247d-38a7-424b-ae7a-bb3262a587b9",
+                        Profile::PROFILE_TYPE_ID => "3facf59b-175a-4b08-8a85-e1d6cb5b4b06",
+                        Profile::DESCRIPTION => "Admin Church",
+                        Profile::UNIQUE_NAME => "ADMIN_CHURCH",
+                        Profile::ACTIVE => true,
+                    ])
                 ]),
-                "church" => Collection::empty(),
+                "church" => CollectionSupport::empty(),
                 "module" => self::getModules(),
             ])
         ]);

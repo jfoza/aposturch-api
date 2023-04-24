@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        $path = 'database/migrations/scripts/create_forgot_password_table.sql';
+        $path = 'database/migrations/scripts/2022_08_06_210332_create_forgot_passwords_table.sql';
         DB::unprepared(file_get_contents($path));
     }
 

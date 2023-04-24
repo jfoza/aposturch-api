@@ -12,7 +12,7 @@ return new class extends Migration
      */
     public function up()
     {
-        $path = 'database/migrations/scripts/base_structure_profiles_rules.sql';
+        $path = 'database/migrations/scripts/2100_12_11_003051_base_structure_cities.sql';
         DB::unprepared(file_get_contents($path));
     }
 

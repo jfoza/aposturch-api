@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        $path = 'database/migrations/scripts/create_users_table.sql';
+        $path = 'database/migrations/scripts/2022_08_06_204952_create_users_table.sql';
         DB::unprepared(file_get_contents($path));
     }
 
