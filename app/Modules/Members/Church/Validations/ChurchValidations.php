@@ -7,6 +7,7 @@ use App\Features\Users\AdminUsers\Contracts\AdminUsersRepositoryInterface;
 use App\Features\Users\Profiles\Enums\ProfileUniqueNameEnum;
 use App\Features\Users\Users\Infra\Models\User;
 use App\Modules\Members\Church\Contracts\ChurchRepositoryInterface;
+use App\Modules\Members\ResponsibleChurch\Contracts\ResponsibleChurchRepositoryInterface;
 use App\Shared\Enums\MessagesEnum;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -79,6 +80,24 @@ class ChurchValidations
         {
             throw new AppException(
                 MessagesEnum::USER_NOT_FOUND,
+                Response::HTTP_NOT_FOUND
+            );
+        }
+    }
+
+    /**
+     * @throws AppException
+     */
+    public static function responsibleRelationshipExists(
+        string $adminUserId,
+        string $churchId,
+        ResponsibleChurchRepositoryInterface $responsibleChurchRepository
+    ): void
+    {
+        if(!$responsibleChurchRepository->findByAdminUserAndChurch($adminUserId, $churchId))
+        {
+            throw new AppException(
+                MessagesEnum::REGISTER_NOT_FOUND,
                 Response::HTTP_NOT_FOUND
             );
         }

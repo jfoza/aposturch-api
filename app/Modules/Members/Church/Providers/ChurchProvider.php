@@ -9,6 +9,7 @@ use App\Modules\Members\Church\Contracts\ChurchUploadImageServiceInterface;
 use App\Modules\Members\Church\Contracts\CreateChurchServiceInterface;
 use App\Modules\Members\Church\Contracts\FindAllChurchesServiceInterface;
 use App\Modules\Members\Church\Contracts\RemoveChurchServiceInterface;
+use App\Modules\Members\Church\Contracts\RemoveResponsibleChurchRelationshipServiceInterface;
 use App\Modules\Members\Church\Contracts\RemoveUserChurchRelationshipServiceInterface;
 use App\Modules\Members\Church\Contracts\ShowByChurchIdServiceInterface;
 use App\Modules\Members\Church\Contracts\ShowByChurchUniqueNameServiceInterface;
@@ -19,9 +20,12 @@ use App\Modules\Members\Church\Services\CreateChurchService;
 use App\Modules\Members\Church\Services\FindAllChurchesService;
 use App\Modules\Members\Church\Services\RemoveChurchService;
 use App\Modules\Members\Church\Services\RemoveMemberChurchRelationshipService;
+use App\Modules\Members\Church\Services\RemoveResponsibleChurchRelationshipService;
 use App\Modules\Members\Church\Services\ShowByChurchIdService;
 use App\Modules\Members\Church\Services\ShowByChurchUniqueNameService;
 use App\Modules\Members\Church\Services\UpdateChurchService;
+use App\Modules\Members\ResponsibleChurch\Contracts\ResponsibleChurchRepositoryInterface;
+use App\Modules\Members\ResponsibleChurch\Repositories\ResponsibleChurchRepository;
 
 class ChurchProvider extends AbstractServiceProvider
 {
@@ -29,6 +33,7 @@ class ChurchProvider extends AbstractServiceProvider
 
     public array $bindings = [
         ChurchRepositoryInterface::class => ChurchRepository::class,
+        ResponsibleChurchRepositoryInterface::class => ResponsibleChurchRepository::class,
     ];
 
     public function register()
@@ -71,6 +76,11 @@ class ChurchProvider extends AbstractServiceProvider
         $this->bind(
             RemoveUserChurchRelationshipServiceInterface::class,
             RemoveMemberChurchRelationshipService::class
+        );
+
+        $this->bind(
+            RemoveResponsibleChurchRelationshipServiceInterface::class,
+            RemoveResponsibleChurchRelationshipService::class
         );
     }
 }

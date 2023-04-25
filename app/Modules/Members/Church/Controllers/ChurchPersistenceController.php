@@ -4,10 +4,12 @@ namespace App\Modules\Members\Church\Controllers;
 
 use App\Modules\Members\Church\Contracts\CreateChurchServiceInterface;
 use App\Modules\Members\Church\Contracts\RemoveChurchServiceInterface;
+use App\Modules\Members\Church\Contracts\RemoveResponsibleChurchRelationshipServiceInterface;
 use App\Modules\Members\Church\Contracts\RemoveUserChurchRelationshipServiceInterface;
 use App\Modules\Members\Church\Contracts\UpdateChurchServiceInterface;
 use App\Modules\Members\Church\DTO\ChurchDTO;
 use App\Modules\Members\Church\Requests\ChurchRequest;
+use App\Modules\Members\Church\Requests\RemoveResponsibleRelationshipRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,6 +21,7 @@ readonly class ChurchPersistenceController
         private UpdateChurchServiceInterface $updateChurchService,
         private RemoveChurchServiceInterface $removeChurchService,
         private RemoveUserChurchRelationshipServiceInterface $removeUserChurchRelationshipService,
+        private RemoveResponsibleChurchRelationshipServiceInterface $removeResponsibleChurchRelationshipService,
     ) {}
 
     public function insert(
@@ -53,13 +56,25 @@ readonly class ChurchPersistenceController
         return response()->json([], Response::HTTP_NO_CONTENT);
     }
 
-    public function deleteRelationship(
+    public function deleteMemberRelationship(
         Request $request
     ): JsonResponse
     {
         $userId = $request->id;
 
         $this->removeUserChurchRelationshipService->execute($userId);
+
+        return response()->json([], Response::HTTP_NO_CONTENT);
+    }
+
+    public function deleteResponsibleRelationship(
+        RemoveResponsibleRelationshipRequest $request
+    ): JsonResponse
+    {
+        $adminUserId = $request->id;
+        $churchId = $request->churchId;
+
+        $this->removeResponsibleChurchRelationshipService->execute($adminUserId, $churchId);
 
         return response()->json([], Response::HTTP_NO_CONTENT);
     }

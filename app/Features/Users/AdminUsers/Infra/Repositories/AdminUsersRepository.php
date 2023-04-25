@@ -50,11 +50,11 @@ class AdminUsersRepository implements AdminUsersRepositoryInterface
     }
 
     public function findByAdminIdsAndProfile(
-        array $adminIds,
+        array|string $adminIds,
         string $profileUniqueName
     ): mixed
     {
-        return AdminUser::select(
+        $builder = AdminUser::select(
                 AdminUser::tableField(AdminUser::ID),
             )
             ->join(
@@ -79,8 +79,14 @@ class AdminUsersRepository implements AdminUsersRepositoryInterface
             ->where(
                 Profile::tableField(Profile::UNIQUE_NAME),
                 $profileUniqueName
-            )
-            ->get();
+            );
+
+        if(is_array($adminIds))
+        {
+            return $builder->get();
+        }
+
+        return $builder->first();
     }
 
     public function findByUserIdAndProfileUniqueName(AdminUsersFiltersDTO $adminUsersFiltersDTO)

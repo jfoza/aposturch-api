@@ -25,7 +25,9 @@ Route::put('/id/{id}', [ChurchPersistenceController::class, 'update'])->middlewa
 
 Route::delete('/{id}', [ChurchPersistenceController::class, 'delete'])->middleware([MiddlewareEnum::UUID]);
 
-Route::delete('/user/relationship/{id}', [ChurchPersistenceController::class, 'deleteRelationship'])->middleware([MiddlewareEnum::UUID]);
+Route::delete('/user/member-relationship/{id}', [ChurchPersistenceController::class, 'deleteMemberRelationship'])->middleware([MiddlewareEnum::UUID]);
+
+Route::delete('/user/responsible-relationship/{id}', [ChurchPersistenceController::class, 'deleteResponsibleRelationship'])->middleware([MiddlewareEnum::UUID]);
 
 // UPLOAD CHURCH IMAGE
 Route::post('/upload/image', [ChurchUploadImageController::class, 'store']);

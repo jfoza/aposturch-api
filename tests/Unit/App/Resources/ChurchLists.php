@@ -7,6 +7,7 @@ use App\Features\General\Images\Infra\Models\Image;
 use App\Features\Users\AdminUsers\Infra\Models\AdminUser;
 use App\Features\Users\Users\Infra\Models\User;
 use App\Modules\Members\Church\Models\Church;
+use App\Modules\Members\ResponsibleChurch\Models\ResponsibleChurch;
 use Illuminate\Support\Collection;
 use Ramsey\Uuid\Uuid;
 
@@ -252,6 +253,15 @@ class ChurchLists
                     AdminUser::ID => Uuid::uuid4()->toString(),
                 ]),
             ],
+        ]);
+    }
+
+    public static function getRelationAdminUserChurch(): Collection
+    {
+        return Collection::make([
+            ResponsibleChurch::ID => Uuid::uuid4()->toString(),
+            ResponsibleChurch::CHURCH_ID => Uuid::uuid4()->toString(),
+            ResponsibleChurch::ADMIN_USER_ID => Uuid::uuid4()->toString(),
         ]);
     }
 }

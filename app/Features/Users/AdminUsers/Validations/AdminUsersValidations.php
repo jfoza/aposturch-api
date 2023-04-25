@@ -4,6 +4,7 @@ namespace App\Features\Users\AdminUsers\Validations;
 
 use App\Exceptions\AppException;
 use App\Features\Users\AdminUsers\Contracts\AdminUsersRepositoryInterface;
+use App\Features\Users\Profiles\Enums\ProfileUniqueNameEnum;
 use App\Shared\Enums\MessagesEnum;
 use Symfony\Component\HttpFoundation\Response;
 
