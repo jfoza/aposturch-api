@@ -11,7 +11,7 @@ use App\Modules\Members\Church\Models\Church;
 use App\Shared\Enums\RulesEnum;
 use App\Shared\Utils\Transaction;
 
-class RemoveUserChurchRelationshipService extends Service implements RemoveUserChurchRelationshipServiceInterface
+class RemoveMemberChurchRelationshipService extends Service implements RemoveUserChurchRelationshipServiceInterface
 {
     private string $userId;
     private object $churchUserPayload;

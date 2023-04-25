@@ -5,9 +5,11 @@ namespace App\Modules\Members\Church\Models;
 use App\Features\Base\Infra\Models\Register;
 use App\Features\City\Cities\Infra\Models\City;
 use App\Features\General\Images\Infra\Models\Image;
+use App\Features\Users\AdminUsers\Infra\Models\AdminUser;
 use App\Features\Users\UserChurch\Infra\Models\UserChurch;
 use App\Features\Users\Users\Infra\Models\User;
 use App\Modules\Members\ChurchesImages\Models\ChurchImage;
+use App\Modules\Members\ResponsibleChurch\Models\ResponsibleChurch;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
@@ -76,6 +78,16 @@ class Church extends Register
             ChurchImage::class,
             ChurchImage::CHURCH_ID,
             ChurchImage::IMAGE_ID,
+        );
+    }
+
+    public function adminUser(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            AdminUser::class,
+            ResponsibleChurch::class,
+            ResponsibleChurch::CHURCH_ID,
+            ResponsibleChurch::ADMIN_USER_ID,
         );
     }
 }

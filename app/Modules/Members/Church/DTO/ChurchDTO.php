@@ -6,6 +6,7 @@ class ChurchDTO
 {
     public string|null $id;
     public string|null $name;
+    public array $responsibleIds;
     public string|null $uniqueName;
     public string|null $phone;
     public string|null $email;

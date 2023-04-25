@@ -59,6 +59,28 @@ class RemoveChurchServiceTest extends TestCase
         $this->assertTrue(true);
     }
 
+    public function test_should_remove_unique_church_with_image()
+    {
+        $removeChurchService = $this->getRemoveChurchService();
+
+        $removeChurchService->setPolicy(
+            new Policy([
+                RulesEnum::MEMBERS_MODULE_CHURCH_ADMIN_MASTER_DELETE->value
+            ])
+        );
+
+        $id = Uuid::uuid4()->toString();
+
+        $this
+            ->churchRepositoryMock
+            ->method('findById')
+            ->willReturn(ChurchLists::showChurchWithImage());
+
+        $removeChurchService->execute($id);
+
+        $this->assertTrue(true);
+    }
+
     public function test_should_return_exception_if_church_id_not_exists()
     {
         $removeChurchService = $this->getRemoveChurchService();
@@ -90,6 +112,25 @@ class RemoveChurchServiceTest extends TestCase
             ->churchRepositoryMock
             ->method('findById')
             ->willReturn(ChurchLists::showChurchWithMembers());
+
+        $this->expectException(AppException::class);
+        $this->expectExceptionCode(Response::HTTP_BAD_REQUEST);
+
+        $removeChurchService->execute(Uuid::uuid4()->toString());
+    }
+
+    public function test_should_return_exception_if_church_has_responsible()
+    {
+        $removeChurchService = $this->getRemoveChurchService();
+
+        $removeChurchService->setPolicy(new Policy([
+            RulesEnum::MEMBERS_MODULE_CHURCH_ADMIN_MASTER_DELETE->value
+        ]));
+
+        $this
+            ->churchRepositoryMock
+            ->method('findById')
+            ->willReturn(ChurchLists::showChurchWithResponsible());
 
         $this->expectException(AppException::class);
         $this->expectExceptionCode(Response::HTTP_BAD_REQUEST);

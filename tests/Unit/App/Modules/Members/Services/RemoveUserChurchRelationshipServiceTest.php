@@ -5,7 +5,7 @@ namespace Tests\Unit\App\Modules\Members\Services;
 use App\Exceptions\AppException;
 use App\Features\Users\Users\Contracts\UsersRepositoryInterface;
 use App\Features\Users\Users\Infra\Repositories\UsersRepository;
-use App\Modules\Members\Church\Services\RemoveUserChurchRelationshipService;
+use App\Modules\Members\Church\Services\RemoveMemberChurchRelationshipService;
 use App\Shared\ACL\Policy;
 use App\Shared\Enums\RulesEnum;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -29,9 +29,9 @@ class RemoveUserChurchRelationshipServiceTest extends TestCase
         $this->churchId = Uuid::uuid4()->toString();
     }
 
-    public function getRemoveUserChurchRelationshipService(): RemoveUserChurchRelationshipService
+    public function getRemoveUserChurchRelationshipService(): RemoveMemberChurchRelationshipService
     {
-        return new RemoveUserChurchRelationshipService(
+        return new RemoveMemberChurchRelationshipService(
             $this->usersRepositoryMock
         );
     }

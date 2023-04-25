@@ -7,6 +7,7 @@ use App\Modules\Members\Church\Contracts\ChurchRepositoryInterface;
 use App\Modules\Members\Church\DTO\ChurchDTO;
 use App\Modules\Members\Church\DTO\ChurchFiltersDTO;
 use App\Modules\Members\Church\Models\Church;
+use Illuminate\Support\Collection;
 
 class ChurchRepository implements ChurchRepositoryInterface
 {
@@ -38,7 +39,7 @@ class ChurchRepository implements ChurchRepositoryInterface
 
     public function findById(string $churchId, bool $listMembers = false): object|null
     {
-        $relations = ['imagesChurch', 'city'];
+        $relations = ['imagesChurch', 'city', 'adminUser'];
 
         if($listMembers)
         {
@@ -55,7 +56,7 @@ class ChurchRepository implements ChurchRepositoryInterface
             ->first();
     }
 
-    public function create(ChurchDTO $churchDTO): Church
+    public function create(ChurchDTO $churchDTO): Church|Collection
     {
         return Church::create([
             Church::NAME           => $churchDTO->name,
@@ -110,5 +111,10 @@ class ChurchRepository implements ChurchRepositoryInterface
     public function saveImages(string $churchId, array $images)
     {
         Church::find($churchId)->imagesChurch()->sync($images);
+    }
+
+    public function saveResponsible(string $churchId, array $usersId)
+    {
+        Church::find($churchId)->adminUser()->sync($usersId);
     }
 }

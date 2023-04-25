@@ -5,11 +5,11 @@ namespace App\Features\Users\Users\Contracts;
 use App\Features\Users\Users\DTO\UserDTO;
 use App\Features\Users\Users\DTO\UserFiltersDTO;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Collection;
+use Illuminate\Support\Collection as CollectionSupport;
 
 interface UsersRepositoryInterface
 {
-    public function findAllByChurch(UserFiltersDTO $userFiltersDTO): LengthAwarePaginator|Collection;
+    public function findAllByChurch(UserFiltersDTO $userFiltersDTO): LengthAwarePaginator|CollectionSupport;
     public function findById(string $id): ?object;
     public function findByEmail(string $email): mixed;
     public function create(UserDTO $userDTO, bool $customerUser = false);

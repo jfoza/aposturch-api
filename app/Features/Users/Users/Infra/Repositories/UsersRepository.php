@@ -9,11 +9,11 @@ use App\Features\Users\Users\DTO\UserFiltersDTO;
 use App\Features\Users\Users\Infra\Models\User;
 use App\Modules\Members\Church\Models\Church;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Collection;
+use Illuminate\Support\Collection as CollectionSupport;
 
 class UsersRepository implements UsersRepositoryInterface
 {
-    public function findAllByChurch(UserFiltersDTO $userFiltersDTO): LengthAwarePaginator|Collection
+    public function findAllByChurch(UserFiltersDTO $userFiltersDTO): LengthAwarePaginator|CollectionSupport
     {
         return User::with(['person'])
         ->select(

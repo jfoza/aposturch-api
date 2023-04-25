@@ -8,13 +8,14 @@ use App\Features\General\Images\Contracts\ImagesRepositoryInterface;
 use App\Modules\Members\Church\Contracts\ChurchRepositoryInterface;
 use App\Modules\Members\Church\Contracts\RemoveChurchServiceInterface;
 use App\Modules\Members\Church\Traits\ChurchOperationsTrait;
-use App\Modules\Members\Church\Validations\ChurchValidations;
+use App\Modules\Members\Church\Traits\RemoveChurchValidationsTrait;
 use App\Shared\Enums\RulesEnum;
 use App\Shared\Utils\Transaction;
 
 class RemoveChurchService extends Service implements RemoveChurchServiceInterface
 {
     use ChurchOperationsTrait;
+    use RemoveChurchValidationsTrait;
 
     public function __construct(
         private readonly ChurchRepositoryInterface $churchRepository,
@@ -28,7 +29,7 @@ class RemoveChurchService extends Service implements RemoveChurchServiceInterfac
     {
         $this->getPolicy()->havePermission(RulesEnum::MEMBERS_MODULE_CHURCH_ADMIN_MASTER_DELETE->value);
 
-        $church = ChurchValidations::churchExistsAndHasMembers(
+        $church = $this->validateChurchCanBeDelete(
             $this->churchRepository,
             $churchId
         );

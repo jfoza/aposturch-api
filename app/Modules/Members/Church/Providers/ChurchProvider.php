@@ -18,7 +18,7 @@ use App\Modules\Members\Church\Services\ChurchUploadImageService;
 use App\Modules\Members\Church\Services\CreateChurchService;
 use App\Modules\Members\Church\Services\FindAllChurchesService;
 use App\Modules\Members\Church\Services\RemoveChurchService;
-use App\Modules\Members\Church\Services\RemoveUserChurchRelationshipService;
+use App\Modules\Members\Church\Services\RemoveMemberChurchRelationshipService;
 use App\Modules\Members\Church\Services\ShowByChurchIdService;
 use App\Modules\Members\Church\Services\ShowByChurchUniqueNameService;
 use App\Modules\Members\Church\Services\UpdateChurchService;
@@ -70,7 +70,7 @@ class ChurchProvider extends AbstractServiceProvider
 
         $this->bind(
             RemoveUserChurchRelationshipServiceInterface::class,
-            RemoveUserChurchRelationshipService::class
+            RemoveMemberChurchRelationshipService::class
         );
     }
 }

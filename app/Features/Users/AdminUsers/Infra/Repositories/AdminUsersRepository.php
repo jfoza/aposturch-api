@@ -10,6 +10,8 @@ use App\Features\Users\AdminUsers\Traits\AdminUsersListTrait;
 use App\Features\Users\Profiles\Infra\Models\Profile;
 use App\Features\Users\ProfilesUsers\Infra\Models\ProfileUser;
 use App\Features\Users\Users\Infra\Models\User;
+use Illuminate\Database\Eloquent\Collection as CollectionDatabase;
+use Illuminate\Support\Collection as CollectionSupport;
 
 class AdminUsersRepository implements AdminUsersRepositoryInterface
 {
@@ -45,6 +47,40 @@ class AdminUsersRepository implements AdminUsersRepositoryInterface
                 $userId
             )
             ->first();
+    }
+
+    public function findByAdminIdsAndProfile(
+        array $adminIds,
+        string $profileUniqueName
+    ): mixed
+    {
+        return AdminUser::select(
+                AdminUser::tableField(AdminUser::ID),
+            )
+            ->join(
+                User::tableName(),
+                User::tableField(User::ID),
+                AdminUser::tableField(AdminUser::USER_ID)
+            )
+            ->join(
+                ProfileUser::tableName(),
+                ProfileUser::tableField(ProfileUser::USER_ID),
+                User::tableField(User::ID)
+            )
+            ->join(
+                Profile::tableName(),
+                Profile::tableField(Profile::ID),
+                ProfileUser::tableField(ProfileUser::PROFILE_ID)
+            )
+            ->whereIn(
+                AdminUser::tableField(AdminUser::ID),
+                $adminIds
+            )
+            ->where(
+                Profile::tableField(Profile::UNIQUE_NAME),
+                $profileUniqueName
+            )
+            ->get();
     }
 
     public function findByUserIdAndProfileUniqueName(AdminUsersFiltersDTO $adminUsersFiltersDTO)

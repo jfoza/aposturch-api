@@ -66,19 +66,20 @@ readonly class ChurchPersistenceController
 
     private function extracted(ChurchRequest $churchRequest, ChurchDTO $churchDTO): void
     {
-        $churchDTO->name          = $churchRequest->name;
-        $churchDTO->phone         = $churchRequest->phone;
-        $churchDTO->email         = $churchRequest->email;
-        $churchDTO->youtube       = $churchRequest->youtube;
-        $churchDTO->facebook      = $churchRequest->facebook;
-        $churchDTO->instagram     = $churchRequest->instagram;
-        $churchDTO->zipCode       = $churchRequest->zipCode;
-        $churchDTO->address       = $churchRequest->address;
-        $churchDTO->numberAddress = $churchRequest->numberAddress;
-        $churchDTO->complement    = $churchRequest->complement;
-        $churchDTO->district      = $churchRequest->district;
-        $churchDTO->uf            = $churchRequest->uf;
-        $churchDTO->cityId        = $churchRequest->cityId;
-        $churchDTO->active        = $churchRequest->active;
+        $churchDTO->name           = $churchRequest->name;
+        $churchDTO->responsibleIds = $churchRequest->responsibleIds;
+        $churchDTO->phone          = $churchRequest->phone;
+        $churchDTO->email          = $churchRequest->email;
+        $churchDTO->youtube        = $churchRequest->youtube;
+        $churchDTO->facebook       = $churchRequest->facebook;
+        $churchDTO->instagram      = $churchRequest->instagram;
+        $churchDTO->zipCode        = $churchRequest->zipCode;
+        $churchDTO->address        = $churchRequest->address;
+        $churchDTO->numberAddress  = $churchRequest->numberAddress;
+        $churchDTO->complement     = $churchRequest->complement;
+        $churchDTO->district       = $churchRequest->district;
+        $churchDTO->uf             = $churchRequest->uf;
+        $churchDTO->cityId         = $churchRequest->cityId;
+        $churchDTO->active         = $churchRequest->active;
     }
 }

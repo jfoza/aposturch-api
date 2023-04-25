@@ -4,6 +4,7 @@ namespace Tests\Unit\App\Resources;
 
 use App\Features\General\Images\Enums\TypeUploadImageEnum;
 use App\Features\General\Images\Infra\Models\Image;
+use App\Features\Users\AdminUsers\Infra\Models\AdminUser;
 use App\Features\Users\Users\Infra\Models\User;
 use App\Modules\Members\Church\Models\Church;
 use Illuminate\Support\Collection;
@@ -106,6 +107,7 @@ class ChurchLists
             Church::ACTIVE         => true,
             'user' => [],
             'imagesChurch' => [],
+            'adminUser' => []
         ]);
     }
 
@@ -164,6 +166,7 @@ class ChurchLists
             Church::CITY_ID        => Uuid::uuid4()->toString(),
             Church::ACTIVE         => true,
             'user' => [],
+            'adminUser' => [],
             'imagesChurch' => [
                 (object) ([
                     Image::ID => $imageId,
@@ -214,6 +217,39 @@ class ChurchLists
             'user' => [
                 User::make([
                     User::ID => Uuid::uuid4()->toString(),
+                ]),
+            ],
+            'adminUser' => []
+        ]);
+    }
+
+    public static function showChurchWithResponsible(?string $id = null): mixed
+    {
+        if(is_null($id))
+        {
+            $id = Uuid::uuid4()->toString();
+        }
+
+        return (object) ([
+            Church::ID             => $id,
+            Church::NAME           => 'test',
+            Church::PHONE          => '51999999999',
+            Church::EMAIL          => 'test@test.com',
+            Church::FACEBOOK       => '',
+            Church::INSTAGRAM      => '',
+            Church::YOUTUBE        => '',
+            Church::ZIP_CODE       => '99999999',
+            Church::ADDRESS        => 'test',
+            Church::NUMBER_ADDRESS => 'test',
+            Church::COMPLEMENT     => 'test',
+            Church::DISTRICT       => 'test',
+            Church::UF             => 'RS',
+            Church::CITY_ID        => Uuid::uuid4()->toString(),
+            Church::ACTIVE         => true,
+            'user' => [],
+            'adminUser' => [
+                AdminUser::make([
+                    AdminUser::ID => Uuid::uuid4()->toString(),
                 ]),
             ],
         ]);

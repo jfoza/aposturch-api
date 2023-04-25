@@ -4,8 +4,11 @@ namespace App\Features\Users\AdminUsers\Infra\Models;
 
 use App\Features\Base\Infra\Models\Register;
 use App\Features\Users\Users\Infra\Models\User;
+use App\Modules\Members\Church\Models\Church;
+use App\Modules\Members\ResponsibleChurch\Models\ResponsibleChurch;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class AdminUser extends Register
 {
@@ -27,5 +30,15 @@ class AdminUser extends Register
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function church(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            Church::class,
+            ResponsibleChurch::class,
+            ResponsibleChurch::ADMIN_USER_ID,
+            ResponsibleChurch::CHURCH_ID,
+        );
     }
 }

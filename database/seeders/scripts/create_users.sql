@@ -210,6 +210,8 @@ DO $$
         _profile varchar := 'ADMIN_CHURCH';
         _profile_uuid uuid;
 
+        _admin_user_uuid uuid = uuid_generate_v4();
+
         _church_unique_name varchar = 'igreja-biblica-viver-caxias';
         _church_id uuid;
 
@@ -257,9 +259,10 @@ DO $$
                 true
             );
 
-        INSERT INTO users.admin_users (user_id)
+        INSERT INTO users.admin_users (id, user_id)
         VALUES
             (
+                _admin_user_uuid,
                 _user_uuid
             );
 
@@ -280,10 +283,10 @@ DO $$
                 _user_uuid
             );
 
-        INSERT INTO users.users_churches (user_id, church_id)
+        INSERT INTO members.responsible_church (admin_user_id, church_id)
         VALUES
             (
-                _user_uuid,
+                _admin_user_uuid,
                 _church_id
             );
     END $$;

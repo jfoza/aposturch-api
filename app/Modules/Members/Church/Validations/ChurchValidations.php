@@ -3,11 +3,11 @@
 namespace App\Modules\Members\Church\Validations;
 
 use App\Exceptions\AppException;
+use App\Features\Users\AdminUsers\Contracts\AdminUsersRepositoryInterface;
+use App\Features\Users\Profiles\Enums\ProfileUniqueNameEnum;
+use App\Features\Users\Users\Infra\Models\User;
 use App\Modules\Members\Church\Contracts\ChurchRepositoryInterface;
-use App\Modules\Members\Church\Models\Church;
 use App\Shared\Enums\MessagesEnum;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
 use Symfony\Component\HttpFoundation\Response;
 
 class ChurchValidations
@@ -53,27 +53,34 @@ class ChurchValidations
     /**
      * @throws AppException
      */
-    public static function churchExistsAndHasMembers(
-        ChurchRepositoryInterface $churchRepository,
-        string $churchId
-    ): object|null
+    public static function isValidAdminsChurch(
+        AdminUsersRepositoryInterface  $adminUsersRepository,
+        array $usersIdPayload
+    ): void
     {
-        if(!$church = $churchRepository->findById($churchId, true))
+        $notFound = [];
+
+        $users = $adminUsersRepository->findByAdminIdsAndProfile(
+            $usersIdPayload,
+            ProfileUniqueNameEnum::ADMIN_CHURCH
+        );
+
+        $ids = collect($users)->pluck(User::ID)->toArray();
+
+        foreach ($usersIdPayload as $userIdPayload)
+        {
+            if(!in_array($userIdPayload, $ids))
+            {
+                $notFound[] = $userIdPayload;
+            }
+        }
+
+        if(!empty($notFound))
         {
             throw new AppException(
-                MessagesEnum::REGISTER_NOT_FOUND,
+                MessagesEnum::USER_NOT_FOUND,
                 Response::HTTP_NOT_FOUND
             );
         }
-
-        if(count($church->user) > 0)
-        {
-            throw new AppException(
-                MessagesEnum::CHURCH_HAS_MEMBERS_IN_DELETE,
-                Response::HTTP_BAD_REQUEST
-            );
-        }
-
-        return $church;
     }
 }

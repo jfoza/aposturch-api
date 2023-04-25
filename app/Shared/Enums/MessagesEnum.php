@@ -17,6 +17,7 @@ enum MessagesEnum: string {
     case INVALID_UNIQUE_NAME = 'O valor enviado não é um nome válido.';
     case NOT_AUTHORIZED = 'Você não tem permissão para acessar este recurso.';
     case MODULE_NOT_AUTHORIZED = 'Você não tem permissão para acessar este módulo.';
+    case MUST_BE_AN_ARRAY = 'O campo deve ser um array.';
     case NOT_ENABLED = 'Você não tem permissão para acessar a plataforma. \n Para liberar ou verificar seu acesso entre em contato com o suporte.';
 
     // Sessions
@@ -53,6 +54,7 @@ enum MessagesEnum: string {
 
     // MODULES - MEMBERS
     case CHURCH_HAS_MEMBERS_IN_DELETE = 'Não é possível excluir uma igreja com membros vinculados.';
+    case CHURCH_HAS_RESPONSIBLE_IN_DELETE = 'Não é possível excluir uma igreja com responsáveis vinculados.';
     case USER_CHURCH_RELATIONSHIP_NOT_FOUND = 'Este usuário não possui vínculo com esta igreja.';
     case USER_HAS_NO_CHURCH = 'Usuário não possui vínculo com nenhuma igreja.';
 }
