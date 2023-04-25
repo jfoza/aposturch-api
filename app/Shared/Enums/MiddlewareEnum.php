@@ -12,4 +12,5 @@ enum MiddlewareEnum
     const EMAIL               = 'valid.email';
     const CHURCH_UNIQUE_NAME = 'church.unique.name';
     const MODULE_ACCESS = 'module.access';
+    const PROFILE_UNIQUE_NAME = 'profile.unique.name';
 }

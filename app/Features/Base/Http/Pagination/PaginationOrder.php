@@ -12,15 +12,15 @@ class PaginationOrder
 
     public function __construct() {
         $this->columnName = null;
-        $this->columnOrder = null;
+        $this->columnOrder = 'DESC';
         $this->page = null;
         $this->perPage = null;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getColumnName(): string
+    public function getColumnName(): ?string
     {
         return $this->columnName;
     }
@@ -30,10 +30,6 @@ class PaginationOrder
      */
     public function setColumnName(?string $columnName): void
     {
-        if(is_null($columnName)) {
-            $columnName = 'created_at';
-        }
-
         $this->columnName = $columnName;
     }
 
@@ -91,5 +87,15 @@ class PaginationOrder
         }
 
         $this->perPage = $perPage;
+    }
+
+    public function defineCustomColumnName(string $column): string
+    {
+        if(is_null($this->getColumnName()))
+        {
+            $this->setColumnName($column);
+        }
+
+        return $this->getColumnName();
     }
 }

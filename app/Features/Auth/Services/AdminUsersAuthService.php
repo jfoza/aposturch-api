@@ -77,9 +77,9 @@ class AdminUsersAuthService extends Service implements AdminUsersAuthServiceInte
 
     private function profileVerify(): bool
     {
-        $isAdminMaster = !! $this->profiles->where(Profile::UNIQUE_NAME, ProfileUniqueNameEnum::ADMIN_MASTER)->first();
+        $isAdminMaster = !! $this->profiles->where(Profile::UNIQUE_NAME, ProfileUniqueNameEnum::ADMIN_MASTER->value)->first();
 
-        $isAdminChurch = !! $this->profiles->where(Profile::UNIQUE_NAME, ProfileUniqueNameEnum::ADMIN_CHURCH)->first();
+        $isAdminChurch = !! $this->profiles->where(Profile::UNIQUE_NAME, ProfileUniqueNameEnum::ADMIN_CHURCH->value)->first();
 
         return $isAdminMaster || $isAdminChurch;
     }

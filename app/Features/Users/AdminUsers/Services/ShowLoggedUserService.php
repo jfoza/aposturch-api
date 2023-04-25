@@ -3,7 +3,7 @@
 namespace App\Features\Users\AdminUsers\Services;
 
 use App\Features\Users\AdminUsers\Contracts\ShowLoggedUserServiceInterface;
-use App\Features\Users\AdminUsers\Http\Responses\LoggedUserResponse;
+use App\Features\Users\AdminUsers\Responses\LoggedUserResponse;
 use App\Features\Users\Rules\Contracts\RulesRepositoryInterface;
 use App\Features\Users\Users\Traits\UserAbilityTrait;
 use App\Shared\Utils\Auth;

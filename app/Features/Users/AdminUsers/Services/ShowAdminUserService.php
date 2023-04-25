@@ -3,16 +3,16 @@
 namespace App\Features\Users\AdminUsers\Services;
 
 use App\Exceptions\AppException;
+use App\Features\Base\Services\Service;
 use App\Features\Users\AdminUsers\Contracts\AdminUsersRepositoryInterface;
 use App\Features\Users\AdminUsers\Contracts\ShowAdminUserServiceInterface;
 use App\Features\Users\AdminUsers\DTO\AdminUsersFiltersDTO;
 use App\Features\Users\Profiles\Enums\ProfileUniqueNameEnum;
-use App\Shared\ACL\Policy;
 use App\Shared\Enums\MessagesEnum;
 use App\Shared\Enums\RulesEnum;
 use Symfony\Component\HttpFoundation\Response;
 
-class ShowAdminUserService implements ShowAdminUserServiceInterface
+class ShowAdminUserService extends Service implements ShowAdminUserServiceInterface
 {
     private AdminUsersFiltersDTO $adminUsersFiltersDTO;
 
@@ -23,12 +23,11 @@ class ShowAdminUserService implements ShowAdminUserServiceInterface
     /**
      * @throws AppException
      */
-    public function execute(
-        AdminUsersFiltersDTO $adminUsersFiltersDTO,
-        Policy $policy
-    ): mixed
+    public function execute(AdminUsersFiltersDTO $adminUsersFiltersDTO,): mixed
     {
         $this->adminUsersFiltersDTO = $adminUsersFiltersDTO;
+
+        $policy = $this->getPolicy();
 
         $adminUser = match (true) {
             $policy->haveRule(RulesEnum::ADMIN_USERS_ADMIN_MASTER_VIEW->value) => $this->findByAdminMaster(),
@@ -52,46 +51,42 @@ class ShowAdminUserService implements ShowAdminUserServiceInterface
     private function findByAdminMaster()
     {
         $this->adminUsersFiltersDTO->profileUniqueName = [
-            ProfileUniqueNameEnum::ADMIN_MASTER,
-            ProfileUniqueNameEnum::ADMIN_CHURCH,
-            ProfileUniqueNameEnum::ADMIN_MODULE,
-            ProfileUniqueNameEnum::ASSISTANT,
-            ProfileUniqueNameEnum::MEMBER,
+            ProfileUniqueNameEnum::ADMIN_MASTER->value,
+            ProfileUniqueNameEnum::ADMIN_CHURCH->value,
+            ProfileUniqueNameEnum::ADMIN_MODULE->value,
+            ProfileUniqueNameEnum::ASSISTANT->value,
         ];
 
-        return $this->adminUsersRepository->findByUserIdAndProfileUniqueName($this->adminUsersFiltersDTO);
+        return $this->adminUsersRepository->findOneByFilters($this->adminUsersFiltersDTO);
     }
 
     private function findByAdminChurch()
     {
         $this->adminUsersFiltersDTO->profileUniqueName = [
-            ProfileUniqueNameEnum::ADMIN_CHURCH,
-            ProfileUniqueNameEnum::ADMIN_MODULE,
-            ProfileUniqueNameEnum::ASSISTANT,
-            ProfileUniqueNameEnum::MEMBER,
+            ProfileUniqueNameEnum::ADMIN_CHURCH->value,
+            ProfileUniqueNameEnum::ADMIN_MODULE->value,
+            ProfileUniqueNameEnum::ASSISTANT->value,
         ];
 
-        return $this->adminUsersRepository->findByUserIdAndProfileUniqueName($this->adminUsersFiltersDTO);
+        return $this->adminUsersRepository->findOneByFilters($this->adminUsersFiltersDTO);
     }
 
     private function findByAdminModule()
     {
         $this->adminUsersFiltersDTO->profileUniqueName = [
-            ProfileUniqueNameEnum::ADMIN_MODULE,
-            ProfileUniqueNameEnum::ASSISTANT,
-            ProfileUniqueNameEnum::MEMBER,
+            ProfileUniqueNameEnum::ADMIN_MODULE->value,
+            ProfileUniqueNameEnum::ASSISTANT->value,
         ];
 
-        return $this->adminUsersRepository->findByUserIdAndProfileUniqueName($this->adminUsersFiltersDTO);
+        return $this->adminUsersRepository->findOneByFilters($this->adminUsersFiltersDTO);
     }
 
     private function findByAssistant()
     {
         $this->adminUsersFiltersDTO->profileUniqueName = [
-            ProfileUniqueNameEnum::ASSISTANT,
-            ProfileUniqueNameEnum::MEMBER,
+            ProfileUniqueNameEnum::ASSISTANT->value,
         ];
 
-        return $this->adminUsersRepository->findByUserIdAndProfileUniqueName($this->adminUsersFiltersDTO);
+        return $this->adminUsersRepository->findOneByFilters($this->adminUsersFiltersDTO);
     }
 }

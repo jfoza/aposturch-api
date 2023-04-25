@@ -82,7 +82,6 @@ readonly class ChurchPersistenceController
     private function extracted(ChurchRequest $churchRequest, ChurchDTO $churchDTO): void
     {
         $churchDTO->name           = $churchRequest->name;
-        $churchDTO->responsibleIds = $churchRequest->responsibleIds;
         $churchDTO->phone          = $churchRequest->phone;
         $churchDTO->email          = $churchRequest->email;
         $churchDTO->youtube        = $churchRequest->youtube;
@@ -96,5 +95,7 @@ readonly class ChurchPersistenceController
         $churchDTO->uf             = $churchRequest->uf;
         $churchDTO->cityId         = $churchRequest->cityId;
         $churchDTO->active         = $churchRequest->active;
+
+        $churchDTO->adminUsersFiltersDTO->adminsId = $churchRequest->responsibleIds;
     }
 }

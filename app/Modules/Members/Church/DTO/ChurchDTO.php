@@ -2,11 +2,16 @@
 
 namespace App\Modules\Members\Church\DTO;
 
+use App\Features\Users\AdminUsers\DTO\AdminUsersFiltersDTO;
+
 class ChurchDTO
 {
+    public function __construct(
+        public AdminUsersFiltersDTO $adminUsersFiltersDTO
+    ) {}
+
     public string|null $id;
     public string|null $name;
-    public array $responsibleIds;
     public string|null $uniqueName;
     public string|null $phone;
     public string|null $email;

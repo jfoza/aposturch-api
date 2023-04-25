@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\App\Features\Users\AdminUsers\Services;
 
-use App\Features\Users\AdminUsers\Http\Responses\LoggedUserResponse;
+use App\Features\Users\AdminUsers\Responses\LoggedUserResponse;
 use App\Features\Users\AdminUsers\Services\ShowLoggedUserService;
 use App\Features\Users\Rules\Contracts\RulesRepositoryInterface;
 use App\Features\Users\Rules\Infra\Repositories\RulesRepository;

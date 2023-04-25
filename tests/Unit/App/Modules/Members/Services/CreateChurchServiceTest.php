@@ -3,11 +3,12 @@
 namespace Tests\Unit\App\Modules\Members\Services;
 
 use App\Exceptions\AppException;
+use App\Features\Base\Http\Pagination\PaginationOrder;
 use App\Features\City\Cities\Contracts\CityRepositoryInterface;
 use App\Features\City\Cities\Infra\Repositories\CityRepository;
 use App\Features\Users\AdminUsers\Contracts\AdminUsersRepositoryInterface;
-use App\Features\Users\AdminUsers\Infra\Models\AdminUser;
-use App\Features\Users\AdminUsers\Infra\Repositories\AdminUsersRepository;
+use App\Features\Users\AdminUsers\DTO\AdminUsersFiltersDTO;
+use App\Features\Users\AdminUsers\Repositories\AdminUsersRepository;
 use App\Modules\Members\Church\Contracts\ChurchRepositoryInterface;
 use App\Modules\Members\Church\DTO\ChurchDTO;
 use App\Modules\Members\Church\Models\Church;
@@ -41,13 +42,20 @@ class CreateChurchServiceTest extends TestCase
         $this->cityRepositoryMock       = $this->createMock(CityRepository::class);
         $this->adminUsersRepositoryMock = $this->createMock(AdminUsersRepository::class);
 
+        $this->responsibleId = Uuid::uuid4()->toString();
+
+        $adminUsersFiltersDtoMock = $this->createMock(AdminUsersFiltersDTO::class);
+
+        $adminUsersFiltersDtoMock->adminsId = [$this->responsibleId];
+
+        $adminUsersFiltersDtoMock->paginationOrder = $this->createMock(PaginationOrder::class);
+
         $this->churchDtoMock = $this->createMock(ChurchDTO::class);
 
-        $this->responsibleId = Uuid::uuid4()->toString();
+        $this->churchDtoMock->adminUsersFiltersDTO = $adminUsersFiltersDtoMock;
 
         $this->churchDtoMock->cityId = Uuid::uuid4()->toString();
         $this->churchDtoMock->name = RandomStringHelper::alnumGenerate(6);
-        $this->churchDtoMock->responsibleIds = [$this->responsibleId];
     }
 
     public function getCreateChurchService(): CreateChurchService
@@ -69,10 +77,10 @@ class CreateChurchServiceTest extends TestCase
 
         $this
             ->adminUsersRepositoryMock
-            ->method('findByAdminIdsAndProfile')
-            ->willReturn([
-                [AdminUser::ID => $this->responsibleId],
-            ]);
+            ->method('findAll')
+            ->willReturn(Collection::make([
+                ['admin_user_id' => $this->responsibleId],
+            ]));
 
         $this
             ->cityRepositoryMock
@@ -99,10 +107,10 @@ class CreateChurchServiceTest extends TestCase
 
         $this
             ->adminUsersRepositoryMock
-            ->method('findByAdminIdsAndProfile')
-            ->willReturn([
-                [AdminUser::ID => Uuid::uuid4()->toString()],
-            ]);
+            ->method('findAll')
+            ->willReturn(Collection::make([
+                ['admin_user_id' => Uuid::uuid4()->toString()],
+            ]));
 
         $this->expectException(AppException::class);
         $this->expectExceptionCode(Response::HTTP_NOT_FOUND);
@@ -120,10 +128,10 @@ class CreateChurchServiceTest extends TestCase
 
         $this
             ->adminUsersRepositoryMock
-            ->method('findByAdminIdsAndProfile')
-            ->willReturn([
-                [AdminUser::ID => $this->responsibleId],
-            ]);
+            ->method('findAll')
+            ->willReturn(Collection::make([
+                ['admin_user_id' => $this->responsibleId],
+            ]));
 
         $this
             ->cityRepositoryMock

@@ -5,7 +5,7 @@ namespace App\Features\Users\Users\Infra\Models;
 use App\Features\Base\Infra\Models\Register;
 use App\Features\Module\Modules\Infra\Models\Module;
 use App\Features\Persons\Infra\Models\Person;
-use App\Features\Users\AdminUsers\Infra\Models\AdminUser;
+use App\Features\Users\AdminUsers\Models\AdminUser;
 use App\Features\Users\CustomerUsers\Infra\Models\CustomerUser;
 use App\Features\Users\EmailVerification\Infra\Models\EmailVerification;
 use App\Features\Users\ForgotPassword\Infra\Models\ForgotPassword;

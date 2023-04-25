@@ -4,8 +4,7 @@ namespace App\Modules\Members\Church\Validations;
 
 use App\Exceptions\AppException;
 use App\Features\Users\AdminUsers\Contracts\AdminUsersRepositoryInterface;
-use App\Features\Users\Profiles\Enums\ProfileUniqueNameEnum;
-use App\Features\Users\Users\Infra\Models\User;
+use App\Features\Users\AdminUsers\DTO\AdminUsersFiltersDTO;
 use App\Modules\Members\Church\Contracts\ChurchRepositoryInterface;
 use App\Modules\Members\ResponsibleChurch\Contracts\ResponsibleChurchRepositoryInterface;
 use App\Shared\Enums\MessagesEnum;
@@ -56,23 +55,20 @@ class ChurchValidations
      */
     public static function isValidAdminsChurch(
         AdminUsersRepositoryInterface  $adminUsersRepository,
-        array $usersIdPayload
+        AdminUsersFiltersDTO $adminUsersFiltersDTO
     ): void
     {
         $notFound = [];
 
-        $users = $adminUsersRepository->findByAdminIdsAndProfile(
-            $usersIdPayload,
-            ProfileUniqueNameEnum::ADMIN_CHURCH
-        );
+        $users = $adminUsersRepository->findAll($adminUsersFiltersDTO);
 
-        $ids = collect($users)->pluck(User::ID)->toArray();
+        $ids = collect($users)->pluck('admin_user_id')->toArray();
 
-        foreach ($usersIdPayload as $userIdPayload)
+        foreach ($adminUsersFiltersDTO->adminsId as $adminId)
         {
-            if(!in_array($userIdPayload, $ids))
+            if(!in_array($adminId, $ids))
             {
-                $notFound[] = $userIdPayload;
+                $notFound[] = $adminId;
             }
         }
 

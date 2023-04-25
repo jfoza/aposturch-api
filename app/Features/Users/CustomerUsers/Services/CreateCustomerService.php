@@ -74,7 +74,7 @@ class CreateCustomerService
 
             $userDTO->profileId = $this
                 ->profilesRepository
-                ->findOneByUniqueName(ProfileUniqueNameEnum::CUSTOMER)
+                ->findOneByUniqueName('')
                 ->id;
 
             $this->usersRepository->saveProfiles($userDTO->id, [$userDTO->profileId]);

@@ -2,10 +2,9 @@
 
 namespace App\Features\Users\AdminUsers\Contracts;
 
-use App\Features\Users\AdminUsers\Http\Responses\CountAdminUsersResponse;
-use App\Shared\ACL\Policy;
+use App\Features\Users\AdminUsers\Responses\CountAdminUsersResponse;
 
 interface ShowCountAdminUsersByProfileInterface
 {
-    public function execute(Policy $policy): CountAdminUsersResponse;
+    public function execute(): CountAdminUsersResponse;
 }

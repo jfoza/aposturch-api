@@ -4,8 +4,8 @@ namespace Tests\Unit\App\Features\Users\AdminUsers\Services;
 
 use App\Exceptions\AppException;
 use App\Features\Users\AdminUsers\Contracts\AdminUsersRepositoryInterface;
-use App\Features\Users\AdminUsers\Http\Responses\AdminUserResponse;
-use App\Features\Users\AdminUsers\Infra\Repositories\AdminUsersRepository;
+use App\Features\Users\AdminUsers\Repositories\AdminUsersRepository;
+use App\Features\Users\AdminUsers\Responses\AdminUserResponse;
 use App\Features\Users\AdminUsers\Services\CreateAdminUserService;
 use App\Features\Users\NewPasswordGenerations\DTO\NewPasswordGenerationsDTO;
 use App\Features\Users\Profiles\Contracts\ProfilesRepositoryInterface;
@@ -98,11 +98,13 @@ class CreateAdminUserServiceTest extends TestCase
         mixed $profile
     ): void
     {
+        $createAdminUserService = $this->getCreateAdminUserService();
+
+        $createAdminUserService->setPolicy(new Policy([$rule]));
+
         $profileId = Uuid::uuid4()->toString();
 
         $this->populateUsersDTO($profileId);
-
-        $policy = new Policy([$rule]);
 
         $this
             ->usersRepositoryMock
@@ -119,11 +121,8 @@ class CreateAdminUserServiceTest extends TestCase
             ->method('create')
             ->willReturn(UsersLists::showUser());
 
-        $createAdminUserService = $this->getCreateAdminUserService();
-
         $adminUserCreated = $createAdminUserService->execute(
             $this->userDtoMock,
-            $policy
         );
 
         $this->assertInstanceOf(AdminUserResponse::class, $adminUserCreated);
@@ -131,39 +130,40 @@ class CreateAdminUserServiceTest extends TestCase
 
     public function test_should_return_exception_if_email_already_exists()
     {
+        $createAdminUserService = $this->getCreateAdminUserService();
+
+        $createAdminUserService->setPolicy(new Policy([
+            RulesEnum::ADMIN_USERS_ADMIN_MASTER_INSERT->value
+        ]));
+
         $profileId = Uuid::uuid4()->toString();
 
         $this->populateUsersDTO($profileId);
-
-        $policy = new Policy([
-            RulesEnum::ADMIN_USERS_ADMIN_MASTER_INSERT->value
-        ]);
 
         $this
             ->usersRepositoryMock
             ->method('findByEmail')
             ->willReturn(UsersLists::showUser());
 
-        $createAdminUserService = $this->getCreateAdminUserService();
-
         $this->expectException(AppException::class);
         $this->expectExceptionCode(Response::HTTP_BAD_REQUEST);
 
         $createAdminUserService->execute(
             $this->userDtoMock,
-            $policy
         );
     }
 
     public function test_should_return_exception_if_profile_not_exists()
     {
+        $createAdminUserService = $this->getCreateAdminUserService();
+
+        $createAdminUserService->setPolicy(new Policy([
+            RulesEnum::ADMIN_USERS_ADMIN_MASTER_INSERT->value
+        ]));
+
         $profileId = Uuid::uuid4()->toString();
 
         $this->populateUsersDTO($profileId);
-
-        $policy = new Policy([
-            RulesEnum::ADMIN_USERS_ADMIN_MASTER_INSERT->value
-        ]);
 
         $this
             ->usersRepositoryMock
@@ -175,26 +175,25 @@ class CreateAdminUserServiceTest extends TestCase
             ->method('findById')
             ->willReturn(null);
 
-        $createAdminUserService = $this->getCreateAdminUserService();
-
         $this->expectException(AppException::class);
         $this->expectExceptionCode(Response::HTTP_NOT_FOUND);
 
         $createAdminUserService->execute(
             $this->userDtoMock,
-            $policy
         );
     }
 
     public function test_should_return_exception_if_the_user_tries_to_register_a_superior_profile()
     {
+        $createAdminUserService = $this->getCreateAdminUserService();
+
+        $createAdminUserService->setPolicy(new Policy([
+            RulesEnum::ADMIN_USERS_ADMIN_MODULE_INSERT->value
+        ]));
+
         $profileId = Uuid::uuid4()->toString();
 
         $this->populateUsersDTO($profileId);
-
-        $policy = new Policy([
-            RulesEnum::ADMIN_USERS_ADMIN_MODULE_INSERT->value
-        ]);
 
         $this
             ->usersRepositoryMock
@@ -206,35 +205,31 @@ class CreateAdminUserServiceTest extends TestCase
             ->method('findById')
             ->willReturn(ProfilesLists::getAdminMasterProfile($profileId));
 
-        $createAdminUserService = $this->getCreateAdminUserService();
-
         $this->expectException(AppException::class);
         $this->expectExceptionCode(Response::HTTP_FORBIDDEN);
 
         $createAdminUserService->execute(
             $this->userDtoMock,
-            $policy
         );
     }
 
     public function test_should_return_exception_if_user_is_not_authorized()
     {
+        $createAdminUserService = $this->getCreateAdminUserService();
+
+        $createAdminUserService->setPolicy(new Policy([
+            'ABC'
+        ]));
+
         $profileId = Uuid::uuid4()->toString();
 
         $this->populateUsersDTO($profileId);
-
-        $policy = new Policy([
-            'RULE_NOT_EXISTS'
-        ]);
-
-        $createAdminUserService = $this->getCreateAdminUserService();
 
         $this->expectException(AppException::class);
         $this->expectExceptionCode(Response::HTTP_FORBIDDEN);
 
         $createAdminUserService->execute(
             $this->userDtoMock,
-            $policy
         );
     }
 }

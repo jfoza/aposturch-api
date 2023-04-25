@@ -5,7 +5,7 @@ namespace App\Modules\Members\Church\Models;
 use App\Features\Base\Infra\Models\Register;
 use App\Features\City\Cities\Infra\Models\City;
 use App\Features\General\Images\Infra\Models\Image;
-use App\Features\Users\AdminUsers\Infra\Models\AdminUser;
+use App\Features\Users\AdminUsers\Models\AdminUser;
 use App\Features\Users\UserChurch\Infra\Models\UserChurch;
 use App\Features\Users\Users\Infra\Models\User;
 use App\Modules\Members\ChurchesImages\Models\ChurchImage;

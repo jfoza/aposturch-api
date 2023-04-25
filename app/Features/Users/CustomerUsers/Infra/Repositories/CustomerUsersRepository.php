@@ -3,7 +3,6 @@
 namespace App\Features\Users\CustomerUsers\Infra\Repositories;
 
 use App\Features\Base\Http\Pagination\PaginationOrder;
-use App\Features\Users\AdminUsers\Infra\Models\AdminUser;
 use App\Features\Users\CustomerUsers\Contracts\CustomerUsersRepositoryInterface;
 use App\Features\Users\CustomerUsers\DTO\CustomerUsersDTO;
 use App\Features\Users\CustomerUsers\DTO\CustomerUsersFiltersDTO;

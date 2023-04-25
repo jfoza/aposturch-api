@@ -4,10 +4,10 @@ namespace App\Features\Users\Profiles\Enums;
 
 enum ProfileUniqueNameEnum: string
 {
-    const TECHNICAL_SUPPORT = 'TECHNICAL_SUPPORT';
-    const ADMIN_MASTER = 'ADMIN_MASTER';
-    const ADMIN_CHURCH = 'ADMIN_CHURCH';
-    const ADMIN_MODULE = 'ADMIN_MODULE';
-    const ASSISTANT = 'ASSISTANT';
-    const MEMBER = 'MEMBER';
+    case TECHNICAL_SUPPORT = 'TECHNICAL_SUPPORT';
+    case ADMIN_MASTER = 'ADMIN_MASTER';
+    case ADMIN_CHURCH = 'ADMIN_CHURCH';
+    case ADMIN_MODULE = 'ADMIN_MODULE';
+    case ASSISTANT = 'ASSISTANT';
+    case MEMBER = 'MEMBER';
 }

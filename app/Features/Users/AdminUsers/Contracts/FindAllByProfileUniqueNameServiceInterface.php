@@ -6,7 +6,7 @@ use App\Features\Users\AdminUsers\DTO\AdminUsersFiltersDTO;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 
-interface FindAllAdminUsersServiceInterface
+interface FindAllByProfileUniqueNameServiceInterface
 {
     public function execute(AdminUsersFiltersDTO $adminUsersFiltersDTO): LengthAwarePaginator|Collection;
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Features\Users\AdminUsers\Http\Responses;
+namespace App\Features\Users\AdminUsers\Responses;
 
 class LoggedUserResponse
 {

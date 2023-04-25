@@ -27,6 +27,7 @@ enum MessagesEnum: string {
     case EMAIL_ALREADY_VERIFIED = 'Este usuário já teve seu e-mail verificado, se necessário entre em contato com o suporte.';
     case SUCCESS_MODIFY_PASSWORD = 'Senha redefinida com sucesso.';
     case INVALID_FORGOT_PASSWORD_CODE = 'Código de verificação expirado, por favor solicite uma nova troca de senha.';
+    case INVALID_PROFILE = 'Perfil inválido.';
     case PASSWORD_CODE_NOT_FOUND = 'Código de verificação não encontrado.';
 
     // Users

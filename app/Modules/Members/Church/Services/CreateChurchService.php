@@ -8,6 +8,7 @@ use App\Features\Base\Traits\DispatchExceptionTrait;
 use App\Features\City\Cities\Contracts\CityRepositoryInterface;
 use App\Features\City\Cities\Validations\CityValidations;
 use App\Features\Users\AdminUsers\Contracts\AdminUsersRepositoryInterface;
+use App\Features\Users\Profiles\Enums\ProfileUniqueNameEnum;
 use App\Modules\Members\Church\Contracts\ChurchRepositoryInterface;
 use App\Modules\Members\Church\Contracts\CreateChurchServiceInterface;
 use App\Modules\Members\Church\DTO\ChurchDTO;
@@ -35,9 +36,11 @@ class CreateChurchService extends Service implements CreateChurchServiceInterfac
     {
         $this->getPolicy()->havePermission(RulesEnum::MEMBERS_MODULE_CHURCH_ADMIN_MASTER_INSERT->value);
 
+        $churchDTO->adminUsersFiltersDTO->profileUniqueName = [ProfileUniqueNameEnum::ADMIN_CHURCH->value];
+
         ChurchValidations::isValidAdminsChurch(
             $this->adminUsersRepository,
-            $churchDTO->responsibleIds
+            $churchDTO->adminUsersFiltersDTO
         );
 
         CityValidations::cityIdExists(
@@ -53,7 +56,7 @@ class CreateChurchService extends Service implements CreateChurchServiceInterfac
         {
             $created = $this->churchRepository->create($churchDTO);
 
-            $this->churchRepository->saveResponsible($created['id'], $churchDTO->responsibleIds);
+            $this->churchRepository->saveResponsible($created['id'], $churchDTO->adminUsersFiltersDTO->adminsId);
 
             Transaction::commit();
         }

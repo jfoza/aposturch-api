@@ -3,14 +3,14 @@
 namespace App\Features\Users\AdminUsers\Traits;
 
 use App\Features\Users\AdminUsers\DTO\AdminUsersFiltersDTO;
-use App\Features\Users\AdminUsers\Infra\Models\AdminUser;
+use App\Features\Users\AdminUsers\Models\AdminUser;
 use App\Features\Users\Profiles\Infra\Models\Profile;
 use App\Features\Users\ProfilesUsers\Infra\Models\ProfileUser;
 use App\Features\Users\Users\Infra\Models\User;
 
 trait AdminUsersListTrait
 {
-    public function baseQuery(AdminUsersFiltersDTO $adminUsersFiltersDTO)
+    public function baseQuery()
     {
         return AdminUser::select(
                 AdminUser::tableField(AdminUser::ID). ' AS admin_user_id',
@@ -37,31 +37,41 @@ trait AdminUsersListTrait
                 Profile::tableName(),
                 ProfileUser::tableField(ProfileUser::PROFILE_ID),
                 Profile::tableField(Profile::ID),
+            );
+    }
+
+    public function baseQueryFilters(AdminUsersFiltersDTO $adminUsersFiltersDTO)
+    {
+        return $this
+            ->baseQuery()
+            ->when(
+                isset($adminUsersFiltersDTO->adminsId),
+                fn($q) => $q->whereIn(
+                    AdminUser::tableField(AdminUser::ID),
+                    $adminUsersFiltersDTO->adminsId
+                )
             )
-            ->when(isset($adminUsersFiltersDTO->email),
-                function($q) use($adminUsersFiltersDTO) {
-                    return $q->where(
-                        User::tableField(User::EMAIL),
-                        $adminUsersFiltersDTO->email
-                    );
-                }
+            ->when(
+                isset($adminUsersFiltersDTO->email),
+                fn($q) => $q->where(
+                    User::tableField(User::EMAIL),
+                    $adminUsersFiltersDTO->email
+                )
             )
-            ->when(isset($adminUsersFiltersDTO->profileId),
-                function($q) use($adminUsersFiltersDTO) {
-                    return $q->where(
-                        Profile::tableField(Profile::ID),
-                        $adminUsersFiltersDTO->profileId
-                    );
-                }
+            ->when(
+                isset($adminUsersFiltersDTO->profileId),
+                fn($q) => $q->where(
+                    Profile::tableField(Profile::ID),
+                    $adminUsersFiltersDTO->profileId
+                )
             )
-            ->when(isset($adminUsersFiltersDTO->name),
-                function($q) use($adminUsersFiltersDTO) {
-                    return $q->where(
-                        User::tableField(User::NAME),
-                        'ilike',
-                        "%{$adminUsersFiltersDTO->name}%"
-                    );
-                }
+            ->when(
+                isset($adminUsersFiltersDTO->name),
+                fn($q) => $q->where(
+                    User::tableField(User::NAME),
+                    'ilike',
+                    "%{$adminUsersFiltersDTO->name}%"
+                )
             );
     }
 }

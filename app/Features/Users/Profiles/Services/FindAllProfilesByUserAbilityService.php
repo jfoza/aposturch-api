@@ -33,38 +33,34 @@ class FindAllProfilesByUserAbilityService implements FindAllProfilesByUserAbilit
     private function findAllByAdminMaster()
     {
         return $this->profileRepository->findAllByUniqueName([
-            ProfileUniqueNameEnum::ADMIN_MASTER,
-            ProfileUniqueNameEnum::ADMIN_CHURCH,
-            ProfileUniqueNameEnum::ADMIN_MODULE,
-            ProfileUniqueNameEnum::ASSISTANT,
-            ProfileUniqueNameEnum::MEMBER,
+            ProfileUniqueNameEnum::ADMIN_MASTER->value,
+            ProfileUniqueNameEnum::ADMIN_CHURCH->value,
+            ProfileUniqueNameEnum::ADMIN_MODULE->value,
+            ProfileUniqueNameEnum::ASSISTANT->value,
         ]);
     }
 
     private function findAllByAdminChurch()
     {
         return $this->profileRepository->findAllByUniqueName([
-            ProfileUniqueNameEnum::ADMIN_CHURCH,
-            ProfileUniqueNameEnum::ADMIN_MODULE,
-            ProfileUniqueNameEnum::ASSISTANT,
-            ProfileUniqueNameEnum::MEMBER,
+            ProfileUniqueNameEnum::ADMIN_CHURCH->value,
+            ProfileUniqueNameEnum::ADMIN_MODULE->value,
+            ProfileUniqueNameEnum::ASSISTANT->value,
         ]);
     }
 
     private function findAllByAdminModule()
     {
         return $this->profileRepository->findAllByUniqueName([
-            ProfileUniqueNameEnum::ADMIN_MODULE,
-            ProfileUniqueNameEnum::ASSISTANT,
-            ProfileUniqueNameEnum::MEMBER,
+            ProfileUniqueNameEnum::ADMIN_MODULE->value,
+            ProfileUniqueNameEnum::ASSISTANT->value,
         ]);
     }
 
     private function findAllByAssistant()
     {
         return $this->profileRepository->findAllByUniqueName([
-            ProfileUniqueNameEnum::ASSISTANT,
-            ProfileUniqueNameEnum::MEMBER,
+            ProfileUniqueNameEnum::ASSISTANT->value,
         ]);
     }
 }

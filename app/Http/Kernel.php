@@ -70,5 +70,6 @@ class Kernel extends HttpKernel
         'valid.email' => \App\Http\Middleware\Email::class,
         'module.access' => \App\Http\Middleware\ModuleAccessValidation::class,
         'church.unique.name' => \App\Http\Middleware\ChurchUniqueName::class,
+        'profile.unique.name' => \App\Http\Middleware\ValidateProfileUniqueName::class,
     ];
 }

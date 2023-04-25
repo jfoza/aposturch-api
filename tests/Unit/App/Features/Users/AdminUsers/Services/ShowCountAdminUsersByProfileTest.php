@@ -3,7 +3,7 @@
 namespace Tests\Unit\App\Features\Users\AdminUsers\Services;
 
 use App\Exceptions\AppException;
-use App\Features\Users\AdminUsers\Http\Responses\CountAdminUsersResponse;
+use App\Features\Users\AdminUsers\Responses\CountAdminUsersResponse;
 use App\Features\Users\AdminUsers\Services\ShowCountAdminUsersByProfile;
 use App\Features\Users\Profiles\Contracts\ProfilesRepositoryInterface;
 use App\Features\Users\Profiles\Infra\Repositories\ProfilesRepository;
@@ -53,31 +53,29 @@ class ShowCountAdminUsersByProfileTest extends TestCase
      */
     public function test_should_return_count_users_in_profile(string $rule): void
     {
-        $policy = new Policy([$rule]);
+        $showCountAdminUsersByProfile = $this->getShowCountAdminUsersByProfile();
+
+        $showCountAdminUsersByProfile->setPolicy(new Policy([$rule]));
 
         $this
             ->profilesRepositoryMock
             ->method('findCountUsersByProfile')
             ->willReturn(50);
 
-        $showCountAdminUsersByProfile = $this->getShowCountAdminUsersByProfile();
-
-        $counts = $showCountAdminUsersByProfile->execute($policy);
+        $counts = $showCountAdminUsersByProfile->execute();
 
         $this->assertInstanceOf(CountAdminUsersResponse::class, $counts);
     }
 
     public function test_should_return_exception_if_user_is_not_authorized()
     {
-        $policy = new Policy([
-            'RULE_NOT_EXISTS'
-        ]);
-
         $showCountAdminUsersByProfile = $this->getShowCountAdminUsersByProfile();
+
+        $showCountAdminUsersByProfile->setPolicy(new Policy(['ABC']));
 
         $this->expectException(AppException::class);
         $this->expectExceptionCode(Response::HTTP_FORBIDDEN);
 
-        $showCountAdminUsersByProfile->execute($policy);
+        $showCountAdminUsersByProfile->execute();
     }
 }

@@ -5,7 +5,7 @@ namespace Tests\Unit\App\Features\Users\AdminUsers\Services;
 use App\Exceptions\AppException;
 use App\Features\Users\AdminUsers\Contracts\AdminUsersRepositoryInterface;
 use App\Features\Users\AdminUsers\DTO\AdminUsersFiltersDTO;
-use App\Features\Users\AdminUsers\Infra\Repositories\AdminUsersRepository;
+use App\Features\Users\AdminUsers\Repositories\AdminUsersRepository;
 use App\Features\Users\AdminUsers\Services\FindAllAdminUsersService;
 use App\Shared\ACL\Policy;
 use App\Shared\Enums\RulesEnum;
@@ -54,18 +54,17 @@ class FindAllAdminUsersServiceTest extends TestCase
      */
     public function test_should_to_return_admin_users_list(string $rule): void
     {
-        $policy = new Policy([$rule]);
+        $findAllAdminUsersService = $this->getFindAllAdminUsersService();
+
+        $findAllAdminUsersService->setPolicy(new Policy([$rule]));
 
         $this
             ->adminUsersRepositoryMock
             ->method('findAll')
             ->willReturn(AdminUsersLists::getAllAdminUsers());
 
-        $findAllAdminUsersService = $this->getFindAllAdminUsersService();
-
         $adminUsers = $findAllAdminUsersService->execute(
             $this->adminUsersFiltersDtoMock,
-            $policy
         );
 
         $this->assertInstanceOf(Collection::class, $adminUsers);
@@ -73,18 +72,17 @@ class FindAllAdminUsersServiceTest extends TestCase
 
     public function test_should_return_exception_if_user_is_not_authorized()
     {
-        $policy = new Policy([
-            'RULE_NOT_EXISTS'
-        ]);
-
         $findAllAdminUsersService = $this->getFindAllAdminUsersService();
+
+        $findAllAdminUsersService->setPolicy(new Policy([
+            'ABC'
+        ]));
 
         $this->expectException(AppException::class);
         $this->expectExceptionCode(Response::HTTP_FORBIDDEN);
 
         $findAllAdminUsersService->execute(
             $this->adminUsersFiltersDtoMock,
-            $policy
         );
     }
 }

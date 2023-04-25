@@ -199,7 +199,7 @@ return [
          * Features...
          */
         \App\Features\Auth\Providers\AuthProvider::class,
-        \App\Features\Users\AdminUsers\Providers\AdminUsersBusinessProvider::class,
+        \App\Features\Users\AdminUsers\Providers\AdminUsersProvider::class,
         \App\Features\Users\Users\Providers\UsersProvider::class,
         \App\Features\Users\CustomerUsers\Providers\CustomerUsersBusinessProvider::class,
         \App\Features\Users\Profiles\Providers\ProfilesBusinessProvider::class,

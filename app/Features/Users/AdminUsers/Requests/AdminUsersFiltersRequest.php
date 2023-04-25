@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Features\Users\AdminUsers\Http\Requests;
+namespace App\Features\Users\AdminUsers\Requests;
 
 use App\Features\Base\Http\Requests\FormRequest;
 use App\Shared\Rules\Uuidv4Rule;

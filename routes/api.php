@@ -49,7 +49,7 @@ Route::prefix('admin')
             ->group(app_path('Features/Users/Users/Http/Routes/usersRoute.php'));
 
         Route::prefix('/admin-users')
-            ->group(app_path('Features/Users/AdminUsers/Http/Routes/adminUsersRoute.php'));
+            ->group(app_path('Features/Users/AdminUsers/Routes/adminUsersRoute.php'));
 
         Route::prefix('/profiles')
             ->group(app_path('Features/Users/Profiles/Http/Routes/profilesRoute.php'));

@@ -1,7 +1,7 @@
 <?php
 
+use App\Features\Users\AdminUsers\Controllers\AdminUsersController;
 use App\Shared\Enums\MiddlewareEnum;
-use App\Features\Users\AdminUsers\Http\Controllers\AdminUsersController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [AdminUsersController::class, 'index']);
@@ -11,6 +11,9 @@ Route::get('/me', [AdminUsersController::class, 'showLoggedUserResource']);
 Route::get('/count/profiles', [AdminUsersController::class, 'showCountByProfiles']);
 
 Route::get('/id/{id}', [AdminUsersController::class, 'showById'])->middleware([MiddlewareEnum::UUID]);
+
+Route::get('/profile-unique-name/{profileUniqueName}', [AdminUsersController::class, 'showByProfileUniqueName'])
+    ->middleware([MiddlewareEnum::PROFILE_UNIQUE_NAME]);
 
 Route::post('/', [AdminUsersController::class, 'insert']);
 

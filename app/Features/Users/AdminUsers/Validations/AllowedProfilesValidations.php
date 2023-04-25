@@ -26,7 +26,7 @@ class AllowedProfilesValidations
     public static function validateAdminMasterProfile(string $profileUniqueName): void
     {
         $profilesNotAllowed = [
-            ProfileUniqueNameEnum::TECHNICAL_SUPPORT
+            ProfileUniqueNameEnum::TECHNICAL_SUPPORT->value
         ];
 
         if(in_array($profileUniqueName, $profilesNotAllowed)) {
@@ -40,8 +40,8 @@ class AllowedProfilesValidations
     public static function validateAdminChurchProfile(string $profileUniqueName): void
     {
         $profilesNotAllowed = [
-            ProfileUniqueNameEnum::TECHNICAL_SUPPORT,
-            ProfileUniqueNameEnum::ADMIN_MASTER,
+            ProfileUniqueNameEnum::TECHNICAL_SUPPORT->value,
+            ProfileUniqueNameEnum::ADMIN_MASTER->value,
         ];
 
         if(in_array($profileUniqueName, $profilesNotAllowed)) {
@@ -55,9 +55,9 @@ class AllowedProfilesValidations
     public static function validateAdminModuleProfile(string $profileUniqueName): void
     {
         $profilesNotAllowed = [
-            ProfileUniqueNameEnum::TECHNICAL_SUPPORT,
-            ProfileUniqueNameEnum::ADMIN_MASTER,
-            ProfileUniqueNameEnum::ADMIN_CHURCH,
+            ProfileUniqueNameEnum::TECHNICAL_SUPPORT->value,
+            ProfileUniqueNameEnum::ADMIN_MASTER->value,
+            ProfileUniqueNameEnum::ADMIN_CHURCH->value,
         ];
 
         if(in_array($profileUniqueName, $profilesNotAllowed)) {
@@ -71,10 +71,10 @@ class AllowedProfilesValidations
     public static function validateAssistantProfile(string $profileUniqueName): void
     {
         $profilesNotAllowed = [
-            ProfileUniqueNameEnum::TECHNICAL_SUPPORT,
-            ProfileUniqueNameEnum::ADMIN_MASTER,
-            ProfileUniqueNameEnum::ADMIN_CHURCH,
-            ProfileUniqueNameEnum::ADMIN_MODULE,
+            ProfileUniqueNameEnum::TECHNICAL_SUPPORT->value,
+            ProfileUniqueNameEnum::ADMIN_MASTER->value,
+            ProfileUniqueNameEnum::ADMIN_CHURCH->value,
+            ProfileUniqueNameEnum::ADMIN_MODULE->value,
         ];
 
         if(in_array($profileUniqueName, $profilesNotAllowed)) {

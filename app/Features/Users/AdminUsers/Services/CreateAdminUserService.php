@@ -3,21 +3,21 @@
 namespace App\Features\Users\AdminUsers\Services;
 
 use App\Exceptions\AppException;
+use App\Features\Base\Services\Service;
 use App\Features\Base\Traits\DispatchExceptionTrait;
 use App\Features\Users\AdminUsers\Contracts\AdminUsersRepositoryInterface;
 use App\Features\Users\AdminUsers\Contracts\CreateAdminUserServiceInterface;
-use App\Features\Users\AdminUsers\Http\Responses\AdminUserResponse;
+use App\Features\Users\AdminUsers\Responses\AdminUserResponse;
 use App\Features\Users\AdminUsers\Validations\AllowedProfilesValidations;
 use App\Features\Users\Profiles\Contracts\ProfilesRepositoryInterface;
 use App\Features\Users\Users\Contracts\UsersRepositoryInterface;
 use App\Features\Users\Users\DTO\UserDTO;
 use App\Features\Users\Users\Validations\UsersValidations;
-use App\Shared\ACL\Policy;
 use App\Shared\Enums\RulesEnum;
 use App\Shared\Utils\Hash;
 use App\Shared\Utils\Transaction;
 
-class CreateAdminUserService implements CreateAdminUserServiceInterface
+class CreateAdminUserService extends Service implements CreateAdminUserServiceInterface
 {
     use DispatchExceptionTrait;
 
@@ -34,12 +34,11 @@ class CreateAdminUserService implements CreateAdminUserServiceInterface
     /**
      * @throws AppException
      */
-    public function execute(
-        UserDTO $userDTO,
-        Policy $policy
-    ): AdminUserResponse
+    public function execute(UserDTO $userDTO): AdminUserResponse
     {
         $this->userDTO = $userDTO;
+
+        $policy = $this->getPolicy();
 
         return match (true) {
             $policy->haveRule(RulesEnum::ADMIN_USERS_ADMIN_MASTER_INSERT->value) => $this->createByAdminMaster(),

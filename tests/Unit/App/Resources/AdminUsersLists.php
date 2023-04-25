@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\App\Resources;
 
-use App\Features\Users\AdminUsers\Infra\Models\AdminUser;
+use App\Features\Users\AdminUsers\Models\AdminUser;
 use App\Features\Users\Profiles\Enums\ProfileUniqueNameEnum;
 use App\Features\Users\Profiles\Infra\Models\Profile;
 use App\Features\Users\Users\Infra\Models\User;

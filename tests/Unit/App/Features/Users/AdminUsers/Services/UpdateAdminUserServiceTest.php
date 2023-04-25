@@ -4,8 +4,8 @@ namespace Tests\Unit\App\Features\Users\AdminUsers\Services;
 
 use App\Exceptions\AppException;
 use App\Features\Users\AdminUsers\Contracts\AdminUsersRepositoryInterface;
-use App\Features\Users\AdminUsers\Http\Responses\AdminUserResponse;
-use App\Features\Users\AdminUsers\Infra\Repositories\AdminUsersRepository;
+use App\Features\Users\AdminUsers\Repositories\AdminUsersRepository;
+use App\Features\Users\AdminUsers\Responses\AdminUserResponse;
 use App\Features\Users\AdminUsers\Services\UpdateAdminUserService;
 use App\Features\Users\NewPasswordGenerations\DTO\NewPasswordGenerationsDTO;
 use App\Features\Users\Profiles\Contracts\ProfilesRepositoryInterface;
@@ -98,11 +98,13 @@ class UpdateAdminUserServiceTest extends TestCase
         mixed $profile
     ): void
     {
+        $updateAdminUserService = $this->getUpdateAdminUserService();
+
+        $updateAdminUserService->setPolicy(new Policy([$rule]));
+
         $profileId = Uuid::uuid4()->toString();
 
         $this->populateUsersDTO($profileId);
-
-        $policy = new Policy([$rule]);
 
         $this
             ->adminUsersRepositoryMock
@@ -124,11 +126,8 @@ class UpdateAdminUserServiceTest extends TestCase
             ->method('create')
             ->willReturn(UsersLists::showUser());
 
-        $updateAdminUserService = $this->getUpdateAdminUserService();
-
         $adminUser = $updateAdminUserService->execute(
             $this->userDtoMock,
-            $policy
         );
 
         $this->assertInstanceOf(AdminUserResponse::class, $adminUser);
@@ -136,39 +135,40 @@ class UpdateAdminUserServiceTest extends TestCase
 
     public function test_should_should_return_exception_if_admin_user_not_exists()
     {
+        $updateAdminUserService = $this->getUpdateAdminUserService();
+
+        $updateAdminUserService->setPolicy(new Policy([
+            RulesEnum::ADMIN_USERS_ADMIN_MODULE_UPDATE->value
+        ]));
+
         $profileId = Uuid::uuid4()->toString();
 
         $this->populateUsersDTO($profileId);
-
-        $policy = new Policy([
-            RulesEnum::ADMIN_USERS_ADMIN_MODULE_UPDATE->value
-        ]);
 
         $this
             ->adminUsersRepositoryMock
             ->method('findByUserId')
             ->willReturn(null);
 
-        $updateAdminUserService = $this->getUpdateAdminUserService();
-
         $this->expectException(AppException::class);
         $this->expectExceptionCode(Response::HTTP_NOT_FOUND);
 
         $updateAdminUserService->execute(
             $this->userDtoMock,
-            $policy
         );
     }
 
     public function test_should_return_exception_if_email_already_exists()
     {
+        $updateAdminUserService = $this->getUpdateAdminUserService();
+
+        $updateAdminUserService->setPolicy(new Policy([
+            RulesEnum::ADMIN_USERS_ADMIN_MODULE_UPDATE->value
+        ]));
+
         $profileId = Uuid::uuid4()->toString();
 
         $this->populateUsersDTO($profileId);
-
-        $policy = new Policy([
-            RulesEnum::ADMIN_USERS_ADMIN_MODULE_UPDATE->value
-        ]);
 
         $this
             ->adminUsersRepositoryMock
@@ -180,26 +180,25 @@ class UpdateAdminUserServiceTest extends TestCase
             ->method('findByEmail')
             ->willReturn(UsersLists::showUser());
 
-        $updateAdminUserService = $this->getUpdateAdminUserService();
-
         $this->expectException(AppException::class);
         $this->expectExceptionCode(Response::HTTP_BAD_REQUEST);
 
         $updateAdminUserService->execute(
             $this->userDtoMock,
-            $policy
         );
     }
 
     public function test_should_return_exception_if_profile_not_exists()
     {
+        $updateAdminUserService = $this->getUpdateAdminUserService();
+
+        $updateAdminUserService->setPolicy(new Policy([
+            RulesEnum::ADMIN_USERS_ADMIN_MODULE_UPDATE->value
+        ]));
+
         $profileId = Uuid::uuid4()->toString();
 
         $this->populateUsersDTO($profileId);
-
-        $policy = new Policy([
-            RulesEnum::ADMIN_USERS_ADMIN_MODULE_UPDATE->value
-        ]);
 
         $this
             ->adminUsersRepositoryMock
@@ -216,26 +215,25 @@ class UpdateAdminUserServiceTest extends TestCase
             ->method('findById')
             ->willReturn(null);
 
-        $updateAdminUserService = $this->getUpdateAdminUserService();
-
         $this->expectException(AppException::class);
         $this->expectExceptionCode(Response::HTTP_NOT_FOUND);
 
         $updateAdminUserService->execute(
             $this->userDtoMock,
-            $policy
         );
     }
 
     public function test_should_return_exception_if_the_user_tries_to_register_a_superior_profile()
     {
+        $updateAdminUserService = $this->getUpdateAdminUserService();
+
+        $updateAdminUserService->setPolicy(new Policy([
+            RulesEnum::ADMIN_USERS_ADMIN_MODULE_UPDATE->value
+        ]));
+
         $profileId = Uuid::uuid4()->toString();
 
         $this->populateUsersDTO($profileId);
-
-        $policy = new Policy([
-            RulesEnum::ADMIN_USERS_ADMIN_MODULE_UPDATE->value
-        ]);
 
         $this
             ->adminUsersRepositoryMock
@@ -257,35 +255,31 @@ class UpdateAdminUserServiceTest extends TestCase
             ->method('create')
             ->willReturn(UsersLists::showUser());
 
-        $updateAdminUserService = $this->getUpdateAdminUserService();
-
         $this->expectException(AppException::class);
         $this->expectExceptionCode(Response::HTTP_FORBIDDEN);
 
         $updateAdminUserService->execute(
             $this->userDtoMock,
-            $policy
         );
     }
 
     public function test_should_return_exception_if_user_is_not_authorized()
     {
+        $updateAdminUserService = $this->getUpdateAdminUserService();
+
+        $updateAdminUserService->setPolicy(new Policy([
+            'ABC'
+        ]));
+
         $profileId = Uuid::uuid4()->toString();
 
         $this->populateUsersDTO($profileId);
-
-        $policy = new Policy([
-            'RULE_NOT_EXISTS'
-        ]);
-
-        $updateAdminUserService = $this->getUpdateAdminUserService();
 
         $this->expectException(AppException::class);
         $this->expectExceptionCode(Response::HTTP_FORBIDDEN);
 
         $updateAdminUserService->execute(
             $this->userDtoMock,
-            $policy
         );
     }
 }

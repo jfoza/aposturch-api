@@ -9,7 +9,7 @@ use App\Features\Auth\Responses\Admin\AdminAuthResponse;
 use App\Features\Auth\Responses\Admin\AdminUserResponse;
 use App\Features\Auth\Services\AdminUsersAuthService;
 use App\Features\Users\AdminUsers\Contracts\AdminUsersRepositoryInterface;
-use App\Features\Users\AdminUsers\Infra\Repositories\AdminUsersRepository;
+use App\Features\Users\AdminUsers\Repositories\AdminUsersRepository;
 use App\Features\Users\Rules\Contracts\RulesRepositoryInterface;
 use App\Features\Users\Rules\Infra\Repositories\RulesRepository;
 use App\Features\Users\Sessions\Contracts\SessionsRepositoryInterface;

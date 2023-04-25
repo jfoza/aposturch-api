@@ -3,22 +3,22 @@
 namespace App\Features\Users\AdminUsers\Services;
 
 use App\Exceptions\AppException;
+use App\Features\Base\Services\Service;
 use App\Features\Base\Traits\DispatchExceptionTrait;
 use App\Features\Users\AdminUsers\Contracts\AdminUsersRepositoryInterface;
 use App\Features\Users\AdminUsers\Contracts\UpdateAdminUserServiceInterface;
-use App\Features\Users\AdminUsers\Http\Responses\AdminUserResponse;
+use App\Features\Users\AdminUsers\Responses\AdminUserResponse;
 use App\Features\Users\AdminUsers\Validations\AdminUsersValidations;
 use App\Features\Users\AdminUsers\Validations\AllowedProfilesValidations;
 use App\Features\Users\Profiles\Contracts\ProfilesRepositoryInterface;
 use App\Features\Users\Users\Contracts\UsersRepositoryInterface;
 use App\Features\Users\Users\DTO\UserDTO;
 use App\Features\Users\Users\Validations\UsersValidations;
-use App\Shared\ACL\Policy;
 use App\Shared\Cache\PolicyCache;
 use App\Shared\Enums\RulesEnum;
 use App\Shared\Utils\Transaction;
 
-class UpdateAdminUserService implements UpdateAdminUserServiceInterface
+class UpdateAdminUserService extends Service implements UpdateAdminUserServiceInterface
 {
     use DispatchExceptionTrait;
 
@@ -35,12 +35,11 @@ class UpdateAdminUserService implements UpdateAdminUserServiceInterface
     /**
      * @throws AppException
      */
-    public function execute(
-        UserDTO $userDTO,
-        Policy $policy
-    ): AdminUserResponse
+    public function execute(UserDTO $userDTO): AdminUserResponse
     {
         $this->userDTO = $userDTO;
+
+        $policy = $this->getPolicy();
 
         return match (true) {
             $policy->haveRule(RulesEnum::ADMIN_USERS_ADMIN_MASTER_UPDATE->value) => $this->updateByAdminMaster(),

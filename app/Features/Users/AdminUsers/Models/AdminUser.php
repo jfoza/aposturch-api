@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Features\Users\AdminUsers\Infra\Models;
+namespace App\Features\Users\AdminUsers\Models;
 
 use App\Features\Base\Infra\Models\Register;
 use App\Features\Users\Users\Infra\Models\User;

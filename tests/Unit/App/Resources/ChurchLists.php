@@ -4,7 +4,7 @@ namespace Tests\Unit\App\Resources;
 
 use App\Features\General\Images\Enums\TypeUploadImageEnum;
 use App\Features\General\Images\Infra\Models\Image;
-use App\Features\Users\AdminUsers\Infra\Models\AdminUser;
+use App\Features\Users\AdminUsers\Models\AdminUser;
 use App\Features\Users\Users\Infra\Models\User;
 use App\Modules\Members\Church\Models\Church;
 use App\Modules\Members\ResponsibleChurch\Models\ResponsibleChurch;

@@ -6,16 +6,17 @@ use App\Exceptions\AppException;
 use App\Features\Users\AdminUsers\Contracts\AdminUsersRepositoryInterface;
 use App\Features\Users\AdminUsers\DTO\AdminUsersFiltersDTO;
 use App\Features\Users\AdminUsers\Repositories\AdminUsersRepository;
-use App\Features\Users\AdminUsers\Services\ShowAdminUserService;
+use App\Features\Users\AdminUsers\Services\FindAllByProfileUniqueNameService;
 use App\Shared\ACL\Policy;
 use App\Shared\Enums\RulesEnum;
 use Illuminate\Support\Collection;
 use PHPUnit\Framework\MockObject\MockObject;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 use Tests\Unit\App\Resources\AdminUsersLists;
 
-class ShowAdminUserServiceTest extends TestCase
+class FindAllByProfileUniqueNameServiceTest extends TestCase
 {
     private MockObject|AdminUsersRepositoryInterface $adminUsersRepositoryMock;
     private MockObject|AdminUsersFiltersDTO $adminUsersFiltersDtoMock;
@@ -26,44 +27,31 @@ class ShowAdminUserServiceTest extends TestCase
 
         $this->adminUsersRepositoryMock = $this->createMock(AdminUsersRepository::class);
         $this->adminUsersFiltersDtoMock = $this->createMock(AdminUsersFiltersDTO::class);
+
+        $this->adminUsersFiltersDtoMock->profileUniqueName = [Uuid::uuid4()->toString()];
     }
 
-    public function getShowAdminUserService(): ShowAdminUserService
+    public function getFindAllByProfileUniqueNameService(): FindAllByProfileUniqueNameService
     {
-        return new ShowAdminUserService(
+        return new FindAllByProfileUniqueNameService(
             $this->adminUsersRepositoryMock,
         );
     }
 
-    public function dataProviderShowAdminUser(): array
+    public function test_should_to_return_admin_users_list()
     {
-        return [
-            'By Admin Master Rule' => [RulesEnum::ADMIN_USERS_ADMIN_MASTER_VIEW->value],
-            'By Admin Church Rule' => [RulesEnum::ADMIN_USERS_ADMIN_CHURCH_VIEW->value],
-            'By Admin Module Rule' => [RulesEnum::ADMIN_USERS_ADMIN_MODULE_VIEW->value],
-            'By Assistant Rule'    => [RulesEnum::ADMIN_USERS_ASSISTANT_VIEW->value],
-        ];
-    }
+        $findAllByProfileUniqueNameService = $this->getFindAllByProfileUniqueNameService();
 
-    /**
-     * @dataProvider dataProviderShowAdminUser
-     *
-     * @param string $rule
-     * @return void
-     * @throws AppException
-     */
-    public function test_should_to_return_unique_admin_user(string $rule): void
-    {
-        $showAdminUserService = $this->getShowAdminUserService();
-
-        $showAdminUserService->setPolicy(new Policy([$rule]));
+        $findAllByProfileUniqueNameService->setPolicy(new Policy([
+            RulesEnum::ADMIN_USERS_ADMIN_MASTER_VIEW->value
+        ]));
 
         $this
             ->adminUsersRepositoryMock
-            ->method('findOneByFilters')
-            ->willReturn(AdminUsersLists::getUniqueAdminUser());
+            ->method('findAll')
+            ->willReturn(AdminUsersLists::getAllAdminUsers());
 
-        $adminUsers = $showAdminUserService->execute(
+        $adminUsers = $findAllByProfileUniqueNameService->execute(
             $this->adminUsersFiltersDtoMock,
         );
 
@@ -72,14 +60,16 @@ class ShowAdminUserServiceTest extends TestCase
 
     public function test_should_return_exception_if_user_is_not_authorized()
     {
-        $showAdminUserService = $this->getShowAdminUserService();
+        $findAllByProfileUniqueNameService = $this->getFindAllByProfileUniqueNameService();
 
-        $showAdminUserService->setPolicy(new Policy(['ABC']));
+        $findAllByProfileUniqueNameService->setPolicy(new Policy([
+            'ABC'
+        ]));
 
         $this->expectException(AppException::class);
         $this->expectExceptionCode(Response::HTTP_FORBIDDEN);
 
-        $showAdminUserService->execute(
+        $findAllByProfileUniqueNameService->execute(
             $this->adminUsersFiltersDtoMock,
         );
     }
