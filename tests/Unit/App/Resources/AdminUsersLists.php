@@ -3,6 +3,7 @@
 namespace Tests\Unit\App\Resources;
 
 use App\Features\Users\AdminUsers\Infra\Models\AdminUser;
+use App\Features\Users\Profiles\Enums\ProfileUniqueNameEnum;
 use App\Features\Users\Profiles\Infra\Models\Profile;
 use App\Features\Users\Users\Infra\Models\User;
 use App\Modules\Members\Church\Models\Church;
@@ -93,8 +94,8 @@ class AdminUsersLists
                     (object) ([
                         Profile::ID => "7f94247d-38a7-424b-ae7a-bb3262a587b9",
                         Profile::PROFILE_TYPE_ID => "3facf59b-175a-4b08-8a85-e1d6cb5b4b06",
-                        Profile::DESCRIPTION => "Admin Church",
-                        Profile::UNIQUE_NAME => "ADMIN_CHURCH",
+                        Profile::DESCRIPTION => "Admin Module",
+                        Profile::UNIQUE_NAME => ProfileUniqueNameEnum::ADMIN_MODULE,
                         Profile::ACTIVE => true,
                     ])
                 ]),

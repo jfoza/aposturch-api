@@ -45,7 +45,7 @@ class AdminUsersAuthService extends Service implements AdminUsersAuthServiceInte
         AuthValidations::passwordVerify($sessionsDTO->password, $user->password);
         AuthValidations::isActive($user->active);
 
-        if(!$this->isAdminMasterProfile())
+        if(!$this->profileVerify())
         {
             AuthValidations::userHasChurch($user);
         }
@@ -75,8 +75,12 @@ class AdminUsersAuthService extends Service implements AdminUsersAuthServiceInte
         return $this->authResource->getAuthResponse();
     }
 
-    private function isAdminMasterProfile(): bool
+    private function profileVerify(): bool
     {
-        return !! $this->profiles->where(Profile::UNIQUE_NAME, ProfileUniqueNameEnum::ADMIN_MASTER)->first();
+        $isAdminMaster = !! $this->profiles->where(Profile::UNIQUE_NAME, ProfileUniqueNameEnum::ADMIN_MASTER)->first();
+
+        $isAdminChurch = !! $this->profiles->where(Profile::UNIQUE_NAME, ProfileUniqueNameEnum::ADMIN_CHURCH)->first();
+
+        return $isAdminMaster || $isAdminChurch;
     }
 }
