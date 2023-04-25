@@ -15,11 +15,12 @@ trait UserAuthTrait
      * @throws UserNotDefinedException
      * @throws AppException
      */
-    public function getChurchesUserAuth(): Collection
+    public function getResponsibleChurch(): Collection
     {
         $user = Auth::authenticate();
 
-        if(!$churches = $user->church)
+
+        if(!$responsibleChurch = $user->adminUser->responsibleChurch)
         {
             throw new AppException(
                 MessagesEnum::USER_HAS_NO_CHURCH,
@@ -27,6 +28,6 @@ trait UserAuthTrait
             );
         }
 
-        return collect($churches);
+        return collect($responsibleChurch);
     }
 }

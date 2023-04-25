@@ -81,6 +81,7 @@ class AdminUsersRepository implements AdminUsersRepositoryInterface
     public function findByEmail(string $email): ?object
     {
         return AdminUser::with([
+            'responsibleChurch',
             'user' => function($q) {
                 return $q->with([
                     'profile',

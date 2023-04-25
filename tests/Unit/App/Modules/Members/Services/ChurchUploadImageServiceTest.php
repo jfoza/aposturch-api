@@ -93,7 +93,7 @@ class ChurchUploadImageServiceTest extends TestCase
 
         $this->populateImagesDTO();
 
-        $churchUploadImageService->setChurchesUserAuth(
+        $churchUploadImageService->setResponsibleChurch(
             ChurchLists::getChurchesById($this->churchId)
         );
 
@@ -132,7 +132,7 @@ class ChurchUploadImageServiceTest extends TestCase
             new Policy([$rule])
         );
 
-        $churchUploadImageService->setChurchesUserAuth(
+        $churchUploadImageService->setResponsibleChurch(
             ChurchLists::getChurchesById($this->churchId)
         );
 
@@ -190,7 +190,7 @@ class ChurchUploadImageServiceTest extends TestCase
 
         $this->populateImagesDTO();
 
-        $churchUploadImageService->setChurchesUserAuth(
+        $churchUploadImageService->setResponsibleChurch(
             ChurchLists::getChurchesById(Uuid::uuid4()->toString())
         );
 

@@ -13,6 +13,8 @@ use Illuminate\Support\Collection;
 
 class FindAllByProfileUniqueNameService extends Service implements FindAllByProfileUniqueNameServiceInterface
 {
+    private AdminUsersFiltersDTO $adminUsersFiltersDTO;
+
     public function __construct(
         private readonly AdminUsersRepositoryInterface $adminUsersRepository
     ) {}
@@ -22,8 +24,25 @@ class FindAllByProfileUniqueNameService extends Service implements FindAllByProf
      */
     public function execute(AdminUsersFiltersDTO $adminUsersFiltersDTO): LengthAwarePaginator|Collection
     {
-        $this->getPolicy()->havePermission(RulesEnum::ADMIN_USERS_ADMIN_MASTER_VIEW->value);
+        $policy = $this->getPolicy();
 
-        return $this->adminUsersRepository->findAll($adminUsersFiltersDTO);
+        $this->adminUsersFiltersDTO = $adminUsersFiltersDTO;
+
+        return match (true) {
+            $policy->haveRule(RulesEnum::ADMIN_USERS_ADMIN_MASTER_VIEW->value) => $this->findByAdminMaster(),
+            $policy->haveRule(RulesEnum::ADMIN_USERS_ADMIN_CHURCH_VIEW->value) => $this->findByAdminChurch(),
+
+            default  => $policy->dispatchErrorForbidden(),
+        };
+    }
+
+    private function findByAdminMaster(): LengthAwarePaginator|Collection
+    {
+        return $this->adminUsersRepository->findAll($this->adminUsersFiltersDTO);
+    }
+
+    private function findByAdminChurch(): LengthAwarePaginator|Collection
+    {
+        return $this->adminUsersRepository->findAll($this->adminUsersFiltersDTO);
     }
 }

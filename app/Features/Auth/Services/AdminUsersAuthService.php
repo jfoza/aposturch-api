@@ -61,7 +61,7 @@ class AdminUsersAuthService extends Service implements AdminUsersAuthServiceInte
             $accessToken,
             $expiresIn,
             $tokenType,
-            $user,
+            $adminUser,
             $ability
         );
 

@@ -58,7 +58,7 @@ class ShowByChurchUniqueNameServiceTest extends TestCase
             new Policy([$rule])
         );
 
-        $showByChurchUniqueNameService->setChurchesUserAuth(
+        $showByChurchUniqueNameService->setResponsibleChurch(
             ChurchLists::getChurchesByUniqueName($this->churchUniqueName)
         );
 
@@ -82,7 +82,7 @@ class ShowByChurchUniqueNameServiceTest extends TestCase
             new Policy([RulesEnum::MEMBERS_MODULE_CHURCH_ADMIN_MASTER_DETAILS_VIEW->value])
         );
 
-        $showByChurchUniqueNameService->setChurchesUserAuth(
+        $showByChurchUniqueNameService->setResponsibleChurch(
             ChurchLists::getChurchesByUniqueName($this->churchUniqueName)
         );
 
@@ -112,7 +112,7 @@ class ShowByChurchUniqueNameServiceTest extends TestCase
                 ChurchLists::showChurchByUniqueName($this->churchUniqueName)
             );
 
-        $showByChurchUniqueNameService->setChurchesUserAuth(
+        $showByChurchUniqueNameService->setResponsibleChurch(
             ChurchLists::getChurchesByUniqueName('abc')
         );
 

@@ -59,7 +59,7 @@ class RemoveUserChurchRelationshipServiceTest extends TestCase
             new Policy([$rule])
         );
 
-        $removeUserChurchRelationshipService->setChurchesUserAuth(
+        $removeUserChurchRelationshipService->setResponsibleChurch(
             ChurchLists::getChurchesById($this->churchId)
         );
 
@@ -81,7 +81,7 @@ class RemoveUserChurchRelationshipServiceTest extends TestCase
             new Policy([RulesEnum::MEMBERS_MODULE_CHURCH_ADMIN_CHURCH_USER_RELATIONSHIP_DELETE->value])
         );
 
-        $removeUserChurchRelationshipService->setChurchesUserAuth(
+        $removeUserChurchRelationshipService->setResponsibleChurch(
             ChurchLists::getChurchesById('abc')
         );
 

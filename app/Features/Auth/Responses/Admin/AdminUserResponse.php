@@ -13,5 +13,6 @@ class AdminUserResponse
     public Collection $role;
     public bool|null   $status;
     public mixed $churches;
+    public mixed $responsibleChurch;
     public array|null  $ability;
 }

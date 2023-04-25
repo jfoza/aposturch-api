@@ -50,6 +50,11 @@ class AdminUsersLists
         return (object) ([
             AdminUser::ID      => "48fdcbba-86e2-4567-8999-dda3c3e5279c",
             AdminUser::USER_ID => "edd710bb-55d3-4e0e-8027-d5d68cd1a0f9",
+            "responsibleChurch" => [
+                CollectionSupport::make([
+                    [Church::ID => Uuid::uuid4()->toString()]
+                ]),
+            ],
 
             "user" => (object) ([
                 User::ID => "edd710bb-55d3-4e0e-8027-d5d68cd1a0f9",

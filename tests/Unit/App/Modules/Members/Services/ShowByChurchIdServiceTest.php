@@ -59,7 +59,7 @@ class ShowByChurchIdServiceTest extends TestCase
             new Policy([$rule])
         );
 
-        $showByChurchIdService->setChurchesUserAuth(
+        $showByChurchIdService->setResponsibleChurch(
             ChurchLists::getChurchesById($this->churchId)
         );
 
@@ -81,7 +81,7 @@ class ShowByChurchIdServiceTest extends TestCase
             new Policy([RulesEnum::MEMBERS_MODULE_CHURCH_ADMIN_MASTER_VIEW->value])
         );
 
-        $showByChurchIdService->setChurchesUserAuth(
+        $showByChurchIdService->setResponsibleChurch(
             ChurchLists::getChurchesById($this->churchId)
         );
 
@@ -104,7 +104,7 @@ class ShowByChurchIdServiceTest extends TestCase
             new Policy([RulesEnum::MEMBERS_MODULE_CHURCH_ADMIN_CHURCH_VIEW->value])
         );
 
-        $showByChurchIdService->setChurchesUserAuth(
+        $showByChurchIdService->setResponsibleChurch(
             ChurchLists::getChurchesById('abc')
         );
 

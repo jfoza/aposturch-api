@@ -3,8 +3,10 @@
 namespace Tests\Unit\App\Modules\Members\Services;
 
 use App\Exceptions\AppException;
+use App\Features\Base\Http\Pagination\PaginationOrder;
 use App\Features\City\Cities\Contracts\CityRepositoryInterface;
 use App\Features\City\Cities\Infra\Repositories\CityRepository;
+use App\Features\Users\AdminUsers\DTO\AdminUsersFiltersDTO;
 use App\Modules\Members\Church\Contracts\ChurchRepositoryInterface;
 use App\Modules\Members\Church\DTO\ChurchDTO;
 use App\Modules\Members\Church\Models\Church;
@@ -34,7 +36,17 @@ class UpdateChurchServiceTest extends TestCase
         $this->churchRepositoryMock = $this->createMock(ChurchRepository::class);
         $this->cityRepositoryMock   = $this->createMock(CityRepository::class);
 
+        $this->responsibleId = Uuid::uuid4()->toString();
+
+        $adminUsersFiltersDtoMock = $this->createMock(AdminUsersFiltersDTO::class);
+
+        $adminUsersFiltersDtoMock->adminsId = [$this->responsibleId];
+
+        $adminUsersFiltersDtoMock->paginationOrder = $this->createMock(PaginationOrder::class);
+
         $this->churchDtoMock = $this->createMock(ChurchDTO::class);
+
+        $this->churchDtoMock->adminUsersFiltersDTO = $adminUsersFiltersDtoMock;
 
         $this->churchDtoMock->id     = Uuid::uuid4()->toString();
         $this->churchDtoMock->cityId = Uuid::uuid4()->toString();
@@ -70,7 +82,7 @@ class UpdateChurchServiceTest extends TestCase
 
         $updateChurchService->setPolicy(new Policy([$rule]));
 
-        $updateChurchService->setChurchesUserAuth(
+        $updateChurchService->setResponsibleChurch(
             ChurchLists::getChurchesById($this->churchDtoMock->id)
         );
 
@@ -97,7 +109,7 @@ class UpdateChurchServiceTest extends TestCase
             RulesEnum::MEMBERS_MODULE_CHURCH_ADMIN_CHURCH_UPDATE->value
         ]));
 
-        $updateChurchService->setChurchesUserAuth(
+        $updateChurchService->setResponsibleChurch(
             ChurchLists::getChurchesById($this->churchDtoMock->id)
         );
 
@@ -120,7 +132,7 @@ class UpdateChurchServiceTest extends TestCase
             RulesEnum::MEMBERS_MODULE_CHURCH_ADMIN_CHURCH_UPDATE->value
         ]));
 
-        $updateChurchService->setChurchesUserAuth(
+        $updateChurchService->setResponsibleChurch(
             ChurchLists::getChurchesById($this->churchDtoMock->id)
         );
 
@@ -148,7 +160,7 @@ class UpdateChurchServiceTest extends TestCase
             RulesEnum::MEMBERS_MODULE_CHURCH_ADMIN_CHURCH_UPDATE->value
         ]));
 
-        $updateChurchService->setChurchesUserAuth(
+        $updateChurchService->setResponsibleChurch(
             ChurchLists::getChurchesById('abc')
         );
 

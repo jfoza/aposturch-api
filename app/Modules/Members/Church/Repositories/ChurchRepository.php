@@ -39,7 +39,7 @@ class ChurchRepository implements ChurchRepositoryInterface
 
     public function findById(string $churchId, bool $listMembers = false): object|null
     {
-        $relations = ['imagesChurch', 'city', 'adminUser'];
+        $relations = ['imagesChurch', 'city', 'adminUser.user'];
 
         if($listMembers)
         {

@@ -13,22 +13,22 @@ abstract class Service
     use DispatchExceptionTrait;
 
     private Policy $policy;
-    private Collection $churchesUserAuth;
+    private Collection $responsibleChurch;
 
     /**
      * @return mixed
      */
-    public function getChurchesUserAuth(): Collection
+    public function getResponsibleChurch(): Collection
     {
-        return $this->churchesUserAuth;
+        return $this->responsibleChurch;
     }
 
     /**
-     * @param mixed $churchesUserAuth
+     * @param Collection $responsibleChurch
      */
-    public function setChurchesUserAuth(Collection $churchesUserAuth): void
+    public function setResponsibleChurch(Collection $responsibleChurch): void
     {
-        $this->churchesUserAuth = $churchesUserAuth;
+        $this->responsibleChurch = $responsibleChurch;
     }
 
     /**
@@ -36,7 +36,7 @@ abstract class Service
      */
     public function userHasChurch(string $key, string $value): void
     {
-        if(!$this->churchesUserAuth->where($key, $value)->first())
+        if(!$this->responsibleChurch->where($key, $value)->first())
         {
             $this->getPolicy()->dispatchErrorForbidden();
         }

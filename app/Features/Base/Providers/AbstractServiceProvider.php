@@ -22,7 +22,7 @@ abstract class AbstractServiceProvider extends ServiceProvider
                 $service = $this->app->make($concreteServiceClass);
 
                 $service->setPolicy($this->generatePolicyUser());
-                $service->setChurchesUserAuth($this->getChurchesUserAuth());
+                $service->setResponsibleChurch($this->getResponsibleChurch());
 
                 return $service;
             }

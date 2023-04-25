@@ -31,6 +31,14 @@ class FindAllByProfileUniqueNameServiceTest extends TestCase
         $this->adminUsersFiltersDtoMock->profileUniqueName = [Uuid::uuid4()->toString()];
     }
 
+    public function dataProviderFindAll(): array
+    {
+        return [
+            'By Admin Master Rule' => [RulesEnum::ADMIN_USERS_ADMIN_MASTER_VIEW->value],
+            'By Admin Church Rule' => [RulesEnum::ADMIN_USERS_ADMIN_CHURCH_VIEW->value],
+        ];
+    }
+
     public function getFindAllByProfileUniqueNameService(): FindAllByProfileUniqueNameService
     {
         return new FindAllByProfileUniqueNameService(
@@ -38,13 +46,18 @@ class FindAllByProfileUniqueNameServiceTest extends TestCase
         );
     }
 
-    public function test_should_to_return_admin_users_list()
+    /**
+     * @dataProvider dataProviderFindAll
+     *
+     * @param string $rule
+     * @return void
+     * @throws AppException
+     */
+    public function test_should_to_return_admin_users_list(string $rule): void
     {
         $findAllByProfileUniqueNameService = $this->getFindAllByProfileUniqueNameService();
 
-        $findAllByProfileUniqueNameService->setPolicy(new Policy([
-            RulesEnum::ADMIN_USERS_ADMIN_MASTER_VIEW->value
-        ]));
+        $findAllByProfileUniqueNameService->setPolicy(new Policy([$rule]));
 
         $this
             ->adminUsersRepositoryMock

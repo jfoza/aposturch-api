@@ -100,6 +100,11 @@ class UpdateChurchService extends Service implements UpdateChurchServiceInterfac
         {
             $updated = $this->churchRepository->save($this->churchDTO);
 
+            $this->churchRepository->saveResponsible(
+                $this->churchDTO->id,
+                $this->churchDTO->adminUsersFiltersDTO->adminsId
+            );
+
             Transaction::commit();
 
             return $updated;

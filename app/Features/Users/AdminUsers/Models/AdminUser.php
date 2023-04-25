@@ -32,7 +32,7 @@ class AdminUser extends Register
         return $this->belongsTo(User::class);
     }
 
-    public function church(): BelongsToMany
+    public function responsibleChurch(): BelongsToMany
     {
         return $this->belongsToMany(
             Church::class,
