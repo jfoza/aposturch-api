@@ -9,6 +9,8 @@ use App\Features\Users\AdminUsers\Models\AdminUser;
 use App\Features\Users\AdminUsers\Traits\AdminUsersListTrait;
 use App\Features\Users\Profiles\Infra\Models\Profile;
 use App\Features\Users\Users\Infra\Models\User;
+use App\Modules\Members\Church\Models\Church;
+use App\Modules\Members\ResponsibleChurch\Models\ResponsibleChurch;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 
@@ -31,6 +33,27 @@ class AdminUsersRepository implements AdminUsersRepositoryInterface
              );
 
          return $this->paginateOrGet($builder, $adminUsersFiltersDTO->paginationOrder);
+    }
+
+    public function findAllResponsibleChurch(string $churchId): mixed
+    {
+        return $this
+            ->baseQuery()
+            ->leftJoin(
+                ResponsibleChurch::tableName(),
+                ResponsibleChurch::tableField(ResponsibleChurch::ADMIN_USER_ID),
+                AdminUser::tableField(AdminUser::ID)
+            )
+            ->leftJoin(
+                Church::tableName(),
+                Church::tableField(Church::ID),
+                ResponsibleChurch::tableField(ResponsibleChurch::CHURCH_ID)
+            )
+            ->where(
+                Church::tableField(Church::ID),
+                $churchId
+            )
+            ->get();
     }
 
     public function findById(string $id): ?object

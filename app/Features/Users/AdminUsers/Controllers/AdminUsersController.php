@@ -5,6 +5,7 @@ namespace App\Features\Users\AdminUsers\Controllers;
 use App\Features\Users\AdminUsers\Contracts\CreateAdminUserServiceInterface;
 use App\Features\Users\AdminUsers\Contracts\FindAllAdminUsersServiceInterface;
 use App\Features\Users\AdminUsers\Contracts\FindAllByProfileUniqueNameServiceInterface;
+use App\Features\Users\AdminUsers\Contracts\FindAllResponsibleChurchServiceInterface;
 use App\Features\Users\AdminUsers\Contracts\ShowAdminUserServiceInterface;
 use App\Features\Users\AdminUsers\Contracts\ShowCountAdminUsersByProfileInterface;
 use App\Features\Users\AdminUsers\Contracts\ShowLoggedUserServiceInterface;
@@ -28,6 +29,7 @@ readonly class AdminUsersController
         private UpdateAdminUserServiceInterface $updateAdminUserService,
         private ShowCountAdminUsersByProfileInterface $showCountAdminUsersByProfile,
         private FindAllByProfileUniqueNameServiceInterface $findAllByProfileUniqueNameService,
+        private FindAllResponsibleChurchServiceInterface $findAllResponsibleChurchService,
     ) {}
 
     public function index(
@@ -44,6 +46,15 @@ readonly class AdminUsersController
         $adminUsersFiltersDTO->email     = $adminUsersFiltersRequest->email;
 
         $users = $this->adminUsersListingService->execute($adminUsersFiltersDTO);
+
+        return response()->json($users, Response::HTTP_OK);
+    }
+
+    public function showResponsibleChurch(Request $request): JsonResponse
+    {
+        $churchId = $request->id;
+
+        $users = $this->findAllResponsibleChurchService->execute($churchId);
 
         return response()->json($users, Response::HTTP_OK);
     }

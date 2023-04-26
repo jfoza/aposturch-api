@@ -53,7 +53,7 @@ class UpdateChurchService extends Service implements UpdateChurchServiceInterfac
     {
         $this->handleValidations();
 
-        return $this->baseUpdateOperation();
+        return $this->baseUpdateOperation(true);
     }
 
     /**
@@ -92,7 +92,7 @@ class UpdateChurchService extends Service implements UpdateChurchServiceInterfac
     /**
      * @throws AppException
      */
-    private function baseUpdateOperation()
+    private function baseUpdateOperation(bool $isAdminMaster = false)
     {
         Transaction::beginTransaction();
 
@@ -100,10 +100,13 @@ class UpdateChurchService extends Service implements UpdateChurchServiceInterfac
         {
             $updated = $this->churchRepository->save($this->churchDTO);
 
-            $this->churchRepository->saveResponsible(
-                $this->churchDTO->id,
-                $this->churchDTO->adminUsersFiltersDTO->adminsId
-            );
+            if($isAdminMaster)
+            {
+                $this->churchRepository->saveResponsible(
+                    $this->churchDTO->id,
+                    $this->churchDTO->adminUsersFiltersDTO->adminsId
+                );
+            }
 
             Transaction::commit();
 

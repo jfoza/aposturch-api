@@ -12,6 +12,8 @@ Route::get('/count/profiles', [AdminUsersController::class, 'showCountByProfiles
 
 Route::get('/id/{id}', [AdminUsersController::class, 'showById'])->middleware([MiddlewareEnum::UUID]);
 
+Route::get('/responsible/church/{id}', [AdminUsersController::class, 'showResponsibleChurch'])->middleware([MiddlewareEnum::UUID]);
+
 Route::get('/profile-unique-name/{profileUniqueName}', [AdminUsersController::class, 'showByProfileUniqueName'])
     ->middleware([MiddlewareEnum::PROFILE_UNIQUE_NAME]);
 

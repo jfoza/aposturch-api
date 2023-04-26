@@ -28,7 +28,8 @@ class FindAllByProfileUniqueNameService extends Service implements FindAllByProf
 
         $this->adminUsersFiltersDTO = $adminUsersFiltersDTO;
 
-        return match (true) {
+        return match (true)
+        {
             $policy->haveRule(RulesEnum::ADMIN_USERS_ADMIN_MASTER_VIEW->value) => $this->findByAdminMaster(),
             $policy->haveRule(RulesEnum::ADMIN_USERS_ADMIN_CHURCH_VIEW->value) => $this->findByAdminChurch(),
 

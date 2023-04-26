@@ -7,6 +7,7 @@ use App\Features\Users\AdminUsers\Contracts\AdminUsersRepositoryInterface;
 use App\Features\Users\AdminUsers\Contracts\CreateAdminUserServiceInterface;
 use App\Features\Users\AdminUsers\Contracts\FindAllAdminUsersServiceInterface;
 use App\Features\Users\AdminUsers\Contracts\FindAllByProfileUniqueNameServiceInterface;
+use App\Features\Users\AdminUsers\Contracts\FindAllResponsibleChurchServiceInterface;
 use App\Features\Users\AdminUsers\Contracts\ShowAdminUserServiceInterface;
 use App\Features\Users\AdminUsers\Contracts\ShowCountAdminUsersByProfileInterface;
 use App\Features\Users\AdminUsers\Contracts\ShowLoggedUserServiceInterface;
@@ -15,6 +16,7 @@ use App\Features\Users\AdminUsers\Repositories\AdminUsersRepository;
 use App\Features\Users\AdminUsers\Services\CreateAdminUserService;
 use App\Features\Users\AdminUsers\Services\FindAllAdminUsersService;
 use App\Features\Users\AdminUsers\Services\FindAllByProfileUniqueNameService;
+use App\Features\Users\AdminUsers\Services\FindAllResponsibleChurchService;
 use App\Features\Users\AdminUsers\Services\ShowAdminUserService;
 use App\Features\Users\AdminUsers\Services\ShowCountAdminUsersByProfile;
 use App\Features\Users\AdminUsers\Services\ShowLoggedUserService;
@@ -58,6 +60,11 @@ class AdminUsersProvider extends AbstractServiceProvider
         $this->bind(
             FindAllByProfileUniqueNameServiceInterface::class,
             FindAllByProfileUniqueNameService::class,
+        );
+
+        $this->bind(
+            FindAllResponsibleChurchServiceInterface::class,
+            FindAllResponsibleChurchService::class,
         );
     }
 }

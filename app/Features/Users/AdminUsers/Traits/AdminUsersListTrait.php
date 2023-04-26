@@ -7,6 +7,8 @@ use App\Features\Users\AdminUsers\Models\AdminUser;
 use App\Features\Users\Profiles\Infra\Models\Profile;
 use App\Features\Users\ProfilesUsers\Infra\Models\ProfileUser;
 use App\Features\Users\Users\Infra\Models\User;
+use App\Modules\Members\Church\Models\Church;
+use App\Modules\Members\ResponsibleChurch\Models\ResponsibleChurch;
 
 trait AdminUsersListTrait
 {
