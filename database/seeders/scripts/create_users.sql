@@ -37,7 +37,7 @@ DO $$
 
         SELECT id INTO _module1 FROM module.modules WHERE module_unique_name = 'USERS';
         SELECT id INTO _module2 FROM module.modules WHERE module_unique_name = 'FINANCE';
-        SELECT id INTO _module3 FROM module.modules WHERE module_unique_name = 'MEMBERS';
+        SELECT id INTO _module3 FROM module.modules WHERE module_unique_name = 'MEMBERSHIP';
         SELECT id INTO _module4 FROM module.modules WHERE module_unique_name = 'STORE';
         SELECT id INTO _module5 FROM module.modules WHERE module_unique_name = 'GROUPS';
         SELECT id INTO _module6 FROM module.modules WHERE module_unique_name = 'SCHEDULE';
@@ -131,7 +131,7 @@ DO $$
 
         SELECT id INTO _module1 FROM module.modules WHERE module_unique_name = 'USERS';
         SELECT id INTO _module2 FROM module.modules WHERE module_unique_name = 'FINANCE';
-        SELECT id INTO _module3 FROM module.modules WHERE module_unique_name = 'MEMBERS';
+        SELECT id INTO _module3 FROM module.modules WHERE module_unique_name = 'MEMBERSHIP';
         SELECT id INTO _module4 FROM module.modules WHERE module_unique_name = 'STORE';
         SELECT id INTO _module5 FROM module.modules WHERE module_unique_name = 'GROUPS';
         SELECT id INTO _module6 FROM module.modules WHERE module_unique_name = 'SCHEDULE';
@@ -194,6 +194,7 @@ DO $$
 
         _user_uuid   uuid    = uuid_generate_v4();
         _person_uuid uuid    = uuid_generate_v4();
+        _member_uuid uuid    = uuid_generate_v4();
         _city_id     uuid;
         _name        varchar = 'Felipe Dutra';
         _email       varchar = 'felipe-dutra@hotmail.com';
@@ -210,8 +211,6 @@ DO $$
         _profile varchar := 'ADMIN_CHURCH';
         _profile_uuid uuid;
 
-        _admin_user_uuid uuid = uuid_generate_v4();
-
         _church_unique_name varchar = 'igreja-biblica-viver-caxias';
         _church_id uuid;
 
@@ -223,18 +222,22 @@ DO $$
         _module6 uuid;
         _module7 uuid;
 
+        _member_type_uuid uuid;
+
     BEGIN
         SELECT id INTO _profile_uuid FROM users.profiles WHERE unique_name = _profile;
         SELECT id INTO _city_id FROM city.cities WHERE description = _city;
-        SELECT id INTO _church_id FROM members.churches WHERE unique_name = _church_unique_name;
+        SELECT id INTO _church_id FROM membership.churches WHERE unique_name = _church_unique_name;
 
         SELECT id INTO _module1 FROM module.modules WHERE module_unique_name = 'USERS';
         SELECT id INTO _module2 FROM module.modules WHERE module_unique_name = 'FINANCE';
-        SELECT id INTO _module3 FROM module.modules WHERE module_unique_name = 'MEMBERS';
+        SELECT id INTO _module3 FROM module.modules WHERE module_unique_name = 'MEMBERSHIP';
         SELECT id INTO _module4 FROM module.modules WHERE module_unique_name = 'STORE';
         SELECT id INTO _module5 FROM module.modules WHERE module_unique_name = 'GROUPS';
         SELECT id INTO _module6 FROM module.modules WHERE module_unique_name = 'SCHEDULE';
         SELECT id INTO _module7 FROM module.modules WHERE module_unique_name = 'PATRIMONY';
+
+        SELECT id INTO _member_type_uuid FROM membership.member_types WHERE unique_name = 'RESPONSIBLE';
 
         INSERT INTO person.persons(id, city_id, phone, zip_code, address, number_address, complement, district, uf)
         VALUES(
@@ -259,12 +262,9 @@ DO $$
                 true
             );
 
-        INSERT INTO users.admin_users (id, user_id)
+        INSERT INTO membership.members(id, user_id, type_member_id)
         VALUES
-            (
-                _admin_user_uuid,
-                _user_uuid
-            );
+            (_member_uuid, _user_uuid, _member_type_uuid);
 
         INSERT INTO users.modules_users (user_id, module_id)
         VALUES
@@ -283,10 +283,10 @@ DO $$
                 _user_uuid
             );
 
-        INSERT INTO members.responsible_church (admin_user_id, church_id)
+        INSERT INTO membership.churches_members (member_id, church_id)
         VALUES
             (
-                _admin_user_uuid,
+                _member_uuid,
                 _church_id
             );
     END $$;
@@ -301,6 +301,7 @@ DO $$
 
         _user_uuid   uuid    = uuid_generate_v4();
         _person_uuid uuid    = uuid_generate_v4();
+        _member_uuid uuid    = uuid_generate_v4();
         _city_id     uuid;
         _name        varchar = 'Fabio Dutra';
         _email       varchar = 'fabio-dutra@hotmail.com';
@@ -323,13 +324,17 @@ DO $$
         _module1 uuid;
         _module6 uuid;
 
+        _member_type_uuid uuid;
+
     BEGIN
         SELECT id INTO _profile_uuid FROM users.profiles WHERE unique_name = _profile;
         SELECT id INTO _city_id FROM city.cities WHERE description = _city;
-        SELECT id INTO _church_id FROM members.churches WHERE unique_name = _church_unique_name;
+        SELECT id INTO _church_id FROM membership.churches WHERE unique_name = _church_unique_name;
 
         SELECT id INTO _module1 FROM module.modules WHERE module_unique_name = 'USERS';
         SELECT id INTO _module6 FROM module.modules WHERE module_unique_name = 'SCHEDULE';
+
+        SELECT id INTO _member_type_uuid FROM membership.member_types WHERE unique_name = 'COMMON_MEMBER';
 
         INSERT INTO person.persons(id, city_id, phone, zip_code, address, number_address, complement, district, uf)
         VALUES(
@@ -354,11 +359,10 @@ DO $$
                 true
             );
 
-        INSERT INTO users.admin_users (user_id)
+        INSERT INTO membership.members(id, user_id, type_member_id)
         VALUES
-            (
-                _user_uuid
-            );
+            (_member_uuid, _user_uuid, _member_type_uuid);
+
 
         INSERT INTO users.modules_users (user_id, module_id)
         VALUES
@@ -372,10 +376,10 @@ DO $$
                 _user_uuid
             );
 
-        INSERT INTO users.users_churches (user_id, church_id)
+        INSERT INTO membership.churches_members (member_id, church_id)
         VALUES
             (
-                _user_uuid,
+                _member_uuid,
                 _church_id
             );
     END $$;
@@ -390,6 +394,7 @@ DO $$
 
         _user_uuid   uuid    = uuid_generate_v4();
         _person_uuid uuid    = uuid_generate_v4();
+        _member_uuid uuid    = uuid_generate_v4();
         _city_id     uuid;
         _name        varchar = 'Usuario Perfil Auxiliar';
         _email       varchar = 'usuario-auxiliar@hotmail.com';
@@ -412,13 +417,17 @@ DO $$
         _module1 uuid;
         _module6 uuid;
 
+        _member_type_uuid uuid;
+
     BEGIN
         SELECT id INTO _profile_uuid FROM users.profiles WHERE unique_name = _profile;
         SELECT id INTO _city_id FROM city.cities WHERE description = _city;
-        SELECT id INTO _church_id FROM members.churches WHERE unique_name = _church_unique_name;
+        SELECT id INTO _church_id FROM membership.churches WHERE unique_name = _church_unique_name;
 
         SELECT id INTO _module1 FROM module.modules WHERE module_unique_name = 'USERS';
         SELECT id INTO _module6 FROM module.modules WHERE module_unique_name = 'SCHEDULE';
+
+        SELECT id INTO _member_type_uuid FROM membership.member_types WHERE unique_name = 'COMMON_MEMBER';
 
         INSERT INTO person.persons(id, city_id, phone, zip_code, address, number_address, complement, district, uf)
         VALUES(
@@ -443,11 +452,9 @@ DO $$
                 true
             );
 
-        INSERT INTO users.admin_users (user_id)
+        INSERT INTO membership.members(id, user_id, type_member_id)
         VALUES
-            (
-                _user_uuid
-            );
+            (_member_uuid, _user_uuid, _member_type_uuid);
 
         INSERT INTO users.modules_users (user_id, module_id)
         VALUES
@@ -461,10 +468,10 @@ DO $$
                 _user_uuid
             );
 
-        INSERT INTO users.users_churches (user_id, church_id)
+        INSERT INTO membership.churches_members (member_id, church_id)
         VALUES
             (
-                _user_uuid,
+                _member_uuid,
                 _church_id
             );
     END $$;

@@ -4,6 +4,7 @@ DO $$
         _profile_type1 uuid := uuid_generate_v4();
         _profile_type2 uuid := uuid_generate_v4();
         _profile_type3 uuid := uuid_generate_v4();
+        _profile_type4 uuid := uuid_generate_v4();
 
         -- PROFILES
         _profile1 uuid := uuid_generate_v4();
@@ -89,11 +90,16 @@ DO $$
         _rule56 uuid := uuid_generate_v4();
 
     BEGIN
+        INSERT INTO membership.member_types(unique_name, description)
+        values
+            ('RESPONSIBLE', 'Responsável'),
+            ('COMMON_MEMBER', 'Membro Comum');
+
         INSERT INTO module.modules (id, module_description, module_unique_name, active)
         VALUES
             (_module1, 'Usuários', 'USERS', true),
             (_module2, 'Financeiro', 'FINANCE', true),
-            (_module3, 'Membresia', 'MEMBERS', true),
+            (_module3, 'Membresia', 'MEMBERSHIP', true),
             (_module4, 'Livraria', 'STORE', true),
             (_module5, 'Grupos', 'GROUPS', true),
             (_module6, 'Agenda', 'SCHEDULE', true),
@@ -103,7 +109,7 @@ DO $$
         VALUES
             (_module_rule1, 'USERS_MODULE_VIEW', 'USERS_MODULE', 'VIEW'),
             (_module_rule2, 'FINANCE_MODULE_VIEW', 'FINANCE_MODULE', 'VIEW'),
-            (_module_rule3, 'MEMBERS_MODULE_VIEW', 'MEMBERS_MODULE', 'VIEW'),
+            (_module_rule3, 'MEMBERSHIP_MODULE_VIEW', 'MEMBERSHIP_MODULE', 'VIEW'),
             (_module_rule4, 'STORE_MODULE_VIEW', 'STORE_MODULE', 'VIEW'),
             (_module_rule5, 'GROUPS_MODULE_VIEW', 'GROUPS_MODULE', 'VIEW'),
             (_module_rule6, 'SCHEDULE_MODULE_VIEW', 'SCHEDULE_MODULE', 'VIEW'),
@@ -154,31 +160,31 @@ DO $$
             (_rule35, 'COUNT_USERS_ADMIN_MODULE_VIEW', 'COUNT_USERS_ADMIN_MODULE', 'VIEW'),
             (_rule36, 'COUNT_USERS_ASSISTANT_VIEW',    'COUNT_USERS_ASSISTANT', 'VIEW'),
 
-            (_rule37, 'MEMBERS_MODULE_CHURCH_ADMIN_MASTER_VIEW',         'MEMBERS_MODULE_CHURCH_ADMIN_MASTER', 'VIEW'),
-            (_rule38, 'MEMBERS_MODULE_CHURCH_ADMIN_MASTER_DETAILS_VIEW', 'MEMBERS_MODULE_CHURCH_ADMIN_MASTER_DETAILS', 'VIEW'),
-            (_rule39, 'MEMBERS_MODULE_CHURCH_ADMIN_MASTER_INSERT',       'MEMBERS_MODULE_CHURCH_ADMIN_MASTER', 'INSERT'),
-            (_rule40, 'MEMBERS_MODULE_CHURCH_ADMIN_MASTER_UPDATE',       'MEMBERS_MODULE_CHURCH_ADMIN_MASTER', 'UPDATE'),
-            (_rule41, 'MEMBERS_MODULE_CHURCH_ADMIN_MASTER_DELETE',       'MEMBERS_MODULE_CHURCH_ADMIN_MASTER', 'DELETE'),
-            (_rule42, 'MEMBERS_MODULE_CHURCH_ADMIN_MASTER_IMAGE_UPLOAD', 'MEMBERS_MODULE_CHURCH_ADMIN_MASTER_IMAGE', 'UPLOAD'),
+            (_rule37, 'MEMBERSHIP_MODULE_CHURCH_ADMIN_MASTER_VIEW',         'MEMBERSHIP_MODULE_CHURCH_ADMIN_MASTER', 'VIEW'),
+            (_rule38, 'MEMBERSHIP_MODULE_CHURCH_ADMIN_MASTER_DETAILS_VIEW', 'MEMBERSHIP_MODULE_CHURCH_ADMIN_MASTER_DETAILS', 'VIEW'),
+            (_rule39, 'MEMBERSHIP_MODULE_CHURCH_ADMIN_MASTER_INSERT',       'MEMBERSHIP_MODULE_CHURCH_ADMIN_MASTER', 'INSERT'),
+            (_rule40, 'MEMBERSHIP_MODULE_CHURCH_ADMIN_MASTER_UPDATE',       'MEMBERSHIP_MODULE_CHURCH_ADMIN_MASTER', 'UPDATE'),
+            (_rule41, 'MEMBERSHIP_MODULE_CHURCH_ADMIN_MASTER_DELETE',       'MEMBERSHIP_MODULE_CHURCH_ADMIN_MASTER', 'DELETE'),
+            (_rule42, 'MEMBERSHIP_MODULE_CHURCH_ADMIN_MASTER_IMAGE_UPLOAD', 'MEMBERSHIP_MODULE_CHURCH_ADMIN_MASTER_IMAGE', 'UPLOAD'),
 
-            (_rule43, 'MEMBERS_MODULE_CHURCH_ADMIN_CHURCH_VIEW',         'MEMBERS_MODULE_CHURCH_ADMIN_CHURCH', 'VIEW'),
-            (_rule44, 'MEMBERS_MODULE_CHURCH_ADMIN_CHURCH_DETAILS_VIEW', 'MEMBERS_MODULE_CHURCH_ADMIN_CHURCH_DETAILS', 'VIEW'),
-            (_rule45, 'MEMBERS_MODULE_CHURCH_ADMIN_CHURCH_UPDATE',       'MEMBERS_MODULE_CHURCH_ADMIN_CHURCH', 'UPDATE'),
-            (_rule46, 'MEMBERS_MODULE_CHURCH_ADMIN_CHURCH_IMAGE_UPLOAD', 'MEMBERS_MODULE_CHURCH_ADMIN_CHURCH_IMAGE', 'UPLOAD'),
+            (_rule43, 'MEMBERSHIP_MODULE_CHURCH_ADMIN_CHURCH_VIEW',         'MEMBERSHIP_MODULE_CHURCH_ADMIN_CHURCH', 'VIEW'),
+            (_rule44, 'MEMBERSHIP_MODULE_CHURCH_ADMIN_CHURCH_DETAILS_VIEW', 'MEMBERSHIP_MODULE_CHURCH_ADMIN_CHURCH_DETAILS', 'VIEW'),
+            (_rule45, 'MEMBERSHIP_MODULE_CHURCH_ADMIN_CHURCH_UPDATE',       'MEMBERSHIP_MODULE_CHURCH_ADMIN_CHURCH', 'UPDATE'),
+            (_rule46, 'MEMBERSHIP_MODULE_CHURCH_ADMIN_CHURCH_IMAGE_UPLOAD', 'MEMBERSHIP_MODULE_CHURCH_ADMIN_CHURCH_IMAGE', 'UPLOAD'),
 
-            (_rule47, 'MEMBERS_MODULE_CHURCH_ADMIN_MODULE_VIEW',         'MEMBERS_MODULE_CHURCH_ADMIN_MODULE', 'VIEW'),
-            (_rule48, 'MEMBERS_MODULE_CHURCH_ADMIN_MODULE_DETAILS_VIEW', 'MEMBERS_MODULE_CHURCH_ADMIN_MODULE_DETAILS', 'VIEW'),
+            (_rule47, 'MEMBERSHIP_MODULE_CHURCH_ADMIN_MODULE_VIEW',         'MEMBERSHIP_MODULE_CHURCH_ADMIN_MODULE', 'VIEW'),
+            (_rule48, 'MEMBERSHIP_MODULE_CHURCH_ADMIN_MODULE_DETAILS_VIEW', 'MEMBERSHIP_MODULE_CHURCH_ADMIN_MODULE_DETAILS', 'VIEW'),
 
-            (_rule49, 'MEMBERS_MODULE_CHURCH_ASSISTANT_VIEW', 'MEMBERS_MODULE_CHURCH_ASSISTANT', 'VIEW'),
-            (_rule50, 'MEMBERS_MODULE_CHURCH_ASSISTANT_DETAILS_VIEW', 'MEMBERS_MODULE_CHURCH_ASSISTANT_DETAILS', 'VIEW'),
+            (_rule49, 'MEMBERSHIP_MODULE_CHURCH_ASSISTANT_VIEW', 'MEMBERSHIP_MODULE_CHURCH_ASSISTANT', 'VIEW'),
+            (_rule50, 'MEMBERSHIP_MODULE_CHURCH_ASSISTANT_DETAILS_VIEW', 'MEMBERSHIP_MODULE_CHURCH_ASSISTANT_DETAILS', 'VIEW'),
 
-            (_rule51, 'MEMBERS_MODULE_CHURCH_ADMIN_MASTER_USER_RELATIONSHIP_DELETE', 'MEMBERS_MODULE_CHURCH_ADMIN_MASTER_USER_RELATIONSHIP', 'DELETE'),
-            (_rule52, 'MEMBERS_MODULE_CHURCH_ADMIN_CHURCH_USER_RELATIONSHIP_DELETE', 'MEMBERS_MODULE_CHURCH_ADMIN_CHURCH_USER_RELATIONSHIP', 'DELETE'),
+            (_rule51, 'MEMBERSHIP_MODULE_CHURCH_ADMIN_MASTER_USER_RELATIONSHIP_DELETE', 'MEMBERSHIP_MODULE_CHURCH_ADMIN_MASTER_USER_RELATIONSHIP', 'DELETE'),
+            (_rule52, 'MEMBERSHIP_MODULE_CHURCH_ADMIN_CHURCH_USER_RELATIONSHIP_DELETE', 'MEMBERSHIP_MODULE_CHURCH_ADMIN_CHURCH_USER_RELATIONSHIP', 'DELETE'),
 
-            (_rule53, 'MEMBERS_MODULE_CHURCH_VIEW',         'MEMBERS_MODULE_CHURCH', 'VIEW'),
-            (_rule54, 'MEMBERS_MODULE_CHURCH_DETAILS_VIEW', 'MEMBERS_MODULE_CHURCH_DETAILS', 'VIEW'),
-            (_rule55, 'MEMBERS_MODULE_CHURCH_INSERT',       'MEMBERS_MODULE_CHURCH', 'INSERT'),
-            (_rule56, 'MEMBERS_MODULE_CHURCH_UPDATE',       'MEMBERS_MODULE_CHURCH', 'UPDATE');
+            (_rule53, 'MEMBERSHIP_MODULE_CHURCH_VIEW',         'MEMBERSHIP_MODULE_CHURCH', 'VIEW'),
+            (_rule54, 'MEMBERSHIP_MODULE_CHURCH_DETAILS_VIEW', 'MEMBERSHIP_MODULE_CHURCH_DETAILS', 'VIEW'),
+            (_rule55, 'MEMBERSHIP_MODULE_CHURCH_INSERT',       'MEMBERSHIP_MODULE_CHURCH', 'INSERT'),
+            (_rule56, 'MEMBERSHIP_MODULE_CHURCH_UPDATE',       'MEMBERSHIP_MODULE_CHURCH', 'UPDATE');
 
         INSERT INTO users.modules_rules (rule_id, module_id)
         VALUES
@@ -202,7 +208,11 @@ DO $$
             ),
             (
                 _profile_type3,
-                'Usuário'
+                'Diretoria'
+            ),
+            (
+                _profile_type4,
+                'Usuário Comum'
             );
 
         INSERT INTO users.profiles (id, profile_type_id, description, unique_name)
@@ -221,33 +231,33 @@ DO $$
             ),
             (
                 _profile3,
-                _profile_type2,
+                _profile_type3,
                 'Admin Igreja',
                 'ADMIN_CHURCH'
             ),
             (
                 _profile4,
-                _profile_type2,
+                _profile_type3,
                 'Admin Módulo',
                 'ADMIN_MODULE'
             ),
             (
                 _profile5,
-                _profile_type2,
+                _profile_type3,
                 'Auxiliar',
                 'ASSISTANT'
             ),
             (
                 _profile6,
-                _profile_type2,
+                _profile_type4,
                 'Membro',
                 'MEMBER'
             ),
             (
                 _profile7,
-                _profile_type3,
-                'Usuário Site',
-                'WEB_SITE_USER'
+                _profile_type4,
+                'VISITANTE',
+                'VISITOR'
             );
 
         INSERT INTO users.profiles_rules (profile_id, rule_id)

@@ -8,19 +8,22 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
+     *
+     * @return void
      */
-    public function up(): void
+    public function up()
     {
-        $path = 'database/migrations/scripts/2023_04_24_194308_create_responsible_church_table.sql';
+        $path = 'database/migrations/scripts/2022_08_06_203021_create_member_types_table.sql';
         DB::unprepared(file_get_contents($path));
     }
 
     /**
      * Reverse the migrations.
+     *
+     * @return void
      */
-    public function down(): void
+    public function down()
     {
-        Schema::dropColumns('members.responsible_church', ['user_id', 'church_id']);
-        Schema::dropIfExists('members.responsible_church');
+        Schema::dropIfExists('members.member_types');
     }
 };

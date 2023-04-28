@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        $path = 'database/migrations/scripts/2023_04_05_162600_create_users_churches_table.sql';
+        $path = 'database/migrations/scripts/2023_04_05_162600_create_churches_members_table.sql';
         DB::unprepared(file_get_contents($path));
     }
 
@@ -24,7 +24,7 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropColumns('users.users_churches', ['user_id', 'church_id']);
-        Schema::dropIfExists('users.users_churches');
+        Schema::dropColumns('members.churches_members', ['user_id', 'church_id']);
+        Schema::dropIfExists('members.churches_members');
     }
 };

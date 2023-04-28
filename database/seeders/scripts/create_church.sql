@@ -25,7 +25,7 @@ DO $$
     BEGIN
         SELECT id INTO _city_id FROM city.cities WHERE description = _city_description;
 
-        INSERT INTO members.churches
+        INSERT INTO membership.churches
         (
             id,
             name,
@@ -93,7 +93,7 @@ DO $$
     BEGIN
         SELECT id INTO _city_id FROM city.cities WHERE description = _city_description;
 
-        INSERT INTO members.churches
+        INSERT INTO membership.churches
         (
             id,
             name,
@@ -159,7 +159,7 @@ DO $$
     BEGIN
         SELECT id INTO _city_id FROM city.cities WHERE description = _city_description;
 
-        INSERT INTO members.churches
+        INSERT INTO membership.churches
         (
             id,
             name,
@@ -225,7 +225,7 @@ DO $$
     BEGIN
         SELECT id INTO _city_id FROM city.cities WHERE description = _city_description;
 
-        INSERT INTO members.churches
+        INSERT INTO membership.churches
         (
             id,
             name,

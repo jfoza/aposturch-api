@@ -1,6 +1,6 @@
-CREATE SCHEMA IF NOT EXISTS members;
+CREATE SCHEMA IF NOT EXISTS membership;
 
-create table "members".churches
+create table "membership".churches
 (
     id uuid default uuid_generate_v4() not null primary key,
     name varchar not null,
