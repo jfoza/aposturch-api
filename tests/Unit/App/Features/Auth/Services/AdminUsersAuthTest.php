@@ -3,17 +3,17 @@
 namespace Tests\Unit\App\Features\Auth\Services;
 
 use App\Exceptions\AppException;
-use App\Features\Auth\DTO\SessionsDTO;
+use App\Features\Auth\DTO\AuthDTO;
 use App\Features\Auth\Resources\AdminAuthResource;
-use App\Features\Auth\Responses\Admin\AdminAuthResponse;
-use App\Features\Auth\Responses\Admin\AdminUserResponse;
-use App\Features\Auth\Services\AdminUsersAuthService;
+use App\Features\Auth\Responses\AuthResponse;
+use App\Features\Auth\Responses\AuthUserResponse;
+use App\Features\Auth\Services\AuthService;
 use App\Features\Users\AdminUsers\Contracts\AdminUsersRepositoryInterface;
 use App\Features\Users\AdminUsers\Repositories\AdminUsersRepository;
 use App\Features\Users\Rules\Contracts\RulesRepositoryInterface;
 use App\Features\Users\Rules\Infra\Repositories\RulesRepository;
 use App\Features\Users\Sessions\Contracts\SessionsRepositoryInterface;
-use App\Features\Users\Sessions\Infra\Repositories\SessionsRepository;
+use App\Features\Users\Sessions\Repositories\SessionsRepository;
 use Illuminate\Support\Facades\Auth;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,7 +27,7 @@ class AdminUsersAuthTest extends TestCase
     private MockObject|AdminUsersRepositoryInterface $adminUsersRepositoryMock;
     private MockObject|SessionsRepositoryInterface   $sessionsRepositoryMock;
     private MockObject|RulesRepositoryInterface      $rulesRepositoryMock;
-    private MockObject|SessionsDTO                   $sessionsDtoMock;
+    private MockObject|AuthDTO                   $sessionsDtoMock;
 
     protected function setUp(): void
     {
@@ -42,20 +42,20 @@ class AdminUsersAuthTest extends TestCase
         $this->adminUsersRepositoryMock = $this->createMock(AdminUsersRepository::class);
         $this->sessionsRepositoryMock   = $this->createMock(SessionsRepository::class);
         $this->rulesRepositoryMock      = $this->createMock(RulesRepository::class);
-        $this->sessionsDtoMock          = $this->createMock(SessionsDTO::class);
+        $this->sessionsDtoMock          = $this->createMock(AuthDTO::class);
     }
 
-    public function getAdminUsersAuthService(): AdminUsersAuthService
+    public function getAdminUsersAuthService(): AuthService
     {
-        $authResponseMock = $this->createMock(AdminAuthResponse::class);
+        $authResponseMock = $this->createMock(AuthResponse::class);
 
-        $authResponseMock->user = $this->createMock(AdminUserResponse::class);
+        $authResponseMock->user = $this->createMock(AuthUserResponse::class);
 
         $authResourceMock =  new AdminAuthResource(
             $authResponseMock
         );
 
-        return new AdminUsersAuthService(
+        return new AuthService(
             $this->adminUsersRepositoryMock,
             $this->rulesRepositoryMock,
             $this->sessionsRepositoryMock,
@@ -88,7 +88,7 @@ class AdminUsersAuthTest extends TestCase
 
         $auth = $adminUsersAuthService->execute($this->sessionsDtoMock);
 
-        $this->assertInstanceOf(AdminAuthResponse::class, $auth);
+        $this->assertInstanceOf(AuthResponse::class, $auth);
         $this->assertEquals(AuthLists::accessToken(), $auth->accessToken);
         $this->assertEquals(AuthLists::getTTL(), $auth->expiresIn);
         $this->assertEquals(AuthLists::tokenType(), $auth->tokenType);

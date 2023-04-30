@@ -4,7 +4,6 @@ namespace App\Features\Base\Services;
 
 use App\Exceptions\AppException;
 use App\Features\Base\Traits\DispatchExceptionTrait;
-use App\Modules\Members\Church\Models\Church;
 use App\Shared\ACL\Policy;
 use Illuminate\Support\Collection;
 

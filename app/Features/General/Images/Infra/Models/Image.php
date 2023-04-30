@@ -3,8 +3,8 @@
 namespace App\Features\General\Images\Infra\Models;
 
 use App\Features\Base\Infra\Models\Register;
-use App\Modules\Members\Church\Models\Church;
-use App\Modules\Members\ChurchesImages\Models\ChurchImage;
+use App\Modules\Membership\Church\Models\Church;
+use App\Modules\Membership\ChurchesImages\Models\ChurchImage;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 

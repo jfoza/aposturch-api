@@ -2,7 +2,7 @@
 
 namespace App\Features\Users\Users\Traits;
 
-use App\Features\Module\Modules\Helpers\ModulesHelper;
+use App\Features\Module\Modules\Infra\Models\Module;
 use App\Features\Users\Rules\Contracts\RulesRepositoryInterface;
 
 trait UserAbilityTrait
@@ -12,7 +12,7 @@ trait UserAbilityTrait
         RulesRepositoryInterface $rulesRepository
     )
     {
-        $modulesId = ModulesHelper::getModulesIdByUser($user);
+        $modulesId = $user->module->pluck(Module::ID)->toArray();
 
         return $rulesRepository->findAllByUserIdAndModulesId($user->id, $modulesId);
     }

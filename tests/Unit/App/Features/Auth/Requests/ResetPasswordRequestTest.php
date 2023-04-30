@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\App\Features\Auth\Requests;
 
-use App\Features\Auth\Requests\ResetPasswordRequest;
+use App\Features\Users\ForgotPassword\Requests\ResetPasswordRequest;
 use Tests\TestCase;
 
 class ResetPasswordRequestTest extends TestCase

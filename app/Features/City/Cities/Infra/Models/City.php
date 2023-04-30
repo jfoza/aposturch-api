@@ -4,7 +4,7 @@ namespace App\Features\City\Cities\Infra\Models;
 
 use App\Features\Base\Infra\Models\Register;
 use App\Features\Persons\Infra\Models\Person;
-use App\Modules\Members\Church\Models\Church;
+use App\Modules\Membership\Church\Models\Church;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class City extends Register

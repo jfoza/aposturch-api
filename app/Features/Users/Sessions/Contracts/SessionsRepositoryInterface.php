@@ -2,11 +2,11 @@
 
 namespace App\Features\Users\Sessions\Contracts;
 
-use App\Features\Auth\DTO\SessionsDTO;
+use App\Features\Users\Sessions\DTO\SessionDTO;
 
 interface SessionsRepositoryInterface
 {
     public function findByUserId(array $userId);
     public function findByToken(string $token);
-    public function create(SessionsDTO $sessionsDTO);
+    public function create(SessionDTO $sessionDTO);
 }

@@ -2,8 +2,8 @@
 
 namespace Tests\Unit\App\Resources;
 
-use App\Features\Users\Users\Infra\Models\User;
-use App\Modules\Members\Church\Models\Church;
+use App\Features\Users\Users\Models\User;
+use App\Modules\Membership\Church\Models\Church;
 use Illuminate\Support\Collection;
 use Ramsey\Uuid\Uuid;
 

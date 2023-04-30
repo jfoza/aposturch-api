@@ -3,9 +3,9 @@
 namespace Tests\Unit\App\Modules\Members\Services;
 
 use App\Exceptions\AppException;
-use App\Modules\Members\Church\Services\RemoveResponsibleChurchRelationshipService;
-use App\Modules\Members\ResponsibleChurch\Contracts\ResponsibleChurchRepositoryInterface;
-use App\Modules\Members\ResponsibleChurch\Repositories\ResponsibleChurchRepository;
+use App\Modules\Membership\Church\Services\RemoveResponsibleChurchRelationshipService;
+use App\Modules\Membership\ResponsibleChurch\Contracts\ResponsibleChurchRepositoryInterface;
+use App\Modules\Membership\ResponsibleChurch\Repositories\ResponsibleChurchRepository;
 use App\Shared\ACL\Policy;
 use App\Shared\Enums\RulesEnum;
 use PHPUnit\Framework\MockObject\MockObject;

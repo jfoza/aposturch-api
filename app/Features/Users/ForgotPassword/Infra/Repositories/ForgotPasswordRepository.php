@@ -2,8 +2,8 @@
 
 namespace App\Features\Users\ForgotPassword\Infra\Repositories;
 
-use App\Features\Auth\Contracts\ForgotPasswordRepositoryInterface;
-use App\Features\Auth\DTO\ForgotPasswordDTO;
+use App\Features\Users\ForgotPassword\Contracts\ForgotPasswordRepositoryInterface;
+use App\Features\Users\ForgotPassword\DTO\ForgotPasswordDTO;
 use App\Features\Users\ForgotPassword\Infra\Models\ForgotPassword;
 
 class ForgotPasswordRepository implements ForgotPasswordRepositoryInterface

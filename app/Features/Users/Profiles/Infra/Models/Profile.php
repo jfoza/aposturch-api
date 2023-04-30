@@ -6,7 +6,7 @@ use App\Features\Base\Infra\Models\Register;
 use App\Features\Users\ProfilesRules\Infra\Models\ProfileRule;
 use App\Features\Users\ProfilesUsers\Infra\Models\ProfileUser;
 use App\Features\Users\Rules\Infra\Models\Rule;
-use App\Features\Users\Users\Infra\Models\User;
+use App\Features\Users\Users\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;

@@ -2,20 +2,24 @@
 
 namespace App\Features\Auth\Providers;
 
-use App\Features\Auth\Contracts\AdminUsersAuthServiceInterface;
-use App\Features\Auth\Services\AdminUsersAuthService;
+use App\Features\Auth\Business\AuthBusiness;
+use App\Features\Auth\Contracts\AuthBusinessInterface;
+use App\Features\Auth\Contracts\AuthGenerateServiceInterface;
+use App\Features\Auth\Contracts\ShowAuthUserServiceInterface;
+use App\Features\Auth\Services\AuthGenerateService;
+use App\Features\Auth\Services\ShowAuthUserService;
 use App\Features\Users\Rules\Contracts\RulesRepositoryInterface;
 use App\Features\Users\Rules\Infra\Repositories\RulesRepository;
-use App\Features\Users\Sessions\Contracts\SessionsRepositoryInterface;
-use App\Features\Users\Sessions\Infra\Repositories\SessionsRepository;
 use Illuminate\Support\ServiceProvider;
 
 class AuthProvider extends ServiceProvider
 {
     public array $bindings = [
-        SessionsRepositoryInterface::class => SessionsRepository::class,
         RulesRepositoryInterface::class => RulesRepository::class,
 
-        AdminUsersAuthServiceInterface::class => AdminUsersAuthService::class,
+        AuthBusinessInterface::class => AuthBusiness::class,
+
+        ShowAuthUserServiceInterface::class  => ShowAuthUserService::class,
+        AuthGenerateServiceInterface::class  => AuthGenerateService::class,
     ];
 }

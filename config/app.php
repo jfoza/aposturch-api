@@ -199,6 +199,7 @@ return [
          * Features...
          */
         \App\Features\Auth\Providers\AuthProvider::class,
+        \App\Features\Users\Sessions\Providers\SessionsProvider::class,
         \App\Features\Users\AdminUsers\Providers\AdminUsersProvider::class,
         \App\Features\Users\Users\Providers\UsersProvider::class,
         \App\Features\Users\CustomerUsers\Providers\CustomerUsersBusinessProvider::class,
@@ -215,7 +216,7 @@ return [
         /*
          * Modules...
          */
-        \App\Modules\Members\Church\Providers\ChurchProvider::class
+        \App\Modules\Membership\Church\Providers\ChurchProvider::class
     ],
 
     /*

@@ -5,7 +5,7 @@ namespace App\Features\City\Cities\Infra\Repositories;
 use App\Features\City\Cities\Contracts\CityRepositoryInterface;
 use App\Features\City\Cities\Infra\Models\City;
 use App\Features\Persons\Infra\Models\Person;
-use App\Modules\Members\Church\Models\Church;
+use App\Modules\Membership\Church\Models\Church;
 
 class CityRepository implements CityRepositoryInterface
 {

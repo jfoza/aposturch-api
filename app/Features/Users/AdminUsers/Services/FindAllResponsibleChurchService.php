@@ -6,8 +6,8 @@ use App\Exceptions\AppException;
 use App\Features\Base\Services\Service;
 use App\Features\Users\AdminUsers\Contracts\AdminUsersRepositoryInterface;
 use App\Features\Users\AdminUsers\Contracts\FindAllResponsibleChurchServiceInterface;
-use App\Modules\Members\Church\Contracts\ChurchRepositoryInterface;
-use App\Modules\Members\Church\Validations\ChurchValidations;
+use App\Modules\Membership\Church\Contracts\ChurchRepositoryInterface;
+use App\Modules\Membership\Church\Validations\ChurchValidations;
 use App\Shared\Enums\RulesEnum;
 
 class FindAllResponsibleChurchService extends Service implements FindAllResponsibleChurchServiceInterface

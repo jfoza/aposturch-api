@@ -3,12 +3,12 @@
 namespace App\Features\Auth\Business;
 
 use App\Exceptions\AppException;
-use App\Features\Auth\Contracts\ForgotPasswordBusinessInterface;
-use App\Features\Auth\Contracts\ForgotPasswordRepositoryInterface;
-use App\Features\Auth\DTO\ForgotPasswordDTO;
-use App\Features\Auth\Jobs\SendEmailForgotPasswordJob;
 use App\Features\Auth\Validations\AuthValidations;
 use App\Features\Users\CustomerUsers\Contracts\CustomerUsersRepositoryInterface;
+use App\Features\Users\ForgotPassword\Business\ForgotPasswordBusinessInterface;
+use App\Features\Users\ForgotPassword\Contracts\ForgotPasswordRepositoryInterface;
+use App\Features\Users\ForgotPassword\DTO\ForgotPasswordDTO;
+use App\Features\Users\ForgotPassword\Jobs\SendEmailForgotPasswordJob;
 use App\Features\Users\Users\Contracts\UsersRepositoryInterface;
 use App\Shared\Helpers\Helpers;
 use App\Shared\Helpers\RandomStringHelper;

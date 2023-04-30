@@ -13,17 +13,11 @@ Route::get('/', function () {
 });
 
 // AUTH
-Route::prefix('/auth')
-    ->group(app_path('Features/Auth/Routes/forgotPasswordRoute.php'));
-
-Route::prefix('/auth')
-    ->group(app_path('Features/Auth/Routes/sessionDestroyRoute.php'));
-
-Route::prefix('/auth')
-    ->group(app_path('Features/Auth/Routes/customerUserSessionsRoute.php'));
-
 Route::prefix('/admin/auth')
-    ->group(app_path('Features/Auth/Routes/adminUsersAuthRoute.php'));
+    ->group(app_path('Features/Auth/Routes/authRoute.php'));
+
+Route::prefix('/auth')
+    ->group(app_path('Features/Auth/Routes/logoutRoute.php'));
 
 // PUBLIC
 Route::prefix('/cities')
@@ -55,7 +49,7 @@ Route::prefix('admin')
             ->group(app_path('Features/Users/Profiles/Http/Routes/profilesRoute.php'));
 
         // MODULES
-        Route::prefix('/modules/members/churches')
-            ->middleware(MiddlewareHelper::getModuleAccess(ModulesRulesEnum::MEMBERS_MODULE_VIEW->value))
-            ->group(app_path('Modules/Members/Church/Routes/churchRoute.php'));
+        Route::prefix('/modules/membership/churches')
+            ->middleware(MiddlewareHelper::getModuleAccess(ModulesRulesEnum::MEMBERSHIP_MODULE_VIEW->value))
+            ->group(app_path('Modules/Membership/Church/Routes/churchRoute.php'));
     });

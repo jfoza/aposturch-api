@@ -8,7 +8,7 @@ use App\Features\Users\CustomerUsers\DTO\CustomerUsersDTO;
 use App\Features\Users\CustomerUsers\DTO\CustomerUsersFiltersDTO;
 use App\Features\Users\CustomerUsers\Infra\Models\CustomerUser;
 use App\Features\Users\CustomerUsers\Traits\CustomerUsersListTrait;
-use App\Features\Users\Users\Infra\Models\User;
+use App\Features\Users\Users\Models\User;
 
 class CustomerUsersRepository implements CustomerUsersRepositoryInterface
 {

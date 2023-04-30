@@ -3,9 +3,9 @@
 namespace App\Features\Users\AdminUsers\Models;
 
 use App\Features\Base\Infra\Models\Register;
-use App\Features\Users\Users\Infra\Models\User;
-use App\Modules\Members\Church\Models\Church;
-use App\Modules\Members\ResponsibleChurch\Models\ResponsibleChurch;
+use App\Features\Users\Users\Models\User;
+use App\Modules\Membership\Church\Models\Church;
+use App\Modules\Membership\ResponsibleChurch\Models\ResponsibleChurch;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;

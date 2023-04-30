@@ -4,7 +4,7 @@ namespace App\Features\Persons\Infra\Models;
 
 use App\Features\Base\Infra\Models\Register;
 use App\Features\City\Cities\Infra\Models\City;
-use App\Features\Users\Users\Infra\Models\User;
+use App\Features\Users\Users\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;

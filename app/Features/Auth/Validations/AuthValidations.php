@@ -4,7 +4,6 @@ namespace App\Features\Auth\Validations;
 
 use App\Exceptions\AppException;
 use App\Shared\Enums\MessagesEnum;
-use App\Shared\Utils\Hash;
 use Carbon\Carbon;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -13,16 +12,12 @@ class AuthValidations
     /**
      * @throws AppException
      */
-    public static function userExistsLogin(mixed $user)
+    public static function dispatchLoginException()
     {
-        if(empty($user)) {
-            throw new AppException(
-                MessagesEnum::LOGIN_ERROR,
-                Response::HTTP_UNAUTHORIZED
-            );
-        }
-
-        return $user->user;
+        throw new AppException(
+            MessagesEnum::LOGIN_ERROR,
+            Response::HTTP_UNAUTHORIZED
+        );
     }
 
     /**
@@ -40,38 +35,24 @@ class AuthValidations
         return $user->user;
     }
 
+
     /**
      * @throws AppException
      */
-    public static function passwordVerify(string $payload, string $hashed): void
+    public static function dispatchInactiveUserException(): void
     {
-        if(!Hash::compareHash($payload, $hashed)) {
-            throw new AppException(
-                MessagesEnum::LOGIN_ERROR,
-                Response::HTTP_UNAUTHORIZED
-            );
-        }
+        throw new AppException(
+            MessagesEnum::INACTIVE_USER,
+            Response::HTTP_UNAUTHORIZED
+        );
     }
 
     /**
      * @throws AppException
      */
-    public static function isActive(bool $active): void
+    public static function memberUserHasChurch(mixed $user): void
     {
-        if(!$active) {
-            throw new AppException(
-                MessagesEnum::INACTIVE_USER,
-                Response::HTTP_UNAUTHORIZED
-            );
-        }
-    }
-
-    /**
-     * @throws AppException
-     */
-    public static function userHasChurch(mixed $user): void
-    {
-        if($user->church->isEmpty())
+        if($user->member->church->isEmpty())
         {
             throw new AppException(
                 MessagesEnum::USER_HAS_NO_CHURCH,

@@ -4,8 +4,8 @@ namespace Tests\Unit\App\Modules\Members\Services;
 
 use App\Exceptions\AppException;
 use App\Features\Users\Users\Contracts\UsersRepositoryInterface;
-use App\Features\Users\Users\Infra\Repositories\UsersRepository;
-use App\Modules\Members\Church\Services\RemoveMemberChurchRelationshipService;
+use App\Features\Users\Users\Repositories\UsersRepository;
+use App\Modules\Membership\Church\Services\RemoveMemberChurchRelationshipService;
 use App\Shared\ACL\Policy;
 use App\Shared\Enums\RulesEnum;
 use PHPUnit\Framework\MockObject\MockObject;

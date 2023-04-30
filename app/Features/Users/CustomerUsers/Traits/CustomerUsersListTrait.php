@@ -8,7 +8,7 @@ use App\Features\Users\CustomerUsers\DTO\CustomerUsersFiltersDTO;
 use App\Features\Users\CustomerUsers\Infra\Models\CustomerUser;
 use App\Features\Users\Profiles\Infra\Models\Profile;
 use App\Features\Users\ProfilesUsers\Infra\Models\ProfileUser;
-use App\Features\Users\Users\Infra\Models\User;
+use App\Features\Users\Users\Models\User;
 
 trait CustomerUsersListTrait
 {

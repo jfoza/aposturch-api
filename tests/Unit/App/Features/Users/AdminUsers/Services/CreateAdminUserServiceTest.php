@@ -12,7 +12,7 @@ use App\Features\Users\Profiles\Contracts\ProfilesRepositoryInterface;
 use App\Features\Users\Profiles\Infra\Repositories\ProfilesRepository;
 use App\Features\Users\Users\Contracts\UsersRepositoryInterface;
 use App\Features\Users\Users\DTO\UserDTO;
-use App\Features\Users\Users\Infra\Repositories\UsersRepository;
+use App\Features\Users\Users\Repositories\UsersRepository;
 use App\Shared\ACL\Policy;
 use App\Shared\Enums\RulesEnum;
 use PHPUnit\Framework\MockObject\MockObject;

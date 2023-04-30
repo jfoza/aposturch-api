@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\App\Features\Auth\Requests;
 
-use App\Features\Auth\Requests\EmailRequest;
+use App\Features\Users\ForgotPassword\Requests\EmailRequest;
 use Tests\TestCase;
 
 class EmailRequestTest extends TestCase

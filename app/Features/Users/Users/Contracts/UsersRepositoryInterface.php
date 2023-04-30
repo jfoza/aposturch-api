@@ -11,7 +11,7 @@ interface UsersRepositoryInterface
 {
     public function findAllByChurch(UserFiltersDTO $userFiltersDTO): LengthAwarePaginator|CollectionSupport;
     public function findById(string $id): ?object;
-    public function findByEmail(string $email): mixed;
+    public function findByEmail(string $email): ?object;
     public function create(UserDTO $userDTO, bool $customerUser = false);
     public function save(UserDTO $userDTO);
     public function saveProfiles(string $userId, array $profiles): void;

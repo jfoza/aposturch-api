@@ -3,10 +3,10 @@
 namespace Tests\Unit\App\Modules\Members\Services;
 
 use App\Exceptions\AppException;
-use App\Modules\Members\Church\Contracts\ChurchRepositoryInterface;
-use App\Modules\Members\Church\DTO\ChurchFiltersDTO;
-use App\Modules\Members\Church\Repositories\ChurchRepository;
-use App\Modules\Members\Church\Services\FindAllChurchesService;
+use App\Modules\Membership\Church\Contracts\ChurchRepositoryInterface;
+use App\Modules\Membership\Church\DTO\ChurchFiltersDTO;
+use App\Modules\Membership\Church\Repositories\ChurchRepository;
+use App\Modules\Membership\Church\Services\FindAllChurchesService;
 use App\Shared\ACL\Policy;
 use App\Shared\Enums\RulesEnum;
 use Illuminate\Support\Collection;

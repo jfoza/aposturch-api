@@ -8,9 +8,9 @@ use App\Features\Users\AdminUsers\DTO\AdminUsersFiltersDTO;
 use App\Features\Users\AdminUsers\Models\AdminUser;
 use App\Features\Users\AdminUsers\Traits\AdminUsersListTrait;
 use App\Features\Users\Profiles\Infra\Models\Profile;
-use App\Features\Users\Users\Infra\Models\User;
-use App\Modules\Members\Church\Models\Church;
-use App\Modules\Members\ResponsibleChurch\Models\ResponsibleChurch;
+use App\Features\Users\Users\Models\User;
+use App\Modules\Membership\Church\Models\Church;
+use App\Modules\Membership\ResponsibleChurch\Models\ResponsibleChurch;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 
