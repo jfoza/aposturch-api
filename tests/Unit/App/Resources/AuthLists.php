@@ -2,8 +2,10 @@
 
 namespace Tests\Unit\App\Resources;
 
-use App\Domain\Helpers\Helpers;
+use App\Features\Auth\Responses\AuthUserResponse;
+use App\Shared\Helpers\Helpers;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Collection;
 use Ramsey\Uuid\Uuid;
 
 class AuthLists
@@ -41,50 +43,41 @@ class AuthLists
         ];
     }
 
-    public static function customerAuthStructure(): array
-    {
-        return [
-            'accessToken',
-            'tokenType',
-            'expiresIn',
-            'user' => [
-                "id",
-                "email",
-                "avatar",
-                "fullName",
-                'role',
-                'status',
-                'phone',
-                'zipCode',
-                'address',
-                'numberAddress',
-                'complement',
-                'district',
-                'city'
-            ]
-        ];
-    }
-
     public static function getForgotPassword(string|Carbon $date = null, bool $active = true): object
     {
         $userId = Uuid::uuid4()->toString();
 
-        if(is_null($date)) {
+        if (is_null($date)) {
             $currentDate = Helpers::getCurrentTimestampCarbon();
 
             $date = $currentDate->addDay()->format('Y-m-d H:i:s');
         }
 
-        return (object) ([
-            'id'       => Uuid::uuid4()->toString(),
-            'user_id'  => $userId,
-            'code'     => Uuid::uuid4()->toString(),
+        return (object)([
+            'id' => Uuid::uuid4()->toString(),
+            'user_id' => $userId,
+            'code' => Uuid::uuid4()->toString(),
             'validate' => $date,
-            'active'   => $active,
+            'active' => $active,
 
-            'user' => (object) ([
-              'id' => $userId,
+            'user' => (object)([
+                'id' => $userId,
             ])
         ]);
+    }
+
+    public static function getAuthUserResponse(): AuthUserResponse
+    {
+        $authUserResponse = new AuthUserResponse();
+
+        $authUserResponse->id = Uuid::uuid4()->toString();
+        $authUserResponse->email = 'email@email.com';
+        $authUserResponse->avatar = null;
+        $authUserResponse->fullName = 'Test';
+        $authUserResponse->role = Collection::make([]);
+        $authUserResponse->status = true;
+        $authUserResponse->ability = [];
+
+        return $authUserResponse;
     }
 }

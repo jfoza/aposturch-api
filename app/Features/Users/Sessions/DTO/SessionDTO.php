@@ -10,5 +10,5 @@ class SessionDTO
     public Carbon $initialDate;
     public Carbon $finalDate;
     public string $token;
-    public ?string $ipAddress;
+    public string $ipAddress;
 }

@@ -48,7 +48,7 @@ class UsersRepository implements UsersRepositoryInterface
 
     public function findByEmail(string $email): ?object
     {
-        return User::with(['profile', 'module'])
+        return User::with(['adminUser', 'profile', 'module'])
             ->where(User::EMAIL, $email)
             ->first();
     }

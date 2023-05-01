@@ -18,7 +18,7 @@ class ShowAuthUserService implements ShowAuthUserServiceInterface
     use UserAbilityTrait;
     use ProfilesVerificationTrait;
 
-    private object $user;
+    private ?object $user;
 
     public function __construct(
         private readonly UsersRepositoryInterface $usersRepository,
