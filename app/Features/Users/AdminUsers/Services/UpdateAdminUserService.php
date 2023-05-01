@@ -11,6 +11,7 @@ use App\Features\Users\AdminUsers\Responses\AdminUserResponse;
 use App\Features\Users\AdminUsers\Validations\AdminUsersValidations;
 use App\Features\Users\AdminUsers\Validations\AllowedProfilesValidations;
 use App\Features\Users\Profiles\Contracts\ProfilesRepositoryInterface;
+use App\Features\Users\Profiles\Enums\ProfileUniqueNameEnum;
 use App\Features\Users\Users\Contracts\UsersRepositoryInterface;
 use App\Features\Users\Users\DTO\UserDTO;
 use App\Features\Users\Users\Validations\UsersValidations;
@@ -42,10 +43,8 @@ class UpdateAdminUserService extends Service implements UpdateAdminUserServiceIn
         $policy = $this->getPolicy();
 
         return match (true) {
+            $policy->haveRule(RulesEnum::ADMIN_USERS_SUPPORT_UPDATE->value)      => $this->updateBySupport(),
             $policy->haveRule(RulesEnum::ADMIN_USERS_ADMIN_MASTER_UPDATE->value) => $this->updateByAdminMaster(),
-            $policy->haveRule(RulesEnum::ADMIN_USERS_ADMIN_CHURCH_UPDATE->value) => $this->updateByAdminChurch(),
-            $policy->haveRule(RulesEnum::ADMIN_USERS_ADMIN_MODULE_UPDATE->value) => $this->updateByAdminModule(),
-            $policy->haveRule(RulesEnum::ADMIN_USERS_ASSISTANT_UPDATE->value)    => $this->updateByAssistant(),
 
             default  => $policy->dispatchErrorForbidden(),
         };
@@ -54,23 +53,30 @@ class UpdateAdminUserService extends Service implements UpdateAdminUserServiceIn
     /**
      * @throws AppException
      */
+    private function updateBySupport(): AdminUserResponse
+    {
+        $profilesAllowed = [
+            ProfileUniqueNameEnum::TECHNICAL_SUPPORT->value,
+            ProfileUniqueNameEnum::ADMIN_MASTER->value
+        ];
+
+        $this->handleValidations($profilesAllowed);
+
+        AllowedProfilesValidations::validateSupportProfile($this->profile->unique_name);
+
+        return $this->updateBaseOperation();
+    }
+
+    /**
+     * @throws AppException
+     */
     private function updateByAdminMaster(): AdminUserResponse
     {
-        $this->handleValidations();
+        $profilesAllowed = [
+            ProfileUniqueNameEnum::ADMIN_MASTER->value
+        ];
 
-        AllowedProfilesValidations::validateAdminMasterProfile($this->profile->unique_name);
-
-        return $this->updateBaseOperation();
-    }
-
-    /**
-     * @throws AppException
-     */
-    private function updateByAdminChurch(): AdminUserResponse
-    {
-        $this->handleValidations();
-
-        AllowedProfilesValidations::validateAdminChurchProfile($this->profile->unique_name);
+        $this->handleValidations($profilesAllowed);
 
         return $this->updateBaseOperation();
     }
@@ -78,36 +84,19 @@ class UpdateAdminUserService extends Service implements UpdateAdminUserServiceIn
     /**
      * @throws AppException
      */
-    private function updateByAdminModule(): AdminUserResponse
+    private function handleValidations(array $profiles)
     {
-        $this->handleValidations();
+        if(!$this->adminUsersRepository->findById($this->userDTO->id, $profiles))
+        {
+            AdminUsersValidations::adminUserNotFoundException();
+        }
 
-        AllowedProfilesValidations::validateAdminModuleProfile($this->profile->unique_name);
+        $user = $this->adminUsersRepository->findByEmail($this->userDTO->email, $profiles);
 
-        return $this->updateBaseOperation();
-    }
-
-    /**
-     * @throws AppException
-     */
-    private function updateByAssistant(): AdminUserResponse
-    {
-        $this->handleValidations();
-
-        AllowedProfilesValidations::validateAssistantProfile($this->profile->unique_name);
-
-        return $this->updateBaseOperation();
-    }
-
-    /**
-     * @throws AppException
-     */
-    private function handleValidations()
-    {
-        AdminUsersValidations::adminUserIdExists($this->adminUsersRepository, $this->userDTO->id);
-        UsersValidations::emailAlreadyExistsUpdate($this->usersRepository, $this->userDTO->id, $this->userDTO->email);
-
-        $this->profile = UsersValidations::returnProfileExists($this->profilesRepository, $this->userDTO->profileId);
+        if($user && $user->id != $this->userDTO->id)
+        {
+            UsersValidations::emailAlreadyExistsUpdateException();
+        }
     }
 
     /**
@@ -121,18 +110,14 @@ class UpdateAdminUserService extends Service implements UpdateAdminUserServiceIn
         try {
             $this->usersRepository->save($this->userDTO);
 
-            $this->usersRepository->saveProfiles($this->userDTO->id, [$this->userDTO->profileId]);
-
             PolicyCache::invalidatePolicy($this->userDTO->id);
 
             Transaction::commit();
 
-            $this->adminUserResponse->id                 = $this->userDTO->id;
-            $this->adminUserResponse->name               = $this->userDTO->name;
-            $this->adminUserResponse->email              = $this->userDTO->email;
-            $this->adminUserResponse->active             = $this->userDTO->active;
-            $this->adminUserResponse->profileId          = $this->profile->id;
-            $this->adminUserResponse->profileDescription = $this->profile->description;
+            $this->adminUserResponse->id     = $this->userDTO->id;
+            $this->adminUserResponse->name   = $this->userDTO->name;
+            $this->adminUserResponse->email  = $this->userDTO->email;
+            $this->adminUserResponse->active = $this->userDTO->active;
 
             return $this->adminUserResponse;
         } catch(\Exception $e) {

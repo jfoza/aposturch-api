@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Features\Users\Users\Http\Requests;
+namespace App\Features\Users\Users\Requests;
 
-use App\Shared\Rules\Uuidv4Rule;
 use App\Features\Base\Http\Requests\FormRequest;
 
 class UpdateUserRequest extends FormRequest
@@ -18,7 +17,6 @@ class UpdateUserRequest extends FormRequest
             'name'      => 'required|string',
             'email'     => 'required|email:rfc,dns',
             'active'    => 'required|bool',
-            'profileId' => ['required', 'string', new Uuidv4Rule],
         ];
     }
 
@@ -28,7 +26,6 @@ class UpdateUserRequest extends FormRequest
             'name'      => 'Name',
             'email'     => 'E-mail',
             'active'    => 'Active',
-            'profileId' => 'Profile',
         ];
     }
 }

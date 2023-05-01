@@ -41,13 +41,23 @@ class CreateAdminUserService extends Service implements CreateAdminUserServiceIn
         $policy = $this->getPolicy();
 
         return match (true) {
+            $policy->haveRule(RulesEnum::ADMIN_USERS_SUPPORT_INSERT->value)      => $this->createBySupport(),
             $policy->haveRule(RulesEnum::ADMIN_USERS_ADMIN_MASTER_INSERT->value) => $this->createByAdminMaster(),
-            $policy->haveRule(RulesEnum::ADMIN_USERS_ADMIN_CHURCH_INSERT->value) => $this->createByAdminChurch(),
-            $policy->haveRule(RulesEnum::ADMIN_USERS_ADMIN_MODULE_INSERT->value) => $this->createByAdminModule(),
-            $policy->haveRule(RulesEnum::ADMIN_USERS_ASSISTANT_INSERT->value)    => $this->createByAssistant(),
 
             default  => $policy->dispatchErrorForbidden(),
         };
+    }
+
+    /**
+     * @throws AppException
+     */
+    private function createBySupport(): AdminUserResponse
+    {
+        $this->handleValidations();
+
+        AllowedProfilesValidations::validateSupportProfile($this->profile->unique_name);
+
+        return $this->baseInsertOperation();
     }
 
     /**
@@ -58,42 +68,6 @@ class CreateAdminUserService extends Service implements CreateAdminUserServiceIn
         $this->handleValidations();
 
         AllowedProfilesValidations::validateAdminMasterProfile($this->profile->unique_name);
-
-        return $this->baseInsertOperation();
-    }
-
-    /**
-     * @throws AppException
-     */
-    private function createByAdminChurch(): AdminUserResponse
-    {
-        $this->handleValidations();
-
-        AllowedProfilesValidations::validateAdminChurchProfile($this->profile->unique_name);
-
-        return $this->baseInsertOperation();
-    }
-
-    /**
-     * @throws AppException
-     */
-    private function createByAdminModule(): AdminUserResponse
-    {
-        $this->handleValidations();
-
-        AllowedProfilesValidations::validateAdminModuleProfile($this->profile->unique_name);
-
-        return $this->baseInsertOperation();
-    }
-
-    /**
-     * @throws AppException
-     */
-    private function createByAssistant(): AdminUserResponse
-    {
-        $this->handleValidations();
-
-        AllowedProfilesValidations::validateAssistantProfile($this->profile->unique_name);
 
         return $this->baseInsertOperation();
     }

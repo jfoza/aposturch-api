@@ -6,8 +6,6 @@ use App\Features\Base\Providers\AbstractServiceProvider;
 use App\Features\Users\AdminUsers\Contracts\AdminUsersRepositoryInterface;
 use App\Features\Users\AdminUsers\Contracts\CreateAdminUserServiceInterface;
 use App\Features\Users\AdminUsers\Contracts\FindAllAdminUsersServiceInterface;
-use App\Features\Users\AdminUsers\Contracts\FindAllByProfileUniqueNameServiceInterface;
-use App\Features\Users\AdminUsers\Contracts\FindAllResponsibleChurchServiceInterface;
 use App\Features\Users\AdminUsers\Contracts\ShowAdminUserServiceInterface;
 use App\Features\Users\AdminUsers\Contracts\ShowCountAdminUsersByProfileInterface;
 use App\Features\Users\AdminUsers\Contracts\ShowLoggedUserServiceInterface;
@@ -15,12 +13,10 @@ use App\Features\Users\AdminUsers\Contracts\UpdateAdminUserServiceInterface;
 use App\Features\Users\AdminUsers\Repositories\AdminUsersRepository;
 use App\Features\Users\AdminUsers\Services\CreateAdminUserService;
 use App\Features\Users\AdminUsers\Services\FindAllAdminUsersService;
-use App\Features\Users\AdminUsers\Services\FindAllByProfileUniqueNameService;
-use App\Features\Users\AdminUsers\Services\FindAllResponsibleChurchService;
 use App\Features\Users\AdminUsers\Services\ShowAdminUserService;
 use App\Features\Users\AdminUsers\Services\ShowCountAdminUsersByProfile;
-use App\Features\Users\AdminUsers\Services\ShowLoggedUserService;
 use App\Features\Users\AdminUsers\Services\UpdateAdminUserService;
+use App\Features\Users\Users\Services\ShowLoggedUserService;
 
 class AdminUsersProvider extends AbstractServiceProvider
 {
@@ -55,16 +51,6 @@ class AdminUsersProvider extends AbstractServiceProvider
         $this->bind(
             ShowCountAdminUsersByProfileInterface::class,
             ShowCountAdminUsersByProfile::class,
-        );
-
-        $this->bind(
-            FindAllByProfileUniqueNameServiceInterface::class,
-            FindAllByProfileUniqueNameService::class,
-        );
-
-        $this->bind(
-            FindAllResponsibleChurchServiceInterface::class,
-            FindAllResponsibleChurchService::class,
         );
     }
 }

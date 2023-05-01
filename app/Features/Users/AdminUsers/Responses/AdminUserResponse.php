@@ -8,6 +8,6 @@ class AdminUserResponse
     public string $name;
     public string $email;
     public string $active;
-    public string $profileId;
-    public string $profileDescription;
+    public ?string $profileId;
+    public ?string $profileDescription;
 }

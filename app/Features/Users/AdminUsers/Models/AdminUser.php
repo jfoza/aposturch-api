@@ -16,6 +16,7 @@ class AdminUser extends Register
 
     const ID = 'id';
     const USER_ID = 'user_id';
+    const CREATED_AT = 'created_at';
 
     protected $table = 'users.admin_users';
 

@@ -3,9 +3,9 @@
 namespace Tests\Unit\App\Features\Users\AdminUsers\Services;
 
 use App\Features\Users\AdminUsers\Responses\LoggedUserResponse;
-use App\Features\Users\AdminUsers\Services\ShowLoggedUserService;
 use App\Features\Users\Rules\Contracts\RulesRepositoryInterface;
 use App\Features\Users\Rules\Infra\Repositories\RulesRepository;
+use App\Features\Users\Users\Services\ShowLoggedUserService;
 use Illuminate\Support\Facades\Auth;
 use PHPUnit\Framework\MockObject\MockObject;
 use Tests\TestCase;

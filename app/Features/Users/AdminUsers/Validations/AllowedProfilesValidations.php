@@ -23,61 +23,28 @@ class AllowedProfilesValidations
     /**
      * @throws AppException
      */
+    public static function validateSupportProfile(string $profileUniqueName): void
+    {
+        $profilesAllowed = [
+            ProfileUniqueNameEnum::TECHNICAL_SUPPORT->value,
+            ProfileUniqueNameEnum::ADMIN_MASTER->value
+        ];
+
+        if(!in_array($profileUniqueName, $profilesAllowed)) {
+            self::handleException();
+        }
+    }
+
+    /**
+     * @throws AppException
+     */
     public static function validateAdminMasterProfile(string $profileUniqueName): void
     {
-        $profilesNotAllowed = [
-            ProfileUniqueNameEnum::TECHNICAL_SUPPORT->value
+        $profilesAllowed = [
+            ProfileUniqueNameEnum::ADMIN_MASTER->value
         ];
 
-        if(in_array($profileUniqueName, $profilesNotAllowed)) {
-            self::handleException();
-        }
-    }
-
-    /**
-     * @throws AppException
-     */
-    public static function validateAdminChurchProfile(string $profileUniqueName): void
-    {
-        $profilesNotAllowed = [
-            ProfileUniqueNameEnum::TECHNICAL_SUPPORT->value,
-            ProfileUniqueNameEnum::ADMIN_MASTER->value,
-        ];
-
-        if(in_array($profileUniqueName, $profilesNotAllowed)) {
-            self::handleException();
-        }
-    }
-
-    /**
-     * @throws AppException
-     */
-    public static function validateAdminModuleProfile(string $profileUniqueName): void
-    {
-        $profilesNotAllowed = [
-            ProfileUniqueNameEnum::TECHNICAL_SUPPORT->value,
-            ProfileUniqueNameEnum::ADMIN_MASTER->value,
-            ProfileUniqueNameEnum::ADMIN_CHURCH->value,
-        ];
-
-        if(in_array($profileUniqueName, $profilesNotAllowed)) {
-            self::handleException();
-        }
-    }
-
-    /**
-     * @throws AppException
-     */
-    public static function validateAssistantProfile(string $profileUniqueName): void
-    {
-        $profilesNotAllowed = [
-            ProfileUniqueNameEnum::TECHNICAL_SUPPORT->value,
-            ProfileUniqueNameEnum::ADMIN_MASTER->value,
-            ProfileUniqueNameEnum::ADMIN_CHURCH->value,
-            ProfileUniqueNameEnum::ADMIN_MODULE->value,
-        ];
-
-        if(in_array($profileUniqueName, $profilesNotAllowed)) {
+        if(!in_array($profileUniqueName, $profilesAllowed)) {
             self::handleException();
         }
     }

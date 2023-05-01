@@ -30,52 +30,27 @@ class FindAllAdminUsersService extends Service implements FindAllAdminUsersServi
         $policy = $this->getPolicy();
 
         return match (true) {
-            $policy->haveRule(RulesEnum::ADMIN_USERS_ADMIN_MASTER_VIEW->value) => $this->findByAdminMaster(),
-            $policy->haveRule(RulesEnum::ADMIN_USERS_ADMIN_CHURCH_VIEW->value) => $this->findByAdminChurch(),
-            $policy->haveRule(RulesEnum::ADMIN_USERS_ADMIN_MODULE_VIEW->value) => $this->findByAdminModule(),
-            $policy->haveRule(RulesEnum::ADMIN_USERS_ASSISTANT_VIEW->value)    => $this->findByAssistant(),
+            $policy->haveRule(RulesEnum::ADMIN_USERS_SUPPORT_VIEW->value)      => $this->findAllBySupport(),
+            $policy->haveRule(RulesEnum::ADMIN_USERS_ADMIN_MASTER_VIEW->value) => $this->findAllByAdminMaster(),
 
             default  => $policy->dispatchErrorForbidden(),
         };
     }
 
-    private function findByAdminMaster(): LengthAwarePaginator|Collection
+    private function findAllBySupport(): LengthAwarePaginator|Collection
+    {
+        $this->adminUsersFiltersDTO->profileUniqueName = [
+            ProfileUniqueNameEnum::TECHNICAL_SUPPORT->value,
+            ProfileUniqueNameEnum::ADMIN_MASTER->value,
+        ];
+
+        return $this->adminUsersRepository->findAll($this->adminUsersFiltersDTO);
+    }
+
+    private function findAllByAdminMaster(): LengthAwarePaginator|Collection
     {
         $this->adminUsersFiltersDTO->profileUniqueName = [
             ProfileUniqueNameEnum::ADMIN_MASTER->value,
-            ProfileUniqueNameEnum::ADMIN_CHURCH->value,
-            ProfileUniqueNameEnum::ADMIN_MODULE->value,
-            ProfileUniqueNameEnum::ASSISTANT->value,
-        ];
-
-        return $this->adminUsersRepository->findAll($this->adminUsersFiltersDTO);
-    }
-
-    private function findByAdminChurch(): LengthAwarePaginator|Collection
-    {
-        $this->adminUsersFiltersDTO->profileUniqueName = [
-            ProfileUniqueNameEnum::ADMIN_CHURCH->value,
-            ProfileUniqueNameEnum::ADMIN_MODULE->value,
-            ProfileUniqueNameEnum::ASSISTANT->value,
-        ];
-
-        return $this->adminUsersRepository->findAll($this->adminUsersFiltersDTO);
-    }
-
-    private function findByAdminModule(): LengthAwarePaginator|Collection
-    {
-        $this->adminUsersFiltersDTO->profileUniqueName = [
-            ProfileUniqueNameEnum::ADMIN_MODULE->value,
-            ProfileUniqueNameEnum::ASSISTANT->value,
-        ];
-
-        return $this->adminUsersRepository->findAll($this->adminUsersFiltersDTO);
-    }
-
-    private function findByAssistant(): LengthAwarePaginator|Collection
-    {
-        $this->adminUsersFiltersDTO->profileUniqueName = [
-            ProfileUniqueNameEnum::ASSISTANT->value,
         ];
 
         return $this->adminUsersRepository->findAll($this->adminUsersFiltersDTO);

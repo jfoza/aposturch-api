@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Features\Users\AdminUsers\Services;
+namespace App\Features\Users\Users\Services;
 
 use App\Features\Users\AdminUsers\Contracts\ShowLoggedUserServiceInterface;
 use App\Features\Users\AdminUsers\Responses\LoggedUserResponse;

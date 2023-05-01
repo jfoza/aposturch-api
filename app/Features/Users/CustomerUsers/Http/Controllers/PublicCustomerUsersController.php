@@ -9,7 +9,7 @@ use App\Features\Users\CustomerUsers\Http\Requests\UpdateCustomerUserRequest;
 use App\Features\Users\CustomerUsers\Services\Utils\ExtractCustomerUserRequestService;
 use App\Features\Users\Users\DTO\PasswordDTO;
 use App\Features\Users\Users\DTO\UserDTO;
-use App\Features\Users\Users\Http\Requests\PasswordRequest;
+use App\Features\Users\Users\Requests\PasswordRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;

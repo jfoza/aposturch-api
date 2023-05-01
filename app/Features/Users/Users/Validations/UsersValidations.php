@@ -93,22 +93,12 @@ class UsersValidations
     /**
      * @throws AppException
      */
-    public static function emailAlreadyExistsUpdate(
-        UsersRepositoryInterface $usersRepository,
-        string $id,
-        string $email
-    )
+    public static function emailAlreadyExistsUpdateException(): void
     {
-        $user = $usersRepository->findByEmail($email);
-
-        if($user && $user->id != $id) {
-            throw new AppException(
-                MessagesEnum::EMAIL_ALREADY_EXISTS,
-                Response::HTTP_BAD_REQUEST
-            );
-        }
-
-        return $user;
+        throw new AppException(
+            MessagesEnum::EMAIL_ALREADY_EXISTS,
+            Response::HTTP_BAD_REQUEST
+        );
     }
 
     /**

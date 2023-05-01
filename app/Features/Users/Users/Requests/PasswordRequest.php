@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Features\Users\Users\Http\Requests;
+namespace App\Features\Users\Users\Requests;
 
 use App\Features\Base\Http\Requests\FormRequest;
 

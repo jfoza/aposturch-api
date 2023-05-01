@@ -4,17 +4,13 @@ namespace App\Features\Users\AdminUsers\Controllers;
 
 use App\Features\Users\AdminUsers\Contracts\CreateAdminUserServiceInterface;
 use App\Features\Users\AdminUsers\Contracts\FindAllAdminUsersServiceInterface;
-use App\Features\Users\AdminUsers\Contracts\FindAllByProfileUniqueNameServiceInterface;
-use App\Features\Users\AdminUsers\Contracts\FindAllResponsibleChurchServiceInterface;
 use App\Features\Users\AdminUsers\Contracts\ShowAdminUserServiceInterface;
-use App\Features\Users\AdminUsers\Contracts\ShowCountAdminUsersByProfileInterface;
-use App\Features\Users\AdminUsers\Contracts\ShowLoggedUserServiceInterface;
 use App\Features\Users\AdminUsers\Contracts\UpdateAdminUserServiceInterface;
 use App\Features\Users\AdminUsers\DTO\AdminUsersFiltersDTO;
 use App\Features\Users\AdminUsers\Requests\AdminUsersFiltersRequest;
 use App\Features\Users\Users\DTO\UserDTO;
-use App\Features\Users\Users\Http\Requests\InsertUserRequest;
-use App\Features\Users\Users\Http\Requests\UpdateUserRequest;
+use App\Features\Users\Users\Requests\InsertUserRequest;
+use App\Features\Users\Users\Requests\UpdateUserRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,12 +20,8 @@ readonly class AdminUsersController
     public function __construct(
         private FindAllAdminUsersServiceInterface $adminUsersListingService,
         private ShowAdminUserServiceInterface $showAdminUserService,
-        private ShowLoggedUserServiceInterface $showLoggedUserService,
         private CreateAdminUserServiceInterface $createAdminUserService,
         private UpdateAdminUserServiceInterface $updateAdminUserService,
-        private ShowCountAdminUsersByProfileInterface $showCountAdminUsersByProfile,
-        private FindAllByProfileUniqueNameServiceInterface $findAllByProfileUniqueNameService,
-        private FindAllResponsibleChurchServiceInterface $findAllResponsibleChurchService,
     ) {}
 
     public function index(
@@ -42,7 +34,6 @@ readonly class AdminUsersController
         $adminUsersFiltersDTO->paginationOrder->setPerPage($adminUsersFiltersRequest->perPage);
 
         $adminUsersFiltersDTO->name      = $adminUsersFiltersRequest->name;
-        $adminUsersFiltersDTO->profileId = $adminUsersFiltersRequest->profileId;
         $adminUsersFiltersDTO->email     = $adminUsersFiltersRequest->email;
 
         $users = $this->adminUsersListingService->execute($adminUsersFiltersDTO);
@@ -50,51 +41,13 @@ readonly class AdminUsersController
         return response()->json($users, Response::HTTP_OK);
     }
 
-    public function showResponsibleChurch(Request $request): JsonResponse
+    public function showById(Request $request): JsonResponse
     {
-        $churchId = $request->id;
+        $userId = $request->id;
 
-        $users = $this->findAllResponsibleChurchService->execute($churchId);
-
-        return response()->json($users, Response::HTTP_OK);
-    }
-
-    public function showLoggedUserResource(): JsonResponse
-    {
-        $user = $this->showLoggedUserService->execute();
+        $user = $this->showAdminUserService->execute($userId);
 
         return response()->json($user, Response::HTTP_OK);
-    }
-
-    public function showByProfileUniqueName(
-        Request $request,
-        AdminUsersFiltersDTO $adminUsersFiltersDTO
-    ): JsonResponse
-    {
-        $adminUsersFiltersDTO->profileUniqueName = [$request->profileUniqueName];
-
-        $users = $this->findAllByProfileUniqueNameService->execute($adminUsersFiltersDTO);
-
-        return response()->json($users, Response::HTTP_OK);
-    }
-
-    public function showById(
-        Request $request,
-        AdminUsersFiltersDTO $adminUsersFiltersDTO
-    ): JsonResponse
-    {
-        $adminUsersFiltersDTO->userId = $request->id;
-
-        $user = $this->showAdminUserService->execute($adminUsersFiltersDTO);
-
-        return response()->json($user, Response::HTTP_OK);
-    }
-
-    public function showCountByProfiles(): JsonResponse
-    {
-        $counts = $this->showCountAdminUsersByProfile->execute();
-
-        return response()->json($counts, Response::HTTP_OK);
     }
 
     public function insert(
@@ -122,7 +75,6 @@ readonly class AdminUsersController
         $userDTO->name      = $updateUserRequest->name;
         $userDTO->email     = $updateUserRequest->email;
         $userDTO->active    = $updateUserRequest->active;
-        $userDTO->profileId = $updateUserRequest->profileId;
 
         $updated = $this->updateAdminUserService->execute($userDTO);
 

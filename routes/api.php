@@ -40,7 +40,7 @@ Route::prefix('admin')
     ])
     ->group(function () {
         Route::prefix('/users')
-            ->group(app_path('Features/Users/Users/Http/Routes/usersRoute.php'));
+            ->group(app_path('Features/Users/Users/Routes/usersRoute.php'));
 
         Route::prefix('/admin-users')
             ->group(app_path('Features/Users/AdminUsers/Routes/adminUsersRoute.php'));

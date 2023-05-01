@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Features\Users\Users\Http\Requests;
+namespace App\Features\Users\Users\Requests;
 
-use App\Shared\Rules\Uuidv4Rule;
 use App\Features\Base\Http\Requests\FormRequest;
+use App\Shared\Rules\Uuidv4Rule;
 
 class InsertUserRequest extends FormRequest
 {
