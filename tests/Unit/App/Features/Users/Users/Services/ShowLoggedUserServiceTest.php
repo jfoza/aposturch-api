@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\App\Features\Users\AdminUsers\Services;
+namespace Tests\Unit\App\Features\Users\Users\Services;
 
 use App\Features\Users\AdminUsers\Responses\LoggedUserResponse;
 use App\Features\Users\Rules\Contracts\RulesRepositoryInterface;

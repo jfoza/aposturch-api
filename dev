@@ -147,7 +147,7 @@ execute_unit_tests () {
     $ARTISAN test --filter 'Tests\\Unit'
 }
 
-execute_integration_tests () {
+execute_feature_tests () {
     check_api_is_up
     echo
     echo "$ICON Executando testes..."
@@ -204,7 +204,7 @@ if [ $# -gt 0 ]; then
     "artisan") execute_artisan $@ ;;
     "composer") execute_composer $@ ;;
     "test-unit") execute_unit_tests $@ ;;
-    "test-integration") execute_integration_tests $@ ;;
+    "test-feature") execute_feature_tests $@ ;;
     "test-report") execute_tests_with_report $@ ;;
     *) show_commands;;
 

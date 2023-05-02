@@ -11,6 +11,7 @@ use App\Shared\ACL\Policy;
 use App\Shared\Enums\RulesEnum;
 use Illuminate\Support\Collection;
 use PHPUnit\Framework\MockObject\MockObject;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 use Tests\Unit\App\Resources\AdminUsersLists;
@@ -18,7 +19,6 @@ use Tests\Unit\App\Resources\AdminUsersLists;
 class ShowAdminUserServiceTest extends TestCase
 {
     private MockObject|AdminUsersRepositoryInterface $adminUsersRepositoryMock;
-    private MockObject|AdminUsersFiltersDTO $adminUsersFiltersDtoMock;
 
     protected function setUp(): void
     {
@@ -38,10 +38,8 @@ class ShowAdminUserServiceTest extends TestCase
     public function dataProviderShowAdminUser(): array
     {
         return [
+            'By Support Rule' => [RulesEnum::ADMIN_USERS_SUPPORT_VIEW->value],
             'By Admin Master Rule' => [RulesEnum::ADMIN_USERS_ADMIN_MASTER_VIEW->value],
-            'By Admin Church Rule' => [RulesEnum::ADMIN_USERS_ADMIN_CHURCH_VIEW->value],
-            'By Admin Module Rule' => [RulesEnum::ADMIN_USERS_ADMIN_MODULE_VIEW->value],
-            'By Assistant Rule'    => [RulesEnum::ADMIN_USERS_ASSISTANT_VIEW->value],
         ];
     }
 
@@ -60,12 +58,10 @@ class ShowAdminUserServiceTest extends TestCase
 
         $this
             ->adminUsersRepositoryMock
-            ->method('findOneByFilters')
+            ->method('findById')
             ->willReturn(AdminUsersLists::getUniqueAdminUser());
 
-        $adminUsers = $showAdminUserService->execute(
-            $this->adminUsersFiltersDtoMock,
-        );
+        $adminUsers = $showAdminUserService->execute(Uuid::uuid4()->toString());
 
         $this->assertInstanceOf(Collection::class, $adminUsers);
     }
@@ -79,8 +75,6 @@ class ShowAdminUserServiceTest extends TestCase
         $this->expectException(AppException::class);
         $this->expectExceptionCode(Response::HTTP_FORBIDDEN);
 
-        $showAdminUserService->execute(
-            $this->adminUsersFiltersDtoMock,
-        );
+        $showAdminUserService->execute(Uuid::uuid4()->toString());
     }
 }

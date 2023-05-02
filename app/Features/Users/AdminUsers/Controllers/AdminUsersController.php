@@ -32,6 +32,7 @@ readonly class AdminUsersController
         $adminUsersFiltersDTO->paginationOrder->setColumnOrder($adminUsersFiltersRequest->columnOrder);
         $adminUsersFiltersDTO->paginationOrder->setColumnName($adminUsersFiltersRequest->columnName);
         $adminUsersFiltersDTO->paginationOrder->setPerPage($adminUsersFiltersRequest->perPage);
+        $adminUsersFiltersDTO->paginationOrder->setPage($adminUsersFiltersRequest->page);
 
         $adminUsersFiltersDTO->name      = $adminUsersFiltersRequest->name;
         $adminUsersFiltersDTO->email     = $adminUsersFiltersRequest->email;

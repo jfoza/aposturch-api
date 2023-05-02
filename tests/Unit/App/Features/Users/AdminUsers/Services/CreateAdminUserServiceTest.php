@@ -66,21 +66,13 @@ class CreateAdminUserServiceTest extends TestCase
     public function dataProviderInsertAdminUser(): array
     {
         return [
+            'By Support Rule' => [
+                RulesEnum::ADMIN_USERS_SUPPORT_INSERT->value,
+                ProfilesLists::getAdminMasterProfile()
+            ],
             'By Admin Master Rule' => [
                 RulesEnum::ADMIN_USERS_ADMIN_MASTER_INSERT->value,
                 ProfilesLists::getAdminMasterProfile()
-            ],
-            'By Admin Church Rule' => [
-                RulesEnum::ADMIN_USERS_ADMIN_CHURCH_INSERT->value,
-                ProfilesLists::getAdminChurchProfile()
-            ],
-            'By Admin Module Rule' => [
-                RulesEnum::ADMIN_USERS_ADMIN_MODULE_INSERT->value,
-                ProfilesLists::getAdminModuleProfile()
-            ],
-            'By Assistant Rule'    => [
-                RulesEnum::ADMIN_USERS_ASSISTANT_INSERT->value,
-                ProfilesLists::getAssistantProfile()
             ],
         ];
     }

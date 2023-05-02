@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Resources;
+namespace Tests\Feature\Resources\Auth;
 
 use Ramsey\Uuid\Uuid;
 

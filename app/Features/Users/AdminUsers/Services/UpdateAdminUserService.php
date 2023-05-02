@@ -10,7 +10,6 @@ use App\Features\Users\AdminUsers\Contracts\UpdateAdminUserServiceInterface;
 use App\Features\Users\AdminUsers\Responses\AdminUserResponse;
 use App\Features\Users\AdminUsers\Validations\AdminUsersValidations;
 use App\Features\Users\AdminUsers\Validations\AllowedProfilesValidations;
-use App\Features\Users\Profiles\Contracts\ProfilesRepositoryInterface;
 use App\Features\Users\Profiles\Enums\ProfileUniqueNameEnum;
 use App\Features\Users\Users\Contracts\UsersRepositoryInterface;
 use App\Features\Users\Users\DTO\UserDTO;
@@ -29,7 +28,6 @@ class UpdateAdminUserService extends Service implements UpdateAdminUserServiceIn
     public function __construct(
         private readonly AdminUsersRepositoryInterface $adminUsersRepository,
         private readonly UsersRepositoryInterface $usersRepository,
-        private readonly ProfilesRepositoryInterface $profilesRepository,
         private readonly AdminUserResponse $adminUserResponse,
     ) {}
 
@@ -61,8 +59,6 @@ class UpdateAdminUserService extends Service implements UpdateAdminUserServiceIn
         ];
 
         $this->handleValidations($profilesAllowed);
-
-        AllowedProfilesValidations::validateSupportProfile($this->profile->unique_name);
 
         return $this->updateBaseOperation();
     }

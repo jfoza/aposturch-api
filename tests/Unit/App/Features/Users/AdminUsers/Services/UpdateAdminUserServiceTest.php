@@ -8,7 +8,6 @@ use App\Features\Users\AdminUsers\Repositories\AdminUsersRepository;
 use App\Features\Users\AdminUsers\Responses\AdminUserResponse;
 use App\Features\Users\AdminUsers\Services\UpdateAdminUserService;
 use App\Features\Users\NewPasswordGenerations\DTO\NewPasswordGenerationsDTO;
-use App\Features\Users\Profiles\Contracts\ProfilesRepositoryInterface;
 use App\Features\Users\Profiles\Infra\Repositories\ProfilesRepository;
 use App\Features\Users\Users\Contracts\UsersRepositoryInterface;
 use App\Features\Users\Users\DTO\UserDTO;
@@ -26,7 +25,6 @@ class UpdateAdminUserServiceTest extends TestCase
 {
     private MockObject|AdminUsersRepositoryInterface $adminUsersRepositoryMock;
     private MockObject|UsersRepositoryInterface      $usersRepositoryMock;
-    private MockObject|ProfilesRepositoryInterface   $profilesRepositoryMock;
     private MockObject|AdminUserResponse             $adminUserResponseMock;
     private MockObject|UserDTO                       $userDtoMock;
 
@@ -46,12 +44,11 @@ class UpdateAdminUserServiceTest extends TestCase
         return new UpdateAdminUserService(
             $this->adminUsersRepositoryMock,
             $this->usersRepositoryMock,
-            $this->profilesRepositoryMock,
             $this->adminUserResponseMock,
         );
     }
 
-    public function populateUsersDTO(string $profileId)
+    public function populateUsersDTO()
     {
         $this->userDtoMock->newPasswordGenerationsDTO = $this->createMock(NewPasswordGenerationsDTO::class);
 
@@ -60,27 +57,18 @@ class UpdateAdminUserServiceTest extends TestCase
         $this->userDtoMock->email     = 'email.example@email.com';
         $this->userDtoMock->password  = 'user_password';
         $this->userDtoMock->active    = true;
-        $this->userDtoMock->profileId = $profileId;
     }
 
     public function dataProviderUpdateAdminUser(): array
     {
         return [
+            'By Support Rule'  => [
+                RulesEnum::ADMIN_USERS_SUPPORT_UPDATE->value,
+                ProfilesLists::getAdminMasterProfile()
+            ],
             'By Admin Master Rule'  => [
                 RulesEnum::ADMIN_USERS_ADMIN_MASTER_UPDATE->value,
                 ProfilesLists::getAdminMasterProfile()
-            ],
-            'By Admin Church Rule'  => [
-                RulesEnum::ADMIN_USERS_ADMIN_CHURCH_UPDATE->value,
-                ProfilesLists::getAdminChurchProfile()
-            ],
-            'By Admin Module Rule' => [
-                RulesEnum::ADMIN_USERS_ADMIN_MODULE_UPDATE->value,
-                ProfilesLists::getAdminModuleProfile()
-            ],
-            'By Assistant Rule'    => [
-                RulesEnum::ADMIN_USERS_ASSISTANT_UPDATE->value,
-                ProfilesLists::getAssistantProfile()
             ],
         ];
     }
@@ -89,37 +77,30 @@ class UpdateAdminUserServiceTest extends TestCase
      * @dataProvider dataProviderUpdateAdminUser
      *
      * @param string $rule
-     * @param mixed $profile
      * @return void
      * @throws AppException
      */
     public function test_should_update_admin_user(
         string $rule,
-        mixed $profile
     ): void
     {
         $updateAdminUserService = $this->getUpdateAdminUserService();
 
         $updateAdminUserService->setPolicy(new Policy([$rule]));
 
-        $profileId = Uuid::uuid4()->toString();
+        $this->populateUsersDTO();
 
-        $this->populateUsersDTO($profileId);
+        $id = Uuid::uuid4()->toString();
 
         $this
             ->adminUsersRepositoryMock
-            ->method('findByUserId')
-            ->willReturn(UsersLists::showUser());
+            ->method('findById')
+            ->willReturn(UsersLists::showUser($id));
 
         $this
             ->usersRepositoryMock
             ->method('findByEmail')
-            ->willReturn(null);
-
-        $this
-            ->profilesRepositoryMock
-            ->method('findById')
-            ->willReturn($profile);
+            ->willReturn(UsersLists::showUser($id));
 
         $this
             ->usersRepositoryMock
@@ -138,16 +119,14 @@ class UpdateAdminUserServiceTest extends TestCase
         $updateAdminUserService = $this->getUpdateAdminUserService();
 
         $updateAdminUserService->setPolicy(new Policy([
-            RulesEnum::ADMIN_USERS_ADMIN_MODULE_UPDATE->value
+            RulesEnum::ADMIN_USERS_ADMIN_MASTER_UPDATE->value
         ]));
 
-        $profileId = Uuid::uuid4()->toString();
-
-        $this->populateUsersDTO($profileId);
+        $this->populateUsersDTO();
 
         $this
             ->adminUsersRepositoryMock
-            ->method('findByUserId')
+            ->method('findById')
             ->willReturn(null);
 
         $this->expectException(AppException::class);
@@ -163,60 +142,23 @@ class UpdateAdminUserServiceTest extends TestCase
         $updateAdminUserService = $this->getUpdateAdminUserService();
 
         $updateAdminUserService->setPolicy(new Policy([
-            RulesEnum::ADMIN_USERS_ADMIN_MODULE_UPDATE->value
+            RulesEnum::ADMIN_USERS_ADMIN_MASTER_UPDATE->value
         ]));
 
-        $profileId = Uuid::uuid4()->toString();
-
-        $this->populateUsersDTO($profileId);
+        $this->populateUsersDTO();
 
         $this
             ->adminUsersRepositoryMock
-            ->method('findByUserId')
+            ->method('findById')
             ->willReturn(UsersLists::showUser());
 
         $this
-            ->usersRepositoryMock
+            ->adminUsersRepositoryMock
             ->method('findByEmail')
             ->willReturn(UsersLists::showUser());
 
         $this->expectException(AppException::class);
         $this->expectExceptionCode(Response::HTTP_BAD_REQUEST);
-
-        $updateAdminUserService->execute(
-            $this->userDtoMock,
-        );
-    }
-
-    public function test_should_return_exception_if_profile_not_exists()
-    {
-        $updateAdminUserService = $this->getUpdateAdminUserService();
-
-        $updateAdminUserService->setPolicy(new Policy([
-            RulesEnum::ADMIN_USERS_ADMIN_MODULE_UPDATE->value
-        ]));
-
-        $profileId = Uuid::uuid4()->toString();
-
-        $this->populateUsersDTO($profileId);
-
-        $this
-            ->adminUsersRepositoryMock
-            ->method('findByUserId')
-            ->willReturn(UsersLists::showUser());
-
-        $this
-            ->usersRepositoryMock
-            ->method('findByEmail')
-            ->willReturn(null);
-
-        $this
-            ->profilesRepositoryMock
-            ->method('findById')
-            ->willReturn(null);
-
-        $this->expectException(AppException::class);
-        $this->expectExceptionCode(Response::HTTP_NOT_FOUND);
 
         $updateAdminUserService->execute(
             $this->userDtoMock,
@@ -231,24 +173,17 @@ class UpdateAdminUserServiceTest extends TestCase
             RulesEnum::ADMIN_USERS_ADMIN_MODULE_UPDATE->value
         ]));
 
-        $profileId = Uuid::uuid4()->toString();
-
-        $this->populateUsersDTO($profileId);
+        $this->populateUsersDTO();
 
         $this
             ->adminUsersRepositoryMock
-            ->method('findByUserId')
+            ->method('findById')
             ->willReturn(UsersLists::showUser());
 
         $this
             ->usersRepositoryMock
             ->method('findByEmail')
             ->willReturn(null);
-
-        $this
-            ->profilesRepositoryMock
-            ->method('findById')
-            ->willReturn(ProfilesLists::getAdminMasterProfile($profileId));
 
         $this
             ->usersRepositoryMock
@@ -271,9 +206,7 @@ class UpdateAdminUserServiceTest extends TestCase
             'ABC'
         ]));
 
-        $profileId = Uuid::uuid4()->toString();
-
-        $this->populateUsersDTO($profileId);
+        $this->populateUsersDTO();
 
         $this->expectException(AppException::class);
         $this->expectExceptionCode(Response::HTTP_FORBIDDEN);

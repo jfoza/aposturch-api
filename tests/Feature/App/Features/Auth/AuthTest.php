@@ -1,12 +1,12 @@
 <?php
 
-namespace Tests\Feature\App\Features\Auth\Controller;
+namespace Tests\Feature\App\Features\Auth;
 
 use Symfony\Component\HttpFoundation\Response;
 use Tests\Feature\BaseTestCase;
 use Tests\Unit\App\Resources\AuthLists;
 
-class AuthControllerTest extends BaseTestCase
+class AuthTest extends BaseTestCase
 {
     private string $loginRoute;
     private string $logoutRoute;
