@@ -14,18 +14,22 @@ class UpdateUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name'      => 'required|string',
-            'email'     => 'required|email:rfc,dns',
-            'active'    => 'required|bool',
+            'name'                 => 'required|string',
+            'email'                => 'required|email:rfc,dns',
+            'password'             => 'nullable|string',
+            'passwordConfirmation' => 'nullable|same:password',
+            'active'               => 'required|bool',
         ];
     }
 
     public function attributes(): array
     {
         return [
-            'name'      => 'Name',
-            'email'     => 'E-mail',
-            'active'    => 'Active',
+            'name'                 => 'Name',
+            'email'                => 'E-mail',
+            'password'             => 'Password',
+            'passwordConfirmation' => 'Password Confirmation',
+            'active'               => 'Active',
         ];
     }
 }

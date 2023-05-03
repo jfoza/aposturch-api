@@ -29,29 +29,36 @@ class UpdateAdminUserTest extends BaseTestCase
             'Name empty' => [
                 '',
                 'email@email.com',
-                'pass',
-                'pass',
+                '',
+                '',
                 true,
             ],
             'Email empty' => [
                 'Test',
                 '',
-                'pass',
-                'pass',
+                '',
+                '',
                 true,
             ],
             'Invalid email' => [
                 'Test',
                 'invalid-email',
-                'pass',
-                'pass',
+                '',
+                '',
+                true,
+            ],
+            'Passwords not match' => [
+                'Test',
+                'invalid-email',
+                'new-pass',
+                'new-pass2',
                 true,
             ],
             'Active empty' => [
                 'Test',
                 'email@email.com',
-                'pass',
-                'pass',
+                '',
+                '',
                 null,
             ],
         ];
@@ -75,6 +82,37 @@ class UpdateAdminUserTest extends BaseTestCase
             'name'    => $name,
             'email'   => $name.'@email.com',
             'active'  => true,
+        ];
+
+        $response = $this->putJson(
+            $this->endpoint."/{$user->id}",
+            $payload,
+            $this->getAuthorizationBearer()
+        );
+
+        $response->assertOk();
+    }
+
+    public function test_should_update_a_unique_admin_user_with_new_password()
+    {
+        $name = RandomStringHelper::alnumGenerate();
+
+        $user = User::factory()->create();
+
+        $profile = Profile::where(Profile::UNIQUE_NAME, ProfileUniqueNameEnum::ADMIN_MASTER)->first();
+
+        AdminUser::factory()->create([
+            AdminUser::USER_ID => $user->id
+        ]);
+
+        User::find($user->id)->profile()->sync([$profile->id]);
+
+        $payload = [
+            'name'                 => $name,
+            'email'                => $name.'@email.com',
+            'password'             => 'new-pass',
+            'passwordConfirmation' => 'new-pass',
+            'active'               => true,
         ];
 
         $response = $this->putJson(
@@ -128,13 +166,17 @@ class UpdateAdminUserTest extends BaseTestCase
     public function test_should_return_error(
         mixed $name,
         mixed $email,
+        mixed $password,
+        mixed $passwordConfirmation,
         mixed $active,
     ): void
     {
         $payload = [
-            'name'   => $name,
-            'email'  => $email,
-            'active' => $active,
+            'name'                 => $name,
+            'email'                => $email,
+            'password'             => $password,
+            'passwordConfirmation' => $passwordConfirmation,
+            'active'               => $active,
         ];
 
         $id = Uuid::uuid4()->toString();

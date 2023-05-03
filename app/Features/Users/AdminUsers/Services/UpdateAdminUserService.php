@@ -9,13 +9,13 @@ use App\Features\Users\AdminUsers\Contracts\AdminUsersRepositoryInterface;
 use App\Features\Users\AdminUsers\Contracts\UpdateAdminUserServiceInterface;
 use App\Features\Users\AdminUsers\Responses\AdminUserResponse;
 use App\Features\Users\AdminUsers\Validations\AdminUsersValidations;
-use App\Features\Users\AdminUsers\Validations\AllowedProfilesValidations;
 use App\Features\Users\Profiles\Enums\ProfileUniqueNameEnum;
 use App\Features\Users\Users\Contracts\UsersRepositoryInterface;
 use App\Features\Users\Users\DTO\UserDTO;
 use App\Features\Users\Users\Validations\UsersValidations;
 use App\Shared\Cache\PolicyCache;
 use App\Shared\Enums\RulesEnum;
+use App\Shared\Utils\Hash;
 use App\Shared\Utils\Transaction;
 
 class UpdateAdminUserService extends Service implements UpdateAdminUserServiceInterface
@@ -105,6 +105,16 @@ class UpdateAdminUserService extends Service implements UpdateAdminUserServiceIn
 
         try {
             $this->usersRepository->save($this->userDTO);
+
+            if(!is_null($this->userDTO->password))
+            {
+                $newPassword = Hash::generateHash($this->userDTO->password);
+
+                $this->usersRepository->saveNewPassword(
+                    $this->userDTO->id,
+                    $newPassword
+                );
+            }
 
             PolicyCache::invalidatePolicy($this->userDTO->id);
 

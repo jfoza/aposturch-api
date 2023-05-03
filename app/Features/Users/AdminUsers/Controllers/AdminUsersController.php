@@ -72,10 +72,11 @@ readonly class AdminUsersController
         UserDTO $userDTO
     ): JsonResponse
     {
-        $userDTO->id        = $updateUserRequest->id;
-        $userDTO->name      = $updateUserRequest->name;
-        $userDTO->email     = $updateUserRequest->email;
-        $userDTO->active    = $updateUserRequest->active;
+        $userDTO->id       = $updateUserRequest->id;
+        $userDTO->name     = $updateUserRequest->name;
+        $userDTO->email    = $updateUserRequest->email;
+        $userDTO->password = $updateUserRequest->password;
+        $userDTO->active   = $updateUserRequest->active;
 
         $updated = $this->updateAdminUserService->execute($userDTO);
 
