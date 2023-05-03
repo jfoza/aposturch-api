@@ -4,7 +4,7 @@ namespace Tests\Feature\App\Features\Users\AdminUsers;
 
 use App\Features\Users\AdminUsers\Models\AdminUser;
 use App\Features\Users\Profiles\Enums\ProfileUniqueNameEnum;
-use App\Features\Users\Profiles\Infra\Models\Profile;
+use App\Features\Users\Profiles\Models\Profile;
 use App\Features\Users\Users\Models\User;
 use Ramsey\Uuid\Uuid;
 use Tests\Feature\BaseTestCase;

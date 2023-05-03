@@ -46,7 +46,7 @@ Route::prefix('admin')
             ->group(app_path('Features/Users/AdminUsers/Routes/adminUsersRoute.php'));
 
         Route::prefix('/profiles')
-            ->group(app_path('Features/Users/Profiles/Http/Routes/profilesRoute.php'));
+            ->group(app_path('Features/Users/Profiles/Routes/profilesRoute.php'));
 
         // MODULES
         Route::prefix('/modules/membership/churches')

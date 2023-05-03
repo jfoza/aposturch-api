@@ -3,7 +3,7 @@
 namespace App\Features\Auth\Traits;
 
 use App\Features\Users\Profiles\Enums\ProfileUniqueNameEnum;
-use App\Features\Users\Profiles\Infra\Models\Profile;
+use App\Features\Users\Profiles\Models\Profile;
 use Illuminate\Support\Collection;
 
 trait ProfilesVerificationTrait

@@ -18,7 +18,12 @@ class AdminUsersRepository implements AdminUsersRepositoryInterface
 
     public function findAll(AdminUsersFiltersDTO $adminUsersFiltersDTO): LengthAwarePaginator|Collection
     {
-         $builder = $this->baseQueryBuilderFilters($adminUsersFiltersDTO);
+         $builder = $this
+             ->baseQueryBuilderFilters($adminUsersFiltersDTO)
+             ->orderBy(
+                 $adminUsersFiltersDTO->paginationOrder->defineCustomColumnName(User::CREATED_AT),
+                 $adminUsersFiltersDTO->paginationOrder->getColumnOrder(),
+             );
 
          return $this->paginateOrGet($builder, $adminUsersFiltersDTO->paginationOrder);
     }

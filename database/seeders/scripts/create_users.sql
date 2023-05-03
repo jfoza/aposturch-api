@@ -214,7 +214,6 @@ DO $$
         _church_unique_name varchar = 'igreja-biblica-viver-caxias';
         _church_id uuid;
 
-        _module1 uuid;
         _module2 uuid;
         _module3 uuid;
         _module4 uuid;
@@ -229,7 +228,6 @@ DO $$
         SELECT id INTO _city_id FROM city.cities WHERE description = _city;
         SELECT id INTO _church_id FROM membership.churches WHERE unique_name = _church_unique_name;
 
-        SELECT id INTO _module1 FROM module.modules WHERE module_unique_name = 'USERS';
         SELECT id INTO _module2 FROM module.modules WHERE module_unique_name = 'FINANCE';
         SELECT id INTO _module3 FROM module.modules WHERE module_unique_name = 'MEMBERSHIP';
         SELECT id INTO _module4 FROM module.modules WHERE module_unique_name = 'STORE';
@@ -268,7 +266,6 @@ DO $$
 
         INSERT INTO users.modules_users (user_id, module_id)
         VALUES
-            (_user_uuid, _module1),
             (_user_uuid, _module2),
             (_user_uuid, _module3),
             (_user_uuid, _module4),
@@ -321,7 +318,6 @@ DO $$
         _church_unique_name varchar = 'igreja-biblica-viver-nh';
         _church_id uuid;
 
-        _module1 uuid;
         _module6 uuid;
 
         _member_type_uuid uuid;
@@ -331,7 +327,6 @@ DO $$
         SELECT id INTO _city_id FROM city.cities WHERE description = _city;
         SELECT id INTO _church_id FROM membership.churches WHERE unique_name = _church_unique_name;
 
-        SELECT id INTO _module1 FROM module.modules WHERE module_unique_name = 'USERS';
         SELECT id INTO _module6 FROM module.modules WHERE module_unique_name = 'SCHEDULE';
 
         SELECT id INTO _member_type_uuid FROM membership.member_types WHERE unique_name = 'COMMON_MEMBER';
@@ -366,7 +361,6 @@ DO $$
 
         INSERT INTO users.modules_users (user_id, module_id)
         VALUES
-            (_user_uuid, _module1),
             (_user_uuid, _module6);
 
         INSERT INTO users.profiles_users (profile_id, user_id)
@@ -414,7 +408,6 @@ DO $$
         _church_unique_name varchar = 'igreja-teste-1';
         _church_id uuid;
 
-        _module1 uuid;
         _module6 uuid;
 
         _member_type_uuid uuid;
@@ -424,7 +417,6 @@ DO $$
         SELECT id INTO _city_id FROM city.cities WHERE description = _city;
         SELECT id INTO _church_id FROM membership.churches WHERE unique_name = _church_unique_name;
 
-        SELECT id INTO _module1 FROM module.modules WHERE module_unique_name = 'USERS';
         SELECT id INTO _module6 FROM module.modules WHERE module_unique_name = 'SCHEDULE';
 
         SELECT id INTO _member_type_uuid FROM membership.member_types WHERE unique_name = 'COMMON_MEMBER';
@@ -458,7 +450,6 @@ DO $$
 
         INSERT INTO users.modules_users (user_id, module_id)
         VALUES
-            (_user_uuid, _module1),
             (_user_uuid, _module6);
 
         INSERT INTO users.profiles_users (profile_id, user_id)

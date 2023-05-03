@@ -4,7 +4,7 @@ namespace Tests\Unit\App\Resources;
 
 use App\Features\Users\AdminUsers\Models\AdminUser;
 use App\Features\Users\Profiles\Enums\ProfileUniqueNameEnum;
-use App\Features\Users\Profiles\Infra\Models\Profile;
+use App\Features\Users\Profiles\Models\Profile;
 use App\Features\Users\Users\Models\User;
 use App\Modules\Membership\Church\Models\Church;
 use Illuminate\Database\Eloquent\Collection as CollectionDatabase;

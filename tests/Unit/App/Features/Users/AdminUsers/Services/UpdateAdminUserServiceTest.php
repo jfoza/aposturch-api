@@ -8,7 +8,7 @@ use App\Features\Users\AdminUsers\Repositories\AdminUsersRepository;
 use App\Features\Users\AdminUsers\Responses\AdminUserResponse;
 use App\Features\Users\AdminUsers\Services\UpdateAdminUserService;
 use App\Features\Users\NewPasswordGenerations\DTO\NewPasswordGenerationsDTO;
-use App\Features\Users\Profiles\Infra\Repositories\ProfilesRepository;
+use App\Features\Users\Profiles\Repositories\ProfilesRepository;
 use App\Features\Users\Users\Contracts\UsersRepositoryInterface;
 use App\Features\Users\Users\DTO\UserDTO;
 use App\Features\Users\Users\Repositories\UsersRepository;

@@ -6,5 +6,5 @@ use App\Shared\ACL\Policy;
 
 interface FindAllProfilesByUserAbilityServiceInterface
 {
-    public function execute(Policy $policy);
+    public function execute();
 }

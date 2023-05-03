@@ -9,7 +9,7 @@ use App\Features\Users\AdminUsers\Models\AdminUser;
 use App\Features\Users\EmailVerification\Infra\Models\EmailVerification;
 use App\Features\Users\ForgotPassword\Infra\Models\ForgotPassword;
 use App\Features\Users\ModulesUsers\Infra\Models\ModuleUser;
-use App\Features\Users\Profiles\Infra\Models\Profile;
+use App\Features\Users\Profiles\Models\Profile;
 use App\Features\Users\ProfilesUsers\Infra\Models\ProfileUser;
 use App\Features\Users\Sessions\Models\Session;
 use Illuminate\Auth\Authenticatable;

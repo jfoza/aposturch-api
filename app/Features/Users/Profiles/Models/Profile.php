@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Features\Users\Profiles\Infra\Models;
+namespace App\Features\Users\Profiles\Models;
 
 use App\Features\Base\Infra\Models\Register;
 use App\Features\Users\ProfilesRules\Infra\Models\ProfileRule;

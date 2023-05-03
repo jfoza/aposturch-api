@@ -3,7 +3,7 @@
 namespace App\Features\Base\Infra\Repositories;
 
 use App\Features\Users\ModulesRules\Infra\Models\ModuleRule;
-use App\Features\Users\Profiles\Infra\Models\Profile;
+use App\Features\Users\Profiles\Models\Profile;
 use App\Features\Users\ProfilesRules\Infra\Models\ProfileRule;
 use App\Features\Users\ProfilesUsers\Infra\Models\ProfileUser;
 use App\Features\Users\Rules\Infra\Models\Rule;

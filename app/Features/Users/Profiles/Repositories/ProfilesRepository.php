@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Features\Users\Profiles\Infra\Repositories;
+namespace App\Features\Users\Profiles\Repositories;
 
 use App\Features\Users\Profiles\Contracts\ProfilesRepositoryInterface;
-use App\Features\Users\Profiles\Infra\Models\Profile;
+use App\Features\Users\Profiles\Models\Profile;
 use App\Features\Users\ProfilesUsers\Infra\Models\ProfileUser;
 
 class ProfilesRepository implements ProfilesRepositoryInterface

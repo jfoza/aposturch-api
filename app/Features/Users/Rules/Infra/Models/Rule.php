@@ -3,7 +3,7 @@
 namespace App\Features\Users\Rules\Infra\Models;
 
 use App\Features\Base\Infra\Models\Register;
-use App\Features\Users\Profiles\Infra\Models\Profile;
+use App\Features\Users\Profiles\Models\Profile;
 use App\Features\Users\ProfilesRules\Infra\Models\ProfileRule;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
