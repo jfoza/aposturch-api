@@ -6,10 +6,6 @@ use App\Features\Users\AdminUsers\DTO\AdminUsersFiltersDTO;
 
 class ChurchDTO
 {
-    public function __construct(
-        public AdminUsersFiltersDTO $adminUsersFiltersDTO
-    ) {}
-
     public string|null $id;
     public string|null $name;
     public string|null $uniqueName;
@@ -25,5 +21,6 @@ class ChurchDTO
     public string|null $district;
     public string|null $uf;
     public string|null $cityId;
+    public array|null $responsibleMembers;
     public bool $active;
 }

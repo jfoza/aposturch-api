@@ -3,11 +3,10 @@
 namespace App\Modules\Membership\Church\Validations;
 
 use App\Exceptions\AppException;
-use App\Features\Users\AdminUsers\Contracts\AdminUsersRepositoryInterface;
-use App\Features\Users\AdminUsers\DTO\AdminUsersFiltersDTO;
 use App\Modules\Membership\Church\Contracts\ChurchRepositoryInterface;
-use App\Modules\Membership\ResponsibleChurch\Contracts\ResponsibleChurchRepositoryInterface;
+use App\Modules\Membership\Church\Models\Church;
 use App\Shared\Enums\MessagesEnum;
+use Illuminate\Support\Collection;
 use Symfony\Component\HttpFoundation\Response;
 
 class ChurchValidations
@@ -53,30 +52,16 @@ class ChurchValidations
     /**
      * @throws AppException
      */
-    public static function isValidAdminsChurch(
-        AdminUsersRepositoryInterface  $adminUsersRepository,
-        AdminUsersFiltersDTO $adminUsersFiltersDTO
+    public static function memberHasChurchById(
+        string $churchId,
+        Collection $churchesUserLogged
     ): void
     {
-        $notFound = [];
-
-        $users = $adminUsersRepository->findAll($adminUsersFiltersDTO);
-
-        $ids = collect($users)->pluck('admin_user_id')->toArray();
-
-        foreach ($adminUsersFiltersDTO->adminsId as $adminId)
-        {
-            if(!in_array($adminId, $ids))
-            {
-                $notFound[] = $adminId;
-            }
-        }
-
-        if(!empty($notFound))
+        if(!$churchesUserLogged->where(Church::ID, $churchId)->first())
         {
             throw new AppException(
-                MessagesEnum::USER_NOT_FOUND,
-                Response::HTTP_NOT_FOUND
+                MessagesEnum::NOT_AUTHORIZED,
+                Response::HTTP_FORBIDDEN
             );
         }
     }
@@ -84,17 +69,16 @@ class ChurchValidations
     /**
      * @throws AppException
      */
-    public static function responsibleRelationshipExists(
-        string $adminUserId,
-        string $churchId,
-        ResponsibleChurchRepositoryInterface $responsibleChurchRepository
+    public static function memberHasChurchByUniqueName(
+        string $churchUniqueName,
+        Collection $churchesUserLogged
     ): void
     {
-        if(!$responsibleChurchRepository->findByAdminUserAndChurch($adminUserId, $churchId))
+        if(!$churchesUserLogged->where(Church::UNIQUE_NAME, $churchUniqueName)->first())
         {
             throw new AppException(
-                MessagesEnum::REGISTER_NOT_FOUND,
-                Response::HTTP_NOT_FOUND
+                MessagesEnum::NOT_AUTHORIZED,
+                Response::HTTP_FORBIDDEN
             );
         }
     }

@@ -29,31 +29,31 @@ class FindAllChurchesService extends Service implements FindAllChurchesServiceIn
         $policy = $this->getPolicy();
 
         return match (true) {
-            $policy->haveRule(RulesEnum::MEMBERS_MODULE_CHURCH_ADMIN_MASTER_VIEW->value) => $this->findByAdminMaster(),
-            $policy->haveRule(RulesEnum::MEMBERS_MODULE_CHURCH_ADMIN_CHURCH_VIEW->value) => $this->findByAdminChurch(),
-            $policy->haveRule(RulesEnum::MEMBERS_MODULE_CHURCH_ADMIN_MODULE_VIEW->value) => $this->findByAdminModule(),
-            $policy->haveRule(RulesEnum::MEMBERS_MODULE_CHURCH_ASSISTANT_VIEW->value)    => $this->findByAssistant(),
+            $policy->haveRule(RulesEnum::MEMBERSHIP_MODULE_CHURCH_ADMIN_MASTER_VIEW->value) => $this->findAllByAdminMaster(),
+            $policy->haveRule(RulesEnum::MEMBERSHIP_MODULE_CHURCH_ADMIN_CHURCH_VIEW->value) => $this->findAllByAdminChurch(),
+            $policy->haveRule(RulesEnum::MEMBERSHIP_MODULE_CHURCH_ADMIN_MODULE_VIEW->value) => $this->findAllByAdminModule(),
+            $policy->haveRule(RulesEnum::MEMBERSHIP_MODULE_CHURCH_ASSISTANT_VIEW->value)    => $this->findAllByAssistant(),
 
             default  => $policy->dispatchErrorForbidden(),
         };
     }
 
-    private function findByAdminMaster()
+    private function findAllByAdminMaster(): LengthAwarePaginator|Collection
     {
         return $this->churchRepository->findAll($this->churchFiltersDTO);
     }
 
-    private function findByAdminChurch()
+    private function findAllByAdminChurch(): LengthAwarePaginator|Collection
     {
         return $this->churchRepository->findAll($this->churchFiltersDTO);
     }
 
-    private function findByAdminModule()
+    private function findAllByAdminModule(): LengthAwarePaginator|Collection
     {
         return $this->churchRepository->findAll($this->churchFiltersDTO);
     }
 
-    private function findByAssistant()
+    private function findAllByAssistant(): LengthAwarePaginator|Collection
     {
         return $this->churchRepository->findAll($this->churchFiltersDTO);
     }

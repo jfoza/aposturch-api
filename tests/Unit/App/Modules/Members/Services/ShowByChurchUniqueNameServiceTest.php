@@ -8,10 +8,14 @@ use App\Modules\Membership\Church\Repositories\ChurchRepository;
 use App\Modules\Membership\Church\Services\ShowByChurchUniqueNameService;
 use App\Shared\ACL\Policy;
 use App\Shared\Enums\RulesEnum;
+use Illuminate\Support\Facades\Auth;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 use Tests\Unit\App\Resources\ChurchLists;
+use Tests\Unit\App\Resources\MembersLists;
+use Tymon\JWTAuth\Exceptions\UserNotDefinedException;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class ShowByChurchUniqueNameServiceTest extends TestCase
 {
@@ -26,6 +30,9 @@ class ShowByChurchUniqueNameServiceTest extends TestCase
         $this->churchRepositoryMock = $this->createMock(ChurchRepository::class);
 
         $this->churchUniqueName = 'church-test-unique-name';
+
+        JWTAuth::shouldReceive('user')->andreturn(MembersLists::getMemberUserLogged(null, $this->churchUniqueName));
+        Auth::shouldReceive('user')->andreturn(MembersLists::getMemberUserLogged(null, $this->churchUniqueName));
     }
 
     public function getShowByChurchUniqueNameService(): ShowByChurchUniqueNameService
@@ -38,8 +45,8 @@ class ShowByChurchUniqueNameServiceTest extends TestCase
     public function dataProviderShowChurch(): array
     {
         return [
-            'By Admin Master Rule' => [RulesEnum::MEMBERS_MODULE_CHURCH_ADMIN_MASTER_DETAILS_VIEW->value],
-            'By Admin Church Rule' => [RulesEnum::MEMBERS_MODULE_CHURCH_ADMIN_CHURCH_DETAILS_VIEW->value],
+            'By Admin Master Rule' => [RulesEnum::MEMBERSHIP_MODULE_CHURCH_ADMIN_MASTER_DETAILS_VIEW->value],
+            'By Admin Church Rule' => [RulesEnum::MEMBERSHIP_MODULE_CHURCH_ADMIN_CHURCH_DETAILS_VIEW->value],
         ];
     }
 
@@ -48,7 +55,7 @@ class ShowByChurchUniqueNameServiceTest extends TestCase
      *
      * @param string $rule
      * @return void
-     * @throws AppException
+     * @throws AppException|UserNotDefinedException
      */
     public function test_should_to_return_unique_church(string $rule): void
     {
@@ -56,10 +63,6 @@ class ShowByChurchUniqueNameServiceTest extends TestCase
 
         $showByChurchUniqueNameService->setPolicy(
             new Policy([$rule])
-        );
-
-        $showByChurchUniqueNameService->setResponsibleChurch(
-            ChurchLists::getChurchesByUniqueName($this->churchUniqueName)
         );
 
         $this
@@ -79,11 +82,7 @@ class ShowByChurchUniqueNameServiceTest extends TestCase
         $showByChurchUniqueNameService = $this->getShowByChurchUniqueNameService();
 
         $showByChurchUniqueNameService->setPolicy(
-            new Policy([RulesEnum::MEMBERS_MODULE_CHURCH_ADMIN_MASTER_DETAILS_VIEW->value])
-        );
-
-        $showByChurchUniqueNameService->setResponsibleChurch(
-            ChurchLists::getChurchesByUniqueName($this->churchUniqueName)
+            new Policy([RulesEnum::MEMBERSHIP_MODULE_CHURCH_ADMIN_CHURCH_DETAILS_VIEW->value])
         );
 
         $this
@@ -102,19 +101,15 @@ class ShowByChurchUniqueNameServiceTest extends TestCase
         $showByChurchUniqueNameService = $this->getShowByChurchUniqueNameService();
 
         $showByChurchUniqueNameService->setPolicy(
-            new Policy([RulesEnum::MEMBERS_MODULE_CHURCH_ADMIN_CHURCH_DETAILS_VIEW->value])
+            new Policy([RulesEnum::MEMBERSHIP_MODULE_CHURCH_ADMIN_CHURCH_DETAILS_VIEW->value])
         );
 
         $this
             ->churchRepositoryMock
             ->method('findByUniqueName')
             ->willReturn(
-                ChurchLists::showChurchByUniqueName($this->churchUniqueName)
+                ChurchLists::showChurchByUniqueName()
             );
-
-        $showByChurchUniqueNameService->setResponsibleChurch(
-            ChurchLists::getChurchesByUniqueName('abc')
-        );
 
         $this->expectException(AppException::class);
         $this->expectExceptionCode(Response::HTTP_FORBIDDEN);

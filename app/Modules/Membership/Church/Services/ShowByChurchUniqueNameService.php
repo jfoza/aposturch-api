@@ -6,10 +6,10 @@ use App\Exceptions\AppException;
 use App\Features\Base\Services\Service;
 use App\Modules\Membership\Church\Contracts\ChurchRepositoryInterface;
 use App\Modules\Membership\Church\Contracts\ShowByChurchUniqueNameServiceInterface;
-use App\Modules\Membership\Church\Models\Church;
 use App\Modules\Membership\Church\Validations\ChurchValidations;
 use App\Shared\Enums\RulesEnum;
 use App\Shared\Helpers\Helpers;
+use Tymon\JWTAuth\Exceptions\UserNotDefinedException;
 
 class ShowByChurchUniqueNameService extends Service implements ShowByChurchUniqueNameServiceInterface
 {
@@ -21,6 +21,7 @@ class ShowByChurchUniqueNameService extends Service implements ShowByChurchUniqu
 
     /**
      * @throws AppException
+     * @throws UserNotDefinedException
      */
     public function execute(string $churchUniqueName): object
     {
@@ -29,8 +30,8 @@ class ShowByChurchUniqueNameService extends Service implements ShowByChurchUniqu
         $policy = $this->getPolicy();
 
         $church = match (true) {
-            $policy->haveRule(RulesEnum::MEMBERS_MODULE_CHURCH_ADMIN_MASTER_DETAILS_VIEW->value) => $this->showByAdminMaster(),
-            $policy->haveRule(RulesEnum::MEMBERS_MODULE_CHURCH_ADMIN_CHURCH_DETAILS_VIEW->value) => $this->showByAdminChurch(),
+            $policy->haveRule(RulesEnum::MEMBERSHIP_MODULE_CHURCH_ADMIN_MASTER_DETAILS_VIEW->value) => $this->showByAdminMaster(),
+            $policy->haveRule(RulesEnum::MEMBERSHIP_MODULE_CHURCH_ADMIN_CHURCH_DETAILS_VIEW->value) => $this->showByAdminChurch(),
 
             default  => $policy->dispatchErrorForbidden(),
         };
@@ -58,6 +59,7 @@ class ShowByChurchUniqueNameService extends Service implements ShowByChurchUniqu
 
     /**
      * @throws AppException
+     * @throws UserNotDefinedException
      */
     private function showByAdminChurch(): ?object
     {
@@ -66,9 +68,9 @@ class ShowByChurchUniqueNameService extends Service implements ShowByChurchUniqu
             $this->churchUniqueName
         );
 
-        $this->userHasChurch(
-            Church::UNIQUE_NAME,
-            $this->churchUniqueName
+        ChurchValidations::memberHasChurchByUniqueName(
+            $church->unique_name,
+            $this->getChurchesUserMember()
         );
 
         return $church;

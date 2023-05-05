@@ -27,7 +27,7 @@ class RemoveChurchService extends Service implements RemoveChurchServiceInterfac
      */
     public function execute(string $churchId)
     {
-        $this->getPolicy()->havePermission(RulesEnum::MEMBERS_MODULE_CHURCH_ADMIN_MASTER_DELETE->value);
+        $this->getPolicy()->havePermission(RulesEnum::MEMBERSHIP_MODULE_CHURCH_ADMIN_MASTER_DELETE->value);
 
         $church = $this->validateChurchCanBeDelete(
             $this->churchRepository,

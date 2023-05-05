@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\App\Resources;
 
+use App\Features\Module\Modules\Models\Module;
 use App\Features\Users\AdminUsers\Models\AdminUser;
 use App\Features\Users\Profiles\Enums\ProfileUniqueNameEnum;
 use App\Features\Users\Profiles\Models\Profile;
@@ -45,71 +46,6 @@ class AdminUsersLists
         ]);
     }
 
-    public static function getAdminUserByEmail(bool $active = true): object
-    {
-        return (object) ([
-            AdminUser::ID      => "48fdcbba-86e2-4567-8999-dda3c3e5279c",
-            AdminUser::USER_ID => "edd710bb-55d3-4e0e-8027-d5d68cd1a0f9",
-            "responsibleChurch" => [
-                CollectionSupport::make([
-                    [Church::ID => Uuid::uuid4()->toString()]
-                ]),
-            ],
-
-            "user" => (object) ([
-                User::ID => "edd710bb-55d3-4e0e-8027-d5d68cd1a0f9",
-                User::PERSON_ID => null,
-                User::NAME      => "Name User",
-                User::EMAIL     => "usuario@email.com",
-                User::PASSWORD  => "$2a$12$8O6CjzAHu5UY9VtGxNwJH.29v2Qu6Q28IR7CKNESVwKdH5uMbrFmC",
-                User::AVATAR    => null,
-                User::ACTIVE    => $active,
-                "profile" => CollectionDatabase::make([
-                    (object) ([
-                        Profile::ID => "7f94247d-38a7-424b-ae7a-bb3262a587b9",
-                        Profile::PROFILE_TYPE_ID => "3facf59b-175a-4b08-8a85-e1d6cb5b4b06",
-                        Profile::DESCRIPTION => "Admin Master",
-                        Profile::UNIQUE_NAME => "ADMIN_MASTER",
-                        Profile::ACTIVE => true,
-                    ])
-                ]),
-                "church" => CollectionSupport::make([
-                        [Church::ID => Uuid::uuid4()->toString()]
-                    ]),
-                "module" => self::getModules(),
-            ])
-        ]);
-    }
-
-    public static function getUnchurchedAdminUserByEmail(bool $active = true): object
-    {
-        return (object) ([
-            AdminUser::ID      => "48fdcbba-86e2-4567-8999-dda3c3e5279c",
-            AdminUser::USER_ID => "edd710bb-55d3-4e0e-8027-d5d68cd1a0f9",
-
-            "user" => (object) ([
-                User::ID => "edd710bb-55d3-4e0e-8027-d5d68cd1a0f9",
-                User::PERSON_ID => null,
-                User::NAME      => "Name User",
-                User::EMAIL     => "usuario@email.com",
-                User::PASSWORD  => "$2a$12$8O6CjzAHu5UY9VtGxNwJH.29v2Qu6Q28IR7CKNESVwKdH5uMbrFmC",
-                User::AVATAR    => null,
-                User::ACTIVE    => $active,
-                "profile" => CollectionDatabase::make([
-                    (object) ([
-                        Profile::ID => "7f94247d-38a7-424b-ae7a-bb3262a587b9",
-                        Profile::PROFILE_TYPE_ID => "3facf59b-175a-4b08-8a85-e1d6cb5b4b06",
-                        Profile::DESCRIPTION => "Admin Module",
-                        Profile::UNIQUE_NAME => ProfileUniqueNameEnum::ADMIN_MODULE,
-                        Profile::ACTIVE => true,
-                    ])
-                ]),
-                "church" => CollectionSupport::empty(),
-                "module" => self::getModules(),
-            ])
-        ]);
-    }
-
     public static function getAdminUserLogged(): object
     {
         return (object) ([
@@ -129,13 +65,12 @@ class AdminUsersLists
                     "updated_at" => "2022-09-15T23:12:53.905905Z",
                 ]
             ]),
-            'module' => self::getModules()
+            'module' => CollectionSupport::make([
+                (object) ([
+                    Module::ID => Uuid::uuid4()->toString()
+                ])
+            ])
         ]);
-    }
-
-    public static function getModules(): array
-    {
-        return [];
     }
 
     public static function getRules(): array

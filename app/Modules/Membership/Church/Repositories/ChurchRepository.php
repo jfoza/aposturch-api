@@ -7,13 +7,14 @@ use App\Modules\Membership\Church\Contracts\ChurchRepositoryInterface;
 use App\Modules\Membership\Church\DTO\ChurchDTO;
 use App\Modules\Membership\Church\DTO\ChurchFiltersDTO;
 use App\Modules\Membership\Church\Models\Church;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 
 class ChurchRepository implements ChurchRepositoryInterface
 {
     use BuilderTrait;
 
-    public function findAll(ChurchFiltersDTO $churchFiltersDTO)
+    public function findAll(ChurchFiltersDTO $churchFiltersDTO): LengthAwarePaginator|Collection
     {
         $builder = Church::with(['city'])
             ->when(isset($churchFiltersDTO->name),
@@ -39,11 +40,11 @@ class ChurchRepository implements ChurchRepositoryInterface
 
     public function findById(string $churchId, bool $listMembers = false): object|null
     {
-        $relations = ['imagesChurch', 'city', 'adminUser.user'];
+        $relations = ['imagesChurch', 'city'];
 
         if($listMembers)
         {
-            $relations[] = 'user';
+            $relations[] = 'member';
         }
 
         return Church::with($relations)->find($churchId);
@@ -103,18 +104,18 @@ class ChurchRepository implements ChurchRepositoryInterface
         return Church::make($update);
     }
 
-    public function remove(string $churchId): void
+    public function saveResponsible(string $churchId, array $responsibleIds): void
     {
-        Church::where(Church::ID, $churchId)->delete();
+        Church::find($churchId)->member()->sync($responsibleIds);
     }
 
-    public function saveImages(string $churchId, array $images)
+    public function saveImages(string $churchId, array $images): void
     {
         Church::find($churchId)->imagesChurch()->sync($images);
     }
 
-    public function saveResponsible(string $churchId, array $usersId)
+    public function remove(string $churchId): void
     {
-        Church::find($churchId)->adminUser()->sync($usersId);
+        Church::where(Church::ID, $churchId)->delete();
     }
 }

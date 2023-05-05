@@ -43,7 +43,7 @@ class RemoveChurchServiceTest extends TestCase
 
         $removeChurchService->setPolicy(
             new Policy([
-                RulesEnum::MEMBERS_MODULE_CHURCH_ADMIN_MASTER_DELETE->value
+                RulesEnum::MEMBERSHIP_MODULE_CHURCH_ADMIN_MASTER_DELETE->value
             ])
         );
 
@@ -65,7 +65,7 @@ class RemoveChurchServiceTest extends TestCase
 
         $removeChurchService->setPolicy(
             new Policy([
-                RulesEnum::MEMBERS_MODULE_CHURCH_ADMIN_MASTER_DELETE->value
+                RulesEnum::MEMBERSHIP_MODULE_CHURCH_ADMIN_MASTER_DELETE->value
             ])
         );
 
@@ -86,7 +86,7 @@ class RemoveChurchServiceTest extends TestCase
         $removeChurchService = $this->getRemoveChurchService();
 
         $removeChurchService->setPolicy(new Policy([
-            RulesEnum::MEMBERS_MODULE_CHURCH_ADMIN_MASTER_DELETE->value
+            RulesEnum::MEMBERSHIP_MODULE_CHURCH_ADMIN_MASTER_DELETE->value
         ]));
 
         $this
@@ -105,32 +105,13 @@ class RemoveChurchServiceTest extends TestCase
         $removeChurchService = $this->getRemoveChurchService();
 
         $removeChurchService->setPolicy(new Policy([
-            RulesEnum::MEMBERS_MODULE_CHURCH_ADMIN_MASTER_DELETE->value
+            RulesEnum::MEMBERSHIP_MODULE_CHURCH_ADMIN_MASTER_DELETE->value
         ]));
 
         $this
             ->churchRepositoryMock
             ->method('findById')
             ->willReturn(ChurchLists::showChurchWithMembers());
-
-        $this->expectException(AppException::class);
-        $this->expectExceptionCode(Response::HTTP_BAD_REQUEST);
-
-        $removeChurchService->execute(Uuid::uuid4()->toString());
-    }
-
-    public function test_should_return_exception_if_church_has_responsible()
-    {
-        $removeChurchService = $this->getRemoveChurchService();
-
-        $removeChurchService->setPolicy(new Policy([
-            RulesEnum::MEMBERS_MODULE_CHURCH_ADMIN_MASTER_DELETE->value
-        ]));
-
-        $this
-            ->churchRepositoryMock
-            ->method('findById')
-            ->willReturn(ChurchLists::showChurchWithResponsible());
 
         $this->expectException(AppException::class);
         $this->expectExceptionCode(Response::HTTP_BAD_REQUEST);

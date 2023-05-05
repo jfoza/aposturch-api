@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Features\Module\Modules\Infra\Models;
+namespace App\Features\Module\Modules\Models;
 
 use App\Features\Base\Infra\Models\Register;
 use App\Features\Users\ModulesUsers\Infra\Models\ModuleUser;

@@ -3,7 +3,7 @@
 namespace App\Features\Users\Users\Models;
 
 use App\Features\Base\Infra\Models\Register;
-use App\Features\Module\Modules\Infra\Models\Module;
+use App\Features\Module\Modules\Models\Module;
 use App\Features\Persons\Infra\Models\Person;
 use App\Features\Users\AdminUsers\Models\AdminUser;
 use App\Features\Users\EmailVerification\Infra\Models\EmailVerification;
@@ -12,6 +12,7 @@ use App\Features\Users\ModulesUsers\Infra\Models\ModuleUser;
 use App\Features\Users\Profiles\Models\Profile;
 use App\Features\Users\ProfilesUsers\Infra\Models\ProfileUser;
 use App\Features\Users\Sessions\Models\Session;
+use App\Modules\Membership\Members\Models\Member;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizeContract;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticateContract;
@@ -72,6 +73,11 @@ class User
     public function adminUser(): HasOne
     {
         return $this->hasOne(AdminUser::class);
+    }
+
+    public function member(): HasOne
+    {
+        return $this->hasOne(Member::class);
     }
 
     public function session(): HasMany

@@ -5,11 +5,9 @@ namespace App\Modules\Membership\Church\Models;
 use App\Features\Base\Infra\Models\Register;
 use App\Features\City\Cities\Infra\Models\City;
 use App\Features\General\Images\Infra\Models\Image;
-use App\Features\Users\AdminUsers\Models\AdminUser;
-use App\Features\Users\UserChurch\Infra\Models\UserChurch;
-use App\Features\Users\Users\Models\User;
 use App\Modules\Membership\ChurchesImages\Models\ChurchImage;
-use App\Modules\Membership\ResponsibleChurch\Models\ResponsibleChurch;
+use App\Modules\Membership\ChurchesMembers\Models\ChurchMember;
+use App\Modules\Membership\Members\Models\Member;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
@@ -32,7 +30,7 @@ class Church extends Register
     const CITY_ID        = 'city_id';
     const ACTIVE         = 'active';
 
-    protected $table = 'members.churches';
+    protected $table = 'membership.churches';
 
     protected $primaryKey = self::ID;
 
@@ -61,13 +59,13 @@ class Church extends Register
         return $this->belongsTo(City::class, self::CITY_ID, City::ID);
     }
 
-    public function user(): BelongsToMany
+    public function member(): BelongsToMany
     {
         return $this->belongsToMany(
-            User::class,
-            UserChurch::tableName(),
-            UserChurch::CHURCH_ID,
-            UserChurch::USER_ID,
+            Member::class,
+            ChurchMember::tableName(),
+            ChurchMember::CHURCH_ID,
+            ChurchMember::MEMBER_ID,
         );
     }
 
@@ -78,16 +76,6 @@ class Church extends Register
             ChurchImage::class,
             ChurchImage::CHURCH_ID,
             ChurchImage::IMAGE_ID,
-        );
-    }
-
-    public function adminUser(): BelongsToMany
-    {
-        return $this->belongsToMany(
-            AdminUser::class,
-            ResponsibleChurch::class,
-            ResponsibleChurch::CHURCH_ID,
-            ResponsibleChurch::ADMIN_USER_ID,
         );
     }
 }

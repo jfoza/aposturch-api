@@ -2,7 +2,7 @@
 
 namespace App\Features\Module\Modules\Traits;
 
-use App\Features\Module\Modules\Infra\Models\Module;
+use App\Features\Module\Modules\Models\Module;
 
 trait ModulesTrait
 {

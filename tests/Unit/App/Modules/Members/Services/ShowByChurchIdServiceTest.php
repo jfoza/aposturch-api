@@ -8,11 +8,15 @@ use App\Modules\Membership\Church\Repositories\ChurchRepository;
 use App\Modules\Membership\Church\Services\ShowByChurchIdService;
 use App\Shared\ACL\Policy;
 use App\Shared\Enums\RulesEnum;
+use Illuminate\Support\Facades\Auth;
 use PHPUnit\Framework\MockObject\MockObject;
 use Ramsey\Uuid\Nonstandard\Uuid;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 use Tests\Unit\App\Resources\ChurchLists;
+use Tests\Unit\App\Resources\MembersLists;
+use Tymon\JWTAuth\Exceptions\UserNotDefinedException;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class ShowByChurchIdServiceTest extends TestCase
 {
@@ -27,6 +31,9 @@ class ShowByChurchIdServiceTest extends TestCase
         $this->churchRepositoryMock = $this->createMock(ChurchRepository::class);
 
         $this->churchId = Uuid::uuid4()->toString();
+
+        JWTAuth::shouldReceive('user')->andreturn(MembersLists::getMemberUserLogged($this->churchId));
+        Auth::shouldReceive('user')->andreturn(MembersLists::getMemberUserLogged($this->churchId));
     }
 
     public function getShowByChurchIdService(): ShowByChurchIdService
@@ -39,8 +46,8 @@ class ShowByChurchIdServiceTest extends TestCase
     public function dataProviderShowChurch(): array
     {
         return [
-            'By Admin Master Rule' => [RulesEnum::MEMBERS_MODULE_CHURCH_ADMIN_MASTER_VIEW->value],
-            'By Admin Church Rule' => [RulesEnum::MEMBERS_MODULE_CHURCH_ADMIN_CHURCH_VIEW->value],
+            'By Admin Master Rule' => [RulesEnum::MEMBERSHIP_MODULE_CHURCH_ADMIN_MASTER_VIEW->value],
+            'By Admin Church Rule' => [RulesEnum::MEMBERSHIP_MODULE_CHURCH_ADMIN_CHURCH_VIEW->value],
         ];
     }
 
@@ -49,7 +56,7 @@ class ShowByChurchIdServiceTest extends TestCase
      *
      * @param string $rule
      * @return void
-     * @throws AppException
+     * @throws AppException|UserNotDefinedException
      */
     public function test_should_to_return_unique_church(string $rule): void
     {
@@ -57,10 +64,6 @@ class ShowByChurchIdServiceTest extends TestCase
 
         $showByChurchIdService->setPolicy(
             new Policy([$rule])
-        );
-
-        $showByChurchIdService->setResponsibleChurch(
-            ChurchLists::getChurchesById($this->churchId)
         );
 
         $this
@@ -78,11 +81,7 @@ class ShowByChurchIdServiceTest extends TestCase
         $showByChurchIdService = $this->getShowByChurchIdService();
 
         $showByChurchIdService->setPolicy(
-            new Policy([RulesEnum::MEMBERS_MODULE_CHURCH_ADMIN_MASTER_VIEW->value])
-        );
-
-        $showByChurchIdService->setResponsibleChurch(
-            ChurchLists::getChurchesById($this->churchId)
+            new Policy([RulesEnum::MEMBERSHIP_MODULE_CHURCH_ADMIN_MASTER_VIEW->value])
         );
 
         $this
@@ -101,17 +100,13 @@ class ShowByChurchIdServiceTest extends TestCase
         $showByChurchIdService = $this->getShowByChurchIdService();
 
         $showByChurchIdService->setPolicy(
-            new Policy([RulesEnum::MEMBERS_MODULE_CHURCH_ADMIN_CHURCH_VIEW->value])
-        );
-
-        $showByChurchIdService->setResponsibleChurch(
-            ChurchLists::getChurchesById('abc')
+            new Policy([RulesEnum::MEMBERSHIP_MODULE_CHURCH_ADMIN_CHURCH_VIEW->value])
         );
 
         $this
             ->churchRepositoryMock
             ->method('findById')
-            ->willReturn(ChurchLists::showChurch($this->churchId));
+            ->willReturn(ChurchLists::showChurch());
 
         $this->expectException(AppException::class);
         $this->expectExceptionCode(Response::HTTP_FORBIDDEN);

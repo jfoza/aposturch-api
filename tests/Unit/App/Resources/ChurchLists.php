@@ -7,6 +7,7 @@ use App\Features\General\Images\Infra\Models\Image;
 use App\Features\Users\AdminUsers\Models\AdminUser;
 use App\Features\Users\Users\Models\User;
 use App\Modules\Membership\Church\Models\Church;
+use App\Modules\Membership\Members\Models\Member;
 use App\Modules\Membership\ResponsibleChurch\Models\ResponsibleChurch;
 use Illuminate\Support\Collection;
 use Ramsey\Uuid\Uuid;
@@ -108,7 +109,7 @@ class ChurchLists
             Church::ACTIVE         => true,
             'user' => [],
             'imagesChurch' => [],
-            'adminUser' => []
+            'member' => []
         ]);
     }
 
@@ -141,9 +142,12 @@ class ChurchLists
         ]);
     }
 
-    public static function showChurchWithImage(?string $imageId = null): object
+    public static function showChurchWithImage(?string $churchId = null, ?string $imageId = null): object
     {
-        $id = Uuid::uuid4()->toString();
+        if(is_null($churchId))
+        {
+            $churchId = Uuid::uuid4()->toString();
+        }
 
         if(is_null($imageId))
         {
@@ -151,7 +155,7 @@ class ChurchLists
         }
 
         return (object) ([
-            Church::ID             => $id,
+            Church::ID             => $churchId,
             Church::NAME           => 'test',
             Church::PHONE          => '51999999999',
             Church::EMAIL          => 'test@test.com',
@@ -167,7 +171,7 @@ class ChurchLists
             Church::CITY_ID        => Uuid::uuid4()->toString(),
             Church::ACTIVE         => true,
             'user' => [],
-            'adminUser' => [],
+            'member' => [],
             'imagesChurch' => [
                 (object) ([
                     Image::ID => $imageId,
@@ -178,21 +182,21 @@ class ChurchLists
         ]);
     }
 
-    public static function getImageCreated(?string $imageId = null): Image
+    public static function getImageCreated(?string $imageId = null): object
     {
         if(is_null($imageId))
         {
             $imageId = Uuid::uuid4()->toString();
         }
 
-        return Image::make([
+        return (object) ([
             Image::ID => $imageId,
             Image::TYPE => TypeUploadImageEnum::CHURCH->value,
             Image::PATH => 'product/example.png',
         ]);
     }
 
-    public static function showChurchWithMembers(?string $id = null): mixed
+    public static function showChurchWithMembers(?string $id = null): object
     {
         if(is_null($id))
         {
@@ -220,11 +224,15 @@ class ChurchLists
                     User::ID => Uuid::uuid4()->toString(),
                 ]),
             ],
-            'adminUser' => []
+            'member' => [
+                [
+                    Member::ID => Uuid::uuid4()->toString(),
+                ]
+            ]
         ]);
     }
 
-    public static function showChurchWithResponsible(?string $id = null): mixed
+    public static function showChurchWithResponsible(?string $id = null): object
     {
         if(is_null($id))
         {
@@ -253,15 +261,6 @@ class ChurchLists
                     AdminUser::ID => Uuid::uuid4()->toString(),
                 ]),
             ],
-        ]);
-    }
-
-    public static function getRelationAdminUserChurch(): Collection
-    {
-        return Collection::make([
-            ResponsibleChurch::ID => Uuid::uuid4()->toString(),
-            ResponsibleChurch::CHURCH_ID => Uuid::uuid4()->toString(),
-            ResponsibleChurch::ADMIN_USER_ID => Uuid::uuid4()->toString(),
         ]);
     }
 }

@@ -3,7 +3,7 @@
 namespace App\Features\Base\Traits;
 
 use App\Features\Base\Infra\Repositories\PolicyRepository;
-use App\Features\Module\Modules\Infra\Models\Module;
+use App\Features\Module\Modules\Models\Module;
 use App\Shared\ACL\Policy;
 use App\Shared\Cache\PolicyCache;
 use App\Shared\Utils\Auth;

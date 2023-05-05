@@ -14,11 +14,15 @@ use App\Modules\Membership\Church\Services\ChurchUploadImageService;
 use App\Shared\ACL\Policy;
 use App\Shared\Enums\RulesEnum;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Auth;
 use PHPUnit\Framework\MockObject\MockObject;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 use Tests\Unit\App\Resources\ChurchLists;
+use Tests\Unit\App\Resources\MembersLists;
+use Tymon\JWTAuth\Exceptions\UserNotDefinedException;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class ChurchUploadImageServiceTest extends TestCase
 {
@@ -28,7 +32,6 @@ class ChurchUploadImageServiceTest extends TestCase
     private MockObject|UploadedFile $uploadedFileMock;
     private MockObject|ImagesDTO    $imagesDtoMock;
 
-    private object $image;
     private string $churchId;
     private string $imageId;
     private string $imagePath;
@@ -47,11 +50,8 @@ class ChurchUploadImageServiceTest extends TestCase
         $this->imageId = Uuid::uuid4()->toString();
         $this->imagePath = 'product/test.png';
 
-        $this->image = (object) ([
-            Image::ID => Uuid::uuid4()->toString(),
-            Image::TYPE => TypeUploadImageEnum::PRODUCT->value,
-            Image::PATH => $this->imagePath,
-        ]);
+        JWTAuth::shouldReceive('user')->andreturn(MembersLists::getMemberUserLogged($this->churchId));
+        Auth::shouldReceive('user')->andreturn(MembersLists::getMemberUserLogged($this->churchId));
     }
 
     public function getChurchUploadImageService(): ChurchUploadImageService
@@ -71,8 +71,8 @@ class ChurchUploadImageServiceTest extends TestCase
     public function dataProviderUploadImage(): array
     {
         return [
-            'By Admin Master Rule' => [RulesEnum::MEMBERS_MODULE_CHURCH_ADMIN_MASTER_IMAGE_UPLOAD->value],
-            'By Admin Church Rule' => [RulesEnum::MEMBERS_MODULE_CHURCH_ADMIN_CHURCH_IMAGE_UPLOAD->value],
+            'By Admin Master Rule' => [RulesEnum::MEMBERSHIP_MODULE_CHURCH_ADMIN_MASTER_IMAGE_UPLOAD->value],
+            'By Admin Church Rule' => [RulesEnum::MEMBERSHIP_MODULE_CHURCH_ADMIN_CHURCH_IMAGE_UPLOAD->value],
         ];
     }
 
@@ -81,7 +81,7 @@ class ChurchUploadImageServiceTest extends TestCase
      *
      * @param string $rule
      * @return void
-     * @throws AppException
+     * @throws AppException|UserNotDefinedException
      */
     public function test_should_insert_new_church_image(string $rule): void
     {
@@ -92,10 +92,6 @@ class ChurchUploadImageServiceTest extends TestCase
         );
 
         $this->populateImagesDTO();
-
-        $churchUploadImageService->setResponsibleChurch(
-            ChurchLists::getChurchesById($this->churchId)
-        );
 
         $this
             ->churchRepositoryMock
@@ -114,7 +110,7 @@ class ChurchUploadImageServiceTest extends TestCase
 
         $image = $churchUploadImageService->execute($this->imagesDtoMock, $this->churchId);
 
-        $this->assertInstanceOf(Image::class, $image);
+        $this->assertIsObject($image);
     }
 
     /**
@@ -122,7 +118,7 @@ class ChurchUploadImageServiceTest extends TestCase
      *
      * @param string $rule
      * @return void
-     * @throws AppException
+     * @throws AppException|UserNotDefinedException
      */
     public function test_should_and_replace_images(string $rule): void
     {
@@ -132,16 +128,12 @@ class ChurchUploadImageServiceTest extends TestCase
             new Policy([$rule])
         );
 
-        $churchUploadImageService->setResponsibleChurch(
-            ChurchLists::getChurchesById($this->churchId)
-        );
-
         $this->populateImagesDTO();
 
         $this
             ->churchRepositoryMock
             ->method('findById')
-            ->willReturn(ChurchLists::showChurchWithImage($this->imageId));
+            ->willReturn(ChurchLists::showChurchWithImage($this->churchId));
 
         $this
             ->uploadedFileMock
@@ -155,7 +147,7 @@ class ChurchUploadImageServiceTest extends TestCase
 
         $image = $churchUploadImageService->execute($this->imagesDtoMock, $this->churchId);
 
-        $this->assertInstanceOf(Image::class, $image);
+        $this->assertIsObject($image);
     }
 
     public function test_should_return_exception_if_church_not_exists()
@@ -164,7 +156,7 @@ class ChurchUploadImageServiceTest extends TestCase
 
         $churchUploadImageService->setPolicy(
             new Policy([
-                RulesEnum::MEMBERS_MODULE_CHURCH_ADMIN_MASTER_IMAGE_UPLOAD->value
+                RulesEnum::MEMBERSHIP_MODULE_CHURCH_ADMIN_MASTER_IMAGE_UPLOAD->value
             ]));
 
         $this->populateImagesDTO();
@@ -185,19 +177,15 @@ class ChurchUploadImageServiceTest extends TestCase
         $churchUploadImageService = $this->getChurchUploadImageService();
 
         $churchUploadImageService->setPolicy(
-            new Policy([RulesEnum::MEMBERS_MODULE_CHURCH_ADMIN_CHURCH_IMAGE_UPLOAD->value])
+            new Policy([RulesEnum::MEMBERSHIP_MODULE_CHURCH_ADMIN_CHURCH_IMAGE_UPLOAD->value])
         );
 
         $this->populateImagesDTO();
 
-        $churchUploadImageService->setResponsibleChurch(
-            ChurchLists::getChurchesById(Uuid::uuid4()->toString())
-        );
-
         $this
             ->churchRepositoryMock
             ->method('findById')
-            ->willReturn(ChurchLists::showChurch($this->churchId));
+            ->willReturn(ChurchLists::showChurch());
 
         $this
             ->uploadedFileMock

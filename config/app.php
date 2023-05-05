@@ -216,7 +216,8 @@ return [
         /*
          * Modules...
          */
-        \App\Modules\Membership\Church\Providers\ChurchProvider::class
+        \App\Modules\Membership\Church\Providers\ChurchProvider::class,
+        \App\Modules\Membership\Members\Providers\MembersProvider::class,
     ],
 
     /*

@@ -11,24 +11,29 @@ use App\Modules\Membership\Church\Contracts\ChurchRepositoryInterface;
 use App\Modules\Membership\Church\Contracts\UpdateChurchServiceInterface;
 use App\Modules\Membership\Church\DTO\ChurchDTO;
 use App\Modules\Membership\Church\Models\Church;
+use App\Modules\Membership\Church\Traits\ResponsibleMemberValidationsTrait;
 use App\Modules\Membership\Church\Validations\ChurchValidations;
+use App\Modules\Membership\Members\Contracts\MembersRepositoryInterface;
 use App\Shared\Enums\RulesEnum;
 use App\Shared\Helpers\Helpers;
 use App\Shared\Utils\Transaction;
+use Tymon\JWTAuth\Exceptions\UserNotDefinedException;
 
 class UpdateChurchService extends Service implements UpdateChurchServiceInterface
 {
     use DispatchExceptionTrait;
+    use ResponsibleMemberValidationsTrait;
 
     private ChurchDTO $churchDTO;
 
     public function __construct(
         private readonly ChurchRepositoryInterface $churchRepository,
         private readonly CityRepositoryInterface   $cityRepository,
+        private readonly MembersRepositoryInterface $membersRepository,
     ) {}
 
     /**
-     * @throws AppException
+     * @throws AppException|UserNotDefinedException
      */
     public function execute(ChurchDTO $churchDTO): Church
     {
@@ -38,8 +43,8 @@ class UpdateChurchService extends Service implements UpdateChurchServiceInterfac
 
         return match (true)
         {
-            $policy->haveRule(RulesEnum::MEMBERS_MODULE_CHURCH_ADMIN_MASTER_UPDATE->value) => $this->updateByAdminMaster(),
-            $policy->haveRule(RulesEnum::MEMBERS_MODULE_CHURCH_ADMIN_CHURCH_UPDATE->value) => $this->updateByAdminChurch(),
+            $policy->haveRule(RulesEnum::MEMBERSHIP_MODULE_CHURCH_ADMIN_MASTER_UPDATE->value) => $this->updateByAdminMaster(),
+            $policy->haveRule(RulesEnum::MEMBERSHIP_MODULE_CHURCH_ADMIN_CHURCH_UPDATE->value) => $this->updateByAdminChurch(),
 
             default => $policy->dispatchErrorForbidden()
         };
@@ -57,14 +62,15 @@ class UpdateChurchService extends Service implements UpdateChurchServiceInterfac
 
     /**
      * @throws AppException
+     * @throws UserNotDefinedException
      */
     private function updateByAdminChurch(): ?Church
     {
         $this->handleValidations();
 
-        $this->userHasChurch(
-            Church::ID,
-            $this->churchDTO->id
+        ChurchValidations::memberHasChurchById(
+            $this->churchDTO->id,
+            $this->getChurchesUserMember()
         );
 
         return $this->baseUpdateOperation();
@@ -85,6 +91,11 @@ class UpdateChurchService extends Service implements UpdateChurchServiceInterfac
             $this->churchDTO->cityId
         );
 
+        $this->isValidMembersResponsible(
+            $this->churchDTO->responsibleMembers,
+            $this->membersRepository,
+        );
+
         $this->churchDTO->uniqueName = Helpers::stringUniqueName($this->churchDTO->name);
     }
 
@@ -103,7 +114,7 @@ class UpdateChurchService extends Service implements UpdateChurchServiceInterfac
             {
                 $this->churchRepository->saveResponsible(
                     $this->churchDTO->id,
-                    $this->churchDTO->adminUsersFiltersDTO->adminsId
+                    $this->churchDTO->responsibleMembers
                 );
             }
 

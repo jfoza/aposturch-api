@@ -6,10 +6,10 @@ use App\Exceptions\AppException;
 use App\Features\Base\Services\Service;
 use App\Modules\Membership\Church\Contracts\ChurchRepositoryInterface;
 use App\Modules\Membership\Church\Contracts\ShowByChurchIdServiceInterface;
-use App\Modules\Membership\Church\Models\Church;
 use App\Modules\Membership\Church\Validations\ChurchValidations;
 use App\Shared\Enums\RulesEnum;
 use App\Shared\Helpers\Helpers;
+use Tymon\JWTAuth\Exceptions\UserNotDefinedException;
 
 class ShowByChurchIdService extends Service implements ShowByChurchIdServiceInterface
 {
@@ -21,6 +21,7 @@ class ShowByChurchIdService extends Service implements ShowByChurchIdServiceInte
 
     /**
      * @throws AppException
+     * @throws UserNotDefinedException
      */
     public function execute(string $churchId): object
     {
@@ -29,8 +30,8 @@ class ShowByChurchIdService extends Service implements ShowByChurchIdServiceInte
         $policy = $this->getPolicy();
 
         $church = match (true) {
-            $policy->haveRule(RulesEnum::MEMBERS_MODULE_CHURCH_ADMIN_MASTER_VIEW->value) => $this->showByAdminMaster(),
-            $policy->haveRule(RulesEnum::MEMBERS_MODULE_CHURCH_ADMIN_CHURCH_VIEW->value) => $this->showByAdminChurch(),
+            $policy->haveRule(RulesEnum::MEMBERSHIP_MODULE_CHURCH_ADMIN_MASTER_VIEW->value) => $this->showByAdminMaster(),
+            $policy->haveRule(RulesEnum::MEMBERSHIP_MODULE_CHURCH_ADMIN_CHURCH_VIEW->value) => $this->showByAdminChurch(),
 
             default => $policy->dispatchErrorForbidden(),
         };
@@ -58,6 +59,7 @@ class ShowByChurchIdService extends Service implements ShowByChurchIdServiceInte
 
     /**
      * @throws AppException
+     * @throws UserNotDefinedException
      */
     private function showByAdminChurch(): ?object
     {
@@ -66,9 +68,9 @@ class ShowByChurchIdService extends Service implements ShowByChurchIdServiceInte
             $this->churchId
         );
 
-        $this->userHasChurch(
-            Church::ID,
-            $this->churchId
+        ChurchValidations::memberHasChurchById(
+            $church->id,
+            $this->getChurchesUserMember()
         );
 
         return $church;

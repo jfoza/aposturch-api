@@ -5,40 +5,36 @@ namespace App\Features\Base\Services;
 use App\Exceptions\AppException;
 use App\Features\Base\Traits\DispatchExceptionTrait;
 use App\Shared\ACL\Policy;
+use App\Shared\Enums\MessagesEnum;
+use App\Shared\Utils\Auth;
 use Illuminate\Support\Collection;
+use Symfony\Component\HttpFoundation\Response;
+use Tymon\JWTAuth\Exceptions\UserNotDefinedException;
 
 abstract class Service
 {
     use DispatchExceptionTrait;
 
     private Policy $policy;
-    private Collection $responsibleChurch;
 
     /**
-     * @return mixed
-     */
-    public function getResponsibleChurch(): Collection
-    {
-        return $this->responsibleChurch;
-    }
-
-    /**
-     * @param Collection $responsibleChurch
-     */
-    public function setResponsibleChurch(Collection $responsibleChurch): void
-    {
-        $this->responsibleChurch = $responsibleChurch;
-    }
-
-    /**
+     * @return Collection
+     * @throws UserNotDefinedException
      * @throws AppException
      */
-    public function userHasChurch(string $key, string $value): void
+    public function getChurchesUserMember(): Collection
     {
-        if(!$this->responsibleChurch->where($key, $value)->first())
+        $user = Auth::authenticate();
+
+        if(!$churchesMember = $user->member->church)
         {
-            $this->getPolicy()->dispatchErrorForbidden();
+            throw new AppException(
+                MessagesEnum::USER_HAS_NO_CHURCH,
+                Response::HTTP_BAD_REQUEST
+            );
         }
+
+        return collect($churchesMember);
     }
 
     /**

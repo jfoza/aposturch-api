@@ -38,10 +38,10 @@ class FindAllChurchesServiceTest extends TestCase
     public function dataProviderFindAllChurches(): array
     {
         return [
-            'By Admin Master Rule' => [RulesEnum::MEMBERS_MODULE_CHURCH_ADMIN_MASTER_VIEW->value],
-            'By Admin Church Rule' => [RulesEnum::MEMBERS_MODULE_CHURCH_ADMIN_CHURCH_VIEW->value],
-            'By Admin Module Rule' => [RulesEnum::MEMBERS_MODULE_CHURCH_ADMIN_MODULE_VIEW->value],
-            'By Assistant Rule'    => [RulesEnum::MEMBERS_MODULE_CHURCH_ASSISTANT_VIEW->value],
+            'By Admin Master Rule' => [RulesEnum::MEMBERSHIP_MODULE_CHURCH_ADMIN_MASTER_VIEW->value],
+            'By Admin Church Rule' => [RulesEnum::MEMBERSHIP_MODULE_CHURCH_ADMIN_CHURCH_VIEW->value],
+            'By Admin Module Rule' => [RulesEnum::MEMBERSHIP_MODULE_CHURCH_ADMIN_MODULE_VIEW->value],
+            'By Assistant Rule'    => [RulesEnum::MEMBERSHIP_MODULE_CHURCH_ASSISTANT_VIEW->value],
         ];
     }
 

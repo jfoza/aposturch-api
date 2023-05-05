@@ -7,14 +7,13 @@ use App\Features\Base\Services\Service;
 use App\Features\General\Images\Contracts\ImagesRepositoryInterface;
 use App\Features\General\Images\DTO\ImagesDTO;
 use App\Features\General\Images\Enums\TypeUploadImageEnum;
-use App\Features\General\Images\Infra\Models\Image;
 use App\Modules\Membership\Church\Contracts\ChurchRepositoryInterface;
 use App\Modules\Membership\Church\Contracts\ChurchUploadImageServiceInterface;
-use App\Modules\Membership\Church\Models\Church;
 use App\Modules\Membership\Church\Traits\ChurchOperationsTrait;
 use App\Modules\Membership\Church\Validations\ChurchValidations;
 use App\Shared\Enums\RulesEnum;
 use App\Shared\Utils\Transaction;
+use Tymon\JWTAuth\Exceptions\UserNotDefinedException;
 
 class ChurchUploadImageService extends Service implements ChurchUploadImageServiceInterface
 {
@@ -31,8 +30,9 @@ class ChurchUploadImageService extends Service implements ChurchUploadImageServi
 
     /**
      * @throws AppException
+     * @throws UserNotDefinedException
      */
-    public function execute(ImagesDTO $imagesDTO, string $churchId): Image
+    public function execute(ImagesDTO $imagesDTO, string $churchId): object
     {
         $this->imagesDTO = $imagesDTO;
         $this->churchId = $churchId;
@@ -41,8 +41,8 @@ class ChurchUploadImageService extends Service implements ChurchUploadImageServi
 
         return match (true)
         {
-            $policy->haveRule(RulesEnum::MEMBERS_MODULE_CHURCH_ADMIN_MASTER_IMAGE_UPLOAD->value) => $this->uploadByAdminMaster(),
-            $policy->haveRule(RulesEnum::MEMBERS_MODULE_CHURCH_ADMIN_CHURCH_IMAGE_UPLOAD->value) => $this->uploadByAdminChurch(),
+            $policy->haveRule(RulesEnum::MEMBERSHIP_MODULE_CHURCH_ADMIN_MASTER_IMAGE_UPLOAD->value) => $this->uploadByAdminMaster(),
+            $policy->haveRule(RulesEnum::MEMBERSHIP_MODULE_CHURCH_ADMIN_CHURCH_IMAGE_UPLOAD->value) => $this->uploadByAdminChurch(),
 
             default => $policy->dispatchErrorForbidden()
         };
@@ -51,7 +51,7 @@ class ChurchUploadImageService extends Service implements ChurchUploadImageServi
     /**
      * @throws AppException
      */
-    private function uploadByAdminMaster(): ?Image
+    private function uploadByAdminMaster(): ?object
     {
         $this->handleValidations();
 
@@ -60,14 +60,15 @@ class ChurchUploadImageService extends Service implements ChurchUploadImageServi
 
     /**
      * @throws AppException
+     * @throws UserNotDefinedException
      */
-    private function uploadByAdminChurch(): ?Image
+    private function uploadByAdminChurch(): ?object
     {
         $this->handleValidations();
 
-        $this->userHasChurch(
-            Church::ID,
-            $this->churchId
+        ChurchValidations::memberHasChurchById(
+            $this->church->id,
+            $this->getChurchesUserMember()
         );
 
         return $this->baseUploadOperation();
@@ -89,7 +90,7 @@ class ChurchUploadImageService extends Service implements ChurchUploadImageServi
     /**
      * @throws AppException
      */
-    private function baseUploadOperation(): ?Image
+    private function baseUploadOperation(): ?object
     {
         Transaction::beginTransaction();
 

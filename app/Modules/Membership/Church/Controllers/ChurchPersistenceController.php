@@ -4,12 +4,9 @@ namespace App\Modules\Membership\Church\Controllers;
 
 use App\Modules\Membership\Church\Contracts\CreateChurchServiceInterface;
 use App\Modules\Membership\Church\Contracts\RemoveChurchServiceInterface;
-use App\Modules\Membership\Church\Contracts\RemoveResponsibleChurchRelationshipServiceInterface;
-use App\Modules\Membership\Church\Contracts\RemoveUserChurchRelationshipServiceInterface;
 use App\Modules\Membership\Church\Contracts\UpdateChurchServiceInterface;
 use App\Modules\Membership\Church\DTO\ChurchDTO;
 use App\Modules\Membership\Church\Requests\ChurchRequest;
-use App\Modules\Membership\Church\Requests\RemoveResponsibleRelationshipRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,8 +17,6 @@ readonly class ChurchPersistenceController
         private CreateChurchServiceInterface $createChurchService,
         private UpdateChurchServiceInterface $updateChurchService,
         private RemoveChurchServiceInterface $removeChurchService,
-        private RemoveUserChurchRelationshipServiceInterface $removeUserChurchRelationshipService,
-        private RemoveResponsibleChurchRelationshipServiceInterface $removeResponsibleChurchRelationshipService,
     ) {}
 
     public function insert(
@@ -56,29 +51,6 @@ readonly class ChurchPersistenceController
         return response()->json([], Response::HTTP_NO_CONTENT);
     }
 
-    public function deleteMemberRelationship(
-        Request $request
-    ): JsonResponse
-    {
-        $userId = $request->id;
-
-        $this->removeUserChurchRelationshipService->execute($userId);
-
-        return response()->json([], Response::HTTP_NO_CONTENT);
-    }
-
-    public function deleteResponsibleRelationship(
-        RemoveResponsibleRelationshipRequest $request
-    ): JsonResponse
-    {
-        $adminUserId = $request->id;
-        $churchId = $request->churchId;
-
-        $this->removeResponsibleChurchRelationshipService->execute($adminUserId, $churchId);
-
-        return response()->json([], Response::HTTP_NO_CONTENT);
-    }
-
     private function extracted(ChurchRequest $churchRequest, ChurchDTO $churchDTO): void
     {
         $churchDTO->name           = $churchRequest->name;
@@ -96,6 +68,6 @@ readonly class ChurchPersistenceController
         $churchDTO->cityId         = $churchRequest->cityId;
         $churchDTO->active         = $churchRequest->active;
 
-        $churchDTO->adminUsersFiltersDTO->adminsId = $churchRequest->responsibleIds;
+        $churchDTO->responsibleMembers = $churchRequest->responsibleMembers;
     }
 }

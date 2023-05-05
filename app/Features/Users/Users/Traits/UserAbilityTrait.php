@@ -2,7 +2,7 @@
 
 namespace App\Features\Users\Users\Traits;
 
-use App\Features\Module\Modules\Infra\Models\Module;
+use App\Features\Module\Modules\Models\Module;
 use App\Features\Users\Rules\Contracts\RulesRepositoryInterface;
 
 trait UserAbilityTrait

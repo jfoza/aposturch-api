@@ -53,9 +53,13 @@ enum MessagesEnum: string {
     case IMAGE_NOT_FOUND = 'Imagem não encontrada.';
     case IMAGE_DOES_NOT_BELONG_TO_THE_PRODUCT = 'Esta imagem não pertece ao produto informado.';
 
-    // MODULES - MEMBERS
+    // MODULES - MEMBERSHIP
     case CHURCH_HAS_MEMBERS_IN_DELETE = 'Não é possível excluir uma igreja com membros vinculados.';
     case CHURCH_HAS_RESPONSIBLE_IN_DELETE = 'Não é possível excluir uma igreja com responsáveis vinculados.';
     case USER_CHURCH_RELATIONSHIP_NOT_FOUND = 'Este usuário não possui vínculo com esta igreja.';
     case USER_HAS_NO_CHURCH = 'Usuário não possui vínculo com nenhuma igreja.';
+    case MEMBER_NOT_FOUND = 'Membro não encontrado.';
+    case INVALID_RESP_MEMBERS_QUANTITY = 'São permitidos apenas 3 membros responsáveis por igreja.';
+    case INVALID_RESP_MEMBER_TYPE = 'O membro selecionado possui um tipo inválido.';
+    case INVALID_RESP_MEMBER_PROFILE = 'Somente usuários com perfil Admin Igreja podem ser responsáveis por uma igreja.';
 }

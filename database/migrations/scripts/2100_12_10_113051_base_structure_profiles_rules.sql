@@ -135,34 +135,33 @@ DO $$
             (_rule13, 'PROFILES_ADMIN_MASTER_VIEW', 'PROFILES_ADMIN_MASTER', 'VIEW'),
 
             (_rule14, 'CITIES_VIEW', 'CITIES', 'VIEW' ),
-            (_rule15, 'STATES_VIEW', 'STATES', 'VIEW');
+            (_rule15, 'STATES_VIEW', 'STATES', 'VIEW'),
 
+            (_rule16, 'MEMBERSHIP_MODULE_CHURCH_ADMIN_MASTER_VIEW',         'MEMBERSHIP_MODULE_CHURCH_ADMIN_MASTER', 'VIEW'),
+            (_rule17, 'MEMBERSHIP_MODULE_CHURCH_ADMIN_MASTER_DETAILS_VIEW', 'MEMBERSHIP_MODULE_CHURCH_ADMIN_MASTER_DETAILS', 'VIEW'),
+            (_rule18, 'MEMBERSHIP_MODULE_CHURCH_ADMIN_MASTER_INSERT',       'MEMBERSHIP_MODULE_CHURCH_ADMIN_MASTER', 'INSERT'),
+            (_rule19, 'MEMBERSHIP_MODULE_CHURCH_ADMIN_MASTER_UPDATE',       'MEMBERSHIP_MODULE_CHURCH_ADMIN_MASTER', 'UPDATE'),
+            (_rule20, 'MEMBERSHIP_MODULE_CHURCH_ADMIN_MASTER_DELETE',       'MEMBERSHIP_MODULE_CHURCH_ADMIN_MASTER', 'DELETE'),
+            (_rule21, 'MEMBERSHIP_MODULE_CHURCH_ADMIN_MASTER_IMAGE_UPLOAD', 'MEMBERSHIP_MODULE_CHURCH_ADMIN_MASTER_IMAGE', 'UPLOAD'),
 
---             (_rule37, 'MEMBERSHIP_MODULE_CHURCH_ADMIN_MASTER_VIEW',         'MEMBERSHIP_MODULE_CHURCH_ADMIN_MASTER', 'VIEW'),
---             (_rule38, 'MEMBERSHIP_MODULE_CHURCH_ADMIN_MASTER_DETAILS_VIEW', 'MEMBERSHIP_MODULE_CHURCH_ADMIN_MASTER_DETAILS', 'VIEW'),
---             (_rule39, 'MEMBERSHIP_MODULE_CHURCH_ADMIN_MASTER_INSERT',       'MEMBERSHIP_MODULE_CHURCH_ADMIN_MASTER', 'INSERT'),
---             (_rule40, 'MEMBERSHIP_MODULE_CHURCH_ADMIN_MASTER_UPDATE',       'MEMBERSHIP_MODULE_CHURCH_ADMIN_MASTER', 'UPDATE'),
---             (_rule41, 'MEMBERSHIP_MODULE_CHURCH_ADMIN_MASTER_DELETE',       'MEMBERSHIP_MODULE_CHURCH_ADMIN_MASTER', 'DELETE'),
---             (_rule42, 'MEMBERSHIP_MODULE_CHURCH_ADMIN_MASTER_IMAGE_UPLOAD', 'MEMBERSHIP_MODULE_CHURCH_ADMIN_MASTER_IMAGE', 'UPLOAD'),
---
---             (_rule43, 'MEMBERSHIP_MODULE_CHURCH_ADMIN_CHURCH_VIEW',         'MEMBERSHIP_MODULE_CHURCH_ADMIN_CHURCH', 'VIEW'),
---             (_rule44, 'MEMBERSHIP_MODULE_CHURCH_ADMIN_CHURCH_DETAILS_VIEW', 'MEMBERSHIP_MODULE_CHURCH_ADMIN_CHURCH_DETAILS', 'VIEW'),
---             (_rule45, 'MEMBERSHIP_MODULE_CHURCH_ADMIN_CHURCH_UPDATE',       'MEMBERSHIP_MODULE_CHURCH_ADMIN_CHURCH', 'UPDATE'),
---             (_rule46, 'MEMBERSHIP_MODULE_CHURCH_ADMIN_CHURCH_IMAGE_UPLOAD', 'MEMBERSHIP_MODULE_CHURCH_ADMIN_CHURCH_IMAGE', 'UPLOAD'),
---
---             (_rule47, 'MEMBERSHIP_MODULE_CHURCH_ADMIN_MODULE_VIEW',         'MEMBERSHIP_MODULE_CHURCH_ADMIN_MODULE', 'VIEW'),
---             (_rule48, 'MEMBERSHIP_MODULE_CHURCH_ADMIN_MODULE_DETAILS_VIEW', 'MEMBERSHIP_MODULE_CHURCH_ADMIN_MODULE_DETAILS', 'VIEW'),
---
---             (_rule49, 'MEMBERSHIP_MODULE_CHURCH_ASSISTANT_VIEW', 'MEMBERSHIP_MODULE_CHURCH_ASSISTANT', 'VIEW'),
---             (_rule50, 'MEMBERSHIP_MODULE_CHURCH_ASSISTANT_DETAILS_VIEW', 'MEMBERSHIP_MODULE_CHURCH_ASSISTANT_DETAILS', 'VIEW'),
---
---             (_rule51, 'MEMBERSHIP_MODULE_CHURCH_ADMIN_MASTER_USER_RELATIONSHIP_DELETE', 'MEMBERSHIP_MODULE_CHURCH_ADMIN_MASTER_USER_RELATIONSHIP', 'DELETE'),
---             (_rule52, 'MEMBERSHIP_MODULE_CHURCH_ADMIN_CHURCH_USER_RELATIONSHIP_DELETE', 'MEMBERSHIP_MODULE_CHURCH_ADMIN_CHURCH_USER_RELATIONSHIP', 'DELETE'),
---
---             (_rule53, 'MEMBERSHIP_MODULE_CHURCH_VIEW',         'MEMBERSHIP_MODULE_CHURCH', 'VIEW'),
---             (_rule54, 'MEMBERSHIP_MODULE_CHURCH_DETAILS_VIEW', 'MEMBERSHIP_MODULE_CHURCH_DETAILS', 'VIEW'),
---             (_rule55, 'MEMBERSHIP_MODULE_CHURCH_INSERT',       'MEMBERSHIP_MODULE_CHURCH', 'INSERT'),
---             (_rule56, 'MEMBERSHIP_MODULE_CHURCH_UPDATE',       'MEMBERSHIP_MODULE_CHURCH', 'UPDATE');
+            (_rule22, 'MEMBERSHIP_MODULE_CHURCH_ADMIN_CHURCH_VIEW',         'MEMBERSHIP_MODULE_CHURCH_ADMIN_CHURCH', 'VIEW'),
+            (_rule23, 'MEMBERSHIP_MODULE_CHURCH_ADMIN_CHURCH_DETAILS_VIEW', 'MEMBERSHIP_MODULE_CHURCH_ADMIN_CHURCH_DETAILS', 'VIEW'),
+            (_rule24, 'MEMBERSHIP_MODULE_CHURCH_ADMIN_CHURCH_UPDATE',       'MEMBERSHIP_MODULE_CHURCH_ADMIN_CHURCH', 'UPDATE'),
+            (_rule25, 'MEMBERSHIP_MODULE_CHURCH_ADMIN_CHURCH_IMAGE_UPLOAD', 'MEMBERSHIP_MODULE_CHURCH_ADMIN_CHURCH_IMAGE', 'UPLOAD'),
+
+            (_rule26, 'MEMBERSHIP_MODULE_CHURCH_ADMIN_MODULE_VIEW',         'MEMBERSHIP_MODULE_CHURCH_ADMIN_MODULE', 'VIEW'),
+            (_rule27, 'MEMBERSHIP_MODULE_CHURCH_ADMIN_MODULE_DETAILS_VIEW', 'MEMBERSHIP_MODULE_CHURCH_ADMIN_MODULE_DETAILS', 'VIEW'),
+
+            (_rule28, 'MEMBERSHIP_MODULE_CHURCH_ASSISTANT_VIEW', 'MEMBERSHIP_MODULE_CHURCH_ASSISTANT', 'VIEW'),
+            (_rule29, 'MEMBERSHIP_MODULE_CHURCH_ASSISTANT_DETAILS_VIEW', 'MEMBERSHIP_MODULE_CHURCH_ASSISTANT_DETAILS', 'VIEW'),
+
+            (_rule30, 'MEMBERSHIP_MODULE_CHURCH_ADMIN_MASTER_MEMBER_RELATIONSHIP_DELETE', 'MEMBERSHIP_MODULE_CHURCH_ADMIN_MASTER_MEMBER_RELATIONSHIP', 'DELETE'),
+            (_rule31, 'MEMBERSHIP_MODULE_CHURCH_ADMIN_CHURCH_MEMBER_RELATIONSHIP_DELETE', 'MEMBERSHIP_MODULE_CHURCH_ADMIN_CHURCH_MEMBER_RELATIONSHIP', 'DELETE'),
+
+            (_rule32, 'MEMBERSHIP_MODULE_CHURCH_VIEW',         'MEMBERSHIP_MODULE_CHURCH', 'VIEW'),
+            (_rule33, 'MEMBERSHIP_MODULE_CHURCH_DETAILS_VIEW', 'MEMBERSHIP_MODULE_CHURCH_DETAILS', 'VIEW'),
+            (_rule34, 'MEMBERSHIP_MODULE_CHURCH_INSERT',       'MEMBERSHIP_MODULE_CHURCH', 'INSERT'),
+            (_rule35, 'MEMBERSHIP_MODULE_CHURCH_UPDATE',       'MEMBERSHIP_MODULE_CHURCH', 'UPDATE');
 
         INSERT INTO users.modules_rules (rule_id, module_id)
         VALUES
@@ -256,6 +255,17 @@ DO $$
             (_profile1, _rule13),
             (_profile1, _rule14),
             (_profile1, _rule15),
+            (_profile1, _rule16),
+            (_profile1, _rule17),
+            (_profile1, _rule18),
+            (_profile1, _rule19),
+            (_profile1, _rule20),
+            (_profile1, _rule21),
+            (_profile1, _rule30),
+            (_profile1, _rule32),
+            (_profile1, _rule33),
+            (_profile1, _rule34),
+            (_profile1, _rule35),
 
             -- ADMIN MASTER
             (_profile2, _rule1),
@@ -268,13 +278,40 @@ DO $$
             (_profile2, _rule11),
             (_profile2, _rule13),
             (_profile2, _rule14),
-            (_profile2, _rule15);
+            (_profile2, _rule15),
+            (_profile2, _rule16),
+            (_profile2, _rule17),
+            (_profile2, _rule18),
+            (_profile2, _rule19),
+            (_profile2, _rule20),
+            (_profile2, _rule21),
+            (_profile1, _rule30),
+            (_profile2, _rule32),
+            (_profile2, _rule33),
+            (_profile2, _rule34),
+            (_profile2, _rule35),
 
             -- ADMIN CHURCH
+            (_profile3, _rule22),
+            (_profile3, _rule23),
+            (_profile3, _rule24),
+            (_profile3, _rule25),
+            (_profile3, _rule31),
+            (_profile3, _rule32),
+            (_profile3, _rule33),
+            (_profile3, _rule35),
 
             -- ADMIN MODULE
+            (_profile4, _rule26),
+            (_profile4, _rule27),
+            (_profile4, _rule32),
+            (_profile4, _rule33),
 
             -- ASSISTANT
+            (_profile5, _rule26),
+            (_profile5, _rule27),
+            (_profile5, _rule32),
+            (_profile5, _rule33);
 
             -- MEMBER
     END $$;

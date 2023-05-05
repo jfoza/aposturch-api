@@ -13,7 +13,7 @@ class ImagesRepository implements ImagesRepositoryInterface
         return Image::where(Image::ID, $id)->first();
     }
 
-    public function create(ImagesDTO $imagesDTO)
+    public function create(ImagesDTO $imagesDTO): object
     {
         return Image::create([
             Image::PATH => $imagesDTO->path,

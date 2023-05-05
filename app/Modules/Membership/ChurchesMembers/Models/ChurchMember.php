@@ -1,16 +1,16 @@
 <?php
 
-namespace App\Modules\Membership\ChurchesImages\Models;
+namespace App\Modules\Membership\ChurchesMembers\Models;
 
 use App\Features\Base\Infra\Models\Register;
 
-class ChurchImage extends Register
+class ChurchMember extends Register
 {
     const ID = 'id';
+    const MEMBER_ID = 'member_id';
     const CHURCH_ID = 'church_id';
-    const IMAGE_ID = 'image_id';
 
-    protected $table = 'membership.churches_images';
+    protected $table = 'membership.churches_members';
 
     protected $primaryKey = self::ID;
 

@@ -2,7 +2,6 @@
 
 namespace App\Shared\Helpers;
 
-use App\Features\Module\Modules\Infra\Models\Module;
 use Carbon\Carbon;
 
 class Helpers
