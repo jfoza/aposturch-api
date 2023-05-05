@@ -7,11 +7,14 @@ use App\Features\Users\Users\Models\User;
 use App\Modules\Membership\Church\Models\Church;
 use App\Modules\Membership\ChurchesMembers\Models\ChurchMember;
 use App\Modules\Membership\MemberTypes\Models\MemberType;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Member extends Register
 {
+    use HasFactory;
+
     const ID             = 'id';
     const USER_ID        = 'user_id';
     const TYPE_MEMBER_ID = 'type_member_id';

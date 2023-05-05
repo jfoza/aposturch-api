@@ -4,15 +4,18 @@ namespace App\Modules\Membership\Church\Models;
 
 use App\Features\Base\Infra\Models\Register;
 use App\Features\City\Cities\Infra\Models\City;
-use App\Features\General\Images\Infra\Models\Image;
+use App\Features\General\Images\Models\Image;
 use App\Modules\Membership\ChurchesImages\Models\ChurchImage;
 use App\Modules\Membership\ChurchesMembers\Models\ChurchMember;
 use App\Modules\Membership\Members\Models\Member;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Church extends Register
 {
+    use HasFactory;
+
     const ID             = 'id';
     const NAME           = 'name';
     const UNIQUE_NAME    = 'unique_name';

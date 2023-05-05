@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Features\General\Images\Infra\Models;
+namespace App\Features\General\Images\Models;
 
 use App\Features\Base\Infra\Models\Register;
 use App\Modules\Membership\Church\Models\Church;

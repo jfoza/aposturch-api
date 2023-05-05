@@ -13,7 +13,8 @@ class BaseTestCase extends TestCase
 
     const LOGIN_ROUTE = '/api/admin/auth/login';
     const LOGOUT_ROUTE = '/api/auth/logout';
-    const ADMIN_USERS = '/api/admin/admin-users';
+    const ADMIN_USERS_ROUTE = '/api/admin/admin-users';
+    const CHURCHES_ROUTE = '/api/admin/modules/membership/churches';
 
     private array $authorizationBearer = [];
 

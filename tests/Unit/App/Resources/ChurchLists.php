@@ -3,7 +3,7 @@
 namespace Tests\Unit\App\Resources;
 
 use App\Features\General\Images\Enums\TypeUploadImageEnum;
-use App\Features\General\Images\Infra\Models\Image;
+use App\Features\General\Images\Models\Image;
 use App\Features\Users\AdminUsers\Models\AdminUser;
 use App\Features\Users\Users\Models\User;
 use App\Modules\Membership\Church\Models\Church;

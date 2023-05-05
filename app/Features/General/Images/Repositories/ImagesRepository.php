@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Features\General\Images\Infra\Repositories;
+namespace App\Features\General\Images\Repositories;
 
 use App\Features\General\Images\Contracts\ImagesRepositoryInterface;
 use App\Features\General\Images\DTO\ImagesDTO;
-use App\Features\General\Images\Infra\Models\Image;
+use App\Features\General\Images\Models\Image;
 
 class ImagesRepository implements ImagesRepositoryInterface
 {

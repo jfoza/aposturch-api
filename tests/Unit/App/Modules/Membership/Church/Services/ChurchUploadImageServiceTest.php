@@ -1,13 +1,11 @@
 <?php
 
-namespace Tests\Unit\App\Modules\Members\Services;
+namespace Tests\Unit\App\Modules\Membership\Church\Services;
 
 use App\Exceptions\AppException;
 use App\Features\General\Images\Contracts\ImagesRepositoryInterface;
 use App\Features\General\Images\DTO\ImagesDTO;
-use App\Features\General\Images\Enums\TypeUploadImageEnum;
-use App\Features\General\Images\Infra\Models\Image;
-use App\Features\General\Images\Infra\Repositories\ImagesRepository;
+use App\Features\General\Images\Repositories\ImagesRepository;
 use App\Modules\Membership\Church\Contracts\ChurchRepositoryInterface;
 use App\Modules\Membership\Church\Repositories\ChurchRepository;
 use App\Modules\Membership\Church\Services\ChurchUploadImageService;

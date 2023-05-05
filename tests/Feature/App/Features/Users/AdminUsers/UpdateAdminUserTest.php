@@ -18,7 +18,7 @@ class UpdateAdminUserTest extends BaseTestCase
     {
         parent::setUp();
 
-        $this->endpoint = self::ADMIN_USERS;
+        $this->endpoint = self::ADMIN_USERS_ROUTE;
 
         $this->setAuthorizationBearer();
     }

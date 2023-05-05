@@ -17,6 +17,7 @@ class ChurchRequest extends FormRequest
     public function rules(): array
     {
         $nullableString = 'nullable|string';
+        $nullableStringEmail = 'nullable|email:rfc,dns';
         $requiredString = 'required|string';
         $requiredBoolean = 'required|bool';
 
@@ -24,7 +25,7 @@ class ChurchRequest extends FormRequest
             'name'               => $requiredString,
             'responsibleMembers' => ['required', 'array', new ManyUuidv4Rule()],
             'phone'              => $nullableString.'|min:10|max:11',
-            'email'              => $nullableString,
+            'email'              => $nullableStringEmail,
             'youtube'            => $nullableString,
             'facebook'           => $nullableString,
             'instagram'          => $nullableString,
@@ -33,9 +34,9 @@ class ChurchRequest extends FormRequest
             'numberAddress'      => $requiredString,
             'complement'         => $nullableString,
             'district'           => $requiredString,
-            'active'             => $requiredBoolean,
             'uf'                 => ['required', 'string', new StatesRule],
             'cityId'             => ['required', 'string', new Uuidv4Rule],
+            'active'             => $requiredBoolean,
         ];
     }
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\App\Modules\Members\Services;
+namespace Tests\Unit\App\Modules\Membership\Church\Services;
 
 use App\Exceptions\AppException;
 use App\Features\City\Cities\Contracts\CityRepositoryInterface;

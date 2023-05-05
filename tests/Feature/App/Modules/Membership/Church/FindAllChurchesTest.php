@@ -1,11 +1,11 @@
 <?php
 
-namespace Tests\Feature\App\Features\Users\AdminUsers;
+namespace Tests\Feature\App\Modules\Membership\Church;
 
 use Tests\Feature\BaseTestCase;
-use Tests\Feature\Resources\Users\Assertions;
+use Tests\Feature\Resources\Modules\Churches\ChurchesAssertions;
 
-class FindAllAdminUsersTest extends BaseTestCase
+class FindAllChurchesTest extends BaseTestCase
 {
     private int $page;
     private int $perPage;
@@ -18,12 +18,12 @@ class FindAllAdminUsersTest extends BaseTestCase
         $this->page = 1;
         $this->perPage = 1;
 
-        $this->endpoint = self::ADMIN_USERS_ROUTE;
+        $this->endpoint = self::CHURCHES_ROUTE;
 
         $this->setAuthorizationBearer();
     }
 
-    public function test_should_return_admin_users_list()
+    public function test_should_return_churches_list()
     {
         $response = $this->getJson(
             $this->endpoint,
@@ -31,14 +31,16 @@ class FindAllAdminUsersTest extends BaseTestCase
         );
 
         $response->assertOk();
-        $response->assertJsonStructure([Assertions::adminUserAssertion()]);
+        $response->assertJsonStructure([ChurchesAssertions::churchAssertion()]);
     }
 
-    public function test_should_return_admin_users_list_with_pagination()
+    public function test_should_return_churches_list_with_pagination_and_order()
     {
         $params = http_build_query([
             'page'    => $this->page,
             'perPage' => $this->perPage,
+            'columnName' => 'name',
+            'columnOrder' => 'asc'
         ]);
 
         $response = $this->getJson(
@@ -51,17 +53,16 @@ class FindAllAdminUsersTest extends BaseTestCase
         $response->assertJsonFragment(['current_page' => $this->page]);
 
         $response->assertJsonStructure([
-            'data' => [Assertions::adminUserAssertion()]
+            'data' => [ChurchesAssertions::churchAssertion()]
         ]);
     }
 
-    public function test_should_return_admin_users_list_with_pagination_and_filters()
+    public function test_should_return_churches_list_with_pagination_and_filters()
     {
         $params = http_build_query([
             'page'    => $this->page,
             'perPage' => $this->perPage,
-            'name'    => 'Giuseppe',
-            'email'   => 'gfozza@hotmail.com',
+            'name'    => 'Igreja Bíblica Viver NH',
         ]);
 
         $response = $this->getJson(
@@ -74,7 +75,7 @@ class FindAllAdminUsersTest extends BaseTestCase
         $response->assertJsonFragment(['current_page' => $this->page]);
 
         $response->assertJsonStructure([
-            'data' => [Assertions::adminUserAssertion()]
+            'data' => [ChurchesAssertions::churchAssertion()]
         ]);
     }
 }
