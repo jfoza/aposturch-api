@@ -19,7 +19,7 @@ trait RemoveChurchValidationsTrait
         string $churchId
     ): object
     {
-        if(!$this->church = $churchRepository->findById($churchId, true))
+        if(!$this->church = $churchRepository->findByIdWithMembers($churchId))
         {
             throw new AppException(
                 MessagesEnum::REGISTER_NOT_FOUND,

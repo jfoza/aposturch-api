@@ -36,6 +36,8 @@ class ShowByChurchIdService extends Service implements ShowByChurchIdServiceInte
             default => $policy->dispatchErrorForbidden(),
         };
 
+        $church->image = null;
+
         if(count($church->imagesChurch) > 0)
         {
             $church->image = $church->imagesChurch->first();

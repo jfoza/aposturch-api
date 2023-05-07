@@ -11,7 +11,8 @@ use Illuminate\Support\Collection;
 interface ChurchRepositoryInterface
 {
     public function findAll(ChurchFiltersDTO $churchFiltersDTO): LengthAwarePaginator|Collection;
-    public function findById(string $churchId, bool $listMembers = false): object|null;
+    public function findById(string $churchId): object|null;
+    public function findByIdWithMembers(string $churchId): object|null;
     public function findByUniqueName(string $uniqueName): object|null;
     public function create(ChurchDTO $churchDTO): Church|Collection;
     public function save(ChurchDTO $churchDTO): Church;

@@ -53,6 +53,7 @@ class ChurchesAssertions
             'image',
             'images_church',
             'city',
+            'member'
         ];
     }
 }

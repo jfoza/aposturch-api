@@ -23,7 +23,7 @@ class ChurchRequest extends FormRequest
 
         return [
             'name'               => $requiredString,
-            'responsibleMembers' => ['required', 'array', new ManyUuidv4Rule()],
+            'responsibleMembers' => [new ManyUuidv4Rule()],
             'phone'              => $nullableString.'|min:10|max:11',
             'email'              => $nullableStringEmail,
             'youtube'            => $nullableString,

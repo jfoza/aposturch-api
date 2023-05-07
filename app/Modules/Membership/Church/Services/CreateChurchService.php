@@ -34,10 +34,13 @@ class CreateChurchService extends Service implements CreateChurchServiceInterfac
     {
         $this->getPolicy()->havePermission(RulesEnum::MEMBERSHIP_MODULE_CHURCH_ADMIN_MASTER_INSERT->value);
 
-        $this->isValidMembersResponsible(
-            $churchDTO->responsibleMembers,
-            $this->membersRepository,
-        );
+        if(count($churchDTO->responsibleMembers) > 0)
+        {
+            $this->isValidMembersResponsible(
+                $churchDTO->responsibleMembers,
+                $this->membersRepository,
+            );
+        }
 
         CityValidations::cityIdExists(
             $this->cityRepository,
@@ -54,7 +57,7 @@ class CreateChurchService extends Service implements CreateChurchServiceInterfac
 
             $this->churchRepository->saveResponsible($created['id'], $churchDTO->responsibleMembers);
 
-            Transaction::commit();
+//            Transaction::commit();
         }
         catch (\Exception $e)
         {

@@ -51,7 +51,7 @@ class RemoveChurchServiceTest extends TestCase
 
         $this
             ->churchRepositoryMock
-            ->method('findById')
+            ->method('findByIdWithMembers')
             ->willReturn(ChurchLists::showChurch());
 
         $removeChurchService->execute($id);
@@ -73,7 +73,7 @@ class RemoveChurchServiceTest extends TestCase
 
         $this
             ->churchRepositoryMock
-            ->method('findById')
+            ->method('findByIdWithMembers')
             ->willReturn(ChurchLists::showChurchWithImage());
 
         $removeChurchService->execute($id);
@@ -91,7 +91,7 @@ class RemoveChurchServiceTest extends TestCase
 
         $this
             ->churchRepositoryMock
-            ->method('findById')
+            ->method('findByIdWithMembers')
             ->willReturn(null);
 
         $this->expectException(AppException::class);
@@ -110,7 +110,7 @@ class RemoveChurchServiceTest extends TestCase
 
         $this
             ->churchRepositoryMock
-            ->method('findById')
+            ->method('findByIdWithMembers')
             ->willReturn(ChurchLists::showChurchWithMembers());
 
         $this->expectException(AppException::class);

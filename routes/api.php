@@ -52,4 +52,8 @@ Route::prefix('admin')
         Route::prefix('/modules/membership/churches')
             ->middleware(MiddlewareHelper::getModuleAccess(ModulesRulesEnum::MEMBERSHIP_MODULE_VIEW->value))
             ->group(app_path('Modules/Membership/Church/Routes/churchRoute.php'));
+
+        Route::prefix('/modules/membership/members')
+            ->middleware(MiddlewareHelper::getModuleAccess(ModulesRulesEnum::MEMBERSHIP_MODULE_VIEW->value))
+            ->group(app_path('Modules/Membership/Members/Routes/membersRoute.php'));
     });

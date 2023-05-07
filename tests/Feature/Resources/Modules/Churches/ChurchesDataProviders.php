@@ -28,9 +28,9 @@ trait ChurchesDataProviders
                 "uf" => "RS",
                 "cityId" => Uuid::uuid4()->toString(),
             ],
-            'Responsible is empty' => [
+            'Invalid Responsible' => [
                 "name" => 'test',
-                "responsibleMembers" => [],
+                "responsibleMembers" => 'abc',
                 "phone" => "51999999999",
                 "email" => "test@gmail.com",
                 "youtube" => "",

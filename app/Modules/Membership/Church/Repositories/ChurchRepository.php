@@ -7,6 +7,8 @@ use App\Modules\Membership\Church\Contracts\ChurchRepositoryInterface;
 use App\Modules\Membership\Church\DTO\ChurchDTO;
 use App\Modules\Membership\Church\DTO\ChurchFiltersDTO;
 use App\Modules\Membership\Church\Models\Church;
+use App\Modules\Membership\MemberTypes\Models\MemberType;
+use App\Shared\Enums\MemberTypesEnum;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 
@@ -38,16 +40,30 @@ class ChurchRepository implements ChurchRepositoryInterface
         return $this->paginateOrGet($builder, $churchFiltersDTO->paginationOrder);
     }
 
-    public function findById(string $churchId, bool $listMembers = false): object|null
+    public function findById(string $churchId): object|null
     {
-        $relations = ['imagesChurch', 'city'];
+        return Church::with([
+                'imagesChurch',
+                'city',
+                'member' => function($member) {
+                    return $member
+                        ->with(['user', 'memberType'])
+                        ->whereRelation('memberType', MemberType::UNIQUE_NAME, MemberTypesEnum::RESPONSIBLE);
+                }
+            ])
+            ->find($churchId);
+    }
 
-        if($listMembers)
-        {
-            $relations[] = 'member';
-        }
-
-        return Church::with($relations)->find($churchId);
+    public function findByIdWithMembers(string $churchId): object|null
+    {
+        return Church::with([
+                'imagesChurch',
+                'city',
+                'member' => function($member) {
+                    return $member->with(['user', 'memberType']);
+                }
+            ])
+            ->find($churchId);
     }
 
     public function findByUniqueName(string $uniqueName): object|null

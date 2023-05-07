@@ -91,10 +91,13 @@ class UpdateChurchService extends Service implements UpdateChurchServiceInterfac
             $this->churchDTO->cityId
         );
 
-        $this->isValidMembersResponsible(
-            $this->churchDTO->responsibleMembers,
-            $this->membersRepository,
-        );
+        if(count($this->churchDTO->responsibleMembers) > 0)
+        {
+            $this->isValidMembersResponsible(
+                $this->churchDTO->responsibleMembers,
+                $this->membersRepository,
+            );
+        }
 
         $this->churchDTO->uniqueName = Helpers::stringUniqueName($this->churchDTO->name);
     }
