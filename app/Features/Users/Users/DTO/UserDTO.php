@@ -3,9 +3,9 @@
 namespace App\Features\Users\Users\DTO;
 
 use App\Features\Persons\DTO\PersonDTO;
-use App\Features\Users\CustomerUsers\DTO\CustomerUsersDTO;
 use App\Features\Users\EmailVerification\DTO\EmailVerificationDTO;
 use App\Features\Users\NewPasswordGenerations\DTO\NewPasswordGenerationsDTO;
+use App\Modules\Membership\Members\DTO\MemberDTO;
 
 class UserDTO
 {
@@ -16,10 +16,13 @@ class UserDTO
     public string|null $password;
     public string|null $profileId;
     public bool|null   $active;
+    public ?object $profile;
+    public ?object $church;
+    public ?object $memberUser;
 
     public function __construct(
         public PersonDTO $person,
-        public CustomerUsersDTO $customerUsersDTO,
+        public MemberDTO $member,
         public EmailVerificationDTO $emailVerificationDTO,
         public NewPasswordGenerationsDTO $newPasswordGenerationsDTO,
     ) {}

@@ -4,9 +4,9 @@ namespace App\Shared\Rules;
 
 use App\Exceptions\AppException;
 use App\Shared\Enums\MessagesEnum;
+use App\Shared\Libraries\Uuid;
 use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
-use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\Response;
 
 class ManyUuidv4Rule implements ValidationRule

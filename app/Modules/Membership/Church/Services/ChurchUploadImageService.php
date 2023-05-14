@@ -4,6 +4,7 @@ namespace App\Modules\Membership\Church\Services;
 
 use App\Exceptions\AppException;
 use App\Features\Base\Services\Service;
+use App\Features\Base\Traits\EnvironmentException;
 use App\Features\General\Images\Contracts\ImagesRepositoryInterface;
 use App\Features\General\Images\DTO\ImagesDTO;
 use App\Features\General\Images\Enums\TypeUploadImageEnum;
@@ -117,7 +118,7 @@ class ChurchUploadImageService extends Service implements ChurchUploadImageServi
         {
             Transaction::rollback();
 
-            $this->dispatchException($e);
+            EnvironmentException::dispatchException($e);
         }
     }
 }

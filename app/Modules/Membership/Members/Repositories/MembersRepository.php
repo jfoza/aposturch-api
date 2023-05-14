@@ -2,80 +2,58 @@
 
 namespace App\Modules\Membership\Members\Repositories;
 
-use App\Features\Users\Profiles\Enums\ProfileUniqueNameEnum;
-use App\Features\Users\Profiles\Models\Profile;
-use App\Features\Users\Users\Models\User;
-use App\Modules\Membership\Church\Models\Church;
+use App\Features\Base\Traits\BuilderTrait;
 use App\Modules\Membership\Members\Contracts\MembersRepositoryInterface;
+use App\Modules\Membership\Members\DTO\MemberDTO;
+use App\Modules\Membership\Members\DTO\MembersFiltersDTO;
 use App\Modules\Membership\Members\Models\Member;
-use App\Modules\Membership\MemberTypes\Models\MemberType;
-use App\Shared\Enums\MemberTypesEnum;
-use Illuminate\Database\Eloquent\Collection;
+use App\Modules\Membership\Members\Traits\MembersListsTrait;
+use App\Modules\Membership\Members\Views\MembersDataView;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
 
 class MembersRepository implements MembersRepositoryInterface
 {
-    public function findAll()
+    use BuilderTrait;
+    use MembersListsTrait;
+
+    public function findAll(MembersFiltersDTO $membersFiltersDTO): LengthAwarePaginator|Collection
     {
-        // TODO: Implement findAll() method.
+        $builder = $this
+            ->baseQueryBuilderFilters($membersFiltersDTO)
+            ->orderBy(
+                $membersFiltersDTO->paginationOrder->defineCustomColumnName(MembersDataView::USER_CREATED_AT),
+                $membersFiltersDTO->paginationOrder->getColumnOrder()
+            );
+
+        return $this->paginateOrGet($builder, $membersFiltersDTO->paginationOrder);
     }
 
-    public function findAllResponsible()
+    public function findById(string $id): ?object
     {
-        return $this->getMemberUserActive()
-            ->with(['user', 'memberType', 'church'])
-            ->withCount('church')
-            ->has('church', '<', 4)
-            ->whereRelation(
-                'memberType',
-                MemberType::UNIQUE_NAME,
-                MemberTypesEnum::RESPONSIBLE
-            )
-            ->whereHas(
-                'user',
-                fn($q) => $q->whereRelation(
-                    'profile',
-                    Profile::UNIQUE_NAME,
-                    ProfileUniqueNameEnum::ADMIN_CHURCH
-                )
-            )
+        return Member::with(['user'])
+            ->where(Member::ID, $id)
+            ->first();
+    }
+
+    public function findByUserId(string $id): ?object
+    {
+        return $this->getBaseQueryBuilder()
+            ->where(MembersDataView::USER_ID, $id)
+            ->first();
+    }
+
+    public function findByIds(array $ids): Collection
+    {
+        return $this->getBaseQueryBuilder()
+            ->whereIn(MembersDataView::MEMBER_ID, $ids)
             ->get();
     }
 
-    public function findById(string $id)
+    public function create(MemberDTO $memberDTO): object
     {
-        return $this->getMemberUserActive()->where(Member::ID, $id)->first();
-    }
-
-    public function findByIds(array $ids): mixed
-    {
-        return $this->getMemberUserActive()
-            ->with(['memberType', 'user.profile'])
-            ->whereIn(Member::ID, $ids)
-            ->get();
-    }
-
-    public function create()
-    {
-        // TODO: Implement create() method.
-    }
-
-    public function save()
-    {
-        // TODO: Implement save() method.
-    }
-
-    public function remove(string $id)
-    {
-        // TODO: Implement remove() method.
-    }
-
-    private function getMemberUserActive()
-    {
-        return Member::whereRelation(
-            'user',
-            User::ACTIVE,
-            '=',
-            true
-        );
+        return Member::create([
+            Member::USER_ID => $memberDTO->userId
+        ]);
     }
 }

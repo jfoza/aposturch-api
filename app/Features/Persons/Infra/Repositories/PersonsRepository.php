@@ -22,7 +22,7 @@ class PersonsRepository implements PersonsRepositoryInterface
         ]);
     }
 
-    public function save(PersonDTO $personDTO)
+    public function save(PersonDTO $personDTO): object
     {
         $saved = [
             Person::ID             => $personDTO->id,

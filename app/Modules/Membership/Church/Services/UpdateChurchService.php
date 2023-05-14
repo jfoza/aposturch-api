@@ -4,14 +4,13 @@ namespace App\Modules\Membership\Church\Services;
 
 use App\Exceptions\AppException;
 use App\Features\Base\Services\Service;
-use App\Features\Base\Traits\DispatchExceptionTrait;
+use App\Features\Base\Traits\EnvironmentException;
 use App\Features\City\Cities\Contracts\CityRepositoryInterface;
 use App\Features\City\Cities\Validations\CityValidations;
 use App\Modules\Membership\Church\Contracts\ChurchRepositoryInterface;
 use App\Modules\Membership\Church\Contracts\UpdateChurchServiceInterface;
 use App\Modules\Membership\Church\DTO\ChurchDTO;
 use App\Modules\Membership\Church\Models\Church;
-use App\Modules\Membership\Church\Traits\ResponsibleMemberValidationsTrait;
 use App\Modules\Membership\Church\Validations\ChurchValidations;
 use App\Modules\Membership\Members\Contracts\MembersRepositoryInterface;
 use App\Shared\Enums\RulesEnum;
@@ -21,15 +20,11 @@ use Tymon\JWTAuth\Exceptions\UserNotDefinedException;
 
 class UpdateChurchService extends Service implements UpdateChurchServiceInterface
 {
-    use DispatchExceptionTrait;
-    use ResponsibleMemberValidationsTrait;
-
     private ChurchDTO $churchDTO;
 
     public function __construct(
         private readonly ChurchRepositoryInterface $churchRepository,
         private readonly CityRepositoryInterface   $cityRepository,
-        private readonly MembersRepositoryInterface $membersRepository,
     ) {}
 
     /**
@@ -91,35 +86,19 @@ class UpdateChurchService extends Service implements UpdateChurchServiceInterfac
             $this->churchDTO->cityId
         );
 
-        if(count($this->churchDTO->responsibleMembers) > 0)
-        {
-            $this->isValidMembersResponsible(
-                $this->churchDTO->responsibleMembers,
-                $this->membersRepository,
-            );
-        }
-
         $this->churchDTO->uniqueName = Helpers::stringUniqueName($this->churchDTO->name);
     }
 
     /**
      * @throws AppException
      */
-    private function baseUpdateOperation(bool $isAdminMaster = false)
+    private function baseUpdateOperation()
     {
         Transaction::beginTransaction();
 
         try
         {
             $updated = $this->churchRepository->save($this->churchDTO);
-
-            if($isAdminMaster)
-            {
-                $this->churchRepository->saveResponsible(
-                    $this->churchDTO->id,
-                    $this->churchDTO->responsibleMembers
-                );
-            }
 
             Transaction::commit();
 
@@ -129,7 +108,7 @@ class UpdateChurchService extends Service implements UpdateChurchServiceInterfac
         {
             Transaction::rollback();
 
-            $this->dispatchException($e);
+            EnvironmentException::dispatchException($e);
         }
     }
 }

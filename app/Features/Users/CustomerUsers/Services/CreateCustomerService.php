@@ -3,7 +3,7 @@
 namespace App\Features\Users\CustomerUsers\Services;
 
 use App\Exceptions\AppException;
-use App\Features\Base\Traits\DispatchExceptionTrait;
+use App\Features\Base\Traits\EnvironmentException;
 use App\Features\City\Cities\Contracts\CityRepositoryInterface;
 use App\Features\City\States\Contracts\StateRepositoryInterface;
 use App\Features\Persons\Contracts\PersonsRepositoryInterface;
@@ -23,8 +23,6 @@ use App\Shared\Utils\Transaction;
 
 class CreateCustomerService
 {
-    use DispatchExceptionTrait;
-
     public function __construct(
         private readonly PersonsRepositoryInterface           $personsRepository,
         private readonly UsersRepositoryInterface             $usersRepository,
@@ -94,7 +92,7 @@ class CreateCustomerService
         {
             Transaction::rollback();
 
-            $this->dispatchException($e);
+            EnvironmentException::dispatchException($e);
         }
     }
 }

@@ -3,7 +3,6 @@
 namespace App\Features\Users\CustomerUsers\Business;
 
 use App\Exceptions\AppException;
-use App\Features\Base\Traits\DispatchExceptionTrait;
 use App\Features\Users\CustomerUsers\Contracts\PublicCustomerUsersBusinessInterface;
 use App\Features\Users\CustomerUsers\Http\Responses\CustomerUserResponse;
 use App\Features\Users\CustomerUsers\Services\AuthorizeCustomerUserService;
@@ -25,8 +24,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 readonly class PublicCustomerUsersBusiness implements PublicCustomerUsersBusinessInterface
 {
-    use DispatchExceptionTrait;
-
     public function __construct(
         private ShowCustomerService                    $showCustomerService,
         private ShowCustomerByEmailService             $showCustomerByEmailService,

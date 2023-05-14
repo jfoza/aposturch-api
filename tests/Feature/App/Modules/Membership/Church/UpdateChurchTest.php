@@ -31,17 +31,12 @@ class UpdateChurchTest extends BaseTestCase
     {
         $church = Church::factory()->create();
 
-        $member = Member::whereRelation('memberType', MemberType::UNIQUE_NAME, MemberTypesEnum::RESPONSIBLE->value)->first();
-
         $city = City::where(City::DESCRIPTION, 'Novo Hamburgo')->first();
 
         $name = RandomStringHelper::alnumGenerate();
 
         $payload = [
             "name" => $name,
-            "responsibleMembers" => [
-                $member->id
-            ],
             "phone" => "51999999999",
             "email" => $name."@gmail.com",
             "youtube" => "",
@@ -106,7 +101,6 @@ class UpdateChurchTest extends BaseTestCase
     {
         $payload = [
             "name"               => $name,
-            "responsibleMembers" => $responsibleMembers,
             "phone"              => $phone,
             "email"              => $email,
             "youtube"            => $youtube,
@@ -133,127 +127,6 @@ class UpdateChurchTest extends BaseTestCase
         $response->assertUnprocessable();
     }
 
-    public function test_should_return_error_if_sending_more_than_3_responsible_members()
-    {
-        $church = Church::factory()->create();
-
-        $city = City::where(City::DESCRIPTION, 'Novo Hamburgo')->first();
-
-        $name = RandomStringHelper::alnumGenerate();
-
-        $payload = [
-            "name" => $name,
-            "responsibleMembers" => [
-                Uuid::uuid4()->toString(),
-                Uuid::uuid4()->toString(),
-                Uuid::uuid4()->toString(),
-                Uuid::uuid4()->toString()
-            ],
-            "phone" => "51999999999",
-            "email" => $name."@gmail.com",
-            "youtube" => "",
-            "facebook" => "",
-            "instagram" => "",
-            "zipCode" => "93320012",
-            "address" => "Av. Nações Unidas",
-            "numberAddress" => "2815",
-            "complement" => "",
-            "district" => "Rio Branco",
-            "active" => true,
-            "uf" => "RS",
-            "cityId" => $city->id
-        ];
-
-        $id = Uuid::uuid4()->toString();
-
-        $response = $this->putJson(
-            $this->endpoint."/id/{$church->id}",
-            $payload,
-            $this->getAuthorizationBearer()
-        );
-
-        $response->assertBadRequest();
-    }
-
-    public function test_should_return_error_if_responsible_member_not_exists()
-    {
-        $church = Church::factory()->create();
-
-        $member = Member::whereRelation('memberType', MemberType::UNIQUE_NAME, MemberTypesEnum::RESPONSIBLE->value)->first();
-
-        $city = City::where(City::DESCRIPTION, 'Novo Hamburgo')->first();
-
-        $name = RandomStringHelper::alnumGenerate();
-
-        $payload = [
-            "name" => $name,
-            "responsibleMembers" => [
-                $member->id,
-                Uuid::uuid4()->toString(),
-            ],
-            "phone" => "51999999999",
-            "email" => $name."@gmail.com",
-            "youtube" => "",
-            "facebook" => "",
-            "instagram" => "",
-            "zipCode" => "93320012",
-            "address" => "Av. Nações Unidas",
-            "numberAddress" => "2815",
-            "complement" => "",
-            "district" => "Rio Branco",
-            "active" => true,
-            "uf" => "RS",
-            "cityId" => $city->id
-        ];
-
-        $response = $this->putJson(
-            $this->endpoint."/id/{$church->id}",
-            $payload,
-            $this->getAuthorizationBearer()
-        );
-
-        $response->assertNotFound();
-    }
-
-    public function test_should_return_error_if_type_member_is_invalid()
-    {
-        $church = Church::factory()->create();
-
-        $member = Member::whereRelation('memberType', MemberType::UNIQUE_NAME, MemberTypesEnum::COMMON_MEMBER->value)->first();
-
-        $city = City::where(City::DESCRIPTION, 'Novo Hamburgo')->first();
-
-        $name = RandomStringHelper::alnumGenerate();
-
-        $payload = [
-            "name" => $name,
-            "responsibleMembers" => [
-                $member->id,
-            ],
-            "phone" => "51999999999",
-            "email" => $name."@gmail.com",
-            "youtube" => "",
-            "facebook" => "",
-            "instagram" => "",
-            "zipCode" => "93320012",
-            "address" => "Av. Nações Unidas",
-            "numberAddress" => "2815",
-            "complement" => "",
-            "district" => "Rio Branco",
-            "active" => true,
-            "uf" => "RS",
-            "cityId" => $city->id
-        ];
-
-        $response = $this->putJson(
-            $this->endpoint."/id/{$church->id}",
-            $payload,
-            $this->getAuthorizationBearer()
-        );
-
-        $response->assertBadRequest();
-    }
-
     public function test_should_return_error_if_church_id_not_exists()
     {
         $city = City::where(City::DESCRIPTION, 'Novo Hamburgo')->first();
@@ -262,9 +135,6 @@ class UpdateChurchTest extends BaseTestCase
 
         $payload = [
             "name" => $name,
-            "responsibleMembers" => [
-                Uuid::uuid4()->toString(),
-            ],
             "phone" => "51999999999",
             "email" => $name."@gmail.com",
             "youtube" => "",
@@ -299,9 +169,6 @@ class UpdateChurchTest extends BaseTestCase
 
         $payload = [
             "name" => $name,
-            "responsibleMembers" => [
-                Uuid::uuid4()->toString(),
-            ],
             "phone" => "51999999999",
             "email" => $name."@gmail.com",
             "youtube" => "",

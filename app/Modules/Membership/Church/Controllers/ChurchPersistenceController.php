@@ -67,7 +67,5 @@ readonly class ChurchPersistenceController
         $churchDTO->uf             = $churchRequest->uf;
         $churchDTO->cityId         = $churchRequest->cityId;
         $churchDTO->active         = $churchRequest->active;
-
-        $churchDTO->responsibleMembers = $churchRequest->responsibleMembers;
     }
 }

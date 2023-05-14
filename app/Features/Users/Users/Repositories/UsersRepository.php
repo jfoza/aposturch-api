@@ -2,6 +2,7 @@
 
 namespace App\Features\Users\Users\Repositories;
 
+use App\Features\Persons\Infra\Models\Person;
 use App\Features\Users\UserChurch\Infra\Models\UserChurch;
 use App\Features\Users\Users\Contracts\UsersRepositoryInterface;
 use App\Features\Users\Users\DTO\UserDTO;
@@ -53,7 +54,18 @@ class UsersRepository implements UsersRepositoryInterface
             ->first();
     }
 
-    public function create(UserDTO $userDTO, bool $customerUser = false)
+    public function findByPhone(string $phone): ?object
+    {
+        return User::with(['adminUser', 'profile', 'module'])
+            ->whereRelation(
+                'person',
+                Person::PHONE,
+                $phone
+            )
+            ->first();
+    }
+
+    public function create(UserDTO $userDTO, bool $usePerson = false)
     {
         $create = [
             User::NAME      => $userDTO->name,
@@ -62,14 +74,14 @@ class UsersRepository implements UsersRepositoryInterface
             User::ACTIVE    => $userDTO->active,
         ];
 
-        if($customerUser) {
+        if($usePerson) {
             $create[User::PERSON_ID] = $userDTO->personId;
         }
 
         return User::create($create);
     }
 
-    public function save(UserDTO $userDTO)
+    public function save(UserDTO $userDTO): object
     {
         $saved = [
             User::ID     => $userDTO->id,
@@ -80,6 +92,19 @@ class UsersRepository implements UsersRepositoryInterface
 
         User::where(User::ID, $userDTO->id)
             ->update($saved);
+
+        return (object) $saved;
+    }
+
+    public function saveInMembers(UserDTO $userDTO): object
+    {
+        $saved = [
+            User::ID     => $userDTO->id,
+            User::NAME   => $userDTO->name,
+            User::EMAIL  => $userDTO->email,
+        ];
+
+        User::where(User::ID, $userDTO->id)->update($saved);
 
         return (object) $saved;
     }

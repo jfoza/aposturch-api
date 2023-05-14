@@ -4,7 +4,7 @@ namespace App\Features\Users\AdminUsers\Services;
 
 use App\Exceptions\AppException;
 use App\Features\Base\Services\Service;
-use App\Features\Base\Traits\DispatchExceptionTrait;
+use App\Features\Base\Traits\EnvironmentException;
 use App\Features\Users\AdminUsers\Contracts\AdminUsersRepositoryInterface;
 use App\Features\Users\AdminUsers\Contracts\UpdateAdminUserServiceInterface;
 use App\Features\Users\AdminUsers\Responses\AdminUserResponse;
@@ -20,15 +20,13 @@ use App\Shared\Utils\Transaction;
 
 class UpdateAdminUserService extends Service implements UpdateAdminUserServiceInterface
 {
-    use DispatchExceptionTrait;
-
     private UserDTO $userDTO;
     private mixed $profile;
 
     public function __construct(
         private readonly AdminUsersRepositoryInterface $adminUsersRepository,
-        private readonly UsersRepositoryInterface $usersRepository,
-        private readonly AdminUserResponse $adminUserResponse,
+        private readonly UsersRepositoryInterface      $usersRepository,
+        private readonly AdminUserResponse             $adminUserResponse,
     ) {}
 
     /**
@@ -129,7 +127,7 @@ class UpdateAdminUserService extends Service implements UpdateAdminUserServiceIn
         } catch(\Exception $e) {
             Transaction::rollback();
 
-            $this->dispatchException($e);
+            EnvironmentException::dispatchException($e);
         }
     }
 }

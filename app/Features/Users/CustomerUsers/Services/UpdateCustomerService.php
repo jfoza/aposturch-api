@@ -3,7 +3,6 @@
 namespace App\Features\Users\CustomerUsers\Services;
 
 use App\Exceptions\AppException;
-use App\Features\Base\Traits\DispatchExceptionTrait;
 use App\Features\City\Cities\Contracts\CityRepositoryInterface;
 use App\Features\City\States\Contracts\StateRepositoryInterface;
 use App\Features\Persons\Contracts\PersonsRepositoryInterface;
@@ -20,8 +19,6 @@ use App\Shared\Cache\PolicyCache;
 
 class UpdateCustomerService
 {
-    use DispatchExceptionTrait;
-
     public function __construct(
         private readonly PersonsRepositoryInterface       $personsRepository,
         private readonly UsersRepositoryInterface         $usersRepository,

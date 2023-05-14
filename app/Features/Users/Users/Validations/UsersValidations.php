@@ -93,10 +93,37 @@ class UsersValidations
     /**
      * @throws AppException
      */
+    public static function phoneAlreadyExists(
+        UsersRepositoryInterface $usersRepository,
+        string $phone
+    ): void
+    {
+        if(!empty($usersRepository->findByPhone($phone))) {
+            throw new AppException(
+                MessagesEnum::PHONE_ALREADY_EXISTS,
+                Response::HTTP_BAD_REQUEST
+            );
+        }
+    }
+
+    /**
+     * @throws AppException
+     */
     public static function emailAlreadyExistsUpdateException(): void
     {
         throw new AppException(
             MessagesEnum::EMAIL_ALREADY_EXISTS,
+            Response::HTTP_BAD_REQUEST
+        );
+    }
+
+    /**
+     * @throws AppException
+     */
+    public static function phoneAlreadyExistsUpdateException(): void
+    {
+        throw new AppException(
+            MessagesEnum::PHONE_ALREADY_EXISTS,
             Response::HTTP_BAD_REQUEST
         );
     }

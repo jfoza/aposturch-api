@@ -4,6 +4,7 @@ namespace App\Modules\Membership\Church\Services;
 
 use App\Exceptions\AppException;
 use App\Features\Base\Services\Service;
+use App\Features\Base\Traits\EnvironmentException;
 use App\Features\General\Images\Contracts\ImagesRepositoryInterface;
 use App\Modules\Membership\Church\Contracts\ChurchRepositoryInterface;
 use App\Modules\Membership\Church\Contracts\RemoveChurchServiceInterface;
@@ -52,7 +53,7 @@ class RemoveChurchService extends Service implements RemoveChurchServiceInterfac
         {
             Transaction::rollback();
 
-            $this->dispatchException($e);
+            EnvironmentException::dispatchException($e);
         }
     }
 }

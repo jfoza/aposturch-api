@@ -45,13 +45,14 @@ class ChurchRepository implements ChurchRepositoryInterface
         return Church::with([
                 'imagesChurch',
                 'city',
-                'member' => function($member) {
-                    return $member
-                        ->with(['user', 'memberType'])
-                        ->whereRelation('memberType', MemberType::UNIQUE_NAME, MemberTypesEnum::RESPONSIBLE);
-                }
+                'member' => fn($member) => $member->with(['user', 'memberType'])
             ])
             ->find($churchId);
+    }
+
+    public function findByIds(array $churchIds): mixed
+    {
+        return Church::whereIn(Church::ID, $churchIds)->get();
     }
 
     public function findByIdWithMembers(string $churchId): object|null
@@ -120,9 +121,9 @@ class ChurchRepository implements ChurchRepositoryInterface
         return Church::make($update);
     }
 
-    public function saveResponsible(string $churchId, array $responsibleIds): void
+    public function saveMembers(string $churchId, array $members): void
     {
-        Church::find($churchId)->member()->sync($responsibleIds);
+        Church::find($churchId)->member()->sync($members);
     }
 
     public function saveImages(string $churchId, array $images): void

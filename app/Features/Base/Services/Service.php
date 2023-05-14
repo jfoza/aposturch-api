@@ -3,7 +3,6 @@
 namespace App\Features\Base\Services;
 
 use App\Exceptions\AppException;
-use App\Features\Base\Traits\DispatchExceptionTrait;
 use App\Shared\ACL\Policy;
 use App\Shared\Enums\MessagesEnum;
 use App\Shared\Utils\Auth;
@@ -13,8 +12,6 @@ use Tymon\JWTAuth\Exceptions\UserNotDefinedException;
 
 abstract class Service
 {
-    use DispatchExceptionTrait;
-
     private Policy $policy;
 
     /**

@@ -33,6 +33,43 @@ class ChurchValidations
     /**
      * @throws AppException
      */
+    public static function churchIdsExists(
+        ChurchRepositoryInterface $churchRepository,
+        array $churchIds
+    ): void
+    {
+        if(!$churches = $churchRepository->findByIds($churchIds))
+        {
+            throw new AppException(
+                MessagesEnum::REGISTER_NOT_FOUND,
+                Response::HTTP_NOT_FOUND
+            );
+        }
+
+        $ids = $churches->pluck(Church::ID)->toArray();
+
+        $notFound = [];
+
+        foreach ($churchIds as $churchId)
+        {
+            if(!in_array($churchId, $ids))
+            {
+                $notFound[] = $churchId;
+            }
+        }
+
+        if(!empty($notFound))
+        {
+            throw new AppException(
+                MessagesEnum::REGISTER_NOT_FOUND,
+                Response::HTTP_NOT_FOUND
+            );
+        }
+    }
+
+    /**
+     * @throws AppException
+     */
     public static function churchUniqueNameExists(
         ChurchRepositoryInterface $churchRepository,
         string $churchUniqueName

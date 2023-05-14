@@ -6,19 +6,9 @@ DO $$
     DECLARE
 
         _user_uuid   uuid    = uuid_generate_v4();
-        _person_uuid uuid    = uuid_generate_v4();
-        _city_id     uuid;
         _name        varchar = 'Giuseppe Foza';
         _email       varchar = 'gfozza@hotmail.com';
         _password    varchar = general.generate_bcrypt_hash('Teste123');
-        _phone       varchar = '51999122009';
-        _zip_code    varchar = '93052170';
-        _address     varchar = 'Rua Otto Daudt';
-        _district    varchar = 'Feitoria';
-        _number      varchar = '1770';
-        _complement  varchar = 'casa';
-        _city        varchar = 'São Leopoldo';
-        _uf          varchar = 'RS';
 
         _profile varchar := 'ADMIN_MASTER';
         _profile_uuid uuid;
@@ -33,7 +23,6 @@ DO $$
 
     BEGIN
         SELECT id INTO _profile_uuid FROM users.profiles WHERE unique_name = _profile;
-        SELECT id INTO _city_id FROM city.cities WHERE description = _city;
 
         SELECT id INTO _module1 FROM module.modules WHERE module_unique_name = 'USERS';
         SELECT id INTO _module2 FROM module.modules WHERE module_unique_name = 'FINANCE';
@@ -43,23 +32,9 @@ DO $$
         SELECT id INTO _module6 FROM module.modules WHERE module_unique_name = 'SCHEDULE';
         SELECT id INTO _module7 FROM module.modules WHERE module_unique_name = 'PATRIMONY';
 
-        INSERT INTO person.persons(id, city_id, phone, zip_code, address, number_address, complement, district, uf)
-        VALUES(
-                  _person_uuid,
-                  _city_id,
-                  _phone,
-                  _zip_code,
-                  _address,
-                  _number,
-                  _complement,
-                  _district,
-                  _uf
-              );
-
-        INSERT INTO users.users (id, person_id, name, email, password, active)
+        INSERT INTO users.users (id, name, email, password, active)
         VALUES
             (   _user_uuid,
-                _person_uuid,
                 _name,
                 _email,
                 _password,
@@ -100,19 +75,9 @@ DO $$
     DECLARE
 
         _user_uuid   uuid    = uuid_generate_v4();
-        _person_uuid uuid    = uuid_generate_v4();
-        _city_id     uuid;
         _name        varchar = 'Otavio Silveira';
         _email       varchar = 'otavio-silveira@hotmail.com';
         _password    varchar = general.generate_bcrypt_hash('Teste123');
-        _phone       varchar = '51999483393';
-        _zip_code    varchar = '93544370';
-        _address     varchar = 'Rua Athanásio Becker';
-        _district    varchar = 'Canudos';
-        _number      varchar = '80';
-        _complement  varchar = 'casa';
-        _city        varchar = 'Novo Hamburgo';
-        _uf          varchar = 'RS';
 
         _profile varchar := 'ADMIN_MASTER';
         _profile_uuid uuid;
@@ -127,7 +92,6 @@ DO $$
 
     BEGIN
         SELECT id INTO _profile_uuid FROM users.profiles WHERE unique_name = _profile;
-        SELECT id INTO _city_id FROM city.cities WHERE description = _city;
 
         SELECT id INTO _module1 FROM module.modules WHERE module_unique_name = 'USERS';
         SELECT id INTO _module2 FROM module.modules WHERE module_unique_name = 'FINANCE';
@@ -137,23 +101,9 @@ DO $$
         SELECT id INTO _module6 FROM module.modules WHERE module_unique_name = 'SCHEDULE';
         SELECT id INTO _module7 FROM module.modules WHERE module_unique_name = 'PATRIMONY';
 
-        INSERT INTO person.persons(id, city_id, phone, zip_code, address, number_address, complement, district, uf)
-        VALUES(
-                  _person_uuid,
-                  _city_id,
-                  _phone,
-                  _zip_code,
-                  _address,
-                  _number,
-                  _complement,
-                  _district,
-                  _uf
-              );
-
-        INSERT INTO users.users (id, person_id, name, email, password, active)
+        INSERT INTO users.users (id, name, email, password, active)
         VALUES
             (   _user_uuid,
-                _person_uuid,
                 _name,
                 _email,
                 _password,

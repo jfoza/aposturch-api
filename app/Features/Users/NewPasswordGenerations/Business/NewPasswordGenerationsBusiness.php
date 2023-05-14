@@ -4,6 +4,7 @@ namespace App\Features\Users\NewPasswordGenerations\Business;
 
 use App\Exceptions\AppException;
 use App\Features\Base\Business\Business;
+use App\Features\Base\Traits\EnvironmentException;
 use App\Features\Users\CustomerUsers\Contracts\CustomerUsersRepositoryInterface;
 use App\Features\Users\CustomerUsers\Jobs\EmailGeneratedCustomerUserJob;
 use App\Features\Users\CustomerUsers\Services\Utils\CustomerUserPasswordGeneratorService;
@@ -79,7 +80,7 @@ class NewPasswordGenerationsBusiness extends Business implements NewPasswordGene
         } catch(\Exception $e) {
             Transaction::rollback();
 
-            $this->dispatchException($e);
+            EnvironmentException::dispatchException($e);
         }
     }
 }

@@ -3,12 +3,9 @@
 namespace App\Features\Base\Business;
 
 use App\Shared\ACL\Policy;
-use App\Features\Base\Traits\DispatchExceptionTrait;
 
 abstract class Business
 {
-    use DispatchExceptionTrait;
-
     private Policy $policy;
 
     /**

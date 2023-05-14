@@ -83,7 +83,7 @@ class PaginationOrder
     public function setPerPage(?int $perPage): void
     {
         if(is_null($perPage)) {
-            $perPage = 15;
+            $perPage = 20;
         }
 
         $this->perPage = $perPage;

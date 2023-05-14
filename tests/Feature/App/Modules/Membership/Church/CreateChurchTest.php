@@ -3,11 +3,7 @@
 namespace Tests\Feature\App\Modules\Membership\Church;
 
 use App\Features\City\Cities\Infra\Models\City;
-use App\Modules\Membership\Members\Models\Member;
-use App\Modules\Membership\MemberTypes\Models\MemberType;
-use App\Shared\Enums\MemberTypesEnum;
 use App\Shared\Helpers\RandomStringHelper;
-use Ramsey\Uuid\Uuid;
 use Tests\Feature\BaseTestCase;
 use Tests\Feature\Resources\Modules\Churches\ChurchesDataProviders;
 
@@ -28,17 +24,12 @@ class CreateChurchTest extends BaseTestCase
 
     public function test_should_create_new_church()
     {
-        $member = Member::whereRelation('memberType', MemberType::UNIQUE_NAME, MemberTypesEnum::RESPONSIBLE->value)->first();
-
         $city = City::where(City::DESCRIPTION, 'Novo Hamburgo')->first();
 
         $name = RandomStringHelper::alnumGenerate();
 
         $payload = [
             "name" => $name,
-            "responsibleMembers" => [
-                $member->id
-            ],
             "phone" => "51999999999",
             "email" => $name."@gmail.com",
             "youtube" => "",
@@ -103,7 +94,6 @@ class CreateChurchTest extends BaseTestCase
     {
         $payload = [
             "name"               => $name,
-            "responsibleMembers" => $responsibleMembers,
             "phone"              => $phone,
             "email"              => $email,
             "youtube"            => $youtube,
@@ -126,112 +116,5 @@ class CreateChurchTest extends BaseTestCase
         );
 
         $response->assertUnprocessable();
-    }
-
-    public function test_should_return_error_if_sending_more_than_3_responsible_members()
-    {
-        $name = RandomStringHelper::alnumGenerate();
-
-        $payload = [
-            "name" => $name,
-            "responsibleMembers" => [
-                Uuid::uuid4()->toString(),
-                Uuid::uuid4()->toString(),
-                Uuid::uuid4()->toString(),
-                Uuid::uuid4()->toString()
-            ],
-            "phone" => "51999999999",
-            "email" => $name."@gmail.com",
-            "youtube" => "",
-            "facebook" => "",
-            "instagram" => "",
-            "zipCode" => "93320012",
-            "address" => "Av. Nações Unidas",
-            "numberAddress" => "2815",
-            "complement" => "",
-            "district" => "Rio Branco",
-            "active" => true,
-            "uf" => "RS",
-            "cityId" => Uuid::uuid4()->toString()
-        ];
-
-        $response = $this->postJson(
-            $this->endpoint,
-            $payload,
-            $this->getAuthorizationBearer()
-        );
-
-        $response->assertBadRequest();
-    }
-
-    public function test_should_return_error_if_responsible_member_not_exists()
-    {
-        $member = Member::whereRelation('memberType', MemberType::UNIQUE_NAME, MemberTypesEnum::RESPONSIBLE->value)->first();
-
-        $name = RandomStringHelper::alnumGenerate();
-
-        $payload = [
-            "name" => $name,
-            "responsibleMembers" => [
-                $member->id,
-                Uuid::uuid4()->toString(),
-            ],
-            "phone" => "51999999999",
-            "email" => $name."@gmail.com",
-            "youtube" => "",
-            "facebook" => "",
-            "instagram" => "",
-            "zipCode" => "93320012",
-            "address" => "Av. Nações Unidas",
-            "numberAddress" => "2815",
-            "complement" => "",
-            "district" => "Rio Branco",
-            "active" => true,
-            "uf" => "RS",
-            "cityId" => Uuid::uuid4()->toString()
-        ];
-
-        $response = $this->postJson(
-            $this->endpoint,
-            $payload,
-            $this->getAuthorizationBearer()
-        );
-
-        $response->assertNotFound();
-    }
-
-    public function test_should_return_error_if_type_member_is_invalid()
-    {
-        $member = Member::whereRelation('memberType', MemberType::UNIQUE_NAME, MemberTypesEnum::COMMON_MEMBER->value)->first();
-
-        $name = RandomStringHelper::alnumGenerate();
-
-        $payload = [
-            "name" => $name,
-            "responsibleMembers" => [
-                $member->id,
-            ],
-            "phone" => "51999999999",
-            "email" => $name."@gmail.com",
-            "youtube" => "",
-            "facebook" => "",
-            "instagram" => "",
-            "zipCode" => "93320012",
-            "address" => "Av. Nações Unidas",
-            "numberAddress" => "2815",
-            "complement" => "",
-            "district" => "Rio Branco",
-            "active" => true,
-            "uf" => "RS",
-            "cityId" => Uuid::uuid4()->toString()
-        ];
-
-        $response = $this->postJson(
-            $this->endpoint,
-            $payload,
-            $this->getAuthorizationBearer()
-        );
-
-        $response->assertBadRequest();
     }
 }
