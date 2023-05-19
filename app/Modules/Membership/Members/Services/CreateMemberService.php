@@ -4,26 +4,40 @@ namespace App\Modules\Membership\Members\Services;
 
 use App\Exceptions\AppException;
 use App\Features\Base\Services\Service;
+use App\Features\Base\Traits\EnvironmentException;
+use App\Features\City\Cities\Contracts\CityRepositoryInterface;
+use App\Features\City\Cities\Validations\CityValidations;
+use App\Features\Persons\Contracts\PersonsRepositoryInterface;
 use App\Features\Users\AdminUsers\Validations\AllowedProfilesValidations;
+use App\Features\Users\Profiles\Contracts\ProfilesRepositoryInterface;
+use App\Features\Users\Users\Contracts\UsersRepositoryInterface;
 use App\Features\Users\Users\DTO\UserDTO;
+use App\Features\Users\Users\Validations\UsersValidations;
+use App\Modules\Membership\Church\Contracts\ChurchRepositoryInterface;
 use App\Modules\Membership\Church\Validations\ChurchValidations;
 use App\Modules\Membership\Members\Contracts\CreateMemberServiceInterface;
+use App\Modules\Membership\Members\Contracts\MembersRepositoryInterface;
 use App\Modules\Membership\Members\Responses\InsertMemberResponse;
-use App\Modules\Membership\Members\Traits\BaseOperationsTrait;
-use App\Modules\Membership\Members\Types\OperationsType;
 use App\Modules\Membership\Members\Validations\MembersValidations;
 use App\Shared\Enums\RulesEnum;
+use App\Shared\Utils\Hash;
+use App\Shared\Utils\Transaction;
+use Exception;
 use Tymon\JWTAuth\Exceptions\UserNotDefinedException;
 
 class CreateMemberService extends Service implements CreateMemberServiceInterface
 {
-    use BaseOperationsTrait;
-
     private UserDTO $userDTO;
+    private mixed $profile;
+    private mixed $church;
 
     public function __construct(
-        private readonly OperationsType $operationsType,
-        private readonly MembersValidations $membersValidations,
+        private readonly PersonsRepositoryInterface  $personsRepository,
+        private readonly UsersRepositoryInterface    $usersRepository,
+        private readonly MembersRepositoryInterface  $membersRepository,
+        private readonly ChurchRepositoryInterface   $churchRepository,
+        private readonly ProfilesRepositoryInterface $profilesRepository,
+        private readonly CityRepositoryInterface     $cityRepository,
     ) {}
 
     /**
@@ -52,9 +66,9 @@ class CreateMemberService extends Service implements CreateMemberServiceInterfac
      */
     private function createByAdminMaster(): InsertMemberResponse
     {
-        $this->membersValidations->handleValidationsInCreate($this->userDTO);
+        $this->handleValidations();
 
-        return $this->createNewMember($this->userDTO, $this->operationsType);
+        return $this->createNewMember();
     }
 
     /**
@@ -63,16 +77,16 @@ class CreateMemberService extends Service implements CreateMemberServiceInterfac
      */
     private function createByAdminChurch(): InsertMemberResponse
     {
-        $this->membersValidations->handleValidationsInCreate($this->userDTO);
+        $this->handleValidations();
+
+        AllowedProfilesValidations::validateAdminChurchProfile($this->profile->unique_name);
 
         ChurchValidations::memberHasChurchById(
             $this->userDTO->member->churchId,
             $this->getChurchesUserMember()
         );
 
-        AllowedProfilesValidations::validateAdminChurchProfile($this->userDTO->profile->unique_name);
-
-        return $this->createNewMember($this->userDTO, $this->operationsType);
+        return $this->createNewMember();
     }
 
     /**
@@ -81,16 +95,16 @@ class CreateMemberService extends Service implements CreateMemberServiceInterfac
      */
     private function createByAdminModule(): InsertMemberResponse
     {
-        $this->membersValidations->handleValidationsInCreate($this->userDTO);
+        $this->handleValidations();
+
+        AllowedProfilesValidations::validateAdminModuleProfile($this->profile->unique_name);
 
         ChurchValidations::memberHasChurchById(
             $this->userDTO->member->churchId,
             $this->getChurchesUserMember()
         );
 
-        AllowedProfilesValidations::validateAdminModuleProfile($this->userDTO->profile->unique_name);
-
-        return $this->createNewMember($this->userDTO, $this->operationsType);
+        return $this->createNewMember();
     }
 
     /**
@@ -98,15 +112,103 @@ class CreateMemberService extends Service implements CreateMemberServiceInterfac
      */
     private function createByAssistant(): InsertMemberResponse
     {
-        $this->membersValidations->handleValidationsInCreate($this->userDTO);
+        $this->handleValidations();
+
+        AllowedProfilesValidations::validateAssistantProfile($this->profile->unique_name);
 
         ChurchValidations::memberHasChurchById(
             $this->userDTO->member->churchId,
             $this->getChurchesUserMember()
         );
 
-        AllowedProfilesValidations::validateAssistantProfile($this->userDTO->profile->unique_name);
+        return $this->createNewMember();
+    }
 
-        return $this->createNewMember($this->userDTO, $this->operationsType);
+    /**
+     * @throws AppException
+     */
+    private function handleValidations()
+    {
+        $this->profile = MembersValidations::profileIsValid(
+            $this->userDTO->profileId,
+            $this->profilesRepository
+        );
+
+        UsersValidations::emailAlreadyExists(
+            $this->usersRepository,
+            $this->userDTO->email
+        );
+
+        UsersValidations::phoneAlreadyExists(
+            $this->usersRepository,
+            $this->userDTO->person->phone
+        );
+
+        $this->church = ChurchValidations::churchIdExists(
+            $this->churchRepository,
+            $this->userDTO->member->churchId
+        );
+
+        CityValidations::cityIdExists(
+            $this->cityRepository,
+            $this->userDTO->person->cityId
+        );
+    }
+
+    /**
+     * @return InsertMemberResponse
+     * @throws AppException
+     */
+    private function createNewMember(): InsertMemberResponse
+    {
+        Transaction::beginTransaction();
+
+        try
+        {
+            $this->userDTO->newPasswordGenerationsDTO->passwordEncrypt = Hash::generateHash($this->userDTO->password);
+
+            $person = $this->personsRepository->create($this->userDTO->person);
+            $this->userDTO->personId = $person->id;
+
+            $user = $this->usersRepository->create($this->userDTO, true);
+            $this->userDTO->id = $user->id;
+
+            $this->usersRepository->saveProfiles($this->userDTO->id, [$this->userDTO->profileId]);
+
+            $this->userDTO->member->userId = $user->id;
+
+            $member = $this->membersRepository->create($this->userDTO->member);
+
+            $this->membersRepository->saveMembers(
+                $member->id,
+                [$this->userDTO->member->churchId]
+            );
+
+            Transaction::commit();
+
+            return new InsertMemberResponse(
+                $user->id,
+                $user->name,
+                $user->email,
+                $user->active,
+                $this->profile->id,
+                $this->profile->description,
+                $this->church->name,
+                $person->phone,
+                $person->zip_code,
+                $person->address,
+                $person->number_address,
+                $person->complement,
+                $person->district,
+                $person->city_id,
+                $person->uf,
+            );
+        }
+        catch (Exception $e)
+        {
+            Transaction::rollback();
+
+            EnvironmentException::dispatchException($e);
+        }
     }
 }

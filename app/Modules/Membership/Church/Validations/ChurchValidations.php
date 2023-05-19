@@ -97,7 +97,7 @@ class ChurchValidations
         if(!$churchesUserLogged->where(Church::ID, $churchId)->first())
         {
             throw new AppException(
-                MessagesEnum::NOT_AUTHORIZED,
+                MessagesEnum::ACCESS_DENIED,
                 Response::HTTP_FORBIDDEN
             );
         }

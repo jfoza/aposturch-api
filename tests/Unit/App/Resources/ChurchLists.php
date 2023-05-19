@@ -60,6 +60,27 @@ class ChurchLists
         ]);
     }
 
+    public static function getChurchesByIdArray(string $churchId): object
+    {
+        return (object) ([
+                Church::ID             => $churchId,
+                Church::NAME           => 'test',
+                Church::PHONE          => '51999999999',
+                Church::EMAIL          => 'test@test.com',
+                Church::FACEBOOK       => '',
+                Church::INSTAGRAM      => '',
+                Church::YOUTUBE        => '',
+                Church::ZIP_CODE       => '99999999',
+                Church::ADDRESS        => 'test',
+                Church::NUMBER_ADDRESS => 'test',
+                Church::COMPLEMENT     => 'test',
+                Church::DISTRICT       => 'test',
+                Church::UF             => 'RS',
+                Church::CITY_ID        => Uuid::uuid4()->toString(),
+                Church::ACTIVE         => true,
+            ]);
+    }
+
     public static function getChurchesByUniqueName(string $uniqueName): Collection
     {
         return Collection::make([

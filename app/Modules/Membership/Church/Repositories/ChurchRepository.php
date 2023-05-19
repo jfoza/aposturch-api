@@ -7,6 +7,7 @@ use App\Modules\Membership\Church\Contracts\ChurchRepositoryInterface;
 use App\Modules\Membership\Church\DTO\ChurchDTO;
 use App\Modules\Membership\Church\DTO\ChurchFiltersDTO;
 use App\Modules\Membership\Church\Models\Church;
+use App\Modules\Membership\Members\Models\Member;
 use App\Modules\Membership\MemberTypes\Models\MemberType;
 use App\Shared\Enums\MemberTypesEnum;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
@@ -38,6 +39,17 @@ class ChurchRepository implements ChurchRepositoryInterface
                 );
 
         return $this->paginateOrGet($builder, $churchFiltersDTO->paginationOrder);
+    }
+
+    public function findByMemberId(string $memberId, bool $isMany = false): mixed
+    {
+        $builder = Church::whereRelation(
+            'member',
+            Member::tableField(Member::ID),
+            $memberId
+        );
+
+        return $isMany ? $builder->get()->toArray() : $builder->first();
     }
 
     public function findById(string $churchId): object|null
@@ -98,32 +110,27 @@ class ChurchRepository implements ChurchRepositoryInterface
     public function save(ChurchDTO $churchDTO): Church
     {
         $update = [
-            Church::ID             => $churchDTO->id,
-            Church::NAME           => $churchDTO->name,
-            Church::UNIQUE_NAME    => $churchDTO->uniqueName,
-            Church::PHONE          => $churchDTO->phone,
-            Church::EMAIL          => $churchDTO->email,
-            Church::YOUTUBE        => $churchDTO->youtube,
-            Church::FACEBOOK       => $churchDTO->facebook,
-            Church::INSTAGRAM      => $churchDTO->instagram,
-            Church::ZIP_CODE       => $churchDTO->zipCode,
-            Church::ADDRESS        => $churchDTO->address,
+            Church::ID => $churchDTO->id,
+            Church::NAME => $churchDTO->name,
+            Church::UNIQUE_NAME => $churchDTO->uniqueName,
+            Church::PHONE => $churchDTO->phone,
+            Church::EMAIL => $churchDTO->email,
+            Church::YOUTUBE => $churchDTO->youtube,
+            Church::FACEBOOK => $churchDTO->facebook,
+            Church::INSTAGRAM => $churchDTO->instagram,
+            Church::ZIP_CODE => $churchDTO->zipCode,
+            Church::ADDRESS => $churchDTO->address,
             Church::NUMBER_ADDRESS => $churchDTO->numberAddress,
-            Church::COMPLEMENT     => $churchDTO->complement,
-            Church::DISTRICT       => $churchDTO->district,
-            Church::UF             => $churchDTO->uf,
-            Church::CITY_ID        => $churchDTO->cityId,
-            Church::ACTIVE         => $churchDTO->active,
+            Church::COMPLEMENT => $churchDTO->complement,
+            Church::DISTRICT => $churchDTO->district,
+            Church::UF => $churchDTO->uf,
+            Church::CITY_ID => $churchDTO->cityId,
+            Church::ACTIVE => $churchDTO->active,
         ];
 
         Church::where(Church::ID, $churchDTO->id)->update($update);
 
         return Church::make($update);
-    }
-
-    public function saveMembers(string $churchId, array $members): void
-    {
-        Church::find($churchId)->member()->sync($members);
     }
 
     public function saveImages(string $churchId, array $images): void

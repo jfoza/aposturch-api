@@ -12,6 +12,8 @@ interface MembersRepositoryInterface
     public function findAll(MembersFiltersDTO $membersFiltersDTO): LengthAwarePaginator|Collection;
     public function findById(string $id): ?object;
     public function findByUserId(string $id): ?object;
+    public function findOneByFilters(string $userId, MembersFiltersDTO $membersFiltersDTO);
     public function findByIds(array $ids): Collection;
     public function create(MemberDTO $memberDTO): object;
+    public function saveMembers(string $memberId, array $churches): void;
 }

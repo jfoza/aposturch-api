@@ -16,14 +16,11 @@ class UserDTO
     public string|null $password;
     public string|null $profileId;
     public bool|null   $active;
-    public ?object $profile;
-    public ?object $church;
-    public ?object $memberUser;
 
     public function __construct(
-        public PersonDTO $person,
-        public MemberDTO $member,
-        public EmailVerificationDTO $emailVerificationDTO,
+        public PersonDTO                 $person,
+        public MemberDTO                 $member,
+        public EmailVerificationDTO      $emailVerificationDTO,
         public NewPasswordGenerationsDTO $newPasswordGenerationsDTO,
     ) {}
 }

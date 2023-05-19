@@ -3,62 +3,27 @@
 namespace App\Modules\Membership\Members\Validations;
 
 use App\Exceptions\AppException;
-use App\Features\City\Cities\Contracts\CityRepositoryInterface;
-use App\Features\City\Cities\Validations\CityValidations;
 use App\Features\Users\Profiles\Contracts\ProfilesRepositoryInterface;
 use App\Features\Users\Profiles\Enums\ProfileUniqueNameEnum;
 use App\Features\Users\Users\Contracts\UsersRepositoryInterface;
-use App\Features\Users\Users\DTO\UserDTO;
 use App\Features\Users\Users\Validations\UsersValidations;
-use App\Modules\Membership\Church\Contracts\ChurchRepositoryInterface;
-use App\Modules\Membership\Church\Validations\ChurchValidations;
 use App\Modules\Membership\Members\Contracts\MembersRepositoryInterface;
 use App\Shared\Enums\MessagesEnum;
+use Illuminate\Support\Collection;
 use Symfony\Component\HttpFoundation\Response;
+use Tymon\JWTAuth\Exceptions\UserNotDefinedException;
 
-readonly class MembersValidations
+class MembersValidations
 {
-    public function __construct(
-        private UsersRepositoryInterface $usersRepository,
-        private MembersRepositoryInterface $membersRepository,
-        private ProfilesRepositoryInterface $profilesRepository,
-        private ChurchRepositoryInterface $churchRepository,
-        private CityRepositoryInterface $cityRepository,
-    ) {}
-
     /**
      * @throws AppException
      */
-    public function handleValidationsInCreate(UserDTO $userDTO): UserDTO
+    public static function profileIsValid(
+        string $profileId,
+        ProfilesRepositoryInterface $profilesRepository
+    )
     {
-        $this->profileIsValid($userDTO);
-        $this->emailAlreadyExists($userDTO->email);
-        $this->phoneAlreadyExists($userDTO->person->phone);
-        $this->churchIsValid($userDTO);
-        $this->cityIsValid($userDTO->person->cityId);
-
-        return $userDTO;
-    }
-
-    /**
-     * @throws AppException
-     */
-    public function handleValidationsInUpdate(UserDTO $userDTO): UserDTO
-    {
-        $this->memberExists($userDTO);
-        $this->emailAlreadyExistsInUpdate($userDTO);
-        $this->phoneAlreadyExistsInUpdate($userDTO);
-        $this->cityIsValid($userDTO->person->cityId);
-
-        return $userDTO;
-    }
-
-    /**
-     * @throws AppException
-     */
-    public function profileIsValid(UserDTO $userDTO): void
-    {
-        $profile = UsersValidations::returnProfileExists($this->profilesRepository, $userDTO->profileId);
+        $profile = UsersValidations::returnProfileExists($profilesRepository, $profileId);
 
         $allowedProfiles = [
             ProfileUniqueNameEnum::ADMIN_CHURCH->value,
@@ -75,61 +40,18 @@ readonly class MembersValidations
             );
         }
 
-        $userDTO->profile = $profile;
+        return $profile;
     }
 
     /**
      * @throws AppException
      */
-    public function emailAlreadyExists(string $email): void
+    public static function memberExists(
+        string $userId,
+        MembersRepositoryInterface $membersRepository
+    ): object
     {
-        UsersValidations::emailAlreadyExists(
-            $this->usersRepository,
-            $email
-        );
-    }
-
-    /**
-     * @throws AppException
-     */
-    public function phoneAlreadyExists(string $phone): void
-    {
-        UsersValidations::phoneAlreadyExists(
-            $this->usersRepository,
-            $phone
-        );
-    }
-
-    /**
-     * @throws AppException
-     */
-    public function churchIsValid(UserDTO $userDTO): void
-    {
-        $church = ChurchValidations::churchIdExists(
-            $this->churchRepository,
-            $userDTO->member->churchId
-        );
-
-        $userDTO->church = $church;
-    }
-
-    /**
-     * @throws AppException
-     */
-    public function cityIsValid(string $cityId): void
-    {
-        CityValidations::cityIdExists(
-            $this->cityRepository,
-            $cityId
-        );
-    }
-
-    /**
-     * @throws AppException
-     */
-    public function memberExists(UserDTO $userDTO): void
-    {
-        if(!$user = $this->membersRepository->findByUserId($userDTO->id))
+        if(!$userMember = $membersRepository->findByUserId($userId))
         {
             throw new AppException(
                 MessagesEnum::USER_NOT_FOUND,
@@ -137,7 +59,7 @@ readonly class MembersValidations
             );
         }
 
-        if(empty($user->person_id))
+        if(empty($userMember->person_id))
         {
             throw new AppException(
                 MessagesEnum::USER_NOT_FOUND,
@@ -145,17 +67,21 @@ readonly class MembersValidations
             );
         }
 
-        $userDTO->memberUser = $user;
+        return $userMember;
     }
 
     /**
      * @throws AppException
      */
-    public function emailAlreadyExistsInUpdate(UserDTO $userDTO): void
+    public static function emailAlreadyExistsInUpdate(
+        string $userId,
+        string $email,
+        UsersRepositoryInterface $usersRepository,
+    ): void
     {
-        $user = $this->usersRepository->findByEmail($userDTO->email);
+        $user = $usersRepository->findByEmail($email);
 
-        if($user && $user->id != $userDTO->memberUser->user_id)
+        if($user && $user->id != $userId)
         {
             UsersValidations::emailAlreadyExistsUpdateException();
         }
@@ -164,13 +90,35 @@ readonly class MembersValidations
     /**
      * @throws AppException
      */
-    public function phoneAlreadyExistsInUpdate(UserDTO $userDTO): void
+    public static function phoneAlreadyExistsInUpdate(
+        string $userId,
+        string $phone,
+        UsersRepositoryInterface $usersRepository,
+    ): void
     {
-        $user = $this->usersRepository->findByPhone($userDTO->person->phone);
+        $user = $usersRepository->findByPhone($phone);
 
-        if($user && $user->id != $userDTO->memberUser->user_id)
+        if($user && $user->id != $userId)
         {
             UsersValidations::phoneAlreadyExistsUpdateException();
+        }
+    }
+
+    /**
+     * @throws AppException
+     */
+    public static function memberUserHasChurch(mixed $member, Collection $churchesUserMember): void
+    {
+        $churchesCollect = collect($member->churches);
+
+        $userLoggedChurchesId = $churchesUserMember->pluck('id')->toArray();
+
+        if(empty($churchesCollect->whereIn('church_id', $userLoggedChurchesId)->first()))
+        {
+            throw new AppException(
+                MessagesEnum::ACCESS_DENIED,
+                Response::HTTP_FORBIDDEN
+            );
         }
     }
 }

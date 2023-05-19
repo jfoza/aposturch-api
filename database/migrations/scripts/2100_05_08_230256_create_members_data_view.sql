@@ -20,14 +20,26 @@ SELECT
     cc.uf,
     uu.active AS user_active,
     uu.created_at AS user_created_at,
-    mc.id AS church_id,
-    mc.name AS church_name,
-    mc.unique_name AS church_unique_name
+    COALESCE((
+        SELECT json_agg(
+            json_build_object(
+               'church_id', smc.id,
+               'church_name', smc.name,
+               'church_unique_name', smc.unique_name,
+               'church_phone', smc.phone,
+               'church_email', smc.email,
+               'church_active', smc.active
+            )
+        )
+        FROM membership.churches AS smc
+                 JOIN membership.churches_members AS smcm ON smc.id = smcm.church_id
+                 JOIN membership.members AS smm ON smcm.member_id = smm.id
+        WHERE smm.id = mm.id
+        GROUP BY smc.id
+    ), '[]'::json) AS churches
 
 FROM membership.members AS mm
 
-JOIN membership.churches_members AS mcm ON mm.id = mcm.member_id
-JOIN membership.churches AS mc ON mcm.church_id = mc.id
 JOIN users.users AS uu ON mm.user_id = uu.id
 JOIN users.profiles_users AS upu ON uu.id = upu.user_id
 JOIN users.profiles AS up ON upu.profile_id = up.id

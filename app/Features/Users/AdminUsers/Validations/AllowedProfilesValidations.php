@@ -55,7 +55,6 @@ class AllowedProfilesValidations
     public static function validateAdminChurchProfile(string $profileUniqueName): void
     {
         $profilesAllowed = [
-            ProfileUniqueNameEnum::ADMIN_CHURCH->value,
             ProfileUniqueNameEnum::ADMIN_MODULE->value,
             ProfileUniqueNameEnum::ASSISTANT->value,
             ProfileUniqueNameEnum::MEMBER->value,
@@ -72,7 +71,6 @@ class AllowedProfilesValidations
     public static function validateAdminModuleProfile(string $profileUniqueName): void
     {
         $profilesAllowed = [
-            ProfileUniqueNameEnum::ADMIN_MODULE->value,
             ProfileUniqueNameEnum::ASSISTANT->value,
             ProfileUniqueNameEnum::MEMBER->value,
         ];
@@ -88,7 +86,6 @@ class AllowedProfilesValidations
     public static function validateAssistantProfile(string $profileUniqueName): void
     {
         $profilesAllowed = [
-            ProfileUniqueNameEnum::ASSISTANT->value,
             ProfileUniqueNameEnum::MEMBER->value,
         ];
 

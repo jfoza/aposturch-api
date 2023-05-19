@@ -10,6 +10,7 @@ enum MessagesEnum: string {
     case UNAUTHORIZED = 'Unauthorized.';
     case NOT_FOUND = 'Not found.';
     case TOO_MANY_REQUESTS = 'Too Many Attempts.';
+    case ACCESS_DENIED = 'Acesso negado a este recurso.';
 
     case REGISTER_NOT_FOUND = 'Registro não encontrado.';
     case INVALID_UUID = 'O valor enviado não é um Uuid válido.';
@@ -58,6 +59,7 @@ enum MessagesEnum: string {
     case CHURCH_HAS_RESPONSIBLE_IN_DELETE = 'Não é possível excluir uma igreja com responsáveis vinculados.';
     case USER_CHURCH_RELATIONSHIP_NOT_FOUND = 'Este usuário não possui vínculo com esta igreja.';
     case USER_HAS_NO_CHURCH = 'Usuário não possui vínculo com nenhuma igreja.';
+    case USER_PAYLOAD_HAS_NO_CHURCH = 'O usuário informado não possui vínculo com nenhuma igreja.';
     case MEMBER_NOT_FOUND = 'Membro não encontrado.';
     case INVALID_RESP_MEMBERS_QUANTITY = 'São permitidos apenas 3 membros responsáveis por igreja.';
     case INVALID_RESP_MEMBER_TYPE = 'O membro selecionado possui um tipo inválido.';

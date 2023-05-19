@@ -23,13 +23,15 @@ abstract class Service
     {
         $user = Auth::authenticate();
 
-        if(!$churchesMember = $user->member->church)
+        if(empty($user->member->church))
         {
             throw new AppException(
                 MessagesEnum::USER_HAS_NO_CHURCH,
                 Response::HTTP_BAD_REQUEST
             );
         }
+
+        $churchesMember = $user->member->church;
 
         return collect($churchesMember);
     }

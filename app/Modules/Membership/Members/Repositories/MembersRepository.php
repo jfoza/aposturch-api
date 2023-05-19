@@ -50,10 +50,26 @@ class MembersRepository implements MembersRepositoryInterface
             ->get();
     }
 
+    public function findOneByFilters(string $userId, MembersFiltersDTO $membersFiltersDTO): ?object
+    {
+        return $this->getBaseQueryBuilder()
+            ->when(
+                isset($membersFiltersDTO->profileUniqueName),
+                fn($q) => $q->whereIn(MembersDataView::PROFILE_UNIQUE_NAME, $membersFiltersDTO->profileUniqueName)
+            )
+            ->where(MembersDataView::USER_ID, $userId)
+            ->first();
+    }
+
     public function create(MemberDTO $memberDTO): object
     {
         return Member::create([
             Member::USER_ID => $memberDTO->userId
         ]);
+    }
+
+    public function saveMembers(string $memberId, array $churches): void
+    {
+        Member::find($memberId)->church()->sync($churches);
     }
 }

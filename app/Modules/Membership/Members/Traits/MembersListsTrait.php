@@ -4,14 +4,15 @@ namespace App\Modules\Membership\Members\Traits;
 
 use App\Modules\Membership\Members\DTO\MembersFiltersDTO;
 use App\Modules\Membership\Members\Views\MembersDataView;
-use Illuminate\Database\Query\Builder;
+use Illuminate\Database\Query\Builder as QueryBuilder;
+use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
+use Illuminate\Support\HigherOrderWhenProxy;
 
 trait MembersListsTrait
 {
-    public function getBaseQueryBuilder(): Builder
+    public function getBaseQueryBuilder(): QueryBuilder|EloquentBuilder
     {
-        return MembersDataView::getView()
-            ->select(
+        return MembersDataView::select(
                 MembersDataView::MEMBER_ID,
                 MembersDataView::USER_ID,
                 MembersDataView::PERSON_ID,
@@ -26,17 +27,18 @@ trait MembersListsTrait
                 MembersDataView::DISTRICT,
                 MembersDataView::ZIP_CODE,
                 MembersDataView::USER_CITY_DESCRIPTION,
-                MembersDataView::UF
+                MembersDataView::UF,
+                MembersDataView::CHURCHES,
             );
     }
 
-    public function baseQueryBuilderFilters(MembersFiltersDTO $membersFiltersDTO)
+    /**
+     * @param MembersFiltersDTO $membersFiltersDTO
+     * @return QueryBuilder|EloquentBuilder|HigherOrderWhenProxy
+     */
+    public function baseQueryBuilderFilters(MembersFiltersDTO $membersFiltersDTO): QueryBuilder|EloquentBuilder|HigherOrderWhenProxy
     {
         return $this->getBaseQueryBuilder()
-            ->when(
-                isset($membersFiltersDTO->churchIds),
-                fn($q) => $q->whereIn(MembersDataView::CHURCH_ID, $membersFiltersDTO->churchIds)
-            )
             ->when(
                 isset($membersFiltersDTO->profileId),
                 fn($q) => $q->where(MembersDataView::PROFILE_ID, $membersFiltersDTO->profileId)

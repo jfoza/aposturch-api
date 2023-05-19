@@ -2,11 +2,9 @@
 
 namespace App\Modules\Membership\Members\Views;
 
-use App\Features\Base\Views\View;
-use Illuminate\Database\Query\Builder;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\Model;
 
-class MembersDataView extends View
+class MembersDataView extends Model
 {
     const MEMBER_ID               = 'member_id';
     const MEMBER_CODE             = 'member_code';
@@ -30,17 +28,11 @@ class MembersDataView extends View
     const UF = 'uf';
     const USER_ACTIVE             = 'user_active';
     const USER_CREATED_AT         = 'user_created_at';
-    const CHURCH_ID               = 'church_id';
-    const CHURCH_NAME             = 'church_name';
-    const CHURCH_UNIQUE_NAME      = 'church_unique_name';
+    const CHURCHES                = 'churches';
 
-    public static function viewName(): string
-    {
-        return 'membership.get_members_data_view';
-    }
+    protected $table = 'membership.get_members_data_view';
 
-    public static function getView(): Builder
-    {
-        return DB::table(self::viewName());
-    }
+    protected $casts = [
+        self::CHURCHES => 'array',
+    ];
 }

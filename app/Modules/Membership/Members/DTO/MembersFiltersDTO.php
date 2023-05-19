@@ -8,6 +8,7 @@ class MembersFiltersDTO extends FiltersDTO
 {
     public ?array $churchIds;
     public ?string $profileId;
+    public ?array $profileUniqueName;
     public ?string $name;
     public ?string $cityId;
 }
