@@ -7,9 +7,12 @@ use App\Features\Base\Services\Service;
 use App\Features\Base\Traits\EnvironmentException;
 use App\Features\City\Cities\Contracts\CityRepositoryInterface;
 use App\Features\City\Cities\Validations\CityValidations;
+use App\Features\Module\Modules\Contracts\ModulesRepositoryInterface;
+use App\Features\Module\Modules\Validations\ModulesValidations;
 use App\Features\Persons\Contracts\PersonsRepositoryInterface;
 use App\Features\Users\AdminUsers\Validations\AllowedProfilesValidations;
 use App\Features\Users\Profiles\Contracts\ProfilesRepositoryInterface;
+use App\Features\Users\Profiles\Enums\ProfileUniqueNameEnum;
 use App\Features\Users\Users\Contracts\UsersRepositoryInterface;
 use App\Features\Users\Users\DTO\UserDTO;
 use App\Features\Users\Users\Validations\UsersValidations;
@@ -38,6 +41,7 @@ class CreateMemberService extends Service implements CreateMemberServiceInterfac
         private readonly ChurchRepositoryInterface   $churchRepository,
         private readonly ProfilesRepositoryInterface $profilesRepository,
         private readonly CityRepositoryInterface     $cityRepository,
+        private readonly ModulesRepositoryInterface  $modulesRepository,
     ) {}
 
     /**
@@ -134,6 +138,11 @@ class CreateMemberService extends Service implements CreateMemberServiceInterfac
             $this->profilesRepository
         );
 
+        ModulesValidations::validateModulesId(
+            $this->userDTO->modulesId,
+            $this->modulesRepository
+        );
+
         UsersValidations::emailAlreadyExists(
             $this->usersRepository,
             $this->userDTO->email
@@ -182,6 +191,11 @@ class CreateMemberService extends Service implements CreateMemberServiceInterfac
             $this->membersRepository->saveMembers(
                 $member->id,
                 [$this->userDTO->member->churchId]
+            );
+
+            $this->usersRepository->saveModules(
+                $this->userDTO->id,
+                $this->userDTO->modulesId
             );
 
             Transaction::commit();

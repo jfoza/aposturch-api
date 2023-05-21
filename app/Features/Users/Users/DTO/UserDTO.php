@@ -15,6 +15,7 @@ class UserDTO
     public string|null $email;
     public string|null $password;
     public string|null $profileId;
+    public array|null  $modulesId;
     public bool|null   $active;
 
     public function __construct(

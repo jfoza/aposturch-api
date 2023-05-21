@@ -3,7 +3,9 @@
 namespace App\Features\Users\Users\Validations;
 
 use App\Exceptions\AppException;
+use App\Features\Module\Modules\Contracts\ModulesRepositoryInterface;
 use App\Features\Users\Profiles\Contracts\ProfilesRepositoryInterface;
+use App\Features\Users\Profiles\Enums\ProfileUniqueNameEnum;
 use App\Features\Users\Users\Contracts\UsersRepositoryInterface;
 use App\Shared\Enums\MessagesEnum;
 use App\Shared\Utils\Hash;
@@ -151,8 +153,7 @@ class UsersValidations
      */
     public static function isActiveUser(bool $active): void
     {
-        if(!$active)
-        {
+        if (!$active) {
             throw new AppException(
                 MessagesEnum::INACTIVE_USER,
                 Response::HTTP_FORBIDDEN

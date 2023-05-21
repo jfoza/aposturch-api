@@ -5,6 +5,8 @@ namespace Tests\Unit\App\Modules\Membership\Members\Services;
 use App\Exceptions\AppException;
 use App\Features\City\Cities\Contracts\CityRepositoryInterface;
 use App\Features\City\Cities\Infra\Repositories\CityRepository;
+use App\Features\Module\Modules\Contracts\ModulesRepositoryInterface;
+use App\Features\Module\Modules\Repositories\ModulesRepository;
 use App\Features\Persons\Contracts\PersonsRepositoryInterface;
 use App\Features\Persons\DTO\PersonDTO;
 use App\Features\Persons\Infra\Repositories\PersonsRepository;
@@ -33,6 +35,7 @@ use Tests\Unit\App\Resources\ChurchLists;
 use Tests\Unit\App\Resources\CitiesLists;
 use Tests\Unit\App\Resources\MemberLists;
 use Tests\Unit\App\Resources\MembersLists;
+use Tests\Unit\App\Resources\ModulesLists;
 use Tests\Unit\App\Resources\ProfilesLists;
 use Tests\Unit\App\Resources\UsersLists;
 use Tymon\JWTAuth\Facades\JWTAuth;
@@ -45,11 +48,13 @@ class CreateMemberServiceTest extends TestCase
     private MockObject|ChurchRepositoryInterface   $churchRepositoryMock;
     private MockObject|ProfilesRepositoryInterface $profilesRepositoryMock;
     private MockObject|CityRepositoryInterface $cityRepositoryMock;
+    private MockObject|ModulesRepositoryInterface $modulesRepositoryMock;
     private MockObject|UserDTO $userDtoMock;
 
     private string $profileId;
     private string $cityId;
     private string $churchId;
+    private string $moduleId;
 
     protected function setUp(): void
     {
@@ -58,6 +63,7 @@ class CreateMemberServiceTest extends TestCase
         $this->profileId = Uuid::uuid4Generate();
         $this->cityId    = Uuid::uuid4Generate();
         $this->churchId  = Uuid::uuid4Generate();
+        $this->moduleId  = Uuid::uuid4Generate();
 
         JWTAuth::shouldReceive('user')->andreturn(MembersLists::getMemberUserLogged($this->churchId));
         Auth::shouldReceive('user')->andreturn(MembersLists::getMemberUserLogged($this->churchId));
@@ -80,6 +86,9 @@ class CreateMemberServiceTest extends TestCase
         $this->userDtoMock->password = 'test';
         $this->userDtoMock->profileId = $this->profileId;
         $this->userDtoMock->active = true;
+        $this->userDtoMock->modulesId = [
+            $this->moduleId
+        ];
 
         $this->userDtoMock->person->phone = '51998765432';
         $this->userDtoMock->person->zipCode = '99999999';
@@ -101,6 +110,7 @@ class CreateMemberServiceTest extends TestCase
         $this->churchRepositoryMock    = $this->createMock(ChurchRepository::class);
         $this->profilesRepositoryMock  = $this->createMock(ProfilesRepository::class);
         $this->cityRepositoryMock      = $this->createMock(CityRepository::class);
+        $this->modulesRepositoryMock   = $this->createMock(ModulesRepository::class);
     }
 
     public function getCreateMemberService(): CreateMemberService
@@ -112,6 +122,7 @@ class CreateMemberServiceTest extends TestCase
             $this->churchRepositoryMock,
             $this->profilesRepositoryMock,
             $this->cityRepositoryMock,
+            $this->modulesRepositoryMock,
         );
     }
 
@@ -126,7 +137,12 @@ class CreateMemberServiceTest extends TestCase
         $this
             ->profilesRepositoryMock
             ->method('findById')
-            ->willReturn(ProfilesLists::getAdminChurchProfile($this->profileId));
+            ->willReturn(ProfilesLists::getAdminModuleProfile($this->profileId));
+
+        $this
+            ->modulesRepositoryMock
+            ->method('findByModulesIdInCreateMembers')
+            ->willReturn(ModulesLists::getModulesByIdInCreateMembers($this->moduleId));
 
         $this
             ->usersRepositoryMock
@@ -201,6 +217,11 @@ class CreateMemberServiceTest extends TestCase
             ->willReturn(ProfilesLists::getAdminChurchProfile($this->profileId));
 
         $this
+            ->modulesRepositoryMock
+            ->method('findByModulesIdInCreateMembers')
+            ->willReturn(ModulesLists::getModulesByIdInCreateMembers($this->moduleId));
+
+        $this
             ->usersRepositoryMock
             ->method('findByEmail')
             ->willReturn(UsersLists::showUser());
@@ -223,6 +244,11 @@ class CreateMemberServiceTest extends TestCase
             ->profilesRepositoryMock
             ->method('findById')
             ->willReturn(ProfilesLists::getAdminChurchProfile($this->profileId));
+
+        $this
+            ->modulesRepositoryMock
+            ->method('findByModulesIdInCreateMembers')
+            ->willReturn(ModulesLists::getModulesByIdInCreateMembers($this->moduleId));
 
         $this
             ->usersRepositoryMock
@@ -254,6 +280,11 @@ class CreateMemberServiceTest extends TestCase
             ->willReturn(ProfilesLists::getAdminChurchProfile($this->profileId));
 
         $this
+            ->modulesRepositoryMock
+            ->method('findByModulesIdInCreateMembers')
+            ->willReturn(ModulesLists::getModulesByIdInCreateMembers($this->moduleId));
+
+        $this
             ->usersRepositoryMock
             ->method('findByEmail')
             ->willReturn(null);
@@ -274,6 +305,32 @@ class CreateMemberServiceTest extends TestCase
         $createMembersService->execute($this->userDtoMock);
     }
 
+    public function test_should_return_exception_if_module_id_not_exists()
+    {
+        $createMembersService = $this->getCreateMemberService();
+
+        $createMembersService->setPolicy(new Policy([
+            RulesEnum::MEMBERSHIP_MODULE_MEMBERS_ADMIN_CHURCH_INSERT->value
+        ]));
+
+        $this
+            ->profilesRepositoryMock
+            ->method('findById')
+            ->willReturn(ProfilesLists::getAdminChurchProfile($this->profileId));
+
+        $this
+            ->modulesRepositoryMock
+            ->method('findByModulesIdInCreateMembers')
+            ->willReturn(ModulesLists::getModulesByIdInCreateMembers(
+                Uuid::uuid4Generate()
+            ));
+
+        $this->expectException(AppException::class);
+        $this->expectExceptionCode(Response::HTTP_NOT_FOUND);
+
+        $createMembersService->execute($this->userDtoMock);
+    }
+
     public function test_should_return_exception_if_city_id_not_exists()
     {
         $createMembersService = $this->getCreateMemberService();
@@ -286,6 +343,11 @@ class CreateMemberServiceTest extends TestCase
             ->profilesRepositoryMock
             ->method('findById')
             ->willReturn(ProfilesLists::getAdminChurchProfile($this->profileId));
+
+        $this
+            ->modulesRepositoryMock
+            ->method('findByModulesIdInCreateMembers')
+            ->willReturn(ModulesLists::getModulesByIdInCreateMembers($this->moduleId));
 
         $this
             ->usersRepositoryMock
@@ -325,6 +387,11 @@ class CreateMemberServiceTest extends TestCase
             ->profilesRepositoryMock
             ->method('findById')
             ->willReturn(ProfilesLists::getAdminChurchProfile($this->profileId));
+
+        $this
+            ->modulesRepositoryMock
+            ->method('findByModulesIdInCreateMembers')
+            ->willReturn(ModulesLists::getModulesByIdInCreateMembers($this->moduleId));
 
         $this
             ->usersRepositoryMock

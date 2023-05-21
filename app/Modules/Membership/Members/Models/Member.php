@@ -3,6 +3,8 @@
 namespace App\Modules\Membership\Members\Models;
 
 use App\Features\Base\Infra\Models\Register;
+use App\Features\Module\Modules\Models\Module;
+use App\Features\Users\ModulesUsers\Infra\Models\ModuleUser;
 use App\Features\Users\Users\Models\User;
 use App\Modules\Membership\Church\Models\Church;
 use App\Modules\Membership\ChurchesMembers\Models\ChurchMember;

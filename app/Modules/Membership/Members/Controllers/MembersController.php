@@ -64,6 +64,7 @@ readonly class MembersController
         $userDTO->email     = $membersRequest->email;
         $userDTO->password  = $membersRequest->password;
         $userDTO->profileId = $membersRequest->profileId;
+        $userDTO->modulesId = $membersRequest->modulesId;
         $userDTO->active    = $membersRequest->active;
 
         $userDTO->member->churchId      = $membersRequest->churchId;

@@ -2,10 +2,10 @@
 
 namespace App\Shared\Enums;
 
-enum ModulesEnum: string {
+enum ModulesUniqueNameEnum: string {
     case USERS = 'USERS';
     case FINANCE = 'FINANCE';
-    case MEMBERS = 'MEMBERS';
+    case MEMBERSHIP = 'MEMBERSHIP';
     case STORE = 'STORE';
     case GROUPS = 'GROUPS';
     case SCHEDULE = 'SCHEDULE';

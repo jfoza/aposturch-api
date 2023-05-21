@@ -8,7 +8,7 @@ use App\Features\Users\AdminUsers\Models\AdminUser;
 use App\Features\Users\Profiles\Enums\ProfileUniqueNameEnum;
 use App\Features\Users\Profiles\Models\Profile;
 use App\Features\Users\Users\Models\User;
-use App\Shared\Enums\ModulesEnum;
+use App\Shared\Enums\ModulesUniqueNameEnum;
 use App\Shared\Helpers\RandomStringHelper;
 use App\Shared\Libraries\Uuid;
 use App\Shared\Utils\Hash;
@@ -79,7 +79,7 @@ class UsersLists
             'module' => DatabaseCollection::make([
                 (object) ([
                     Module::ID => Uuid::uuid4Generate(),
-                    Module::MODULE_UNIQUE_NAME => ModulesEnum::USERS->value,
+                    Module::MODULE_UNIQUE_NAME => ModulesUniqueNameEnum::USERS->value,
                 ])
             ]),
         ]);

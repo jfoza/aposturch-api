@@ -61,6 +61,7 @@ enum MessagesEnum: string {
     case USER_HAS_NO_CHURCH = 'Usuário não possui vínculo com nenhuma igreja.';
     case USER_PAYLOAD_HAS_NO_CHURCH = 'O usuário informado não possui vínculo com nenhuma igreja.';
     case MEMBER_NOT_FOUND = 'Membro não encontrado.';
+    case MODULE_NOT_FOUND = 'Módulo não encontrado.';
     case INVALID_RESP_MEMBERS_QUANTITY = 'São permitidos apenas 3 membros responsáveis por igreja.';
     case INVALID_RESP_MEMBER_TYPE = 'O membro selecionado possui um tipo inválido.';
     case INVALID_RESP_MEMBER_PROFILE = 'Somente usuários com perfil Admin Igreja podem ser responsáveis por uma igreja.';

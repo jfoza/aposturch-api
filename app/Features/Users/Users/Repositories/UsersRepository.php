@@ -113,6 +113,10 @@ class UsersRepository implements UsersRepositoryInterface
         User::find($userId)->profile()->sync($profiles);
     }
 
+    public function saveModules(string $userId, array $modules): void {
+        User::find($userId)->module()->sync($modules);
+    }
+
     public function saveNewPassword(string $userId, string $password) {
         return User::where(User::ID, $userId)
             ->update([User::PASSWORD => $password]);

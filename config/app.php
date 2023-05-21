@@ -212,6 +212,7 @@ return [
         \App\Features\Users\EmailVerification\Providers\EmailVerificationProvider::class,
         \App\Features\ZipCode\Providers\ZipCodeProvider::class,
         \App\Features\General\Images\Providers\ImagesProvider::class,
+        \App\Features\Module\Modules\Providers\ModulesProvider::class,
 
         /*
          * Modules...

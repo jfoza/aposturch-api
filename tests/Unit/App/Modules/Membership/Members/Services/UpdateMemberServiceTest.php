@@ -13,10 +13,9 @@ use App\Features\Users\NewPasswordGenerations\DTO\NewPasswordGenerationsDTO;
 use App\Features\Users\Users\Contracts\UsersRepositoryInterface;
 use App\Features\Users\Users\DTO\UserDTO;
 use App\Features\Users\Users\Repositories\UsersRepository;
-use App\Modules\Membership\Church\Contracts\ChurchRepositoryInterface;
-use App\Modules\Membership\Church\Repositories\ChurchRepository;
 use App\Modules\Membership\Members\Contracts\MembersRepositoryInterface;
 use App\Modules\Membership\Members\DTO\MemberDTO;
+use App\Modules\Membership\Members\DTO\MembersFiltersDTO;
 use App\Modules\Membership\Members\Repositories\MembersRepository;
 use App\Modules\Membership\Members\Responses\UpdateMemberResponse;
 use App\Modules\Membership\Members\Services\UpdateMemberService;
@@ -28,7 +27,6 @@ use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 use Tests\Unit\App\Modules\Membership\Members\Services\Providers\MembersProvidersTrait;
-use Tests\Unit\App\Resources\ChurchLists;
 use Tests\Unit\App\Resources\CitiesLists;
 use Tests\Unit\App\Resources\MemberLists;
 use Tests\Unit\App\Resources\MembersLists;
@@ -43,9 +41,9 @@ class UpdateMemberServiceTest extends TestCase
     private MockObject|PersonsRepositoryInterface  $personsRepositoryMock;
     private MockObject|UsersRepositoryInterface    $usersRepositoryMock;
     private MockObject|MembersRepositoryInterface  $membersRepositoryMock;
-    private MockObject|ChurchRepositoryInterface   $churchRepositoryMock;
     private MockObject|CityRepositoryInterface $cityRepositoryMock;
     private MockObject|UserDTO $userDtoMock;
+    private MockObject|MembersFiltersDTO $membersFiltersDtoMock;
 
     private string $userId;
     private string $cityId;
@@ -58,8 +56,8 @@ class UpdateMemberServiceTest extends TestCase
         $this->cityId    = Uuid::uuid4Generate();
         $this->churchId  = Uuid::uuid4Generate();
 
-        JWTAuth::shouldReceive('user')->andreturn(MembersLists::getMemberUserLogged($this->churchId));
-        Auth::shouldReceive('user')->andreturn(MembersLists::getMemberUserLogged($this->churchId));
+        JWTAuth::shouldReceive('user')->andreturn(MembersLists::getMemberUserLogged($this->defaultChurchId));
+        Auth::shouldReceive('user')->andreturn(MembersLists::getMemberUserLogged($this->defaultChurchId));
 
         JWTAuth::shouldReceive('id')->andreturn($this->userId);
         Auth::shouldReceive('id')->andreturn($this->userId);
@@ -96,8 +94,8 @@ class UpdateMemberServiceTest extends TestCase
         $this->personsRepositoryMock = $this->createMock(PersonsRepository::class);
         $this->usersRepositoryMock   = $this->createMock(UsersRepository::class);
         $this->membersRepositoryMock = $this->createMock(MembersRepository::class);
-        $this->churchRepositoryMock  = $this->createMock(ChurchRepository::class);
         $this->cityRepositoryMock    = $this->createMock(CityRepository::class);
+        $this->membersFiltersDtoMock = $this->createMock(MembersFiltersDTO::class);
     }
 
     public function getUpdateMemberService(): UpdateMemberService
@@ -106,8 +104,8 @@ class UpdateMemberServiceTest extends TestCase
             $this->personsRepositoryMock,
             $this->usersRepositoryMock,
             $this->membersRepositoryMock,
-            $this->churchRepositoryMock,
             $this->cityRepositoryMock,
+            $this->membersFiltersDtoMock,
         );
     }
 
@@ -115,14 +113,14 @@ class UpdateMemberServiceTest extends TestCase
      * @dataProvider dataProviderUpdateUserMemberItself
      *
      * @param mixed $rule
-     * @param mixed $profile
+     * @param mixed $churches
      * @return void
      * @throws AppException
      * @throws UserNotDefinedException
      */
     public function test_should_update_user_member_itself(
         mixed $rule,
-        mixed $profile,
+        mixed $churches,
     ): void
     {
         $updateMemberService = $this->getUpdateMemberService();
@@ -131,8 +129,8 @@ class UpdateMemberServiceTest extends TestCase
 
         $this
             ->membersRepositoryMock
-            ->method('findByUserId')
-            ->willReturn(MemberLists::getMemberDataView($profile));
+            ->method('findOneByFilters')
+            ->willReturn(MemberLists::getMemberDataView($churches));
 
         $this
             ->usersRepositoryMock
@@ -148,11 +146,6 @@ class UpdateMemberServiceTest extends TestCase
             ->cityRepositoryMock
             ->method('findById')
             ->willReturn(CitiesLists::showCityById($this->cityId));
-
-        $this
-            ->churchRepositoryMock
-            ->method('findByMemberId')
-            ->willReturn(ChurchLists::getChurchesByIdArray($this->churchId));
 
         $this
             ->personsRepositoryMock
@@ -173,14 +166,14 @@ class UpdateMemberServiceTest extends TestCase
      * @dataProvider dataProviderUpdateUniqueUserMember
      *
      * @param mixed $rule
-     * @param mixed $profile
+     * @param mixed $churches
      * @return void
      * @throws AppException
      * @throws UserNotDefinedException
      */
     public function test_should_update_unique_user_member(
         mixed $rule,
-        mixed $profile,
+        mixed $churches,
     ): void
     {
         $updateMemberService = $this->getUpdateMemberService();
@@ -191,8 +184,8 @@ class UpdateMemberServiceTest extends TestCase
 
         $this
             ->membersRepositoryMock
-            ->method('findByUserId')
-            ->willReturn(MemberLists::getMemberDataView($profile));
+            ->method('findOneByFilters')
+            ->willReturn(MemberLists::getMemberDataView($churches));
 
         $this
             ->usersRepositoryMock
@@ -208,11 +201,6 @@ class UpdateMemberServiceTest extends TestCase
             ->cityRepositoryMock
             ->method('findById')
             ->willReturn(CitiesLists::showCityById($this->cityId));
-
-        $this
-            ->churchRepositoryMock
-            ->method('findByMemberId')
-            ->willReturn(ChurchLists::getChurchesByIdArray($this->churchId));
 
         $this
             ->personsRepositoryMock
@@ -258,7 +246,7 @@ class UpdateMemberServiceTest extends TestCase
 
         $this
             ->membersRepositoryMock
-            ->method('findByUserId')
+            ->method('findOneByFilters')
             ->willReturn(MemberLists::getMemberDataView());
 
         $this
@@ -282,7 +270,7 @@ class UpdateMemberServiceTest extends TestCase
 
         $this
             ->membersRepositoryMock
-            ->method('findByUserId')
+            ->method('findOneByFilters')
             ->willReturn(MemberLists::getMemberDataView());
 
         $this
@@ -311,7 +299,7 @@ class UpdateMemberServiceTest extends TestCase
 
         $this
             ->membersRepositoryMock
-            ->method('findByUserId')
+            ->method('findOneByFilters')
             ->willReturn(MemberLists::getMemberDataView());
 
         $this
@@ -339,14 +327,12 @@ class UpdateMemberServiceTest extends TestCase
      * @dataProvider dataProviderUpdateUserMemberProfilesNotAllowed
      *
      * @param mixed $rule
-     * @param mixed $profile
      * @return void
      * @throws AppException
      * @throws UserNotDefinedException
      */
     public function test_should_return_error_if_profile_equals_or_exceeds(
         mixed $rule,
-        mixed $profile,
     ): void
     {
         $updateMemberService = $this->getUpdateMemberService();
@@ -357,31 +343,11 @@ class UpdateMemberServiceTest extends TestCase
 
         $this
             ->membersRepositoryMock
-            ->method('findByUserId')
-            ->willReturn(MemberLists::getMemberDataView($profile));
-
-        $this
-            ->usersRepositoryMock
-            ->method('findByEmail')
-            ->willReturn(UsersLists::showUser($this->userDtoMock->id));
-
-        $this
-            ->usersRepositoryMock
-            ->method('findByPhone')
-            ->willReturn(UsersLists::showUser($this->userDtoMock->id));
-
-        $this
-            ->cityRepositoryMock
-            ->method('findById')
-            ->willReturn(CitiesLists::showCityById($this->cityId));
-
-        $this
-            ->churchRepositoryMock
-            ->method('findByMemberId')
-            ->willReturn(ChurchLists::getChurchesByIdArray($this->churchId));
+            ->method('findOneByFilters')
+            ->willReturn(null);
 
         $this->expectException(AppException::class);
-        $this->expectExceptionCode(Response::HTTP_FORBIDDEN);
+        $this->expectExceptionCode(Response::HTTP_NOT_FOUND);
 
         $updateMemberService->execute($this->userDtoMock);
     }
@@ -390,44 +356,41 @@ class UpdateMemberServiceTest extends TestCase
      * @dataProvider dataProviderUpdateUserMemberItself
      *
      * @param mixed $rule
-     * @param mixed $profile
+     * @param mixed $churches
      * @return void
      * @throws AppException
      * @throws UserNotDefinedException
      */
     public function test_should_return_exception_if_user_tries_to_update_a_church_other_than_his(
-        mixed $rule,
-        mixed $profile,
+        string $rule,
+        array $churches,
     ): void
     {
         $updateMemberService = $this->getUpdateMemberService();
 
         $updateMemberService->setPolicy(new Policy([$rule]));
 
+        $churches[0]['church_id'] = Uuid::uuid4Generate();
+
         $this
             ->membersRepositoryMock
-            ->method('findByUserId')
-            ->willReturn(MemberLists::getMemberDataView($profile));
+            ->method('findOneByFilters')
+            ->willReturn(MemberLists::getMemberDataView($churches));
 
         $this
             ->usersRepositoryMock
             ->method('findByEmail')
-            ->willReturn(UsersLists::showUser($this->userDtoMock->id));
+            ->willReturn(UsersLists::showUser($this->userId));
 
         $this
             ->usersRepositoryMock
             ->method('findByPhone')
-            ->willReturn(UsersLists::showUser($this->userDtoMock->id));
+            ->willReturn(UsersLists::showUser($this->userId));
 
         $this
             ->cityRepositoryMock
             ->method('findById')
             ->willReturn(CitiesLists::showCityById($this->cityId));
-
-        $this
-            ->churchRepositoryMock
-            ->method('findByMemberId')
-            ->willReturn(ChurchLists::getChurchesByIdArray(Uuid::uuid4Generate()));
 
         $this->expectException(AppException::class);
         $this->expectExceptionCode(Response::HTTP_FORBIDDEN);
