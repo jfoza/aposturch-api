@@ -2,7 +2,7 @@
 
 namespace App\Features\Users\CustomerUsers\Http\Requests;
 
-use App\Shared\Rules\Uuidv4Rule;
+use App\Shared\Rules\Uuid4Rule;
 use App\Features\Base\Http\Requests\FormRequest;
 
 class CustomerUsersFiltersRequest extends FormRequest
@@ -17,7 +17,7 @@ class CustomerUsersFiltersRequest extends FormRequest
         return $this->mergePaginationOrderRules([
             'personName' => 'nullable|string',
             'userEmail'  => 'nullable|email:rfc,dns',
-            'personCity' => [new Uuidv4Rule],
+            'personCity' => [new Uuid4Rule],
             'userActive' => 'nullable|boolean',
         ]);
     }

@@ -6,9 +6,12 @@ use App\Features\Base\DTO\FiltersDTO;
 
 class MembersFiltersDTO extends FiltersDTO
 {
+    public ?string $name;
+    public ?string $phone;
+    public ?string $email;
+    public ?string $cityId;
+    public ?string $churchIdInQueryParam;
     public ?array $churchIds;
     public ?string $profileId;
     public ?array $profileUniqueName;
-    public ?string $name;
-    public ?string $cityId;
 }

@@ -3,7 +3,7 @@
 namespace App\Features\Users\Users\Requests;
 
 use App\Features\Base\Http\Requests\FormRequest;
-use App\Shared\Rules\Uuidv4Rule;
+use App\Shared\Rules\Uuid4Rule;
 
 class InsertUserRequest extends FormRequest
 {
@@ -20,7 +20,7 @@ class InsertUserRequest extends FormRequest
             'password'             => 'required|string',
             'passwordConfirmation' => 'required|same:password',
             'active'               => 'required|bool',
-            'profileId'            => ['string', 'required', new Uuidv4Rule],
+            'profileId'            => ['string', 'required', new Uuid4Rule],
         ];
     }
 

@@ -11,6 +11,7 @@ class AuthUserResponse
     public string|null $avatar;
     public string|null $fullName;
     public Collection $role;
+    public Collection $churches;
     public bool|null   $status;
     public array|null  $ability;
 }

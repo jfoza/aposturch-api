@@ -1,7 +1,7 @@
 <?php
 
+use App\Features\City\Cities\Controllers\CityController;
 use App\Shared\Enums\MiddlewareEnum;
-use App\Features\City\Cities\Http\Controllers\CityController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/uf/{uf}', [CityController::class, 'showByUF']);

@@ -3,7 +3,7 @@
 namespace App\Modules\Membership\Church\Requests;
 
 use App\Features\Base\Http\Requests\FormRequest;
-use App\Shared\Rules\Uuidv4Rule;
+use App\Shared\Rules\Uuid4Rule;
 
 class ChurchUploadImageRequest extends FormRequest
 {
@@ -16,7 +16,7 @@ class ChurchUploadImageRequest extends FormRequest
     {
         return [
             'image' => 'required|image|max:1024',
-            'churchId' => ['required', new Uuidv4Rule]
+            'churchId' => ['required', new Uuid4Rule]
         ];
     }
 

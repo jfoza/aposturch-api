@@ -3,29 +3,35 @@
 namespace App\Modules\Membership\Members\Requests;
 
 use App\Features\Base\Http\Requests\FormRequest;
-use App\Shared\Rules\ManyUuidv4Rule;
-use App\Shared\Rules\Uuidv4Rule;
+use App\Shared\Rules\Uuid4Rule;
 
 class MembersFiltersRequest extends FormRequest
 {
 
     public function rules(): array
     {
+        $nullableString = 'nullable|string';
+        $nullableUuid4 = ['nullable', new Uuid4Rule()];
+
         return $this->mergePaginationOrderRules([
-            'churchIds' => ['nullable', new ManyUuidv4Rule()],
-            'profileId' => ['nullable', 'string', new Uuidv4Rule()],
-            'cityId'    => ['nullable', 'string', new Uuidv4Rule()],
-            'name'      => 'nullable|string'
+            'name'      => $nullableString,
+            'phone'     => $nullableString,
+            'email'     => $nullableString,
+            'churchId'  => $nullableUuid4,
+            'profileId' => $nullableUuid4,
+            'cityId'    => $nullableUuid4,
         ]);
     }
 
     public function authorize(): array
     {
         return $this->mergePaginationOrderAttributes([
-            'churchIds' => 'Church Ids',
+            'name'      => 'Name',
+            'phone'     => 'Phone',
+            'email'     => 'Email',
+            'churchId'  => 'Church Id',
             'profileId' => 'Profile Id',
             'cityId'    => 'City Id',
-            'name'      => 'Name',
         ]);
     }
 }

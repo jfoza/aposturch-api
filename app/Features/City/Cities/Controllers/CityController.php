@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Features\City\Cities\Http\Controllers;
+namespace App\Features\City\Cities\Controllers;
 
 use App\Features\City\Cities\Contracts\CityBusinessInterface;
 use Illuminate\Http\JsonResponse;

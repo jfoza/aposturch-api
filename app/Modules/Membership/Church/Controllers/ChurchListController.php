@@ -2,6 +2,7 @@
 
 namespace App\Modules\Membership\Church\Controllers;
 
+use App\Modules\Membership\Church\Contracts\FindAllChurchesByUserLoggedServiceInterface;
 use App\Modules\Membership\Church\Contracts\FindAllChurchesServiceInterface;
 use App\Modules\Membership\Church\Contracts\ShowByChurchIdServiceInterface;
 use App\Modules\Membership\Church\Contracts\ShowByChurchUniqueNameServiceInterface;
@@ -17,6 +18,7 @@ readonly class ChurchListController
         private FindAllChurchesServiceInterface        $findAllChurchesService,
         private ShowByChurchIdServiceInterface         $showByChurchIdService,
         private ShowByChurchUniqueNameServiceInterface $showByChurchUniqueNameService,
+        private FindAllChurchesByUserLoggedServiceInterface $findAllChurchesByUserLoggedService,
     ) {}
 
     public function index(
@@ -49,5 +51,12 @@ readonly class ChurchListController
         $church = $this->showByChurchUniqueNameService->execute($request->uniqueName);
 
         return response()->json($church, Response::HTTP_OK);
+    }
+
+    public function showByUserLogged(): JsonResponse
+    {
+        $churches = $this->findAllChurchesByUserLoggedService->execute();
+
+        return response()->json($churches, Response::HTTP_OK);
     }
 }

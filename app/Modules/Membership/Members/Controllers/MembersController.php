@@ -11,6 +11,7 @@ use App\Modules\Membership\Members\DTO\MembersFiltersDTO;
 use App\Modules\Membership\Members\Requests\MembersFiltersRequest;
 use App\Modules\Membership\Members\Requests\MembersRequest;
 use App\Modules\Membership\Members\Requests\MembersUpdateRequest;
+use App\Shared\Helpers\Helpers;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -34,10 +35,12 @@ readonly class MembersController
         $membersFiltersDTO->paginationOrder->setColumnName($membersFiltersRequest->columnName);
         $membersFiltersDTO->paginationOrder->setColumnOrder($membersFiltersRequest->columnOrder);
 
-        $membersFiltersDTO->churchIds = $membersFiltersRequest->churchIds;
-        $membersFiltersDTO->profileId = $membersFiltersRequest->profileId;
-        $membersFiltersDTO->name      = $membersFiltersRequest->name;
-        $membersFiltersDTO->cityId    = $membersFiltersRequest->cityId;
+        $membersFiltersDTO->name                 = $membersFiltersRequest->name;
+        $membersFiltersDTO->email                = $membersFiltersRequest->email;
+        $membersFiltersDTO->phone                = Helpers::onlyNumbers($membersFiltersRequest->phone);
+        $membersFiltersDTO->churchIdInQueryParam = $membersFiltersRequest->churchId;
+        $membersFiltersDTO->profileId            = $membersFiltersRequest->profileId;
+        $membersFiltersDTO->cityId               = $membersFiltersRequest->cityId;
 
         $members = $this->findAllMembersService->execute($membersFiltersDTO);
 
@@ -68,6 +71,7 @@ readonly class MembersController
         $userDTO->active    = $membersRequest->active;
 
         $userDTO->member->churchId      = $membersRequest->churchId;
+
         $userDTO->person->phone         = $membersRequest->phone;
         $userDTO->person->zipCode       = $membersRequest->zipCode;
         $userDTO->person->address       = $membersRequest->address;

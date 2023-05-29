@@ -4,7 +4,7 @@ namespace Tests\Unit\App\Modules\Membership\Members\Services;
 
 use App\Exceptions\AppException;
 use App\Features\City\Cities\Contracts\CityRepositoryInterface;
-use App\Features\City\Cities\Infra\Repositories\CityRepository;
+use App\Features\City\Cities\Repositories\CityRepository;
 use App\Features\Persons\Contracts\PersonsRepositoryInterface;
 use App\Features\Persons\DTO\PersonDTO;
 use App\Features\Persons\Infra\Repositories\PersonsRepository;

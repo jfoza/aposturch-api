@@ -3,7 +3,7 @@
 namespace App\Features\Users\AdminUsers\Requests;
 
 use App\Features\Base\Http\Requests\FormRequest;
-use App\Shared\Rules\Uuidv4Rule;
+use App\Shared\Rules\Uuid4Rule;
 
 class AdminUsersFiltersRequest extends FormRequest
 {
@@ -18,7 +18,7 @@ class AdminUsersFiltersRequest extends FormRequest
 
         return $this->mergePaginationOrderRules([
             'name'      => $nullableString,
-            'profileId' => ['nullable', 'string', new Uuidv4Rule],
+            'profileId' => ['nullable', 'string', new Uuid4Rule],
             'email'     => 'nullable|email:rfc,dns',
         ]);
     }

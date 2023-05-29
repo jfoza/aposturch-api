@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Features\City\States\Infra\Repositories;
+namespace App\Features\City\States\Repositories;
 
 use App\Features\City\States\Contracts\StateRepositoryInterface;
-use App\Features\City\States\Infra\Models\State;
+use App\Features\City\States\Models\State;
 
 class StateRepository implements StateRepositoryInterface
 {

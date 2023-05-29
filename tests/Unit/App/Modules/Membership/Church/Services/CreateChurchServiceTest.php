@@ -4,13 +4,12 @@ namespace Tests\Unit\App\Modules\Membership\Church\Services;
 
 use App\Exceptions\AppException;
 use App\Features\City\Cities\Contracts\CityRepositoryInterface;
-use App\Features\City\Cities\Infra\Repositories\CityRepository;
+use App\Features\City\Cities\Repositories\CityRepository;
 use App\Modules\Membership\Church\Contracts\ChurchRepositoryInterface;
 use App\Modules\Membership\Church\DTO\ChurchDTO;
 use App\Modules\Membership\Church\Models\Church;
 use App\Modules\Membership\Church\Repositories\ChurchRepository;
 use App\Modules\Membership\Church\Services\CreateChurchService;
-use App\Modules\Membership\Members\Contracts\MembersRepositoryInterface;
 use App\Shared\ACL\Policy;
 use App\Shared\Enums\RulesEnum;
 use App\Shared\Helpers\RandomStringHelper;
@@ -20,7 +19,6 @@ use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 use Tests\Unit\App\Resources\CitiesLists;
-use Tests\Unit\App\Resources\MembersLists;
 
 class CreateChurchServiceTest extends TestCase
 {

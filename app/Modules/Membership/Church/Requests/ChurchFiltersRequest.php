@@ -3,7 +3,7 @@
 namespace App\Modules\Membership\Church\Requests;
 
 use App\Features\Base\Http\Requests\FormRequest;
-use App\Shared\Rules\Uuidv4Rule;
+use App\Shared\Rules\Uuid4Rule;
 
 class ChurchFiltersRequest extends FormRequest
 {
@@ -18,7 +18,7 @@ class ChurchFiltersRequest extends FormRequest
 
         return $this->mergePaginationOrderRules([
             'name'   => $nullableString,
-            'cityId' => ['nullable', 'string', new Uuidv4Rule],
+            'cityId' => ['nullable', 'string', new Uuid4Rule],
         ]);
     }
 

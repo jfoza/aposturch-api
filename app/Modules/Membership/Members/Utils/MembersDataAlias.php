@@ -1,10 +1,8 @@
 <?php
 
-namespace App\Modules\Membership\Members\Views;
+namespace App\Modules\Membership\Members\Utils;
 
-use Illuminate\Database\Eloquent\Model;
-
-class MembersDataView extends Model
+class MembersDataAlias
 {
     const MEMBER_ID               = 'member_id';
     const MEMBER_CODE             = 'member_code';
@@ -13,6 +11,7 @@ class MembersDataView extends Model
     const USER_ID                 = 'user_id';
     const PERSON_ID               = 'person_id';
     const PROFILE_ID              = 'profile_id';
+    const ACTIVE                  = 'active';
     const PROFILE_DESCRIPTION     = 'profile_description';
     const PROFILE_UNIQUE_NAME     = 'profile_unique_name';
     const NAME                    = 'name';
@@ -26,13 +25,11 @@ class MembersDataView extends Model
     const USER_CITY_ID            = 'user_city_id';
     const USER_CITY_DESCRIPTION   = 'user_city_description';
     const UF = 'uf';
-    const USER_ACTIVE             = 'user_active';
     const USER_CREATED_AT         = 'user_created_at';
-    const CHURCHES                = 'churches';
+    const CHURCH                = 'church';
 
-    protected $table = 'membership.get_members_data_view';
-
-    protected $casts = [
-        self::CHURCHES => 'array',
-    ];
+    public static function alias(string $column): string
+    {
+        return " as {$column}";
+    }
 }

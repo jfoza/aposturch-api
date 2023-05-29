@@ -91,6 +91,13 @@ DO $$
         _rule56 uuid := uuid_generate_v4();
         _rule57 uuid := uuid_generate_v4();
         _rule58 uuid := uuid_generate_v4();
+        _rule59 uuid := uuid_generate_v4();
+        _rule60 uuid := uuid_generate_v4();
+        _rule61 uuid := uuid_generate_v4();
+        _rule62 uuid := uuid_generate_v4();
+        _rule63 uuid := uuid_generate_v4();
+        _rule64 uuid := uuid_generate_v4();
+        _rule65 uuid := uuid_generate_v4();
 
     BEGIN
         INSERT INTO membership.member_types(unique_name, description)
@@ -191,7 +198,19 @@ DO $$
             (_rule55, 'MEMBERSHIP_MODULE_MEMBERS_ASSISTANT_DETAILS_VIEW', 'MEMBERSHIP_MODULE_MEMBERS_ASSISTANT_DETAILS', 'VIEW'),
             (_rule56, 'MEMBERSHIP_MODULE_MEMBERS_ASSISTANT_INSERT',       'MEMBERSHIP_MODULE_MEMBERS_ASSISTANT', 'INSERT'),
             (_rule57, 'MEMBERSHIP_MODULE_MEMBERS_ASSISTANT_UPDATE',       'MEMBERSHIP_MODULE_MEMBERS_ASSISTANT', 'UPDATE'),
-            (_rule58, 'MEMBERSHIP_MODULE_MEMBERS_ASSISTANT_IMAGE_UPLOAD', 'MEMBERSHIP_MODULE_MEMBERS_ASSISTANT_IMAGE', 'UPLOAD');
+            (_rule58, 'MEMBERSHIP_MODULE_MEMBERS_ASSISTANT_IMAGE_UPLOAD', 'MEMBERSHIP_MODULE_MEMBERS_ASSISTANT_IMAGE', 'UPLOAD'),
+
+            (_rule59, 'USERS_ADMIN_MASTER_UPDATE_STATUS', 'USERS_ADMIN_MASTER_UPDATE_STATUS', 'UPDATE'),
+            (_rule60, 'USERS_ADMIN_CHURCH_UPDATE_STATUS', 'USERS_ADMIN_CHURCH_UPDATE_STATUS', 'UPDATE'),
+
+            (_rule61, 'MEMBERSHIP_MODULE_MEMBERS_PROFILES_FILTER_VIEW', 'MEMBERSHIP_MODULE_MEMBERS_PROFILES_FILTER', 'VIEW'),
+            (_rule62, 'MEMBERSHIP_MODULE_MEMBERS_CHURCHES_FILTER_ADMIN_MASTER_VIEW', 'MEMBERSHIP_MODULE_MEMBERS_CHURCHES_FILTER_ADMIN_MASTER', 'VIEW'),
+            (_rule63, 'MEMBERSHIP_MODULE_MEMBERS_CHURCHES_FILTER_VIEW', 'MEMBERSHIP_MODULE_MEMBERS_CHURCHES_FILTER', 'VIEW'),
+
+            (_rule64, 'MODULES_VIEW', 'MODULES', 'VIEW'),
+
+            (_rule65, 'USERS_EMAIL_ALREADY_EXISTS_VERIFICATION_VIEW', 'USERS_EMAIL_ALREADY_EXISTS_VERIFICATION', 'VIEW');
+
 
         INSERT INTO users.modules_rules (rule_id, module_id)
         VALUES
@@ -303,6 +322,11 @@ DO $$
             (_profile1, _rule44),
             (_profile1, _rule45),
             (_profile1, _rule46),
+            (_profile1, _rule59),
+            (_profile1, _rule61),
+            (_profile1, _rule62),
+            (_profile1, _rule64),
+            (_profile1, _rule65),
 
             -- ADMIN MASTER
             (_profile2, _rule1),
@@ -335,8 +359,14 @@ DO $$
             (_profile2, _rule44),
             (_profile2, _rule45),
             (_profile2, _rule46),
+            (_profile2, _rule59),
+            (_profile2, _rule61),
+            (_profile2, _rule62),
+            (_profile2, _rule64),
+            (_profile2, _rule65),
 
             -- ADMIN CHURCH
+            (_profile3, _rule1),
             (_profile3, _rule14),
             (_profile3, _rule17),
             (_profile3, _rule18),
@@ -347,6 +377,7 @@ DO $$
             (_profile3, _rule34),
             (_profile3, _rule35),
             (_profile3, _rule36),
+            (_profile3, _rule38),
             (_profile3, _rule39),
             (_profile3, _rule40),
             (_profile3, _rule41),
@@ -355,8 +386,14 @@ DO $$
             (_profile3, _rule48),
             (_profile3, _rule49),
             (_profile3, _rule50),
+            (_profile3, _rule60),
+            (_profile3, _rule61),
+            (_profile3, _rule63),
+            (_profile3, _rule64),
+            (_profile3, _rule65),
 
             -- ADMIN MODULE
+            (_profile4, _rule1),
             (_profile4, _rule15),
             (_profile4, _rule17),
             (_profile4, _rule18),
@@ -372,8 +409,13 @@ DO $$
             (_profile4, _rule52),
             (_profile4, _rule53),
             (_profile4, _rule54),
+            (_profile4, _rule61),
+            (_profile4, _rule63),
+            (_profile4, _rule64),
+            (_profile4, _rule65),
 
             -- ASSISTANT
+            (_profile5, _rule1),
             (_profile5, _rule16),
             (_profile5, _rule17),
             (_profile5, _rule18),
@@ -388,7 +430,11 @@ DO $$
             (_profile5, _rule55),
             (_profile5, _rule56),
             (_profile5, _rule57),
-            (_profile5, _rule58);
+            (_profile5, _rule58),
+            (_profile5, _rule61),
+            (_profile5, _rule63),
+            (_profile5, _rule64),
+            (_profile5, _rule65);
 
         -- MEMBER
     END $$;

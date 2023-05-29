@@ -2,7 +2,7 @@
 
 namespace Database\Factories\Modules\Membership\Church\Models;
 
-use App\Features\City\Cities\Infra\Models\City;
+use App\Features\City\Cities\Models\City;
 use App\Modules\Membership\Church\Models\Church;
 use App\Shared\Helpers\RandomStringHelper;
 use Illuminate\Database\Eloquent\Factories\Factory;

@@ -57,9 +57,9 @@ class FindAllProfilesByUserAbilityService extends Service implements FindAllProf
     private function findAllByAdminChurch()
     {
         return $this->profileRepository->findAllByUniqueName([
-            ProfileUniqueNameEnum::ADMIN_CHURCH->value,
             ProfileUniqueNameEnum::ADMIN_MODULE->value,
             ProfileUniqueNameEnum::ASSISTANT->value,
+            ProfileUniqueNameEnum::MEMBER->value,
         ]);
     }
 
@@ -68,6 +68,7 @@ class FindAllProfilesByUserAbilityService extends Service implements FindAllProf
         return $this->profileRepository->findAllByUniqueName([
             ProfileUniqueNameEnum::ADMIN_MODULE->value,
             ProfileUniqueNameEnum::ASSISTANT->value,
+            ProfileUniqueNameEnum::MEMBER->value,
         ]);
     }
 
@@ -75,6 +76,7 @@ class FindAllProfilesByUserAbilityService extends Service implements FindAllProf
     {
         return $this->profileRepository->findAllByUniqueName([
             ProfileUniqueNameEnum::ASSISTANT->value,
+            ProfileUniqueNameEnum::MEMBER->value,
         ]);
     }
 }

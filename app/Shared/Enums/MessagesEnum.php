@@ -36,6 +36,7 @@ enum MessagesEnum: string {
     case CODE_NOT_FOUND = 'Código não encontrado.';
     case INVALID_CODE = 'Código inválido.';
     case PROFILE_NOT_FOUND = 'Perfil não encontrado.';
+    case PROFILE_NOT_ALLOWED = 'Perfil não permitido.';
     case EMAIL_ALREADY_EXISTS = 'O E-mail informado já existe no sistema.';
     case PHONE_ALREADY_EXISTS = 'O número de telefone informado já existe no sistema.';
     case INVALID_CURRENT_PASSWORD = 'Senha atual inválida';

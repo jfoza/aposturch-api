@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Features\City\States\Infra\Models;
+namespace App\Features\City\States\Models;
 
 
 use App\Features\Base\Infra\Models\Register;

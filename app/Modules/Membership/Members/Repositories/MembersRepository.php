@@ -3,12 +3,14 @@
 namespace App\Modules\Membership\Members\Repositories;
 
 use App\Features\Base\Traits\BuilderTrait;
+use App\Features\Users\Profiles\Models\Profile;
+use App\Features\Users\Users\Models\User;
 use App\Modules\Membership\Members\Contracts\MembersRepositoryInterface;
 use App\Modules\Membership\Members\DTO\MemberDTO;
 use App\Modules\Membership\Members\DTO\MembersFiltersDTO;
 use App\Modules\Membership\Members\Models\Member;
 use App\Modules\Membership\Members\Traits\MembersListsTrait;
-use App\Modules\Membership\Members\Views\MembersDataView;
+use App\Modules\Membership\Members\Utils\MembersDataAlias;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 
@@ -22,7 +24,7 @@ class MembersRepository implements MembersRepositoryInterface
         $builder = $this
             ->baseQueryBuilderFilters($membersFiltersDTO)
             ->orderBy(
-                $membersFiltersDTO->paginationOrder->defineCustomColumnName(MembersDataView::USER_CREATED_AT),
+                $membersFiltersDTO->paginationOrder->defineCustomColumnName(Profile::tableField(Profile::ID)),
                 $membersFiltersDTO->paginationOrder->getColumnOrder()
             );
 
@@ -39,14 +41,14 @@ class MembersRepository implements MembersRepositoryInterface
     public function findByUserId(string $id): ?object
     {
         return $this->getBaseQueryBuilder()
-            ->where(MembersDataView::USER_ID, $id)
+            ->where(User::tableField(User::ID), $id)
             ->first();
     }
 
     public function findByIds(array $ids): Collection
     {
         return $this->getBaseQueryBuilder()
-            ->whereIn(MembersDataView::MEMBER_ID, $ids)
+            ->whereIn(Member::tableField(Member::ID), $ids)
             ->get();
     }
 
@@ -55,9 +57,9 @@ class MembersRepository implements MembersRepositoryInterface
         return $this->getBaseQueryBuilder()
             ->when(
                 isset($membersFiltersDTO->profileUniqueName),
-                fn($q) => $q->whereIn(MembersDataView::PROFILE_UNIQUE_NAME, $membersFiltersDTO->profileUniqueName)
+                fn($q) => $q->whereIn(Profile::tableField(Profile::UNIQUE_NAME), $membersFiltersDTO->profileUniqueName)
             )
-            ->where(MembersDataView::USER_ID, $userId)
+            ->where(User::tableField(User::ID), $userId)
             ->first();
     }
 

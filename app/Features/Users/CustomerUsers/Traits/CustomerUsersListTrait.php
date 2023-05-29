@@ -2,7 +2,7 @@
 
 namespace App\Features\Users\CustomerUsers\Traits;
 
-use App\Features\City\Cities\Infra\Models\City;
+use App\Features\City\Cities\Models\City;
 use App\Features\Persons\Infra\Models\Person;
 use App\Features\Users\CustomerUsers\DTO\CustomerUsersFiltersDTO;
 use App\Features\Users\CustomerUsers\Infra\Models\CustomerUser;

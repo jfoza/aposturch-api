@@ -3,7 +3,7 @@
 namespace App\Modules\Membership\Members\Requests;
 
 use App\Features\Base\Http\Requests\FormRequest;
-use App\Shared\Rules\Uuidv4Rule;
+use App\Shared\Rules\Uuid4Rule;
 
 class MembersUpdateRequest extends FormRequest
 {
@@ -11,7 +11,7 @@ class MembersUpdateRequest extends FormRequest
     {
         $requiredString = 'required|string';
         $nullableString = 'nullable|string';
-        $requiredUuid4 = ['string', 'required', new Uuidv4Rule];
+        $requiredUuid4 = ['string', 'required', new Uuid4Rule];
 
         return [
             'name'                 => $requiredString,

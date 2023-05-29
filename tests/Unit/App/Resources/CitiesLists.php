@@ -2,8 +2,8 @@
 
 namespace Tests\Unit\App\Resources;
 
-use App\Features\City\Cities\Infra\Models\City;
-use App\Features\City\States\Infra\Models\State;
+use App\Features\City\Cities\Models\City;
+use App\Features\City\States\Models\State;
 use Illuminate\Database\Eloquent\Collection;
 use Ramsey\Uuid\Uuid;
 

@@ -11,6 +11,8 @@ Route::get('/', [ChurchListController::class, 'index']);
 
 Route::get('/id/{id}', [ChurchListController::class, 'show'])->middleware([MiddlewareEnum::UUID]);
 
+Route::get('/user', [ChurchListController::class, 'showByUserLogged']);
+
 Route::get(
     '/unique-name/{uniqueName}',
     [ChurchListController::class, 'showByUniqueName'])

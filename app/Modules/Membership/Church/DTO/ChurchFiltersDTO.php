@@ -6,6 +6,7 @@ use App\Features\Base\DTO\FiltersDTO;
 
 class ChurchFiltersDTO extends FiltersDTO
 {
-    public string|null $name;
-    public string|null $cityId;
+    public ?string $name;
+    public ?string $cityId;
+    public ?array $churchIds;
 }

@@ -7,7 +7,7 @@ use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Ramsey\Uuid\Uuid;
 
-class Uuidv4Rule implements ValidationRule
+class Uuid4Rule implements ValidationRule
 {
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {

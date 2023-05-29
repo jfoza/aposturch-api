@@ -2,11 +2,8 @@
 
 namespace Tests\Feature\App\Modules\Membership\Church;
 
-use App\Features\City\Cities\Infra\Models\City;
+use App\Features\City\Cities\Models\City;
 use App\Modules\Membership\Church\Models\Church;
-use App\Modules\Membership\Members\Models\Member;
-use App\Modules\Membership\MemberTypes\Models\MemberType;
-use App\Shared\Enums\MemberTypesEnum;
 use App\Shared\Helpers\RandomStringHelper;
 use Ramsey\Uuid\Uuid;
 use Tests\Feature\BaseTestCase;

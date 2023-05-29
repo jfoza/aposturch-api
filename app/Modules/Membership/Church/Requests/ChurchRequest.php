@@ -5,7 +5,7 @@ namespace App\Modules\Membership\Church\Requests;
 use App\Features\Base\Http\Requests\FormRequest;
 use App\Shared\Rules\ManyUuidv4Rule;
 use App\Shared\Rules\StatesRule;
-use App\Shared\Rules\Uuidv4Rule;
+use App\Shared\Rules\Uuid4Rule;
 
 class ChurchRequest extends FormRequest
 {
@@ -34,7 +34,7 @@ class ChurchRequest extends FormRequest
             'complement'         => $nullableString,
             'district'           => $requiredString,
             'uf'                 => ['required', 'string', new StatesRule],
-            'cityId'             => ['required', 'string', new Uuidv4Rule],
+            'cityId'             => ['required', 'string', new Uuid4Rule],
             'active'             => $requiredBoolean,
         ];
     }

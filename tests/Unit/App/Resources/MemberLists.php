@@ -2,9 +2,8 @@
 
 namespace Tests\Unit\App\Resources;
 
-use App\Features\Users\Profiles\Enums\ProfileUniqueNameEnum;
 use App\Modules\Membership\Members\Models\Member;
-use App\Modules\Membership\Members\Views\MembersDataView;
+use App\Modules\Membership\Members\Utils\MembersDataAlias;
 use App\Shared\Libraries\Uuid;
 
 class MemberLists
@@ -19,20 +18,20 @@ class MemberLists
     public static function getMemberDataView(array $churches = []): object
     {
         return (object) ([
-            MembersDataView::MEMBER_ID => Uuid::uuid4Generate(),
-            MembersDataView::USER_ID => Uuid::uuid4Generate(),
-            MembersDataView::PERSON_ID => Uuid::uuid4Generate(),
-            MembersDataView::NAME => 'test',
-            MembersDataView::EMAIL => 'test@test.com',
-            MembersDataView::PHONE => '5198765217',
-            MembersDataView::ADDRESS => 'test',
-            MembersDataView::NUMBER_ADDRESS => 'test',
-            MembersDataView::COMPLEMENT => '',
-            MembersDataView::DISTRICT => 'test',
-            MembersDataView::ZIP_CODE => '00000000',
-            MembersDataView::USER_CITY_DESCRIPTION => Uuid::uuid4Generate(),
-            MembersDataView::UF => 'RS',
-            MembersDataView::CHURCHES => $churches
+            MembersDataAlias::MEMBER_ID => Uuid::uuid4Generate(),
+            MembersDataAlias::USER_ID => Uuid::uuid4Generate(),
+            MembersDataAlias::PERSON_ID => Uuid::uuid4Generate(),
+            MembersDataAlias::NAME => 'test',
+            MembersDataAlias::EMAIL => 'test@test.com',
+            MembersDataAlias::PHONE => '5198765217',
+            MembersDataAlias::ADDRESS => 'test',
+            MembersDataAlias::NUMBER_ADDRESS => 'test',
+            MembersDataAlias::COMPLEMENT => '',
+            MembersDataAlias::DISTRICT => 'test',
+            MembersDataAlias::ZIP_CODE => '00000000',
+            MembersDataAlias::USER_CITY_DESCRIPTION => Uuid::uuid4Generate(),
+            MembersDataAlias::UF => 'RS',
+            MembersDataAlias::CHURCHES => $churches
         ]);
     }
 }

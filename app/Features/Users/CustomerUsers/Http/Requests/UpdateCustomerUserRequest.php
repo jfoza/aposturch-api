@@ -3,7 +3,7 @@
 namespace App\Features\Users\CustomerUsers\Http\Requests;
 
 use App\Shared\Rules\PhoneRule;
-use App\Shared\Rules\Uuidv4Rule;
+use App\Shared\Rules\Uuid4Rule;
 use App\Shared\Rules\ZipCodeRule;
 use App\Features\Base\Http\Requests\FormRequest;
 
@@ -27,7 +27,7 @@ class UpdateCustomerUserRequest extends FormRequest
             'numberAddress'        => $requiredString,
             'complement'           => 'nullable|string',
             'district'             => $requiredString,
-            'cityId'               => ['required', new Uuidv4Rule],
+            'cityId'               => ['required', new Uuid4Rule],
             'uf'                   => $requiredString,
         ];
     }

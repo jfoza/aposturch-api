@@ -2,39 +2,14 @@
 
 namespace App\Features\Base\Services;
 
-use App\Exceptions\AppException;
+use App\Features\Base\Traits\UserLoggedData;
 use App\Shared\ACL\Policy;
-use App\Shared\Enums\MessagesEnum;
-use App\Shared\Utils\Auth;
-use Illuminate\Support\Collection;
-use Symfony\Component\HttpFoundation\Response;
-use Tymon\JWTAuth\Exceptions\UserNotDefinedException;
 
 abstract class Service
 {
+    use UserLoggedData;
+
     private Policy $policy;
-
-    /**
-     * @return Collection
-     * @throws UserNotDefinedException
-     * @throws AppException
-     */
-    public function getChurchesUserMember(): Collection
-    {
-        $user = Auth::authenticate();
-
-        if(empty($user->member->church))
-        {
-            throw new AppException(
-                MessagesEnum::USER_HAS_NO_CHURCH,
-                Response::HTTP_BAD_REQUEST
-            );
-        }
-
-        $churchesMember = $user->member->church;
-
-        return collect($churchesMember);
-    }
 
     /**
      * @return Policy

@@ -4,9 +4,11 @@ namespace App\Features\Users\Profiles\Providers;
 
 use App\Features\Base\Providers\AbstractServiceProvider;
 use App\Features\Users\Profiles\Contracts\FindAllProfilesByUserAbilityServiceInterface;
+use App\Features\Users\Profiles\Contracts\FindAllProfilesInListMembersServiceInterface;
 use App\Features\Users\Profiles\Contracts\ProfilesRepositoryInterface;
 use App\Features\Users\Profiles\Repositories\ProfilesRepository;
 use App\Features\Users\Profiles\Services\FindAllProfilesByUserAbilityService;
+use App\Features\Users\Profiles\Services\FindAllProfilesInListMembersService;
 
 class ProfilesBusinessProvider extends AbstractServiceProvider
 {
@@ -19,6 +21,11 @@ class ProfilesBusinessProvider extends AbstractServiceProvider
         $this->bind(
             FindAllProfilesByUserAbilityServiceInterface::class,
             FindAllProfilesByUserAbilityService::class
+        );
+
+        $this->bind(
+            FindAllProfilesInListMembersServiceInterface::class,
+            FindAllProfilesInListMembersService::class
         );
     }
 }

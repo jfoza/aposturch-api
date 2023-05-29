@@ -7,6 +7,7 @@ use App\Features\Base\Traits\PolicyGenerationTrait;
 use App\Modules\Membership\Church\Contracts\ChurchRepositoryInterface;
 use App\Modules\Membership\Church\Contracts\ChurchUploadImageServiceInterface;
 use App\Modules\Membership\Church\Contracts\CreateChurchServiceInterface;
+use App\Modules\Membership\Church\Contracts\FindAllChurchesByUserLoggedServiceInterface;
 use App\Modules\Membership\Church\Contracts\FindAllChurchesServiceInterface;
 use App\Modules\Membership\Church\Contracts\RemoveChurchServiceInterface;
 use App\Modules\Membership\Church\Contracts\ShowByChurchIdServiceInterface;
@@ -15,6 +16,7 @@ use App\Modules\Membership\Church\Contracts\UpdateChurchServiceInterface;
 use App\Modules\Membership\Church\Repositories\ChurchRepository;
 use App\Modules\Membership\Church\Services\ChurchUploadImageService;
 use App\Modules\Membership\Church\Services\CreateChurchService;
+use App\Modules\Membership\Church\Services\FindAllChurchesByUserLoggedService;
 use App\Modules\Membership\Church\Services\FindAllChurchesService;
 use App\Modules\Membership\Church\Services\RemoveChurchService;
 use App\Modules\Membership\Church\Services\ShowByChurchIdService;
@@ -34,6 +36,11 @@ class ChurchProvider extends AbstractServiceProvider
         $this->bind(
             FindAllChurchesServiceInterface::class,
             FindAllChurchesService::class
+        );
+
+        $this->bind(
+            FindAllChurchesByUserLoggedServiceInterface::class,
+            FindAllChurchesByUserLoggedService::class
         );
 
         $this->bind(

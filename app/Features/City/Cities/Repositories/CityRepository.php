@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Features\City\Cities\Infra\Repositories;
+namespace App\Features\City\Cities\Repositories;
 
 use App\Features\City\Cities\Contracts\CityRepositoryInterface;
-use App\Features\City\Cities\Infra\Models\City;
+use App\Features\City\Cities\Models\City;
 use App\Features\Persons\Infra\Models\Person;
 use App\Modules\Membership\Church\Models\Church;
 

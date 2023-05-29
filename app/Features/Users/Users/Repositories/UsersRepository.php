@@ -49,7 +49,7 @@ class UsersRepository implements UsersRepositoryInterface
 
     public function findByEmail(string $email): ?object
     {
-        return User::with(['adminUser', 'profile', 'module'])
+        return User::with(['adminUser', 'profile', 'module', 'member'])
             ->where(User::EMAIL, $email)
             ->first();
     }
@@ -128,5 +128,10 @@ class UsersRepository implements UsersRepositoryInterface
             UserChurch::USER_ID => $userId,
             UserChurch::CHURCH_ID => $churchId,
         ])->delete();
+    }
+
+    public function saveStatus(string $userId, bool $status)
+    {
+        return User::where(User::ID, $userId)->update([User::ACTIVE => $status]);
     }
 }

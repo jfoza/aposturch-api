@@ -21,10 +21,10 @@ Route::prefix('/auth')
 
 // PUBLIC
 Route::prefix('/cities')
-    ->group(app_path('Features/City/Cities/Http/Routes/citiesRoute.php'));
+    ->group(app_path('Features/City/Cities/Routes/citiesRoute.php'));
 
 Route::prefix('/states')
-    ->group(app_path('Features/City/States/Http/Routes/stateRoute.php'));
+    ->group(app_path('Features/City/States/Routes/stateRoute.php'));
 
 Route::prefix('/customers')
     ->group(app_path('Features/Users/CustomerUsers/Http/Routes/publicCustomerUsersRoute.php'));
@@ -47,6 +47,9 @@ Route::prefix('admin')
 
         Route::prefix('/profiles')
             ->group(app_path('Features/Users/Profiles/Routes/profilesRoute.php'));
+
+        Route::prefix('/modules')
+            ->group(app_path('Features/Module/Modules/Routes/modulesRoute.php'));
 
         // MODULES
         Route::prefix('/modules/membership/churches')

@@ -20,23 +20,17 @@ class ChurchRepository implements ChurchRepositoryInterface
     public function findAll(ChurchFiltersDTO $churchFiltersDTO): LengthAwarePaginator|Collection
     {
         $builder = Church::with(['city'])
-            ->when(isset($churchFiltersDTO->name),
-                    function($q) use($churchFiltersDTO) {
-                        return $q->where(
-                            Church::tableField(Church::NAME),
-                            'ilike',
-                            "%{$churchFiltersDTO->name}%"
-                        );
-                    }
-                )
-                ->when(isset($churchFiltersDTO->cityId),
-                    function($q) use($churchFiltersDTO) {
-                        return $q->where(
-                            Church::tableField(Church::CITY_ID),
-                            $churchFiltersDTO->cityId
-                        );
-                    }
-                );
+            ->when(
+                isset($churchFiltersDTO->name),
+                fn($q) => $q->where(Church::tableField(Church::NAME), 'ilike', "%{$churchFiltersDTO->name}%"))
+            ->when(
+                isset($churchFiltersDTO->cityId),
+                fn($q) => $q->where(Church::tableField(Church::CITY_ID), $churchFiltersDTO->cityId)
+            )
+            ->when(
+                isset($churchFiltersDTO->churchIds),
+                fn($q) => $q->whereIn(Church::tableField(Church::ID), $churchFiltersDTO->churchIds)
+            );
 
         return $this->paginateOrGet($builder, $churchFiltersDTO->paginationOrder);
     }

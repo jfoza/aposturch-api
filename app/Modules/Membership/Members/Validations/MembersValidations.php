@@ -8,10 +8,10 @@ use App\Features\Users\Profiles\Enums\ProfileUniqueNameEnum;
 use App\Features\Users\Users\Contracts\UsersRepositoryInterface;
 use App\Features\Users\Users\Validations\UsersValidations;
 use App\Modules\Membership\Members\Contracts\MembersRepositoryInterface;
+use App\Modules\Membership\Members\DTO\MembersFiltersDTO;
 use App\Shared\Enums\MessagesEnum;
 use Illuminate\Support\Collection;
 use Symfony\Component\HttpFoundation\Response;
-use Tymon\JWTAuth\Exceptions\UserNotDefinedException;
 
 class MembersValidations
 {
@@ -48,10 +48,11 @@ class MembersValidations
      */
     public static function memberExists(
         string $userId,
+        MembersFiltersDTO $membersFiltersDTO,
         MembersRepositoryInterface $membersRepository
     ): object
     {
-        if(!$userMember = $membersRepository->findByUserId($userId))
+        if(!$userMember = $membersRepository->findOneByFilters($userId, $membersFiltersDTO))
         {
             throw new AppException(
                 MessagesEnum::USER_NOT_FOUND,
@@ -109,11 +110,11 @@ class MembersValidations
      */
     public static function memberUserHasChurch(mixed $member, Collection $churchesUserMember): void
     {
-        $churchesCollect = collect($member->churches);
+        $churchesCollect = collect($member->church);
 
         $userLoggedChurchesId = $churchesUserMember->pluck('id')->toArray();
 
-        if(empty($churchesCollect->whereIn('church_id', $userLoggedChurchesId)->first()))
+        if(empty($churchesCollect->whereIn('id', $userLoggedChurchesId)->first()))
         {
             throw new AppException(
                 MessagesEnum::ACCESS_DENIED,

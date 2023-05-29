@@ -20,5 +20,6 @@ interface UsersRepositoryInterface
     public function saveProfiles(string $userId, array $profiles): void;
     public function saveModules(string $userId, array $modules): void;
     public function saveNewPassword(string $userId, string $password);
+    public function saveStatus(string $userId, bool $status);
     public function removeChurchRelationship(string $userId, string $churchId): void;
 }

@@ -77,7 +77,7 @@ class User
 
     public function member(): HasOne
     {
-        return $this->hasOne(Member::class);
+        return $this->hasOne(Member::class)->with(['church']);
     }
 
     public function session(): HasMany

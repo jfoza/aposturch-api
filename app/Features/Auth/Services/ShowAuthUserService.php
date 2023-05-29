@@ -53,7 +53,7 @@ class ShowAuthUserService implements ShowAuthUserServiceInterface
         {
             $this->supportAuth($profiles)        => $this->validateByAdminMaster(),
             $this->administrativeAuth($profiles) => $this->validateByAdminMaster(),
-            $this->boardAuth($profiles)          => $this->validateByBoard(),
+            $this->boardAuth($profiles)          => $this->validateByGeneralAdminProfiles(),
         };
 
         return $this->getAuthUserResponse();
@@ -73,12 +73,19 @@ class ShowAuthUserService implements ShowAuthUserServiceInterface
     /**
      * @throws AppException
      */
-    private function validateByBoard()
+    private function validateByGeneralAdminProfiles()
     {
         if(!$member = $this->user->member)
         {
             AuthValidations::dispatchLoginException();
         }
+
+        if(empty($member->church))
+        {
+            AuthValidations::memberUserNoHasChurch();
+        }
+
+        $this->authUserResponse->churches = $member->church;
     }
 
     private function getAuthUserResponse(): AuthUserResponse

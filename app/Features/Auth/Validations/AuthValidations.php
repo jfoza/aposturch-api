@@ -50,15 +50,12 @@ class AuthValidations
     /**
      * @throws AppException
      */
-    public static function memberUserHasChurch(mixed $user): void
+    public static function memberUserNoHasChurch(): void
     {
-        if($user->member->church->isEmpty())
-        {
-            throw new AppException(
-                MessagesEnum::USER_HAS_NO_CHURCH,
-                Response::HTTP_UNAUTHORIZED
-            );
-        }
+        throw new AppException(
+            MessagesEnum::USER_PAYLOAD_HAS_NO_CHURCH,
+            Response::HTTP_UNAUTHORIZED
+        );
     }
 
     /**

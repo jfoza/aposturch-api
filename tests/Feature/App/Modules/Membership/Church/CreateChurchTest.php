@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\App\Modules\Membership\Church;
 
-use App\Features\City\Cities\Infra\Models\City;
+use App\Features\City\Cities\Models\City;
 use App\Shared\Helpers\RandomStringHelper;
 use Tests\Feature\BaseTestCase;
 use Tests\Feature\Resources\Modules\Churches\ChurchesDataProviders;
