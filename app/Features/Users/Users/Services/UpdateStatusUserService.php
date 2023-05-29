@@ -52,10 +52,12 @@ class UpdateStatusUserService extends Service implements UpdateStatusUserService
      */
     private function updateStatusByAdminMaster(): array
     {
-        UsersValidations::validateUserExistsById(
+        $user = UsersValidations::validateUserExistsById(
             $this->userId,
             $this->usersRepository
         );
+
+        $this->status = !$user->active;
 
         return $this->handleUpdateStatus();
     }
@@ -76,18 +78,18 @@ class UpdateStatusUserService extends Service implements UpdateStatusUserService
             ];
         }
 
-        $member = MembersValidations::memberExists(
+        $userMember = MembersValidations::memberExists(
             $this->userId,
             $this->membersFiltersDTO,
             $this->membersRepository
         );
 
         MembersValidations::memberUserHasChurch(
-            $member,
+            $userMember,
             $this->getChurchesUserMember()
         );
 
-        $this->status = !$member->active;
+        $this->status = !$userMember->active;
 
         return $this->handleUpdateStatus();
     }

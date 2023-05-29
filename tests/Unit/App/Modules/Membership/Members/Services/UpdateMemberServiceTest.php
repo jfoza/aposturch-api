@@ -29,7 +29,6 @@ use Tests\TestCase;
 use Tests\Unit\App\Modules\Membership\Members\Services\Providers\MembersProvidersTrait;
 use Tests\Unit\App\Resources\CitiesLists;
 use Tests\Unit\App\Resources\MemberLists;
-use Tests\Unit\App\Resources\MembersLists;
 use Tests\Unit\App\Resources\UsersLists;
 use Tymon\JWTAuth\Exceptions\UserNotDefinedException;
 use Tymon\JWTAuth\Facades\JWTAuth;
@@ -56,8 +55,8 @@ class UpdateMemberServiceTest extends TestCase
         $this->cityId    = Uuid::uuid4Generate();
         $this->churchId  = Uuid::uuid4Generate();
 
-        JWTAuth::shouldReceive('user')->andreturn(MembersLists::getMemberUserLogged($this->defaultChurchId));
-        Auth::shouldReceive('user')->andreturn(MembersLists::getMemberUserLogged($this->defaultChurchId));
+        JWTAuth::shouldReceive('user')->andreturn(MemberLists::getMemberUserLogged($this->defaultChurchId));
+        Auth::shouldReceive('user')->andreturn(MemberLists::getMemberUserLogged($this->defaultChurchId));
 
         JWTAuth::shouldReceive('id')->andreturn($this->userId);
         Auth::shouldReceive('id')->andreturn($this->userId);

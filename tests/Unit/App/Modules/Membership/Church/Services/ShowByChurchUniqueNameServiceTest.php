@@ -13,7 +13,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 use Tests\Unit\App\Resources\ChurchLists;
-use Tests\Unit\App\Resources\MembersLists;
+use Tests\Unit\App\Resources\MemberLists;
 use Tymon\JWTAuth\Exceptions\UserNotDefinedException;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
@@ -31,8 +31,8 @@ class ShowByChurchUniqueNameServiceTest extends TestCase
 
         $this->churchUniqueName = 'church-test-unique-name';
 
-        JWTAuth::shouldReceive('user')->andreturn(MembersLists::getMemberUserLogged(null, $this->churchUniqueName));
-        Auth::shouldReceive('user')->andreturn(MembersLists::getMemberUserLogged(null, $this->churchUniqueName));
+        JWTAuth::shouldReceive('user')->andreturn(MemberLists::getMemberUserLogged(null, $this->churchUniqueName));
+        Auth::shouldReceive('user')->andreturn(MemberLists::getMemberUserLogged(null, $this->churchUniqueName));
     }
 
     public function getShowByChurchUniqueNameService(): ShowByChurchUniqueNameService

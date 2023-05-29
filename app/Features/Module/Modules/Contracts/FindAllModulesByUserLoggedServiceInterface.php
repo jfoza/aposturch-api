@@ -6,5 +6,5 @@ use Illuminate\Support\Collection;
 
 interface FindAllModulesByUserLoggedServiceInterface
 {
-    public function execute(): Collection;
+    public function execute(): array;
 }

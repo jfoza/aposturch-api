@@ -14,7 +14,7 @@ use Ramsey\Uuid\Nonstandard\Uuid;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 use Tests\Unit\App\Resources\ChurchLists;
-use Tests\Unit\App\Resources\MembersLists;
+use Tests\Unit\App\Resources\MemberLists;
 use Tymon\JWTAuth\Exceptions\UserNotDefinedException;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
@@ -32,8 +32,8 @@ class ShowByChurchIdServiceTest extends TestCase
 
         $this->churchId = Uuid::uuid4()->toString();
 
-        JWTAuth::shouldReceive('user')->andreturn(MembersLists::getMemberUserLogged($this->churchId));
-        Auth::shouldReceive('user')->andreturn(MembersLists::getMemberUserLogged($this->churchId));
+        JWTAuth::shouldReceive('user')->andreturn(MemberLists::getMemberUserLogged($this->churchId));
+        Auth::shouldReceive('user')->andreturn(MemberLists::getMemberUserLogged($this->churchId));
     }
 
     public function getShowByChurchIdService(): ShowByChurchIdService

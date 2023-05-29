@@ -20,7 +20,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 use Tests\Unit\App\Resources\ChurchLists;
 use Tests\Unit\App\Resources\CitiesLists;
-use Tests\Unit\App\Resources\MembersLists;
+use Tests\Unit\App\Resources\MemberLists;
 use Tymon\JWTAuth\Exceptions\UserNotDefinedException;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
@@ -43,8 +43,8 @@ class UpdateChurchServiceTest extends TestCase
         $this->churchDtoMock->cityId = Uuid::uuid4()->toString();
         $this->churchDtoMock->name = RandomStringHelper::alnumGenerate(6);
 
-        JWTAuth::shouldReceive('user')->andreturn(MembersLists::getMemberUserLogged($this->churchDtoMock->id));
-        Auth::shouldReceive('user')->andreturn(MembersLists::getMemberUserLogged($this->churchDtoMock->id));
+        JWTAuth::shouldReceive('user')->andreturn(MemberLists::getMemberUserLogged($this->churchDtoMock->id));
+        Auth::shouldReceive('user')->andreturn(MemberLists::getMemberUserLogged($this->churchDtoMock->id));
     }
 
     public function getUpdateChurchService(): UpdateChurchService

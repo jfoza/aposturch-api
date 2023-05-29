@@ -6,7 +6,6 @@ use App\Exceptions\AppException;
 use App\Features\Base\Services\Service;
 use App\Features\Module\Modules\Contracts\FindAllModulesByUserLoggedServiceInterface;
 use App\Shared\Enums\RulesEnum;
-use Illuminate\Support\Collection;
 use Tymon\JWTAuth\Exceptions\UserNotDefinedException;
 
 class FindAllModulesByUserLoggedService extends Service implements FindAllModulesByUserLoggedServiceInterface
@@ -14,10 +13,14 @@ class FindAllModulesByUserLoggedService extends Service implements FindAllModule
     /**
      * @throws UserNotDefinedException|AppException
      */
-    public function execute(): Collection
+    public function execute(): array
     {
         $this->getPolicy()->havePermission(RulesEnum::MODULES_VIEW->value);
 
-        return $this->getModulesUserMember();
+        $activeModules = $this->getModulesUserMember()->filter(
+            fn(object $value) => $value->active == true
+        );
+
+        return $activeModules->all();
     }
 }

@@ -28,6 +28,10 @@ class ChurchRepository implements ChurchRepositoryInterface
                 fn($q) => $q->where(Church::tableField(Church::CITY_ID), $churchFiltersDTO->cityId)
             )
             ->when(
+                isset($churchFiltersDTO->active),
+                fn($q) => $q->where(Church::tableField(Church::ACTIVE), $churchFiltersDTO->active)
+            )
+            ->when(
                 isset($churchFiltersDTO->churchIds),
                 fn($q) => $q->whereIn(Church::tableField(Church::ID), $churchFiltersDTO->churchIds)
             );

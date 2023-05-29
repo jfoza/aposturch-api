@@ -34,7 +34,6 @@ use Tests\TestCase;
 use Tests\Unit\App\Resources\ChurchLists;
 use Tests\Unit\App\Resources\CitiesLists;
 use Tests\Unit\App\Resources\MemberLists;
-use Tests\Unit\App\Resources\MembersLists;
 use Tests\Unit\App\Resources\ModulesLists;
 use Tests\Unit\App\Resources\ProfilesLists;
 use Tests\Unit\App\Resources\UsersLists;
@@ -65,8 +64,8 @@ class CreateMemberServiceTest extends TestCase
         $this->churchId  = Uuid::uuid4Generate();
         $this->moduleId  = Uuid::uuid4Generate();
 
-        JWTAuth::shouldReceive('user')->andreturn(MembersLists::getMemberUserLogged($this->churchId));
-        Auth::shouldReceive('user')->andreturn(MembersLists::getMemberUserLogged($this->churchId));
+        JWTAuth::shouldReceive('user')->andreturn(MemberLists::getMemberUserLogged($this->churchId));
+        Auth::shouldReceive('user')->andreturn(MemberLists::getMemberUserLogged($this->churchId));
 
         $this->createUserDtoMock();
         $this->createMocks();

@@ -51,6 +51,8 @@ class FindAllChurchesByUserLoggedService extends Service implements FindAllChurc
      */
     private function findAllByGeneral(): LengthAwarePaginator|Collection
     {
+        $this->churchFiltersDTO->active = true;
+
         $this->churchFiltersDTO->churchIds = $this->getChurchesUserMember()->pluck(Church::ID)->toArray();
 
         return $this->churchRepository->findAll($this->churchFiltersDTO);
