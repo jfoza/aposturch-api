@@ -2,8 +2,8 @@
 
 namespace Tests\Unit\App\Resources;
 
+use App\Modules\Membership\Members\Enums\MembersDataAliasEnum;
 use App\Modules\Membership\Members\Models\Member;
-use App\Modules\Membership\Members\Utils\MembersDataAlias;
 use App\Shared\Libraries\Uuid;
 
 class MemberLists
@@ -18,20 +18,20 @@ class MemberLists
     public static function getMemberDataView(array $churches = []): object
     {
         return (object) ([
-            MembersDataAlias::MEMBER_ID => Uuid::uuid4Generate(),
-            MembersDataAlias::USER_ID => Uuid::uuid4Generate(),
-            MembersDataAlias::PERSON_ID => Uuid::uuid4Generate(),
-            MembersDataAlias::NAME => 'test',
-            MembersDataAlias::EMAIL => 'test@test.com',
-            MembersDataAlias::PHONE => '5198765217',
-            MembersDataAlias::ADDRESS => 'test',
-            MembersDataAlias::NUMBER_ADDRESS => 'test',
-            MembersDataAlias::COMPLEMENT => '',
-            MembersDataAlias::DISTRICT => 'test',
-            MembersDataAlias::ZIP_CODE => '00000000',
-            MembersDataAlias::USER_CITY_DESCRIPTION => Uuid::uuid4Generate(),
-            MembersDataAlias::UF => 'RS',
-            MembersDataAlias::CHURCHES => $churches
+            MembersDataAliasEnum::MEMBER_ID => Uuid::uuid4Generate(),
+            MembersDataAliasEnum::USER_ID => Uuid::uuid4Generate(),
+            MembersDataAliasEnum::PERSON_ID => Uuid::uuid4Generate(),
+            MembersDataAliasEnum::NAME => 'test',
+            MembersDataAliasEnum::EMAIL => 'test@test.com',
+            MembersDataAliasEnum::PHONE => '5198765217',
+            MembersDataAliasEnum::ADDRESS => 'test',
+            MembersDataAliasEnum::NUMBER_ADDRESS => 'test',
+            MembersDataAliasEnum::COMPLEMENT => '',
+            MembersDataAliasEnum::DISTRICT => 'test',
+            MembersDataAliasEnum::ZIP_CODE => '00000000',
+            MembersDataAliasEnum::USER_CITY_DESCRIPTION => Uuid::uuid4Generate(),
+            MembersDataAliasEnum::UF => 'RS',
+            'church' => $churches
         ]);
     }
 }

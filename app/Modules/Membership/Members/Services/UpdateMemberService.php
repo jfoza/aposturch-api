@@ -195,7 +195,7 @@ class UpdateMemberService extends Service implements UpdateMemberServiceInterfac
 
             PolicyCache::invalidatePolicy($this->userDTO->id);
 
-//            Transaction::commit();
+            Transaction::commit();
 
             return new UpdateMemberResponse(
                 $user->id,

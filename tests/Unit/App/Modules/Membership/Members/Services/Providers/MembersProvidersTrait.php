@@ -3,6 +3,7 @@
 namespace Tests\Unit\App\Modules\Membership\Members\Services\Providers;
 
 use App\Features\Users\Profiles\Enums\ProfileUniqueNameEnum;
+use App\Modules\Membership\Church\Models\Church;
 use App\Shared\Enums\RulesEnum;
 
 trait MembersProvidersTrait
@@ -15,42 +16,42 @@ trait MembersProvidersTrait
             'By Admin Church' => [
                 RulesEnum::MEMBERSHIP_MODULE_MEMBERS_ADMIN_CHURCH_UPDATE->value,
                 [
-                    [
-                        "church_id" => $this->defaultChurchId,
-                        "church_name" => "Igreja Teste 1",
-                        "church_unique_name" => "igreja-teste-1",
-                        "church_phone" => "51999999999",
-                        "church_email" => "ibvcx@gmail.com",
-                        "church_active" => true,
-                    ]
+                    (object)([
+                        Church::ID          => $this->defaultChurchId,
+                        Church::NAME        => "Igreja Teste 1",
+                        Church::UNIQUE_NAME => "igreja-teste-1",
+                        Church::PHONE       => "51999999999",
+                        Church::EMAIL       => "ibvcx@gmail.com",
+                        Church::ACTIVE      => true,
+                    ])
                 ]
             ],
 
             'By Admin Module' => [
                 RulesEnum::MEMBERSHIP_MODULE_MEMBERS_ADMIN_MODULE_UPDATE->value,
                 [
-                    [
-                        "church_id" => $this->defaultChurchId,
-                        "church_name" => "Igreja Teste 1",
-                        "church_unique_name" => "igreja-teste-1",
-                        "church_phone" => "51999999999",
-                        "church_email" => "ibvcx@gmail.com",
-                        "church_active" => true,
-                    ]
+                    (object)([
+                        Church::ID          => $this->defaultChurchId,
+                        Church::NAME        => "Igreja Teste 1",
+                        Church::UNIQUE_NAME => "igreja-teste-1",
+                        Church::PHONE       => "51999999999",
+                        Church::EMAIL       => "ibvcx@gmail.com",
+                        Church::ACTIVE      => true,
+                    ])
                 ]
             ],
 
             'By Assistant' => [
                 RulesEnum::MEMBERSHIP_MODULE_MEMBERS_ASSISTANT_UPDATE->value,
                 [
-                    [
-                        "church_id" => $this->defaultChurchId,
-                        "church_name" => "Igreja Teste 1",
-                        "church_unique_name" => "igreja-teste-1",
-                        "church_phone" => "51999999999",
-                        "church_email" => "ibvcx@gmail.com",
-                        "church_active" => true,
-                    ]
+                    (object)([
+                        Church::ID          => $this->defaultChurchId,
+                        Church::NAME        => "Igreja Teste 1",
+                        Church::UNIQUE_NAME => "igreja-teste-1",
+                        Church::PHONE       => "51999999999",
+                        Church::EMAIL       => "ibvcx@gmail.com",
+                        Church::ACTIVE      => true,
+                    ])
                 ]
             ],
         ];
@@ -62,56 +63,56 @@ trait MembersProvidersTrait
             'By Admin Master' => [
                 RulesEnum::MEMBERSHIP_MODULE_MEMBERS_ADMIN_MASTER_UPDATE->value,
                 [
-                    [
-                        "church_id" => $this->defaultChurchId,
-                        "church_name" => "Igreja Teste 1",
-                        "church_unique_name" => "igreja-teste-1",
-                        "church_phone" => "51999999999",
-                        "church_email" => "ibvcx@gmail.com",
-                        "church_active" => true,
-                    ]
+                    (object)([
+                        Church::ID          => $this->defaultChurchId,
+                        Church::NAME        => "Igreja Teste 1",
+                        Church::UNIQUE_NAME => "igreja-teste-1",
+                        Church::PHONE       => "51999999999",
+                        Church::EMAIL       => "ibvcx@gmail.com",
+                        Church::ACTIVE      => true,
+                    ])
                 ]
             ],
 
             'By Admin Church' => [
                 RulesEnum::MEMBERSHIP_MODULE_MEMBERS_ADMIN_CHURCH_UPDATE->value,
                 [
-                    [
-                        "church_id" => $this->defaultChurchId,
-                        "church_name" => "Igreja Teste 1",
-                        "church_unique_name" => "igreja-teste-1",
-                        "church_phone" => "51999999999",
-                        "church_email" => "ibvcx@gmail.com",
-                        "church_active" => true,
-                    ]
+                    (object)([
+                        Church::ID          => $this->defaultChurchId,
+                        Church::NAME        => "Igreja Teste 1",
+                        Church::UNIQUE_NAME => "igreja-teste-1",
+                        Church::PHONE       => "51999999999",
+                        Church::EMAIL       => "ibvcx@gmail.com",
+                        Church::ACTIVE      => true,
+                    ])
                 ]
             ],
 
             'By Admin Module' => [
                 RulesEnum::MEMBERSHIP_MODULE_MEMBERS_ADMIN_MODULE_UPDATE->value,
                 [
-                    [
-                        "church_id" => $this->defaultChurchId,
-                        "church_name" => "Igreja Teste 1",
-                        "church_unique_name" => "igreja-teste-1",
-                        "church_phone" => "51999999999",
-                        "church_email" => "ibvcx@gmail.com",
-                        "church_active" => true,
-                    ]
+                    (object)([
+                        Church::ID          => $this->defaultChurchId,
+                        Church::NAME        => "Igreja Teste 1",
+                        Church::UNIQUE_NAME => "igreja-teste-1",
+                        Church::PHONE       => "51999999999",
+                        Church::EMAIL       => "ibvcx@gmail.com",
+                        Church::ACTIVE      => true,
+                    ])
                 ]
             ],
 
             'By Assistant' => [
                 RulesEnum::MEMBERSHIP_MODULE_MEMBERS_ASSISTANT_UPDATE->value,
                 [
-                    [
-                        "church_id" => $this->defaultChurchId,
-                        "church_name" => "Igreja Teste 1",
-                        "church_unique_name" => "igreja-teste-1",
-                        "church_phone" => "51999999999",
-                        "church_email" => "ibvcx@gmail.com",
-                        "church_active" => true,
-                    ]
+                    (object)([
+                        Church::ID          => $this->defaultChurchId,
+                        Church::NAME        => "Igreja Teste 1",
+                        Church::UNIQUE_NAME => "igreja-teste-1",
+                        Church::PHONE       => "51999999999",
+                        Church::EMAIL       => "ibvcx@gmail.com",
+                        Church::ACTIVE      => true,
+                    ])
                 ]
             ],
         ];

@@ -10,7 +10,6 @@ use App\Modules\Membership\Members\DTO\MemberDTO;
 use App\Modules\Membership\Members\DTO\MembersFiltersDTO;
 use App\Modules\Membership\Members\Models\Member;
 use App\Modules\Membership\Members\Traits\MembersListsTrait;
-use App\Modules\Membership\Members\Utils\MembersDataAlias;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 

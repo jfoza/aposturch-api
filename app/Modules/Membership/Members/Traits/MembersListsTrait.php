@@ -9,6 +9,7 @@ use App\Features\Users\ProfilesUsers\Infra\Models\ProfileUser;
 use App\Features\Users\Users\Models\User;
 use App\Modules\Membership\Church\Models\Church;
 use App\Modules\Membership\Members\DTO\MembersFiltersDTO;
+use App\Modules\Membership\Members\Enums\MembersDataAliasEnum;
 use App\Modules\Membership\Members\Models\Member;
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Illuminate\Database\Query\Builder as QueryBuilder;
@@ -87,26 +88,26 @@ trait MembersListsTrait
     {
         return [
             Member::tableField(Member::ID),
-            Member::tableField(Member::ID)             .' as member_id',
-            Member::tableField(Member::CODE)           .' as member_code',
-            User::tableField(User::ID)                 .' as user_id',
-            User::tableField(User::NAME)               .' as name',
-            User::tableField(User::EMAIL)              .' as email',
-            User::tableField(User::ACTIVE)             .' as active',
-            User::tableField(User::CREATED_AT)         .' as user_created_at',
-            Profile::tableField(Profile::ID)           .' as profile_id',
-            Profile::tableField(Profile::DESCRIPTION)  .' as profile_description',
-            Profile::tableField(Profile::UNIQUE_NAME)  .' as profile_unique_name',
-            Person::tableField(Person::ID)             .' as person_id',
-            Person::tableField(Person::PHONE)          .' as phone',
-            Person::tableField(Person::ADDRESS)        .' as address',
-            Person::tableField(Person::NUMBER_ADDRESS) .' as number_address',
-            Person::tableField(Person::COMPLEMENT)     .' as complement',
-            Person::tableField(Person::DISTRICT)       .' as district',
-            Person::tableField(Person::ZIP_CODE)       .' as zip_code',
-            Person::tableField(Person::CITY_ID)        .' as user_city_id',
-            City::tableField(City::DESCRIPTION)        .' as user_city_description',
-            City::tableField(City::UF)                 .' as uf',
+            Member::tableField(Member::ID)             .' as '.MembersDataAliasEnum::MEMBER_ID,
+            Member::tableField(Member::CODE)           .' as '.MembersDataAliasEnum::MEMBER_CODE,
+            User::tableField(User::ID)                 .' as '.MembersDataAliasEnum::USER_ID,
+            User::tableField(User::NAME)               .' as '.MembersDataAliasEnum::NAME,
+            User::tableField(User::EMAIL)              .' as '.MembersDataAliasEnum::EMAIL,
+            User::tableField(User::ACTIVE)             .' as '.MembersDataAliasEnum::ACTIVE,
+            User::tableField(User::CREATED_AT)         .' as '.MembersDataAliasEnum::USER_CREATED_AT,
+            Profile::tableField(Profile::ID)           .' as '.MembersDataAliasEnum::PROFILE_ID,
+            Profile::tableField(Profile::DESCRIPTION)  .' as '.MembersDataAliasEnum::PROFILE_DESCRIPTION,
+            Profile::tableField(Profile::UNIQUE_NAME)  .' as '.MembersDataAliasEnum::PROFILE_UNIQUE_NAME,
+            Person::tableField(Person::ID)             .' as '.MembersDataAliasEnum::PERSON_ID,
+            Person::tableField(Person::PHONE)          .' as '.MembersDataAliasEnum::PHONE,
+            Person::tableField(Person::ADDRESS)        .' as '.MembersDataAliasEnum::ADDRESS,
+            Person::tableField(Person::NUMBER_ADDRESS) .' as '.MembersDataAliasEnum::NUMBER_ADDRESS,
+            Person::tableField(Person::COMPLEMENT)     .' as '.MembersDataAliasEnum::COMPLEMENT,
+            Person::tableField(Person::DISTRICT)       .' as '.MembersDataAliasEnum::DISTRICT,
+            Person::tableField(Person::ZIP_CODE)       .' as '.MembersDataAliasEnum::ZIP_CODE,
+            Person::tableField(Person::CITY_ID)        .' as '.MembersDataAliasEnum::USER_CITY_ID,
+            City::tableField(City::DESCRIPTION)        .' as '.MembersDataAliasEnum::USER_CITY_DESCRIPTION,
+            City::tableField(City::UF)                 .' as '.MembersDataAliasEnum::UF,
         ];
     }
 }

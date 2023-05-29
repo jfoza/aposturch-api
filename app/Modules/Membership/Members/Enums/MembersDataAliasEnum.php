@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Modules\Membership\Members\Utils;
+namespace App\Modules\Membership\Members\Enums;
 
-class MembersDataAlias
+enum MembersDataAliasEnum
 {
     const MEMBER_ID               = 'member_id';
     const MEMBER_CODE             = 'member_code';
@@ -26,10 +26,4 @@ class MembersDataAlias
     const USER_CITY_DESCRIPTION   = 'user_city_description';
     const UF = 'uf';
     const USER_CREATED_AT         = 'user_created_at';
-    const CHURCH                = 'church';
-
-    public static function alias(string $column): string
-    {
-        return " as {$column}";
-    }
 }

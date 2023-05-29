@@ -110,11 +110,11 @@ class MembersValidations
      */
     public static function memberUserHasChurch(mixed $member, Collection $churchesUserMember): void
     {
-        $churchesCollect = collect($member->church);
+        $churchesPayload = collect($member->church);
 
         $userLoggedChurchesId = $churchesUserMember->pluck('id')->toArray();
 
-        if(empty($churchesCollect->whereIn('id', $userLoggedChurchesId)->first()))
+        if(empty($churchesPayload->whereIn('id', $userLoggedChurchesId)->first()))
         {
             throw new AppException(
                 MessagesEnum::ACCESS_DENIED,

@@ -370,7 +370,7 @@ class UpdateMemberServiceTest extends TestCase
 
         $updateMemberService->setPolicy(new Policy([$rule]));
 
-        $churches[0]['church_id'] = Uuid::uuid4Generate();
+        $churches[0]->id = Uuid::uuid4Generate();
 
         $this
             ->membersRepositoryMock
