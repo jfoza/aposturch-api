@@ -33,7 +33,7 @@ class FindAllAdminUsersService extends Service implements FindAllAdminUsersServi
             $policy->haveRule(RulesEnum::ADMIN_USERS_SUPPORT_VIEW->value)      => $this->findAllBySupport(),
             $policy->haveRule(RulesEnum::ADMIN_USERS_ADMIN_MASTER_VIEW->value) => $this->findAllByAdminMaster(),
 
-            default  => $policy->dispatchErrorForbidden(),
+            default  => $policy->dispatchForbiddenError(),
         };
     }
 

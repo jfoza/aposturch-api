@@ -24,7 +24,7 @@ class Policy
     ): void
     {
         if(!$this->haveRule($rule)) {
-            $this->dispatchErrorForbidden($isModule);
+            $this->dispatchForbiddenError($isModule);
         }
     }
 
@@ -40,7 +40,7 @@ class Policy
     /**
      * @throws AppException
      */
-    public function dispatchErrorForbidden(bool $isModule = false)
+    public function dispatchForbiddenError(bool $isModule = false)
     {
         throw new AppException(
             $isModule ? MessagesEnum::MODULE_NOT_AUTHORIZED : MessagesEnum::NOT_AUTHORIZED,

@@ -45,7 +45,7 @@ class ChurchUploadImageService extends Service implements ChurchUploadImageServi
             $policy->haveRule(RulesEnum::MEMBERSHIP_MODULE_CHURCH_ADMIN_MASTER_IMAGE_UPLOAD->value) => $this->uploadByAdminMaster(),
             $policy->haveRule(RulesEnum::MEMBERSHIP_MODULE_CHURCH_ADMIN_CHURCH_IMAGE_UPLOAD->value) => $this->uploadByAdminChurch(),
 
-            default => $policy->dispatchErrorForbidden()
+            default => $policy->dispatchForbiddenError()
         };
     }
 

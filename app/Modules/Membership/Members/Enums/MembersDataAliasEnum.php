@@ -16,6 +16,7 @@ enum MembersDataAliasEnum
     const PROFILE_UNIQUE_NAME     = 'profile_unique_name';
     const NAME                    = 'name';
     const EMAIL                   = 'email';
+    const AVATAR_ID               = 'avatar_id';
     const PHONE                   = 'phone';
     const ADDRESS                 = 'address';
     const NUMBER_ADDRESS          = 'number_address';

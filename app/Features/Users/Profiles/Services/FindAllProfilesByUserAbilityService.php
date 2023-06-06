@@ -29,7 +29,7 @@ class FindAllProfilesByUserAbilityService extends Service implements FindAllProf
             $policy->haveRule(RulesEnum::PROFILES_ADMIN_MODULE_VIEW->value) => $this->findAllByAdminModule(),
             $policy->haveRule(RulesEnum::PROFILES_ASSISTANT_VIEW->value)    => $this->findAllByAssistant(),
 
-            default  => $policy->dispatchErrorForbidden(),
+            default  => $policy->dispatchForbiddenError(),
         };
     }
 

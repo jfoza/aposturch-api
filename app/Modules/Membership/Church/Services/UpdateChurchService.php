@@ -41,7 +41,7 @@ class UpdateChurchService extends Service implements UpdateChurchServiceInterfac
             $policy->haveRule(RulesEnum::MEMBERSHIP_MODULE_CHURCH_ADMIN_MASTER_UPDATE->value) => $this->updateByAdminMaster(),
             $policy->haveRule(RulesEnum::MEMBERSHIP_MODULE_CHURCH_ADMIN_CHURCH_UPDATE->value) => $this->updateByAdminChurch(),
 
-            default => $policy->dispatchErrorForbidden()
+            default => $policy->dispatchForbiddenError()
         };
     }
 

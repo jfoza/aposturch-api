@@ -42,7 +42,7 @@ class CreateAdminUserService extends Service implements CreateAdminUserServiceIn
             $policy->haveRule(RulesEnum::ADMIN_USERS_SUPPORT_INSERT->value)      => $this->createBySupport(),
             $policy->haveRule(RulesEnum::ADMIN_USERS_ADMIN_MASTER_INSERT->value) => $this->createByAdminMaster(),
 
-            default  => $policy->dispatchErrorForbidden(),
+            default  => $policy->dispatchForbiddenError(),
         };
     }
 

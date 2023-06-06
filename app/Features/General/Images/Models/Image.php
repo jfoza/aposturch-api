@@ -3,10 +3,12 @@
 namespace App\Features\General\Images\Models;
 
 use App\Features\Base\Infra\Models\Register;
+use App\Features\Users\Users\Models\User;
 use App\Modules\Membership\Church\Models\Church;
 use App\Modules\Membership\ChurchesImages\Models\ChurchImage;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Image extends Register
 {
@@ -28,6 +30,11 @@ class Image extends Register
         self::PATH,
         self::TYPE,
     ];
+
+    public function user(): HasOne
+    {
+        return $this->hasOne(User::class);
+    }
 
     public function church(): BelongsToMany
     {

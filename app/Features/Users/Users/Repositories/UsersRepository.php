@@ -122,16 +122,13 @@ class UsersRepository implements UsersRepositoryInterface
             ->update([User::PASSWORD => $password]);
     }
 
-    public function removeChurchRelationship(string $userId, string $churchId): void
-    {
-        UserChurch::where([
-            UserChurch::USER_ID => $userId,
-            UserChurch::CHURCH_ID => $churchId,
-        ])->delete();
-    }
-
     public function saveStatus(string $userId, bool $status)
     {
         return User::where(User::ID, $userId)->update([User::ACTIVE => $status]);
+    }
+
+    public function saveAvatar(string $userId, string $imageId)
+    {
+        return User::where(User::ID, $userId)->update([User::AVATAR_ID => $imageId]);
     }
 }

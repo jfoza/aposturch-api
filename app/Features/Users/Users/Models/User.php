@@ -3,6 +3,7 @@
 namespace App\Features\Users\Users\Models;
 
 use App\Features\Base\Infra\Models\Register;
+use App\Features\General\Images\Models\Image;
 use App\Features\Module\Modules\Models\Module;
 use App\Features\Persons\Infra\Models\Person;
 use App\Features\Users\AdminUsers\Models\AdminUser;
@@ -32,10 +33,10 @@ class User
 
     const ID        = 'id';
     const PERSON_ID = 'person_id';
+    const AVATAR_ID = 'avatar_id';
     const NAME      = 'name';
     const EMAIL     = 'email';
     const PASSWORD  = 'password';
-    const AVATAR    = 'avatar';
     const ACTIVE    = 'active';
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
@@ -93,6 +94,11 @@ class User
     public function forgotPassword(): HasMany
     {
         return $this->hasMany(ForgotPassword::class);
+    }
+
+    public function image(): BelongsTo
+    {
+        return $this->belongsTo(Image::class);
     }
 
     public function profile(): BelongsToMany

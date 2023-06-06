@@ -62,7 +62,7 @@ class UpdateMemberService extends Service implements UpdateMemberServiceInterfac
             $policy->haveRule(RulesEnum::MEMBERSHIP_MODULE_MEMBERS_ASSISTANT_UPDATE->value)
                 => $this->updateByAssistant(),
 
-            default => $policy->dispatchErrorForbidden(),
+            default => $policy->dispatchForbiddenError(),
         };
     }
 

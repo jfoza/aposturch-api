@@ -93,6 +93,7 @@ trait MembersListsTrait
             User::tableField(User::ID)                 .' as '.MembersDataAliasEnum::USER_ID,
             User::tableField(User::NAME)               .' as '.MembersDataAliasEnum::NAME,
             User::tableField(User::EMAIL)              .' as '.MembersDataAliasEnum::EMAIL,
+            User::tableField(User::AVATAR_ID)          .' as '.MembersDataAliasEnum::AVATAR_ID,
             User::tableField(User::ACTIVE)             .' as '.MembersDataAliasEnum::ACTIVE,
             User::tableField(User::CREATED_AT)         .' as '.MembersDataAliasEnum::USER_CREATED_AT,
             Profile::tableField(Profile::ID)           .' as '.MembersDataAliasEnum::PROFILE_ID,

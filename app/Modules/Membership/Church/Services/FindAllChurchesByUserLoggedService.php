@@ -36,7 +36,7 @@ class FindAllChurchesByUserLoggedService extends Service implements FindAllChurc
             $policy->haveRule(RulesEnum::MEMBERSHIP_MODULE_MEMBERS_CHURCHES_FILTER_VIEW->value)
                 => $this->findAllByGeneral(),
 
-            default => $policy->dispatchErrorForbidden()
+            default => $policy->dispatchForbiddenError()
         };
     }
 

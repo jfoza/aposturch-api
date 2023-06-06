@@ -43,7 +43,7 @@ class UpdateStatusUserService extends Service implements UpdateStatusUserService
             $policy->haveRule(RulesEnum::USERS_ADMIN_MASTER_UPDATE_STATUS->value) => $this->updateStatusByAdminMaster(),
             $policy->haveRule(RulesEnum::USERS_ADMIN_CHURCH_UPDATE_STATUS->value) => $this->updateStatusByAdminChurch(),
 
-            default => $policy->dispatchErrorForbidden()
+            default => $policy->dispatchForbiddenError()
         };
     }
 

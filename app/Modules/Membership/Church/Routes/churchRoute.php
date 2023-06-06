@@ -20,16 +20,10 @@ Route::get(
         [MiddlewareEnum::CHURCH_UNIQUE_NAME]
     );
 
-// PERSISTENCE
 Route::post('/', [ChurchPersistenceController::class, 'insert']);
 
 Route::put('/id/{id}', [ChurchPersistenceController::class, 'update'])->middleware([MiddlewareEnum::UUID]);
 
 Route::delete('/{id}', [ChurchPersistenceController::class, 'delete'])->middleware([MiddlewareEnum::UUID]);
 
-Route::delete('/user/member-relationship/{id}', [ChurchPersistenceController::class, 'deleteMemberRelationship'])->middleware([MiddlewareEnum::UUID]);
-
-Route::delete('/user/responsible-relationship/{id}', [ChurchPersistenceController::class, 'deleteResponsibleRelationship'])->middleware([MiddlewareEnum::UUID]);
-
-// UPLOAD CHURCH IMAGE
 Route::post('/upload/image', [ChurchUploadImageController::class, 'store']);

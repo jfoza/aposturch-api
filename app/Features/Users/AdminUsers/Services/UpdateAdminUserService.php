@@ -42,7 +42,7 @@ class UpdateAdminUserService extends Service implements UpdateAdminUserServiceIn
             $policy->haveRule(RulesEnum::ADMIN_USERS_SUPPORT_UPDATE->value)      => $this->updateBySupport(),
             $policy->haveRule(RulesEnum::ADMIN_USERS_ADMIN_MASTER_UPDATE->value) => $this->updateByAdminMaster(),
 
-            default  => $policy->dispatchErrorForbidden(),
+            default  => $policy->dispatchForbiddenError(),
         };
     }
 

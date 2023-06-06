@@ -98,6 +98,10 @@ DO $$
         _rule63 uuid := uuid_generate_v4();
         _rule64 uuid := uuid_generate_v4();
         _rule65 uuid := uuid_generate_v4();
+        _rule66 uuid := uuid_generate_v4();
+        _rule67 uuid := uuid_generate_v4();
+        _rule68 uuid := uuid_generate_v4();
+        _rule69 uuid := uuid_generate_v4();
 
     BEGIN
         INSERT INTO membership.member_types(unique_name, description)
@@ -209,7 +213,12 @@ DO $$
 
             (_rule64, 'MODULES_VIEW', 'MODULES', 'VIEW'),
 
-            (_rule65, 'USERS_EMAIL_ALREADY_EXISTS_VERIFICATION_VIEW', 'USERS_EMAIL_ALREADY_EXISTS_VERIFICATION', 'VIEW');
+            (_rule65, 'USERS_EMAIL_ALREADY_EXISTS_VERIFICATION_VIEW', 'USERS_EMAIL_ALREADY_EXISTS_VERIFICATION', 'VIEW'),
+
+            (_rule66, 'USERS_IMAGE_UPLOAD_ADMIN_MASTER', 'USERS_IMAGE_UPLOAD_ADMIN_MASTER', 'UPLOAD'),
+            (_rule67, 'USERS_IMAGE_UPLOAD_ADMIN_CHURCH', 'USERS_IMAGE_UPLOAD_ADMIN_CHURCH', 'UPLOAD'),
+            (_rule68, 'USERS_IMAGE_UPLOAD_ADMIN_MODULE', 'USERS_IMAGE_UPLOAD_ADMIN_MODULE', 'UPLOAD'),
+            (_rule69, 'USERS_IMAGE_UPLOAD_ADMIN_ASSISTANT', 'USERS_IMAGE_UPLOAD_ADMIN_ASSISTANT', 'UPLOAD');
 
 
         INSERT INTO users.modules_rules (rule_id, module_id)
@@ -327,6 +336,7 @@ DO $$
             (_profile1, _rule62),
             (_profile1, _rule64),
             (_profile1, _rule65),
+            (_profile1, _rule66),
 
             -- ADMIN MASTER
             (_profile2, _rule1),
@@ -364,6 +374,7 @@ DO $$
             (_profile2, _rule62),
             (_profile2, _rule64),
             (_profile2, _rule65),
+            (_profile2, _rule66),
 
             -- ADMIN CHURCH
             (_profile3, _rule1),
@@ -391,6 +402,7 @@ DO $$
             (_profile3, _rule63),
             (_profile3, _rule64),
             (_profile3, _rule65),
+            (_profile3, _rule67),
 
             -- ADMIN MODULE
             (_profile4, _rule1),
@@ -413,6 +425,7 @@ DO $$
             (_profile4, _rule63),
             (_profile4, _rule64),
             (_profile4, _rule65),
+            (_profile4, _rule68),
 
             -- ASSISTANT
             (_profile5, _rule1),
@@ -434,7 +447,8 @@ DO $$
             (_profile5, _rule61),
             (_profile5, _rule63),
             (_profile5, _rule64),
-            (_profile5, _rule65);
+            (_profile5, _rule65),
+            (_profile5, _rule69);
 
         -- MEMBER
     END $$;

@@ -32,7 +32,7 @@ class ShowAdminUserService extends Service implements ShowAdminUserServiceInterf
             $policy->haveRule(RulesEnum::ADMIN_USERS_SUPPORT_VIEW->value)      => $this->showBySupport(),
             $policy->haveRule(RulesEnum::ADMIN_USERS_ADMIN_MASTER_VIEW->value) => $this->showByAdminMaster(),
 
-            default  => $policy->dispatchErrorForbidden(),
+            default  => $policy->dispatchForbiddenError(),
         };
 
         if(empty($adminUser)) {

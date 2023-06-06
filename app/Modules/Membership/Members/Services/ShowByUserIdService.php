@@ -41,7 +41,7 @@ class ShowByUserIdService extends Service implements ShowByUserIdServiceInterfac
             $policy->haveRule(RulesEnum::MEMBERSHIP_MODULE_MEMBERS_ADMIN_MODULE_DETAILS_VIEW->value) => $this->findByAdminModule(),
             $policy->haveRule(RulesEnum::MEMBERSHIP_MODULE_MEMBERS_ASSISTANT_DETAILS_VIEW->value)    => $this->findByAssistant(),
 
-            default => $policy->dispatchErrorForbidden()
+            default => $policy->dispatchForbiddenError()
         };
     }
 

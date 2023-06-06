@@ -33,7 +33,7 @@ class ShowByChurchUniqueNameService extends Service implements ShowByChurchUniqu
             $policy->haveRule(RulesEnum::MEMBERSHIP_MODULE_CHURCH_ADMIN_MASTER_DETAILS_VIEW->value) => $this->showByAdminMaster(),
             $policy->haveRule(RulesEnum::MEMBERSHIP_MODULE_CHURCH_ADMIN_CHURCH_DETAILS_VIEW->value) => $this->showByAdminChurch(),
 
-            default  => $policy->dispatchErrorForbidden(),
+            default  => $policy->dispatchForbiddenError(),
         };
 
         $church->image = null;

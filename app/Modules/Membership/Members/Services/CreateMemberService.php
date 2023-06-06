@@ -61,7 +61,7 @@ class CreateMemberService extends Service implements CreateMemberServiceInterfac
             $policy->haveRule(RulesEnum::MEMBERSHIP_MODULE_MEMBERS_ADMIN_MODULE_INSERT->value) => $this->createByAdminModule(),
             $policy->haveRule(RulesEnum::MEMBERSHIP_MODULE_MEMBERS_ASSISTANT_INSERT->value)    => $this->createByAssistant(),
 
-            default => $policy->dispatchErrorForbidden(),
+            default => $policy->dispatchForbiddenError(),
         };
     }
 

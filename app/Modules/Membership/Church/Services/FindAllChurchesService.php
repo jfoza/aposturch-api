@@ -34,7 +34,7 @@ class FindAllChurchesService extends Service implements FindAllChurchesServiceIn
             $policy->haveRule(RulesEnum::MEMBERSHIP_MODULE_CHURCH_ADMIN_MODULE_VIEW->value) => $this->findAllByAdminModule(),
             $policy->haveRule(RulesEnum::MEMBERSHIP_MODULE_CHURCH_ASSISTANT_VIEW->value)    => $this->findAllByAssistant(),
 
-            default  => $policy->dispatchErrorForbidden(),
+            default  => $policy->dispatchForbiddenError(),
         };
     }
 
