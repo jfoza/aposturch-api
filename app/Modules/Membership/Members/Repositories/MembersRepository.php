@@ -5,6 +5,7 @@ namespace App\Modules\Membership\Members\Repositories;
 use App\Features\Base\Traits\BuilderTrait;
 use App\Features\Users\Profiles\Models\Profile;
 use App\Features\Users\Users\Models\User;
+use App\Modules\Membership\Church\Models\Church;
 use App\Modules\Membership\Members\Contracts\MembersRepositoryInterface;
 use App\Modules\Membership\Members\DTO\MemberDTO;
 use App\Modules\Membership\Members\DTO\MembersFiltersDTO;
@@ -57,6 +58,13 @@ class MembersRepository implements MembersRepositoryInterface
             ->when(
                 isset($membersFiltersDTO->profileUniqueName),
                 fn($q) => $q->whereIn(Profile::tableField(Profile::UNIQUE_NAME), $membersFiltersDTO->profileUniqueName)
+            )
+            ->when(
+                isset($membersFiltersDTO->churchIds),
+                fn($q) => $q->whereHas(
+                    'church',
+                    fn($c) => $c->whereIn(Church::tableField(Church::ID), $membersFiltersDTO->churchIds)
+                )
             )
             ->where(User::tableField(User::ID), $userId)
             ->first();

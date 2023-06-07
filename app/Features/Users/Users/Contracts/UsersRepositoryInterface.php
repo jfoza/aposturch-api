@@ -10,7 +10,6 @@ use Illuminate\Support\Collection as CollectionSupport;
 
 interface UsersRepositoryInterface
 {
-    public function findAllByChurch(UserFiltersDTO $userFiltersDTO): LengthAwarePaginator|CollectionSupport;
     public function findById(string $id): ?object;
     public function findByEmail(string $email): ?object;
     public function findByPhone(string $phone): ?object;

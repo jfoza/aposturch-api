@@ -171,8 +171,6 @@ DO $$
         _module6 uuid;
         _module7 uuid;
 
-        _member_type_uuid uuid;
-
     BEGIN
         SELECT id INTO _profile_uuid FROM users.profiles WHERE unique_name = _profile;
         SELECT id INTO _city_id FROM city.cities WHERE description = _city;
@@ -184,8 +182,6 @@ DO $$
         SELECT id INTO _module5 FROM module.modules WHERE module_unique_name = 'GROUPS';
         SELECT id INTO _module6 FROM module.modules WHERE module_unique_name = 'SCHEDULE';
         SELECT id INTO _module7 FROM module.modules WHERE module_unique_name = 'PATRIMONY';
-
-        SELECT id INTO _member_type_uuid FROM membership.member_types WHERE unique_name = 'RESPONSIBLE';
 
         INSERT INTO person.persons(id, city_id, phone, zip_code, address, number_address, complement, district, uf)
         VALUES(
@@ -210,9 +206,9 @@ DO $$
                 true
             );
 
-        INSERT INTO membership.members(id, user_id, type_member_id)
+        INSERT INTO membership.members(id, user_id)
         VALUES
-            (_member_uuid, _user_uuid, _member_type_uuid);
+            (_member_uuid, _user_uuid);
 
         INSERT INTO users.modules_users (user_id, module_id)
         VALUES
@@ -270,16 +266,12 @@ DO $$
 
         _module6 uuid;
 
-        _member_type_uuid uuid;
-
     BEGIN
         SELECT id INTO _profile_uuid FROM users.profiles WHERE unique_name = _profile;
         SELECT id INTO _city_id FROM city.cities WHERE description = _city;
         SELECT id INTO _church_id FROM membership.churches WHERE unique_name = _church_unique_name;
 
         SELECT id INTO _module6 FROM module.modules WHERE module_unique_name = 'SCHEDULE';
-
-        SELECT id INTO _member_type_uuid FROM membership.member_types WHERE unique_name = 'COMMON_MEMBER';
 
         INSERT INTO person.persons(id, city_id, phone, zip_code, address, number_address, complement, district, uf)
         VALUES(
@@ -304,9 +296,9 @@ DO $$
                 true
             );
 
-        INSERT INTO membership.members(id, user_id, type_member_id)
+        INSERT INTO membership.members(id, user_id)
         VALUES
-            (_member_uuid, _user_uuid, _member_type_uuid);
+            (_member_uuid, _user_uuid);
 
 
         INSERT INTO users.modules_users (user_id, module_id)
@@ -360,16 +352,12 @@ DO $$
 
         _module6 uuid;
 
-        _member_type_uuid uuid;
-
     BEGIN
         SELECT id INTO _profile_uuid FROM users.profiles WHERE unique_name = _profile;
         SELECT id INTO _city_id FROM city.cities WHERE description = _city;
         SELECT id INTO _church_id FROM membership.churches WHERE unique_name = _church_unique_name;
 
         SELECT id INTO _module6 FROM module.modules WHERE module_unique_name = 'SCHEDULE';
-
-        SELECT id INTO _member_type_uuid FROM membership.member_types WHERE unique_name = 'COMMON_MEMBER';
 
         INSERT INTO person.persons(id, city_id, phone, zip_code, address, number_address, complement, district, uf)
         VALUES(
@@ -394,9 +382,9 @@ DO $$
                 true
             );
 
-        INSERT INTO membership.members(id, user_id, type_member_id)
+        INSERT INTO membership.members(id, user_id)
         VALUES
-            (_member_uuid, _user_uuid, _member_type_uuid);
+            (_member_uuid, _user_uuid);
 
         INSERT INTO users.modules_users (user_id, module_id)
         VALUES
@@ -507,6 +495,91 @@ DO $$
             (
                 _profile_uuid,
                 _user_uuid
+            );
+    END $$;
+commit;
+
+-- USER 6
+START TRANSACTION;
+
+DO $$
+
+    DECLARE
+
+        _user_uuid   uuid    = uuid_generate_v4();
+        _person_uuid uuid    = uuid_generate_v4();
+        _member_uuid uuid    = uuid_generate_v4();
+        _city_id     uuid;
+        _name        varchar = 'Usuario Auxiliar Caxias';
+        _email       varchar = 'usuario-auxiliar-caxias@hotmail.com';
+        _password    varchar = general.generate_bcrypt_hash('Teste123');
+        _phone       varchar = '51999574813';
+        _zip_code    varchar = '95110314';
+        _address     varchar = 'Rua Isidoro Dias Lopes';
+        _district    varchar = 'Desvio Rizzo';
+        _number      varchar = '80';
+        _complement  varchar = 'casa';
+        _city        varchar = 'Caxias do Sul';
+        _uf          varchar = 'RS';
+
+        _profile varchar := 'ASSISTANT';
+        _profile_uuid uuid;
+
+        _church_unique_name varchar = 'igreja-biblica-viver-caxias';
+        _church_id uuid;
+
+        _module6 uuid;
+
+    BEGIN
+        SELECT id INTO _profile_uuid FROM users.profiles WHERE unique_name = _profile;
+        SELECT id INTO _city_id FROM city.cities WHERE description = _city;
+        SELECT id INTO _church_id FROM membership.churches WHERE unique_name = _church_unique_name;
+
+        SELECT id INTO _module6 FROM module.modules WHERE module_unique_name = 'SCHEDULE';
+
+        INSERT INTO person.persons(id, city_id, phone, zip_code, address, number_address, complement, district, uf)
+        VALUES(
+                  _person_uuid,
+                  _city_id,
+                  _phone,
+                  _zip_code,
+                  _address,
+                  _number,
+                  _complement,
+                  _district,
+                  _uf
+              );
+
+        INSERT INTO users.users (id, person_id, name, email, password, active)
+        VALUES
+            (   _user_uuid,
+                _person_uuid,
+                _name,
+                _email,
+                _password,
+                true
+            );
+
+        INSERT INTO membership.members(id, user_id)
+        VALUES
+            (_member_uuid, _user_uuid);
+
+        INSERT INTO users.modules_users (user_id, module_id)
+        VALUES
+            (_user_uuid, _module6);
+
+        INSERT INTO users.profiles_users (profile_id, user_id)
+        VALUES
+            (
+                _profile_uuid,
+                _user_uuid
+            );
+
+        INSERT INTO membership.churches_members (member_id, church_id)
+        VALUES
+            (
+                _member_uuid,
+                _church_id
             );
     END $$;
 commit;
