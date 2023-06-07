@@ -34,17 +34,18 @@ class FindAllChurchesByUserLoggedServiceTest extends TestCase
         $this->churchFiltersDtoMock = $this->createMock(ChurchFiltersDTO::class);
 
         $this->churchId = Uuid::uuid4()->toString();
-
-        JWTAuth::shouldReceive('user')->andreturn(MemberLists::getMemberUserLogged($this->churchId));
-        Auth::shouldReceive('user')->andreturn(MemberLists::getMemberUserLogged($this->churchId));
     }
 
     public function getFindAllChurchesByUserLoggedService(): FindAllChurchesByUserLoggedService
     {
-        return new FindAllChurchesByUserLoggedService(
+        $findAllChurchesByUserLoggedService = new FindAllChurchesByUserLoggedService(
             $this->churchRepositoryMock,
             $this->churchFiltersDtoMock
         );
+
+        $findAllChurchesByUserLoggedService->setAuthenticatedUser(MemberLists::getMemberUserLogged($this->churchId));
+
+        return $findAllChurchesByUserLoggedService;
     }
 
     public function test_should_return_churches_user_logged_list_by_admin_master()

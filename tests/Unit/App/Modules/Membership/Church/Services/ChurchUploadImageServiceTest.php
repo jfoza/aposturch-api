@@ -12,15 +12,14 @@ use App\Modules\Membership\Church\Services\ChurchUploadImageService;
 use App\Shared\ACL\Policy;
 use App\Shared\Enums\RulesEnum;
 use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Auth;
 use PHPUnit\Framework\MockObject\MockObject;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 use Tests\Unit\App\Resources\ChurchLists;
+use Tests\Unit\App\Resources\ImagesLists;
 use Tests\Unit\App\Resources\MemberLists;
 use Tymon\JWTAuth\Exceptions\UserNotDefinedException;
-use Tymon\JWTAuth\Facades\JWTAuth;
 
 class ChurchUploadImageServiceTest extends TestCase
 {
@@ -47,17 +46,18 @@ class ChurchUploadImageServiceTest extends TestCase
         $this->churchId = Uuid::uuid4()->toString();
         $this->imageId = Uuid::uuid4()->toString();
         $this->imagePath = 'product/test.png';
-
-        JWTAuth::shouldReceive('user')->andreturn(MemberLists::getMemberUserLogged($this->churchId));
-        Auth::shouldReceive('user')->andreturn(MemberLists::getMemberUserLogged($this->churchId));
     }
 
     public function getChurchUploadImageService(): ChurchUploadImageService
     {
-        return new ChurchUploadImageService(
+        $churchUploadImageService = new ChurchUploadImageService(
             $this->churchRepositoryMock,
             $this->imagesRepositoryMock
         );
+
+        $churchUploadImageService->setAuthenticatedUser(MemberLists::getMemberUserLogged($this->churchId));
+
+        return $churchUploadImageService;
     }
 
     public function populateImagesDTO()
@@ -104,7 +104,7 @@ class ChurchUploadImageServiceTest extends TestCase
         $this
             ->imagesRepositoryMock
             ->method('create')
-            ->willReturn(ChurchLists::getImageCreated($this->imageId));
+            ->willReturn(ImagesLists::getImageCreated($this->imageId));
 
         $image = $churchUploadImageService->execute($this->imagesDtoMock, $this->churchId);
 
@@ -141,7 +141,7 @@ class ChurchUploadImageServiceTest extends TestCase
         $this
             ->imagesRepositoryMock
             ->method('create')
-            ->willReturn(ChurchLists::getImageCreated($this->imageId));
+            ->willReturn(ImagesLists::getImageCreated($this->imageId));
 
         $image = $churchUploadImageService->execute($this->imagesDtoMock, $this->churchId);
 
@@ -193,7 +193,7 @@ class ChurchUploadImageServiceTest extends TestCase
         $this
             ->imagesRepositoryMock
             ->method('create')
-            ->willReturn(ChurchLists::getImageCreated($this->imageId));
+            ->willReturn(ImagesLists::getImageCreated($this->imageId));
 
 
         $this->expectException(AppException::class);

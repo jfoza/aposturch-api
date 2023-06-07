@@ -8,7 +8,7 @@ class AuthUserResponse
 {
     public string|null $id;
     public string|null $email;
-    public string|null $avatar;
+    public string|null $avatarId;
     public string|null $fullName;
     public Collection $role;
     public Collection $churches;

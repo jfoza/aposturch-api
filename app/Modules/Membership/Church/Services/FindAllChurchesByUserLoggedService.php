@@ -3,7 +3,7 @@
 namespace App\Modules\Membership\Church\Services;
 
 use App\Exceptions\AppException;
-use App\Features\Base\Services\Service;
+use App\Features\Base\Services\AuthenticatedService;
 use App\Modules\Membership\Church\Contracts\ChurchRepositoryInterface;
 use App\Modules\Membership\Church\Contracts\FindAllChurchesByUserLoggedServiceInterface;
 use App\Modules\Membership\Church\DTO\ChurchFiltersDTO;
@@ -11,9 +11,8 @@ use App\Modules\Membership\Church\Models\Church;
 use App\Shared\Enums\RulesEnum;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
-use Tymon\JWTAuth\Exceptions\UserNotDefinedException;
 
-class FindAllChurchesByUserLoggedService extends Service implements FindAllChurchesByUserLoggedServiceInterface
+class FindAllChurchesByUserLoggedService extends AuthenticatedService implements FindAllChurchesByUserLoggedServiceInterface
 {
     public function __construct(
         private readonly ChurchRepositoryInterface $churchRepository,
@@ -22,7 +21,6 @@ class FindAllChurchesByUserLoggedService extends Service implements FindAllChurc
 
     /**
      * @throws AppException
-     * @throws UserNotDefinedException
      */
     public function execute(): LengthAwarePaginator|Collection
     {
@@ -47,7 +45,6 @@ class FindAllChurchesByUserLoggedService extends Service implements FindAllChurc
 
     /**
      * @throws AppException
-     * @throws UserNotDefinedException
      */
     private function findAllByGeneral(): LengthAwarePaginator|Collection
     {

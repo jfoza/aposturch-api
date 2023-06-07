@@ -3,7 +3,7 @@
 namespace App\Modules\Membership\Members\Services;
 
 use App\Exceptions\AppException;
-use App\Features\Base\Services\Service;
+use App\Features\Base\Services\AuthenticatedService;
 use App\Features\Base\Traits\EnvironmentException;
 use App\Features\City\Cities\Contracts\CityRepositoryInterface;
 use App\Features\City\Cities\Validations\CityValidations;
@@ -19,13 +19,12 @@ use App\Modules\Membership\Members\Validations\MembersValidations;
 use App\Shared\Cache\PolicyCache;
 use App\Shared\Enums\MessagesEnum;
 use App\Shared\Enums\RulesEnum;
-use App\Shared\Utils\Auth;
 use App\Shared\Utils\Transaction;
 use Exception;
 use Symfony\Component\HttpFoundation\Response;
 use Tymon\JWTAuth\Exceptions\UserNotDefinedException;
 
-class UpdateMemberService extends Service implements UpdateMemberServiceInterface
+class UpdateMemberAuthenticatedService extends AuthenticatedService implements UpdateMemberServiceInterface
 {
     private UserDTO $userDTO;
     private mixed $userMember;
@@ -78,11 +77,10 @@ class UpdateMemberService extends Service implements UpdateMemberServiceInterfac
 
     /**
      * @throws AppException
-     * @throws UserNotDefinedException
      */
     private function updateByAdminChurch(): UpdateMemberResponse
     {
-        if(Auth::getId() != $this->userDTO->id)
+        if(!$this->userPayloadIsEqualsAuthUser($this->userDTO->id))
         {
             $this->membersFiltersDTO->profileUniqueName = [
                 ProfileUniqueNameEnum::ADMIN_MODULE->value,
@@ -103,11 +101,10 @@ class UpdateMemberService extends Service implements UpdateMemberServiceInterfac
 
     /**
      * @throws AppException
-     * @throws UserNotDefinedException
      */
     private function updateByAdminModule(): UpdateMemberResponse
     {
-        if(Auth::getId() != $this->userDTO->id)
+        if(!$this->userPayloadIsEqualsAuthUser($this->userDTO->id))
         {
             $this->membersFiltersDTO->profileUniqueName = [
                 ProfileUniqueNameEnum::ASSISTANT->value,
@@ -130,7 +127,7 @@ class UpdateMemberService extends Service implements UpdateMemberServiceInterfac
      */
     private function updateByAssistant(): UpdateMemberResponse
     {
-        if(Auth::getId() != $this->userDTO->id)
+        if(!$this->userPayloadIsEqualsAuthUser($this->userDTO->id))
         {
             $this->membersFiltersDTO->profileUniqueName = [
                 ProfileUniqueNameEnum::MEMBER->value,

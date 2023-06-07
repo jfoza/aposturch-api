@@ -3,6 +3,7 @@
 namespace Tests\Unit\App\Resources;
 
 use App\Features\Module\Modules\Models\Module;
+use App\Features\Users\Profiles\Enums\ProfileUniqueNameEnum;
 use App\Modules\Membership\Members\Enums\MembersDataAliasEnum;
 use App\Modules\Membership\Members\Models\Member;
 use App\Shared\Libraries\Uuid;
@@ -17,13 +18,29 @@ class MemberLists
         ]);
     }
 
-    public static function getMemberDataView(array $churches = []): object
+    public static function getMemberDataView(
+        array $churches = [],
+        string $profileUniqueName = null,
+        string $userId = null,
+    ): object
     {
+        if(is_null($profileUniqueName))
+        {
+            $profileUniqueName = ProfileUniqueNameEnum::ADMIN_CHURCH->value;
+        }
+
+        if(is_null($userId))
+        {
+            $userId = Uuid::uuid4Generate();
+        }
+
         return (object) ([
             MembersDataAliasEnum::MEMBER_ID => Uuid::uuid4Generate(),
-            MembersDataAliasEnum::USER_ID => Uuid::uuid4Generate(),
+            MembersDataAliasEnum::USER_ID => $userId,
             MembersDataAliasEnum::PERSON_ID => Uuid::uuid4Generate(),
             MembersDataAliasEnum::NAME => 'test',
+            MembersDataAliasEnum::PROFILE_ID => Uuid::uuid4Generate(),
+            MembersDataAliasEnum::PROFILE_UNIQUE_NAME => $profileUniqueName,
             MembersDataAliasEnum::EMAIL => 'test@test.com',
             MembersDataAliasEnum::ACTIVE => true,
             MembersDataAliasEnum::PHONE => '5198765217',
@@ -38,7 +55,11 @@ class MemberLists
         ]);
     }
 
-    public static function getMemberUserLogged(?string $churchId = null, ?string $churchUniqueName = null): object
+    public static function getMemberUserLogged(
+        ?string $churchId = null,
+        ?string $churchUniqueName = null,
+        ?string $userId = null,
+    ): object
     {
         if(is_null($churchId))
         {
@@ -50,7 +71,10 @@ class MemberLists
             $churchUniqueName = 'test-name';
         }
 
-        $userId = Uuid::uuid4Generate();
+        if(is_null($userId))
+        {
+            $userId = Uuid::uuid4Generate();
+        }
 
         return (object) ([
             'id'       => $userId,
@@ -100,16 +124,14 @@ class MemberLists
                         "updated_at" => "2023-05-03T21:18:51.731787Z",
                     ])
                 ]),
-
-                'module' => Collection::make([
-                    (object) ([
-                        Module::ID => Uuid::uuid4Generate(),
-                        Module::MODULE_DESCRIPTION => 'MEMBERSHIP',
-                        Module::ACTIVE => true,
-                    ])
-                ]),
             ]),
-            'module' => []
+            'module' => Collection::make([
+                (object) ([
+                    Module::ID => Uuid::uuid4Generate(),
+                    Module::MODULE_DESCRIPTION => 'MEMBERSHIP',
+                    Module::ACTIVE => true,
+                ])
+            ]),
         ]);
     }
 }

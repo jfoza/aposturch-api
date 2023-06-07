@@ -3,7 +3,7 @@
 namespace App\Modules\Membership\Church\Services;
 
 use App\Exceptions\AppException;
-use App\Features\Base\Services\Service;
+use App\Features\Base\Services\AuthenticatedService;
 use App\Modules\Membership\Church\Contracts\ChurchRepositoryInterface;
 use App\Modules\Membership\Church\Contracts\ShowByChurchUniqueNameServiceInterface;
 use App\Modules\Membership\Church\Validations\ChurchValidations;
@@ -11,7 +11,7 @@ use App\Shared\Enums\RulesEnum;
 use App\Shared\Helpers\Helpers;
 use Tymon\JWTAuth\Exceptions\UserNotDefinedException;
 
-class ShowByChurchUniqueNameService extends Service implements ShowByChurchUniqueNameServiceInterface
+class ShowByChurchUniqueNameService extends AuthenticatedService implements ShowByChurchUniqueNameServiceInterface
 {
     private string $churchUniqueName;
 
@@ -61,7 +61,6 @@ class ShowByChurchUniqueNameService extends Service implements ShowByChurchUniqu
 
     /**
      * @throws AppException
-     * @throws UserNotDefinedException
      */
     private function showByAdminChurch(): ?object
     {

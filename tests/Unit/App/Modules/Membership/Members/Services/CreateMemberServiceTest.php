@@ -23,11 +23,10 @@ use App\Modules\Membership\Members\Contracts\MembersRepositoryInterface;
 use App\Modules\Membership\Members\DTO\MemberDTO;
 use App\Modules\Membership\Members\Repositories\MembersRepository;
 use App\Modules\Membership\Members\Responses\InsertMemberResponse;
-use App\Modules\Membership\Members\Services\CreateMemberService;
+use App\Modules\Membership\Members\Services\CreateMemberAuthenticatedService;
 use App\Shared\ACL\Policy;
 use App\Shared\Enums\RulesEnum;
 use App\Shared\Libraries\Uuid;
-use Illuminate\Support\Facades\Auth;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
@@ -37,7 +36,6 @@ use Tests\Unit\App\Resources\MemberLists;
 use Tests\Unit\App\Resources\ModulesLists;
 use Tests\Unit\App\Resources\ProfilesLists;
 use Tests\Unit\App\Resources\UsersLists;
-use Tymon\JWTAuth\Facades\JWTAuth;
 
 class CreateMemberServiceTest extends TestCase
 {
@@ -63,9 +61,6 @@ class CreateMemberServiceTest extends TestCase
         $this->cityId    = Uuid::uuid4Generate();
         $this->churchId  = Uuid::uuid4Generate();
         $this->moduleId  = Uuid::uuid4Generate();
-
-        JWTAuth::shouldReceive('user')->andreturn(MemberLists::getMemberUserLogged($this->churchId));
-        Auth::shouldReceive('user')->andreturn(MemberLists::getMemberUserLogged($this->churchId));
 
         $this->createUserDtoMock();
         $this->createMocks();
@@ -112,9 +107,9 @@ class CreateMemberServiceTest extends TestCase
         $this->modulesRepositoryMock   = $this->createMock(ModulesRepository::class);
     }
 
-    public function getCreateMemberService(): CreateMemberService
+    public function getCreateMemberService(): CreateMemberAuthenticatedService
     {
-        return new CreateMemberService(
+        $createMembersService = new CreateMemberAuthenticatedService(
             $this->personsRepositoryMock,
             $this->usersRepositoryMock,
             $this->membersRepositoryMock,
@@ -123,6 +118,10 @@ class CreateMemberServiceTest extends TestCase
             $this->cityRepositoryMock,
             $this->modulesRepositoryMock,
         );
+
+        $createMembersService->setAuthenticatedUser(MemberLists::getMemberUserLogged($this->churchId));
+
+        return $createMembersService;
     }
 
     public function test_should_insert_new_member()

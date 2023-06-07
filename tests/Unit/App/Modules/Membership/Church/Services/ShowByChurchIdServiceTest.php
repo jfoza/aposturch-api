@@ -31,16 +31,17 @@ class ShowByChurchIdServiceTest extends TestCase
         $this->churchRepositoryMock = $this->createMock(ChurchRepository::class);
 
         $this->churchId = Uuid::uuid4()->toString();
-
-        JWTAuth::shouldReceive('user')->andreturn(MemberLists::getMemberUserLogged($this->churchId));
-        Auth::shouldReceive('user')->andreturn(MemberLists::getMemberUserLogged($this->churchId));
     }
 
     public function getShowByChurchIdService(): ShowByChurchIdService
     {
-        return new ShowByChurchIdService(
+        $showByChurchIdService = new ShowByChurchIdService(
             $this->churchRepositoryMock
         );
+
+        $showByChurchIdService->setAuthenticatedUser(MemberLists::getMemberUserLogged($this->churchId));
+
+        return $showByChurchIdService;
     }
 
     public function dataProviderShowChurch(): array

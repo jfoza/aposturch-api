@@ -5,7 +5,7 @@ namespace Tests\Unit\App\Features\Users\Profiles\Services;
 use App\Exceptions\AppException;
 use App\Features\Users\Profiles\Contracts\ProfilesRepositoryInterface;
 use App\Features\Users\Profiles\Repositories\ProfilesRepository;
-use App\Features\Users\Profiles\Services\FindAllProfilesInListMembersService;
+use App\Features\Users\Profiles\Services\FindAllProfilesInListMembersAuthenticatedService;
 use App\Shared\ACL\Policy;
 use App\Shared\Enums\RulesEnum;
 use Illuminate\Database\Eloquent\Collection;
@@ -25,9 +25,9 @@ class FindAllProfilesInListMembersServiceTest extends TestCase
         $this->profilesRepositoryMock = $this->createMock(ProfilesRepository::class);
     }
 
-    public function getFindAllProfilesInListMembersService(): FindAllProfilesInListMembersService
+    public function getFindAllProfilesInListMembersService(): FindAllProfilesInListMembersAuthenticatedService
     {
-        return new FindAllProfilesInListMembersService(
+        return new FindAllProfilesInListMembersAuthenticatedService(
             $this->profilesRepositoryMock
         );
     }

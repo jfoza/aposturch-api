@@ -3,7 +3,7 @@
 namespace App\Modules\Membership\Church\Services;
 
 use App\Exceptions\AppException;
-use App\Features\Base\Services\Service;
+use App\Features\Base\Services\AuthenticatedService;
 use App\Features\Base\Traits\EnvironmentException;
 use App\Features\General\Images\Contracts\ImagesRepositoryInterface;
 use App\Features\General\Images\DTO\ImagesDTO;
@@ -14,9 +14,8 @@ use App\Modules\Membership\Church\Traits\ChurchOperationsTrait;
 use App\Modules\Membership\Church\Validations\ChurchValidations;
 use App\Shared\Enums\RulesEnum;
 use App\Shared\Utils\Transaction;
-use Tymon\JWTAuth\Exceptions\UserNotDefinedException;
 
-class ChurchUploadImageService extends Service implements ChurchUploadImageServiceInterface
+class ChurchUploadImageService extends AuthenticatedService implements ChurchUploadImageServiceInterface
 {
     use ChurchOperationsTrait;
 
@@ -31,7 +30,6 @@ class ChurchUploadImageService extends Service implements ChurchUploadImageServi
 
     /**
      * @throws AppException
-     * @throws UserNotDefinedException
      */
     public function execute(ImagesDTO $imagesDTO, string $churchId): object
     {
@@ -61,7 +59,6 @@ class ChurchUploadImageService extends Service implements ChurchUploadImageServi
 
     /**
      * @throws AppException
-     * @throws UserNotDefinedException
      */
     private function uploadByAdminChurch(): ?object
     {

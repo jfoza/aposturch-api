@@ -3,7 +3,7 @@
 namespace App\Features\Users\AdminUsers\Services;
 
 use App\Exceptions\AppException;
-use App\Features\Base\Services\Service;
+use App\Features\Base\Services\AuthenticatedService;
 use App\Features\Users\AdminUsers\Contracts\AdminUsersRepositoryInterface;
 use App\Features\Users\AdminUsers\Contracts\FindAllAdminUsersServiceInterface;
 use App\Features\Users\AdminUsers\DTO\AdminUsersFiltersDTO;
@@ -12,7 +12,7 @@ use App\Shared\Enums\RulesEnum;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 
-class FindAllAdminUsersService extends Service implements FindAllAdminUsersServiceInterface
+class FindAllAdminUsersAuthenticatedService extends AuthenticatedService implements FindAllAdminUsersServiceInterface
 {
     private AdminUsersFiltersDTO $adminUsersFiltersDTO;
 

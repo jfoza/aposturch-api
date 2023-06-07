@@ -3,7 +3,7 @@
 namespace App\Features\Users\Users\Services;
 
 use App\Exceptions\AppException;
-use App\Features\Base\Services\Service;
+use App\Features\Base\Services\AuthenticatedService;
 use App\Features\Base\Traits\EnvironmentException;
 use App\Features\General\Images\Contracts\ImagesRepositoryInterface;
 use App\Features\General\Images\DTO\ImagesDTO;
@@ -17,11 +17,9 @@ use App\Modules\Membership\Members\Contracts\MembersRepositoryInterface;
 use App\Modules\Membership\Members\DTO\MembersFiltersDTO;
 use App\Modules\Membership\Members\Validations\MembersValidations;
 use App\Shared\Enums\RulesEnum;
-use App\Shared\Utils\Auth;
 use App\Shared\Utils\Transaction;
-use Tymon\JWTAuth\Exceptions\UserNotDefinedException;
 
-class UserUploadImageService extends Service implements UserUploadImageServiceInterface
+class UserUploadImageService extends AuthenticatedService implements UserUploadImageServiceInterface
 {
     private ImagesDTO $imagesDTO;
     private string $userId;
@@ -36,7 +34,6 @@ class UserUploadImageService extends Service implements UserUploadImageServiceIn
 
     /**
      * @throws AppException
-     * @throws UserNotDefinedException
      */
     public function execute(ImagesDTO $imagesDTO, string $userId): object
     {
@@ -71,13 +68,12 @@ class UserUploadImageService extends Service implements UserUploadImageServiceIn
 
     /**
      * @throws AppException
-     * @throws UserNotDefinedException
      */
     private function uploadByAdminChurch(): ?object
     {
         $this->userMemberExistsAndCanBeUsed();
 
-        if($this->userId != Auth::getId())
+        if(!$this->userPayloadIsEqualsAuthUser($this->userId))
         {
             AllowedProfilesValidations::validateAdminChurchProfile($this->userMember->profile_unique_name);
         }
@@ -87,13 +83,12 @@ class UserUploadImageService extends Service implements UserUploadImageServiceIn
 
     /**
      * @throws AppException
-     * @throws UserNotDefinedException
      */
     private function uploadByAdminModule(): ?object
     {
         $this->userMemberExistsAndCanBeUsed();
 
-        if($this->userId != Auth::getId())
+        if(!$this->userPayloadIsEqualsAuthUser($this->userId))
         {
             AllowedProfilesValidations::validateAdminModuleProfile($this->userMember->profile_unique_name);
         }
@@ -103,13 +98,12 @@ class UserUploadImageService extends Service implements UserUploadImageServiceIn
 
     /**
      * @throws AppException
-     * @throws UserNotDefinedException
      */
     private function uploadByAssistant(): ?object
     {
         $this->userMemberExistsAndCanBeUsed();
 
-        if($this->userId != Auth::getId())
+        if(!$this->userPayloadIsEqualsAuthUser($this->userId))
         {
             AllowedProfilesValidations::validateAssistantProfile($this->userMember->profile_unique_name);
         }
@@ -119,7 +113,6 @@ class UserUploadImageService extends Service implements UserUploadImageServiceIn
 
     /**
      * @throws AppException
-     * @throws UserNotDefinedException
      */
     private function userMemberExistsAndCanBeUsed()
     {

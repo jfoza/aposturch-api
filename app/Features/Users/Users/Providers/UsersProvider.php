@@ -8,8 +8,8 @@ use App\Features\Users\Users\Contracts\UserEmailAlreadyExistsServiceInterface;
 use App\Features\Users\Users\Contracts\UsersRepositoryInterface;
 use App\Features\Users\Users\Contracts\UserUploadImageServiceInterface;
 use App\Features\Users\Users\Repositories\UsersRepository;
-use App\Features\Users\Users\Services\UpdateStatusUserService;
-use App\Features\Users\Users\Services\UserEmailAlreadyExistsService;
+use App\Features\Users\Users\Services\UpdateStatusUserAuthenticatedService;
+use App\Features\Users\Users\Services\UserEmailAlreadyExistsAuthenticatedService;
 use App\Features\Users\Users\Services\UserUploadImageService;
 
 class UsersProvider extends AbstractServiceProvider
@@ -22,12 +22,12 @@ class UsersProvider extends AbstractServiceProvider
     {
         $this->bind(
             UpdateStatusUserServiceInterface::class,
-            UpdateStatusUserService::class,
+            UpdateStatusUserAuthenticatedService::class,
         );
 
         $this->bind(
             UserEmailAlreadyExistsServiceInterface::class,
-            UserEmailAlreadyExistsService::class,
+            UserEmailAlreadyExistsAuthenticatedService::class,
         );
 
         $this->bind(

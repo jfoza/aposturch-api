@@ -60,13 +60,13 @@ class UsersLists
         $userId = Uuid::uuid4Generate();
 
         return (object) ([
-            User::NAME     => "UserName",
-            User::EMAIL    => "email.example@email.com",
-            User::AVATAR   => null,
-            User::PASSWORD => Hash::generateHash($pass),
-            User::ACTIVE   => $active,
-            User::ID       => $userId,
-            'adminUser'    => (object) ([
+            User::NAME      => "UserName",
+            User::EMAIL     => "email.example@email.com",
+            User::AVATAR_ID => null,
+            User::PASSWORD  => Hash::generateHash($pass),
+            User::ACTIVE    => $active,
+            User::ID        => $userId,
+            'adminUser'     => (object) ([
                 AdminUser::ID => Uuid::uuid4Generate(),
                 AdminUser::USER_ID => $userId
             ]),

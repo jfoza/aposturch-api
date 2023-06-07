@@ -3,7 +3,7 @@
 namespace App\Modules\Membership\Members\Services;
 
 use App\Exceptions\AppException;
-use App\Features\Base\Services\Service;
+use App\Features\Base\Services\AuthenticatedService;
 use App\Features\Users\Profiles\Enums\ProfileUniqueNameEnum;
 use App\Modules\Membership\Members\Contracts\MembersRepositoryInterface;
 use App\Modules\Membership\Members\Contracts\ShowByUserIdServiceInterface;
@@ -15,7 +15,7 @@ use App\Shared\Utils\Auth;
 use Symfony\Component\HttpFoundation\Response;
 use Tymon\JWTAuth\Exceptions\UserNotDefinedException;
 
-class ShowByUserIdService extends Service implements ShowByUserIdServiceInterface
+class ShowByUserIdAuthenticatedService extends AuthenticatedService implements ShowByUserIdServiceInterface
 {
     private string $userId;
 
@@ -54,7 +54,6 @@ class ShowByUserIdService extends Service implements ShowByUserIdServiceInterfac
     }
 
     /**
-     * @throws UserNotDefinedException
      * @throws AppException
      */
     private function findByAdminChurch(): object
@@ -80,7 +79,6 @@ class ShowByUserIdService extends Service implements ShowByUserIdServiceInterfac
     }
 
     /**
-     * @throws UserNotDefinedException
      * @throws AppException
      */
     private function findByAdminModule(): object
@@ -105,7 +103,6 @@ class ShowByUserIdService extends Service implements ShowByUserIdServiceInterfac
     }
 
     /**
-     * @throws UserNotDefinedException
      * @throws AppException
      */
     private function findByAssistant(): object

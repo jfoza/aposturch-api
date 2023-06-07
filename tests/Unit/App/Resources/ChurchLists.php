@@ -203,20 +203,6 @@ class ChurchLists
         ]);
     }
 
-    public static function getImageCreated(?string $imageId = null): object
-    {
-        if(is_null($imageId))
-        {
-            $imageId = Uuid::uuid4()->toString();
-        }
-
-        return (object) ([
-            Image::ID => $imageId,
-            Image::TYPE => TypeUploadImageEnum::CHURCH->value,
-            Image::PATH => 'product/example.png',
-        ]);
-    }
-
     public static function showChurchWithMembers(?string $id = null): object
     {
         if(is_null($id))

@@ -11,11 +11,11 @@ use App\Features\Users\AdminUsers\Contracts\ShowCountAdminUsersByProfileInterfac
 use App\Features\Users\AdminUsers\Contracts\ShowLoggedUserServiceInterface;
 use App\Features\Users\AdminUsers\Contracts\UpdateAdminUserServiceInterface;
 use App\Features\Users\AdminUsers\Repositories\AdminUsersRepository;
-use App\Features\Users\AdminUsers\Services\CreateAdminUserService;
-use App\Features\Users\AdminUsers\Services\FindAllAdminUsersService;
-use App\Features\Users\AdminUsers\Services\ShowAdminUserService;
+use App\Features\Users\AdminUsers\Services\CreateAdminUserAuthenticatedService;
+use App\Features\Users\AdminUsers\Services\FindAllAdminUsersAuthenticatedService;
+use App\Features\Users\AdminUsers\Services\ShowAdminUserAuthenticatedService;
 use App\Features\Users\AdminUsers\Services\ShowCountAdminUsersByProfile;
-use App\Features\Users\AdminUsers\Services\UpdateAdminUserService;
+use App\Features\Users\AdminUsers\Services\UpdateAdminUserAuthenticatedService;
 use App\Features\Users\Users\Services\ShowLoggedUserService;
 
 class AdminUsersProvider extends AbstractServiceProvider
@@ -30,22 +30,22 @@ class AdminUsersProvider extends AbstractServiceProvider
     {
         $this->bind(
             FindAllAdminUsersServiceInterface::class,
-            FindAllAdminUsersService::class,
+            FindAllAdminUsersAuthenticatedService::class,
         );
 
         $this->bind(
             ShowAdminUserServiceInterface::class,
-            ShowAdminUserService::class,
+            ShowAdminUserAuthenticatedService::class,
         );
 
         $this->bind(
             CreateAdminUserServiceInterface::class,
-            CreateAdminUserService::class,
+            CreateAdminUserAuthenticatedService::class,
         );
 
         $this->bind(
             UpdateAdminUserServiceInterface::class,
-            UpdateAdminUserService::class,
+            UpdateAdminUserAuthenticatedService::class,
         );
 
         $this->bind(

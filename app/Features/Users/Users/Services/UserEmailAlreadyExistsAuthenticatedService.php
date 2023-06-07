@@ -3,14 +3,14 @@
 namespace App\Features\Users\Users\Services;
 
 use App\Exceptions\AppException;
-use App\Features\Base\Services\Service;
+use App\Features\Base\Services\AuthenticatedService;
 use App\Features\Users\Users\Contracts\UserEmailAlreadyExistsServiceInterface;
 use App\Features\Users\Users\Contracts\UsersRepositoryInterface;
 use App\Shared\Enums\MessagesEnum;
 use App\Shared\Enums\RulesEnum;
 use Symfony\Component\HttpFoundation\Response;
 
-class UserEmailAlreadyExistsService extends Service implements UserEmailAlreadyExistsServiceInterface
+class UserEmailAlreadyExistsAuthenticatedService extends AuthenticatedService implements UserEmailAlreadyExistsServiceInterface
 {
     public function __construct(
         private readonly UsersRepositoryInterface $usersRepository,

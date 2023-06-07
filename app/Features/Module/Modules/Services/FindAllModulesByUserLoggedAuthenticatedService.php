@@ -3,15 +3,15 @@
 namespace App\Features\Module\Modules\Services;
 
 use App\Exceptions\AppException;
-use App\Features\Base\Services\Service;
+use App\Features\Base\Services\AuthenticatedService;
 use App\Features\Module\Modules\Contracts\FindAllModulesByUserLoggedServiceInterface;
 use App\Shared\Enums\RulesEnum;
 use Tymon\JWTAuth\Exceptions\UserNotDefinedException;
 
-class FindAllModulesByUserLoggedService extends Service implements FindAllModulesByUserLoggedServiceInterface
+class FindAllModulesByUserLoggedAuthenticatedService extends AuthenticatedService implements FindAllModulesByUserLoggedServiceInterface
 {
     /**
-     * @throws UserNotDefinedException|AppException
+     * @throws AppException
      */
     public function execute(): array
     {

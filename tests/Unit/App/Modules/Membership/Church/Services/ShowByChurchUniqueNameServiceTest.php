@@ -30,16 +30,17 @@ class ShowByChurchUniqueNameServiceTest extends TestCase
         $this->churchRepositoryMock = $this->createMock(ChurchRepository::class);
 
         $this->churchUniqueName = 'church-test-unique-name';
-
-        JWTAuth::shouldReceive('user')->andreturn(MemberLists::getMemberUserLogged(null, $this->churchUniqueName));
-        Auth::shouldReceive('user')->andreturn(MemberLists::getMemberUserLogged(null, $this->churchUniqueName));
     }
 
     public function getShowByChurchUniqueNameService(): ShowByChurchUniqueNameService
     {
-        return new ShowByChurchUniqueNameService(
+        $showByChurchUniqueNameService = new ShowByChurchUniqueNameService(
             $this->churchRepositoryMock
         );
+
+        $showByChurchUniqueNameService->setAuthenticatedUser(MemberLists::getMemberUserLogged(null, $this->churchUniqueName));
+
+        return $showByChurchUniqueNameService;
     }
 
     public function dataProviderShowChurch(): array

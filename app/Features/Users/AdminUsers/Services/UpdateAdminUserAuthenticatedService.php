@@ -3,7 +3,7 @@
 namespace App\Features\Users\AdminUsers\Services;
 
 use App\Exceptions\AppException;
-use App\Features\Base\Services\Service;
+use App\Features\Base\Services\AuthenticatedService;
 use App\Features\Base\Traits\EnvironmentException;
 use App\Features\Users\AdminUsers\Contracts\AdminUsersRepositoryInterface;
 use App\Features\Users\AdminUsers\Contracts\UpdateAdminUserServiceInterface;
@@ -18,7 +18,7 @@ use App\Shared\Enums\RulesEnum;
 use App\Shared\Utils\Hash;
 use App\Shared\Utils\Transaction;
 
-class UpdateAdminUserService extends Service implements UpdateAdminUserServiceInterface
+class UpdateAdminUserAuthenticatedService extends AuthenticatedService implements UpdateAdminUserServiceInterface
 {
     private UserDTO $userDTO;
     private mixed $profile;

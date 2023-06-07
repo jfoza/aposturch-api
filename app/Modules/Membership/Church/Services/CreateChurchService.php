@@ -3,7 +3,7 @@
 namespace App\Modules\Membership\Church\Services;
 
 use App\Exceptions\AppException;
-use App\Features\Base\Services\Service;
+use App\Features\Base\Services\AuthenticatedService;
 use App\Features\Base\Traits\EnvironmentException;
 use App\Features\City\Cities\Contracts\CityRepositoryInterface;
 use App\Features\City\Cities\Validations\CityValidations;
@@ -14,7 +14,7 @@ use App\Shared\Enums\RulesEnum;
 use App\Shared\Helpers\Helpers;
 use App\Shared\Utils\Transaction;
 
-class CreateChurchService extends Service implements CreateChurchServiceInterface
+class CreateChurchService extends AuthenticatedService implements CreateChurchServiceInterface
 {
     public function __construct(
         private readonly ChurchRepositoryInterface $churchRepository,

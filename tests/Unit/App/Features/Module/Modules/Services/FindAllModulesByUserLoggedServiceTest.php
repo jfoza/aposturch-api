@@ -3,28 +3,27 @@
 namespace Tests\Unit\App\Features\Module\Modules\Services;
 
 use App\Exceptions\AppException;
-use App\Features\Module\Modules\Services\FindAllModulesByUserLoggedService;
+use App\Features\Module\Modules\Services\FindAllModulesByUserLoggedAuthenticatedService;
 use App\Shared\ACL\Policy;
 use App\Shared\Enums\RulesEnum;
-use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 use Tests\Unit\App\Resources\MemberLists;
-use Tymon\JWTAuth\Facades\JWTAuth;
 
 class FindAllModulesByUserLoggedServiceTest extends TestCase
 {
     protected function setUp(): void
     {
         parent::setUp();
-
-        JWTAuth::shouldReceive('user')->andreturn(MemberLists::getMemberUserLogged());
-        Auth::shouldReceive('user')->andreturn(MemberLists::getMemberUserLogged());
     }
 
-    public function getFindAllModulesByUserLoggedService(): FindAllModulesByUserLoggedService
+    public function getFindAllModulesByUserLoggedService(): FindAllModulesByUserLoggedAuthenticatedService
     {
-        return new FindAllModulesByUserLoggedService();
+        $findAllModulesByUserLoggedService = new FindAllModulesByUserLoggedAuthenticatedService();
+
+        $findAllModulesByUserLoggedService->setAuthenticatedUser(MemberLists::getMemberUserLogged());
+
+        return $findAllModulesByUserLoggedService;
     }
 
     public function test_should_return_active_modules_user_logged()

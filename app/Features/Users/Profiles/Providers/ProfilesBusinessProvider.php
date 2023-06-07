@@ -7,8 +7,8 @@ use App\Features\Users\Profiles\Contracts\FindAllProfilesByUserAbilityServiceInt
 use App\Features\Users\Profiles\Contracts\FindAllProfilesInListMembersServiceInterface;
 use App\Features\Users\Profiles\Contracts\ProfilesRepositoryInterface;
 use App\Features\Users\Profiles\Repositories\ProfilesRepository;
-use App\Features\Users\Profiles\Services\FindAllProfilesByUserAbilityService;
-use App\Features\Users\Profiles\Services\FindAllProfilesInListMembersService;
+use App\Features\Users\Profiles\Services\FindAllProfilesByUserAbilityAuthenticatedService;
+use App\Features\Users\Profiles\Services\FindAllProfilesInListMembersAuthenticatedService;
 
 class ProfilesBusinessProvider extends AbstractServiceProvider
 {
@@ -20,12 +20,12 @@ class ProfilesBusinessProvider extends AbstractServiceProvider
     {
         $this->bind(
             FindAllProfilesByUserAbilityServiceInterface::class,
-            FindAllProfilesByUserAbilityService::class
+            FindAllProfilesByUserAbilityAuthenticatedService::class
         );
 
         $this->bind(
             FindAllProfilesInListMembersServiceInterface::class,
-            FindAllProfilesInListMembersService::class
+            FindAllProfilesInListMembersAuthenticatedService::class
         );
     }
 }

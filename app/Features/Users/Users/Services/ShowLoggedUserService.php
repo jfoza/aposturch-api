@@ -2,13 +2,14 @@
 
 namespace App\Features\Users\Users\Services;
 
+use App\Features\Base\Services\AuthenticatedService;
 use App\Features\Users\AdminUsers\Contracts\ShowLoggedUserServiceInterface;
 use App\Features\Users\AdminUsers\Responses\LoggedUserResponse;
 use App\Features\Users\Rules\Contracts\RulesRepositoryInterface;
 use App\Features\Users\Users\Traits\UserAbilityTrait;
 use App\Shared\Utils\Auth;
 
-class ShowLoggedUserService implements ShowLoggedUserServiceInterface
+class ShowLoggedUserService extends AuthenticatedService implements ShowLoggedUserServiceInterface
 {
     use UserAbilityTrait;
 
@@ -19,7 +20,7 @@ class ShowLoggedUserService implements ShowLoggedUserServiceInterface
 
     public function execute(): LoggedUserResponse
     {
-        $user = Auth::getUser();
+        $user = $this->getAuthenticatedUser();
 
         $ability = $this->findAllUserAbility($user, $this->rulesRepository);
 

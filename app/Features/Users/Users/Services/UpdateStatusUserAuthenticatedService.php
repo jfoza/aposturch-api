@@ -3,7 +3,7 @@
 namespace App\Features\Users\Users\Services;
 
 use App\Exceptions\AppException;
-use App\Features\Base\Services\Service;
+use App\Features\Base\Services\AuthenticatedService;
 use App\Features\Base\Traits\EnvironmentException;
 use App\Features\Users\Profiles\Enums\ProfileUniqueNameEnum;
 use App\Features\Users\Users\Contracts\UpdateStatusUserServiceInterface;
@@ -13,11 +13,9 @@ use App\Modules\Membership\Members\Contracts\MembersRepositoryInterface;
 use App\Modules\Membership\Members\DTO\MembersFiltersDTO;
 use App\Modules\Membership\Members\Validations\MembersValidations;
 use App\Shared\Enums\RulesEnum;
-use App\Shared\Utils\Auth;
 use App\Shared\Utils\Transaction;
-use Tymon\JWTAuth\Exceptions\UserNotDefinedException;
 
-class UpdateStatusUserService extends Service implements UpdateStatusUserServiceInterface
+class UpdateStatusUserAuthenticatedService extends AuthenticatedService implements UpdateStatusUserServiceInterface
 {
     private string $userId;
     private bool $status;
@@ -30,7 +28,6 @@ class UpdateStatusUserService extends Service implements UpdateStatusUserService
 
     /**
      * @throws AppException
-     * @throws UserNotDefinedException
      */
     public function execute(string $userId): array
     {
@@ -64,11 +61,10 @@ class UpdateStatusUserService extends Service implements UpdateStatusUserService
 
     /**
      * @throws AppException
-     * @throws UserNotDefinedException
      */
     private function updateStatusByAdminChurch(): array
     {
-        if(Auth::getId() != $this->userId)
+        if(!$this->userPayloadIsEqualsAuthUser($this->userId))
         {
             $this->membersFiltersDTO->profileUniqueName = [
                 ProfileUniqueNameEnum::ADMIN_MASTER->value,

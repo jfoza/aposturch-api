@@ -3,7 +3,7 @@
 namespace App\Modules\Membership\Members\Services;
 
 use App\Exceptions\AppException;
-use App\Features\Base\Services\Service;
+use App\Features\Base\Services\AuthenticatedService;
 use App\Features\Users\Profiles\Contracts\ProfilesRepositoryInterface;
 use App\Features\Users\Profiles\Enums\ProfileUniqueNameEnum;
 use App\Modules\Membership\Church\Models\Church;
@@ -17,7 +17,7 @@ use Illuminate\Support\Collection;
 use Symfony\Component\HttpFoundation\Response;
 use Tymon\JWTAuth\Exceptions\UserNotDefinedException;
 
-class FindAllMembersService extends Service implements FindAllMembersServiceInterface
+class FindAllMembersAuthenticatedService extends AuthenticatedService implements FindAllMembersServiceInterface
 {
     public function __construct(
         private readonly MembersRepositoryInterface $membersRepository,
@@ -50,7 +50,6 @@ class FindAllMembersService extends Service implements FindAllMembersServiceInte
 
     /**
      * @throws AppException
-     * @throws UserNotDefinedException
      */
     private function churchIdExistsInChurchesUserLogged(string $churchId)
     {

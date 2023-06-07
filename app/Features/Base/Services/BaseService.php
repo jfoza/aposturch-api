@@ -2,13 +2,10 @@
 
 namespace App\Features\Base\Services;
 
-use App\Features\Base\Traits\UserLoggedData;
 use App\Shared\ACL\Policy;
 
-abstract class Service
+abstract class BaseService
 {
-    use UserLoggedData;
-
     private Policy $policy;
 
     /**

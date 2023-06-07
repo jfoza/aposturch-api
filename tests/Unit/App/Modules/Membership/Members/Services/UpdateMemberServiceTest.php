@@ -18,11 +18,10 @@ use App\Modules\Membership\Members\DTO\MemberDTO;
 use App\Modules\Membership\Members\DTO\MembersFiltersDTO;
 use App\Modules\Membership\Members\Repositories\MembersRepository;
 use App\Modules\Membership\Members\Responses\UpdateMemberResponse;
-use App\Modules\Membership\Members\Services\UpdateMemberService;
+use App\Modules\Membership\Members\Services\UpdateMemberAuthenticatedService;
 use App\Shared\ACL\Policy;
 use App\Shared\Enums\RulesEnum;
 use App\Shared\Libraries\Uuid;
-use Illuminate\Support\Facades\Auth;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
@@ -31,7 +30,6 @@ use Tests\Unit\App\Resources\CitiesLists;
 use Tests\Unit\App\Resources\MemberLists;
 use Tests\Unit\App\Resources\UsersLists;
 use Tymon\JWTAuth\Exceptions\UserNotDefinedException;
-use Tymon\JWTAuth\Facades\JWTAuth;
 
 class UpdateMemberServiceTest extends TestCase
 {
@@ -54,12 +52,6 @@ class UpdateMemberServiceTest extends TestCase
         $this->userId = Uuid::uuid4Generate();
         $this->cityId    = Uuid::uuid4Generate();
         $this->churchId  = Uuid::uuid4Generate();
-
-        JWTAuth::shouldReceive('user')->andreturn(MemberLists::getMemberUserLogged($this->defaultChurchId));
-        Auth::shouldReceive('user')->andreturn(MemberLists::getMemberUserLogged($this->defaultChurchId));
-
-        JWTAuth::shouldReceive('id')->andreturn($this->userId);
-        Auth::shouldReceive('id')->andreturn($this->userId);
 
         $this->createUserDtoMock();
         $this->createMocks();
@@ -97,15 +89,19 @@ class UpdateMemberServiceTest extends TestCase
         $this->membersFiltersDtoMock = $this->createMock(MembersFiltersDTO::class);
     }
 
-    public function getUpdateMemberService(): UpdateMemberService
+    public function getUpdateMemberService(): UpdateMemberAuthenticatedService
     {
-        return new UpdateMemberService(
+        $updateMemberService = new UpdateMemberAuthenticatedService(
             $this->personsRepositoryMock,
             $this->usersRepositoryMock,
             $this->membersRepositoryMock,
             $this->cityRepositoryMock,
             $this->membersFiltersDtoMock,
         );
+
+        $updateMemberService->setAuthenticatedUser(MemberLists::getMemberUserLogged($this->defaultChurchId));
+
+        return $updateMemberService;
     }
 
     /**

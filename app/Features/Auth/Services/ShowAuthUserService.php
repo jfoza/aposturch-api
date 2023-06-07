@@ -92,13 +92,13 @@ class ShowAuthUserService implements ShowAuthUserServiceInterface
     {
         $ability = $this->findAllUserAbility($this->user, $this->rulesRepository);
 
-        $this->authUserResponse->id        = $this->user->id;
-        $this->authUserResponse->email     = $this->user->email;
-        $this->authUserResponse->avatar    = $this->user->avatar;
-        $this->authUserResponse->fullName  = $this->user->name;
-        $this->authUserResponse->role      = $this->user->profile;
-        $this->authUserResponse->status    = $this->user->active;
-        $this->authUserResponse->ability   = $ability;
+        $this->authUserResponse->id       = $this->user->id;
+        $this->authUserResponse->email    = $this->user->email;
+        $this->authUserResponse->avatarId = $this->user->avatar_id;
+        $this->authUserResponse->fullName = $this->user->name;
+        $this->authUserResponse->role     = $this->user->profile;
+        $this->authUserResponse->status   = $this->user->active;
+        $this->authUserResponse->ability  = $ability;
 
         return $this->authUserResponse;
     }

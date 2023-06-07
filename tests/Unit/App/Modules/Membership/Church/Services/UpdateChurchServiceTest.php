@@ -13,7 +13,6 @@ use App\Modules\Membership\Church\Services\UpdateChurchService;
 use App\Shared\ACL\Policy;
 use App\Shared\Enums\RulesEnum;
 use App\Shared\Helpers\RandomStringHelper;
-use Illuminate\Support\Facades\Auth;
 use PHPUnit\Framework\MockObject\MockObject;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,7 +21,6 @@ use Tests\Unit\App\Resources\ChurchLists;
 use Tests\Unit\App\Resources\CitiesLists;
 use Tests\Unit\App\Resources\MemberLists;
 use Tymon\JWTAuth\Exceptions\UserNotDefinedException;
-use Tymon\JWTAuth\Facades\JWTAuth;
 
 class UpdateChurchServiceTest extends TestCase
 {
@@ -42,17 +40,18 @@ class UpdateChurchServiceTest extends TestCase
         $this->churchDtoMock->id     = Uuid::uuid4()->toString();
         $this->churchDtoMock->cityId = Uuid::uuid4()->toString();
         $this->churchDtoMock->name = RandomStringHelper::alnumGenerate(6);
-
-        JWTAuth::shouldReceive('user')->andreturn(MemberLists::getMemberUserLogged($this->churchDtoMock->id));
-        Auth::shouldReceive('user')->andreturn(MemberLists::getMemberUserLogged($this->churchDtoMock->id));
     }
 
     public function getUpdateChurchService(): UpdateChurchService
     {
-        return new UpdateChurchService(
+        $updateChurchService = new UpdateChurchService(
             $this->churchRepositoryMock,
             $this->cityRepositoryMock,
         );
+
+        $updateChurchService->setAuthenticatedUser(MemberLists::getMemberUserLogged($this->churchDtoMock->id));
+
+        return $updateChurchService;
     }
 
     public function dataProviderUpdateChurch(): array

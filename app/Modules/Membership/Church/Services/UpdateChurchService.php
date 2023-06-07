@@ -3,7 +3,7 @@
 namespace App\Modules\Membership\Church\Services;
 
 use App\Exceptions\AppException;
-use App\Features\Base\Services\Service;
+use App\Features\Base\Services\AuthenticatedService;
 use App\Features\Base\Traits\EnvironmentException;
 use App\Features\City\Cities\Contracts\CityRepositoryInterface;
 use App\Features\City\Cities\Validations\CityValidations;
@@ -12,13 +12,11 @@ use App\Modules\Membership\Church\Contracts\UpdateChurchServiceInterface;
 use App\Modules\Membership\Church\DTO\ChurchDTO;
 use App\Modules\Membership\Church\Models\Church;
 use App\Modules\Membership\Church\Validations\ChurchValidations;
-use App\Modules\Membership\Members\Contracts\MembersRepositoryInterface;
 use App\Shared\Enums\RulesEnum;
 use App\Shared\Helpers\Helpers;
 use App\Shared\Utils\Transaction;
-use Tymon\JWTAuth\Exceptions\UserNotDefinedException;
 
-class UpdateChurchService extends Service implements UpdateChurchServiceInterface
+class UpdateChurchService extends AuthenticatedService implements UpdateChurchServiceInterface
 {
     private ChurchDTO $churchDTO;
 
@@ -28,7 +26,7 @@ class UpdateChurchService extends Service implements UpdateChurchServiceInterfac
     ) {}
 
     /**
-     * @throws AppException|UserNotDefinedException
+     * @throws AppException
      */
     public function execute(ChurchDTO $churchDTO): Church
     {
@@ -57,7 +55,6 @@ class UpdateChurchService extends Service implements UpdateChurchServiceInterfac
 
     /**
      * @throws AppException
-     * @throws UserNotDefinedException
      */
     private function updateByAdminChurch(): ?Church
     {

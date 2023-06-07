@@ -3,7 +3,7 @@
 namespace App\Modules\Membership\Members\Services;
 
 use App\Exceptions\AppException;
-use App\Features\Base\Services\Service;
+use App\Features\Base\Services\AuthenticatedService;
 use App\Features\Base\Traits\EnvironmentException;
 use App\Features\City\Cities\Contracts\CityRepositoryInterface;
 use App\Features\City\Cities\Validations\CityValidations;
@@ -28,7 +28,7 @@ use App\Shared\Utils\Transaction;
 use Exception;
 use Tymon\JWTAuth\Exceptions\UserNotDefinedException;
 
-class CreateMemberService extends Service implements CreateMemberServiceInterface
+class CreateMemberAuthenticatedService extends AuthenticatedService implements CreateMemberServiceInterface
 {
     private UserDTO $userDTO;
     private mixed $profile;
@@ -77,7 +77,6 @@ class CreateMemberService extends Service implements CreateMemberServiceInterfac
 
     /**
      * @throws AppException
-     * @throws UserNotDefinedException
      */
     private function createByAdminChurch(): InsertMemberResponse
     {
@@ -95,7 +94,6 @@ class CreateMemberService extends Service implements CreateMemberServiceInterfac
 
     /**
      * @throws AppException
-     * @throws UserNotDefinedException
      */
     private function createByAdminModule(): InsertMemberResponse
     {
@@ -112,7 +110,7 @@ class CreateMemberService extends Service implements CreateMemberServiceInterfac
     }
 
     /**
-     * @throws AppException|UserNotDefinedException
+     * @throws AppException
      */
     private function createByAssistant(): InsertMemberResponse
     {

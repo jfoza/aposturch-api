@@ -3,7 +3,7 @@
 namespace App\Features\Users\AdminUsers\Services;
 
 use App\Exceptions\AppException;
-use App\Features\Base\Services\Service;
+use App\Features\Base\Services\AuthenticatedService;
 use App\Features\Users\AdminUsers\Contracts\AdminUsersRepositoryInterface;
 use App\Features\Users\AdminUsers\Contracts\ShowAdminUserServiceInterface;
 use App\Features\Users\Profiles\Enums\ProfileUniqueNameEnum;
@@ -11,7 +11,7 @@ use App\Shared\Enums\MessagesEnum;
 use App\Shared\Enums\RulesEnum;
 use Symfony\Component\HttpFoundation\Response;
 
-class ShowAdminUserService extends Service implements ShowAdminUserServiceInterface
+class ShowAdminUserAuthenticatedService extends AuthenticatedService implements ShowAdminUserServiceInterface
 {
     private string $userId;
 
