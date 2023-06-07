@@ -23,7 +23,7 @@ use App\Modules\Membership\Members\Contracts\MembersRepositoryInterface;
 use App\Modules\Membership\Members\DTO\MemberDTO;
 use App\Modules\Membership\Members\Repositories\MembersRepository;
 use App\Modules\Membership\Members\Responses\InsertMemberResponse;
-use App\Modules\Membership\Members\Services\CreateMemberAuthenticatedService;
+use App\Modules\Membership\Members\Services\CreateMemberService;
 use App\Shared\ACL\Policy;
 use App\Shared\Enums\RulesEnum;
 use App\Shared\Libraries\Uuid;
@@ -107,9 +107,9 @@ class CreateMemberServiceTest extends TestCase
         $this->modulesRepositoryMock   = $this->createMock(ModulesRepository::class);
     }
 
-    public function getCreateMemberService(): CreateMemberAuthenticatedService
+    public function getCreateMemberService(): CreateMemberService
     {
-        $createMembersService = new CreateMemberAuthenticatedService(
+        $createMembersService = new CreateMemberService(
             $this->personsRepositoryMock,
             $this->usersRepositoryMock,
             $this->membersRepositoryMock,

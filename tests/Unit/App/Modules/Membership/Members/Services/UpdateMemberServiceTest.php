@@ -18,7 +18,7 @@ use App\Modules\Membership\Members\DTO\MemberDTO;
 use App\Modules\Membership\Members\DTO\MembersFiltersDTO;
 use App\Modules\Membership\Members\Repositories\MembersRepository;
 use App\Modules\Membership\Members\Responses\UpdateMemberResponse;
-use App\Modules\Membership\Members\Services\UpdateMemberAuthenticatedService;
+use App\Modules\Membership\Members\Services\UpdateMemberService;
 use App\Shared\ACL\Policy;
 use App\Shared\Enums\RulesEnum;
 use App\Shared\Libraries\Uuid;
@@ -89,9 +89,9 @@ class UpdateMemberServiceTest extends TestCase
         $this->membersFiltersDtoMock = $this->createMock(MembersFiltersDTO::class);
     }
 
-    public function getUpdateMemberService(): UpdateMemberAuthenticatedService
+    public function getUpdateMemberService(): UpdateMemberService
     {
-        $updateMemberService = new UpdateMemberAuthenticatedService(
+        $updateMemberService = new UpdateMemberService(
             $this->personsRepositoryMock,
             $this->usersRepositoryMock,
             $this->membersRepositoryMock,

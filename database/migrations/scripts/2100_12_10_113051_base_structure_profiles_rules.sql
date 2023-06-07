@@ -102,6 +102,7 @@ DO $$
         _rule67 uuid := uuid_generate_v4();
         _rule68 uuid := uuid_generate_v4();
         _rule69 uuid := uuid_generate_v4();
+        _rule70 uuid := uuid_generate_v4();
 
     BEGIN
         INSERT INTO membership.member_types(unique_name, description)
@@ -218,7 +219,9 @@ DO $$
             (_rule66, 'USERS_IMAGE_UPLOAD_ADMIN_MASTER', 'USERS_IMAGE_UPLOAD_ADMIN_MASTER', 'UPLOAD'),
             (_rule67, 'USERS_IMAGE_UPLOAD_ADMIN_CHURCH', 'USERS_IMAGE_UPLOAD_ADMIN_CHURCH', 'UPLOAD'),
             (_rule68, 'USERS_IMAGE_UPLOAD_ADMIN_MODULE', 'USERS_IMAGE_UPLOAD_ADMIN_MODULE', 'UPLOAD'),
-            (_rule69, 'USERS_IMAGE_UPLOAD_ADMIN_ASSISTANT', 'USERS_IMAGE_UPLOAD_ADMIN_ASSISTANT', 'UPLOAD');
+            (_rule69, 'USERS_IMAGE_UPLOAD_ADMIN_ASSISTANT', 'USERS_IMAGE_UPLOAD_ADMIN_ASSISTANT', 'UPLOAD'),
+
+            (_rule70, 'MEMBERSHIP_MODULE_MEMBERS_ADMIN_MASTER_VIEW', 'MEMBERSHIP_MODULE_MEMBERS_ADMIN_MASTER', 'VIEW');
 
 
         INSERT INTO users.modules_rules (rule_id, module_id)
@@ -337,6 +340,7 @@ DO $$
             (_profile1, _rule64),
             (_profile1, _rule65),
             (_profile1, _rule66),
+            (_profile1, _rule70),
 
             -- ADMIN MASTER
             (_profile2, _rule1),
@@ -375,6 +379,7 @@ DO $$
             (_profile2, _rule64),
             (_profile2, _rule65),
             (_profile2, _rule66),
+            (_profile2, _rule70),
 
             -- ADMIN CHURCH
             (_profile3, _rule1),

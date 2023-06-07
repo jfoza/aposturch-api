@@ -15,37 +15,60 @@ use App\Shared\Enums\RulesEnum;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Symfony\Component\HttpFoundation\Response;
-use Tymon\JWTAuth\Exceptions\UserNotDefinedException;
 
-class FindAllMembersAuthenticatedService extends AuthenticatedService implements FindAllMembersServiceInterface
+class FindAllMembersService extends AuthenticatedService implements FindAllMembersServiceInterface
 {
+    private MembersFiltersDTO $membersFiltersDTO;
+
     public function __construct(
         private readonly MembersRepositoryInterface $membersRepository,
         private readonly ProfilesRepositoryInterface $profilesRepository,
     ) {}
 
     /**
-     * @throws UserNotDefinedException
      * @throws AppException
      */
     public function execute(MembersFiltersDTO $membersFiltersDTO): LengthAwarePaginator|Collection
     {
-        $this->getPolicy()->havePermission(RulesEnum::MEMBERSHIP_MODULE_MEMBERS_VIEW->value);
+        $policy = $this->getPolicy();
 
-        $membersFiltersDTO->churchIds = $this->getChurchesUserMember()->pluck(Church::ID)->toArray();
+        $this->membersFiltersDTO = $membersFiltersDTO;
 
-        if(isset($membersFiltersDTO->churchIdInQueryParam))
+        return match (true)
         {
-            $this->churchIdExistsInChurchesUserLogged($membersFiltersDTO->churchIdInQueryParam);
-            $membersFiltersDTO->churchIds = [$membersFiltersDTO->churchIdInQueryParam];
+            $policy->haveRule(RulesEnum::MEMBERSHIP_MODULE_MEMBERS_ADMIN_MASTER_VIEW->value) => $this->findAllByAdminMaster(),
+            $policy->haveRule(RulesEnum::MEMBERSHIP_MODULE_MEMBERS_VIEW->value)              => $this->findAllByMembers(),
+
+            default => $policy->dispatchForbiddenError()
+        };
+    }
+
+    private function findAllByAdminMaster(): LengthAwarePaginator|Collection
+    {
+        $this->membersFiltersDTO->churchIds = [$this->membersFiltersDTO->churchIdInQueryParam];
+
+        return $this->membersRepository->findAll($this->membersFiltersDTO);
+    }
+
+    /**
+     * @throws AppException
+     */
+    private function findAllByMembers(): LengthAwarePaginator|Collection
+    {
+        $this->membersFiltersDTO->churchIds = $this->getChurchesUserMember()->pluck(Church::ID)->toArray();
+
+        if(isset($this->membersFiltersDTO->churchIdInQueryParam))
+        {
+            $this->churchIdExistsInChurchesUserLogged($this->membersFiltersDTO->churchIdInQueryParam);
+            $this->membersFiltersDTO->churchIds = [$this->membersFiltersDTO->churchIdInQueryParam];
         }
 
-        if(isset($membersFiltersDTO->profileId))
+        if(isset($this->membersFiltersDTO->profileId))
         {
-            $this->profileIsAllowed($membersFiltersDTO->profileId);
+            $this->profileIsAllowed($this->membersFiltersDTO->profileId);
         }
 
-        return $this->membersRepository->findAll($membersFiltersDTO);
+        return $this->membersRepository->findAll($this->membersFiltersDTO);
     }
 
     /**

@@ -15,7 +15,7 @@ use App\Shared\Utils\Auth;
 use Symfony\Component\HttpFoundation\Response;
 use Tymon\JWTAuth\Exceptions\UserNotDefinedException;
 
-class ShowByUserIdAuthenticatedService extends AuthenticatedService implements ShowByUserIdServiceInterface
+class ShowByUserIdService extends AuthenticatedService implements ShowByUserIdServiceInterface
 {
     private string $userId;
 

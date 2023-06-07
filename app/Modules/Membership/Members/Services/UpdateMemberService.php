@@ -24,7 +24,7 @@ use Exception;
 use Symfony\Component\HttpFoundation\Response;
 use Tymon\JWTAuth\Exceptions\UserNotDefinedException;
 
-class UpdateMemberAuthenticatedService extends AuthenticatedService implements UpdateMemberServiceInterface
+class UpdateMemberService extends AuthenticatedService implements UpdateMemberServiceInterface
 {
     private UserDTO $userDTO;
     private mixed $userMember;

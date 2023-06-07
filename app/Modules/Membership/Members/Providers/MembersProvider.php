@@ -9,10 +9,10 @@ use App\Modules\Membership\Members\Contracts\MembersRepositoryInterface;
 use App\Modules\Membership\Members\Contracts\ShowByUserIdServiceInterface;
 use App\Modules\Membership\Members\Contracts\UpdateMemberServiceInterface;
 use App\Modules\Membership\Members\Repositories\MembersRepository;
-use App\Modules\Membership\Members\Services\CreateMemberAuthenticatedService;
-use App\Modules\Membership\Members\Services\FindAllMembersAuthenticatedService;
-use App\Modules\Membership\Members\Services\ShowByUserIdAuthenticatedService;
-use App\Modules\Membership\Members\Services\UpdateMemberAuthenticatedService;
+use App\Modules\Membership\Members\Services\CreateMemberService;
+use App\Modules\Membership\Members\Services\FindAllMembersService;
+use App\Modules\Membership\Members\Services\ShowByUserIdService;
+use App\Modules\Membership\Members\Services\UpdateMemberService;
 
 class MembersProvider extends AbstractServiceProvider
 {
@@ -24,22 +24,22 @@ class MembersProvider extends AbstractServiceProvider
     {
         $this->bind(
             FindAllMembersServiceInterface::class,
-            FindAllMembersAuthenticatedService::class
+            FindAllMembersService::class
         );
 
         $this->bind(
             ShowByUserIdServiceInterface::class,
-            ShowByUserIdAuthenticatedService::class
+            ShowByUserIdService::class
         );
 
         $this->bind(
             CreateMemberServiceInterface::class,
-            CreateMemberAuthenticatedService::class
+            CreateMemberService::class
         );
 
         $this->bind(
             UpdateMemberServiceInterface::class,
-            UpdateMemberAuthenticatedService::class
+            UpdateMemberService::class
         );
     }
 }

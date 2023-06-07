@@ -28,7 +28,7 @@ use App\Shared\Utils\Transaction;
 use Exception;
 use Tymon\JWTAuth\Exceptions\UserNotDefinedException;
 
-class CreateMemberAuthenticatedService extends AuthenticatedService implements CreateMemberServiceInterface
+class CreateMemberService extends AuthenticatedService implements CreateMemberServiceInterface
 {
     private UserDTO $userDTO;
     private mixed $profile;
