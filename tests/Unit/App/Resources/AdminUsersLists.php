@@ -45,7 +45,7 @@ class AdminUsersLists
         return (object) ([
             'id'       => 'edd710bb-55d3-4e0e-8027-d5d68cd1a0f9',
             'email'    => 'usuario@email.com',
-            'avatar'   => null,
+            'avatar_id'   => null,
             'name' => 'Name User',
             'active' => true,
             'profile' => collect([

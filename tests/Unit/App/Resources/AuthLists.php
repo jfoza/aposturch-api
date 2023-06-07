@@ -34,7 +34,7 @@ class AuthLists
             'user' => [
                 "id",
                 "email",
-                "avatar",
+                "avatarId",
                 "fullName",
                 'role',
                 'status',

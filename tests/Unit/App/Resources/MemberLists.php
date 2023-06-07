@@ -79,7 +79,7 @@ class MemberLists
         return (object) ([
             'id'       => $userId,
             'email'    => 'usuario@email.com',
-            'avatar'   => null,
+            'avatar_id'   => null,
             'name' => 'Name User',
             'active' => true,
             'profile' => Collection::make([

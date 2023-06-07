@@ -6,7 +6,7 @@ class LoggedUserResponse
 {
     public ?string $id;
     public ?string $email;
-    public ?string $avatar;
+    public ?string $avatarId;
     public ?string $fullName;
     public mixed $role;
     public ?string $status;

@@ -26,7 +26,7 @@ class ShowLoggedUserService extends AuthenticatedService implements ShowLoggedUs
 
         $this->loggedUserResponse->id       = $user->id;
         $this->loggedUserResponse->email    = $user->email;
-        $this->loggedUserResponse->avatar   = $user->avatar;
+        $this->loggedUserResponse->avatarId = $user->avatar_id;
         $this->loggedUserResponse->fullName = $user->name;
         $this->loggedUserResponse->role     = $user->profile->first();
         $this->loggedUserResponse->status   = $user->active;
