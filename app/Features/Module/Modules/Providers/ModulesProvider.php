@@ -6,7 +6,7 @@ use App\Features\Base\Providers\AbstractServiceProvider;
 use App\Features\Module\Modules\Contracts\FindAllModulesByUserLoggedServiceInterface;
 use App\Features\Module\Modules\Contracts\ModulesRepositoryInterface;
 use App\Features\Module\Modules\Repositories\ModulesRepository;
-use App\Features\Module\Modules\Services\FindAllModulesByUserLoggedAuthenticatedService;
+use App\Features\Module\Modules\Services\FindAllModulesByUserLoggedService;
 
 class ModulesProvider extends AbstractServiceProvider
 {
@@ -18,7 +18,7 @@ class ModulesProvider extends AbstractServiceProvider
     {
         $this->bind(
             FindAllModulesByUserLoggedServiceInterface::class,
-            FindAllModulesByUserLoggedAuthenticatedService::class
+            FindAllModulesByUserLoggedService::class
         );
     }
 }

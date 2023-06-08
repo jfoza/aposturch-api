@@ -7,7 +7,8 @@ use App\Features\Users\Profiles\Enums\ProfileUniqueNameEnum;
 use App\Modules\Membership\Members\Enums\MembersDataAliasEnum;
 use App\Modules\Membership\Members\Models\Member;
 use App\Shared\Libraries\Uuid;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Collection as DatabaseCollection;
+use Illuminate\Support\Collection as SupportCollection;
 
 class MemberLists
 {
@@ -82,7 +83,7 @@ class MemberLists
             'avatar_id'   => null,
             'name' => 'Name User',
             'active' => true,
-            'profile' => Collection::make([
+            'profile' => DatabaseCollection::make([
                 (object) ([
                     "id" => "7f94247d-38a7-424b-ae7a-bb3262a587b9",
                     "profile_type_id" => "3facf59b-175a-4b08-8a85-e1d6cb5b4b06",
@@ -102,7 +103,7 @@ class MemberLists
                 "created_at" => "2023-05-03T21:18:51.786747Z",
                 "updated_at" => "2023-05-03T21:18:51.786747Z",
 
-                'church' => Collection::make([
+                'church' => DatabaseCollection::make([
                     (object) ([
                         "id" => $churchId,
                         "name" => "Igreja Bíblica Viver Caxias",
@@ -125,13 +126,38 @@ class MemberLists
                     ])
                 ]),
             ]),
-            'module' => Collection::make([
+            'module' => DatabaseCollection::make([
                 (object) ([
                     Module::ID => Uuid::uuid4Generate(),
                     Module::MODULE_DESCRIPTION => 'MEMBERSHIP',
                     Module::ACTIVE => true,
                 ])
             ]),
+        ]);
+    }
+
+    public static function getMembers(): SupportCollection
+    {
+        return collect([
+            [
+                MembersDataAliasEnum::MEMBER_ID => Uuid::uuid4Generate(),
+                MembersDataAliasEnum::USER_ID => Uuid::uuid4Generate(),
+                MembersDataAliasEnum::PERSON_ID => Uuid::uuid4Generate(),
+                MembersDataAliasEnum::NAME => 'test',
+                MembersDataAliasEnum::PROFILE_ID => Uuid::uuid4Generate(),
+                MembersDataAliasEnum::PROFILE_UNIQUE_NAME => ProfileUniqueNameEnum::ASSISTANT->value,
+                MembersDataAliasEnum::EMAIL => 'test@test.com',
+                MembersDataAliasEnum::ACTIVE => true,
+                MembersDataAliasEnum::PHONE => '5198765217',
+                MembersDataAliasEnum::ADDRESS => 'test',
+                MembersDataAliasEnum::NUMBER_ADDRESS => 'test',
+                MembersDataAliasEnum::COMPLEMENT => '',
+                MembersDataAliasEnum::DISTRICT => 'test',
+                MembersDataAliasEnum::ZIP_CODE => '00000000',
+                MembersDataAliasEnum::USER_CITY_DESCRIPTION => Uuid::uuid4Generate(),
+                MembersDataAliasEnum::UF => 'RS',
+                'church' => []
+            ]
         ]);
     }
 }

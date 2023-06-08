@@ -2,7 +2,6 @@
 
 namespace App\Shared\Utils;
 
-use Illuminate\Contracts\Auth\Authenticatable;
 use Tymon\JWTAuth\Exceptions\UserNotDefinedException;
 
 class Auth

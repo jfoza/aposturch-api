@@ -5,15 +5,13 @@ namespace App\Modules\Membership\Members\Services;
 use App\Exceptions\AppException;
 use App\Features\Base\Services\AuthenticatedService;
 use App\Features\Users\Profiles\Enums\ProfileUniqueNameEnum;
+use App\Modules\Membership\Church\Models\Church;
 use App\Modules\Membership\Members\Contracts\MembersRepositoryInterface;
 use App\Modules\Membership\Members\Contracts\ShowByUserIdServiceInterface;
 use App\Modules\Membership\Members\DTO\MembersFiltersDTO;
-use App\Modules\Membership\Members\Validations\MembersValidations;
 use App\Shared\Enums\MessagesEnum;
 use App\Shared\Enums\RulesEnum;
-use App\Shared\Utils\Auth;
 use Symfony\Component\HttpFoundation\Response;
-use Tymon\JWTAuth\Exceptions\UserNotDefinedException;
 
 class ShowByUserIdService extends AuthenticatedService implements ShowByUserIdServiceInterface
 {
@@ -26,7 +24,6 @@ class ShowByUserIdService extends AuthenticatedService implements ShowByUserIdSe
 
     /**
      * @throws AppException
-     * @throws UserNotDefinedException
      */
     public function execute(string $userId): object
     {
@@ -58,24 +55,16 @@ class ShowByUserIdService extends AuthenticatedService implements ShowByUserIdSe
      */
     private function findByAdminChurch(): object
     {
-        if(Auth::getId() != $this->userId)
-        {
-            $this->membersFiltersDTO->profileUniqueName = [
-                ProfileUniqueNameEnum::ADMIN_CHURCH->value,
-                ProfileUniqueNameEnum::ADMIN_MODULE->value,
-                ProfileUniqueNameEnum::ASSISTANT->value,
-                ProfileUniqueNameEnum::MEMBER->value,
-            ];
-        }
+        $this->membersFiltersDTO->profileUniqueName = [
+            ProfileUniqueNameEnum::ADMIN_CHURCH->value,
+            ProfileUniqueNameEnum::ADMIN_MODULE->value,
+            ProfileUniqueNameEnum::ASSISTANT->value,
+            ProfileUniqueNameEnum::MEMBER->value,
+        ];
 
-        $member = $this->findOrFail();
+        $this->membersFiltersDTO->churchIds = $this->getChurchesUserMember()->pluck(Church::ID)->toArray();
 
-        MembersValidations::memberUserHasChurch(
-            $member,
-            $this->getChurchesUserMember()
-        );
-
-        return $member;
+        return $this->findOrFail();
     }
 
     /**
@@ -83,23 +72,15 @@ class ShowByUserIdService extends AuthenticatedService implements ShowByUserIdSe
      */
     private function findByAdminModule(): object
     {
-        if(Auth::getId() != $this->userId)
-        {
-            $this->membersFiltersDTO->profileUniqueName = [
-                ProfileUniqueNameEnum::ADMIN_MODULE->value,
-                ProfileUniqueNameEnum::ASSISTANT->value,
-                ProfileUniqueNameEnum::MEMBER->value,
-            ];
-        }
+        $this->membersFiltersDTO->profileUniqueName = [
+            ProfileUniqueNameEnum::ADMIN_MODULE->value,
+            ProfileUniqueNameEnum::ASSISTANT->value,
+            ProfileUniqueNameEnum::MEMBER->value,
+        ];
 
-        $member = $this->findOrFail();
+        $this->membersFiltersDTO->churchIds = $this->getChurchesUserMember()->pluck(Church::ID)->toArray();
 
-        MembersValidations::memberUserHasChurch(
-            $member,
-            $this->getChurchesUserMember()
-        );
-
-        return $member;
+        return $this->findOrFail();
     }
 
     /**
@@ -107,22 +88,14 @@ class ShowByUserIdService extends AuthenticatedService implements ShowByUserIdSe
      */
     private function findByAssistant(): object
     {
-        if(Auth::getId() != $this->userId)
-        {
-            $this->membersFiltersDTO->profileUniqueName = [
-                ProfileUniqueNameEnum::ASSISTANT->value,
-                ProfileUniqueNameEnum::MEMBER->value,
-            ];
-        }
+        $this->membersFiltersDTO->profileUniqueName = [
+            ProfileUniqueNameEnum::ASSISTANT->value,
+            ProfileUniqueNameEnum::MEMBER->value,
+        ];
 
-        $member = $this->findOrFail();
+        $this->membersFiltersDTO->churchIds = $this->getChurchesUserMember()->pluck(Church::ID)->toArray();
 
-        MembersValidations::memberUserHasChurch(
-            $member,
-            $this->getChurchesUserMember()
-        );
-
-        return $member;
+        return $this->findOrFail();
     }
 
     /**
