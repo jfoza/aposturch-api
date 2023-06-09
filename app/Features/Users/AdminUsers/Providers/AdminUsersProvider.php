@@ -8,7 +8,7 @@ use App\Features\Users\AdminUsers\Contracts\CreateAdminUserServiceInterface;
 use App\Features\Users\AdminUsers\Contracts\FindAllAdminUsersServiceInterface;
 use App\Features\Users\AdminUsers\Contracts\ShowAdminUserServiceInterface;
 use App\Features\Users\AdminUsers\Contracts\ShowCountAdminUsersByProfileInterface;
-use App\Features\Users\AdminUsers\Contracts\ShowLoggedUserServiceInterface;
+use App\Features\Users\AdminUsers\Contracts\ShowAuthenticatedUserDataServiceInterface;
 use App\Features\Users\AdminUsers\Contracts\UpdateAdminUserServiceInterface;
 use App\Features\Users\AdminUsers\Repositories\AdminUsersRepository;
 use App\Features\Users\AdminUsers\Services\CreateAdminUserAuthenticatedService;
@@ -16,12 +16,12 @@ use App\Features\Users\AdminUsers\Services\FindAllAdminUsersAuthenticatedService
 use App\Features\Users\AdminUsers\Services\ShowAdminUserAuthenticatedService;
 use App\Features\Users\AdminUsers\Services\ShowCountAdminUsersByProfile;
 use App\Features\Users\AdminUsers\Services\UpdateAdminUserAuthenticatedService;
-use App\Features\Users\Users\Services\ShowLoggedUserService;
+use App\Features\Users\Users\Services\ShowAuthenticatedUserDataService;
 
 class AdminUsersProvider extends AbstractServiceProvider
 {
     public array $bindings = [
-        ShowLoggedUserServiceInterface::class => ShowLoggedUserService::class,
+        ShowAuthenticatedUserDataServiceInterface::class => ShowAuthenticatedUserDataService::class,
 
         AdminUsersRepositoryInterface::class => AdminUsersRepository::class,
     ];
