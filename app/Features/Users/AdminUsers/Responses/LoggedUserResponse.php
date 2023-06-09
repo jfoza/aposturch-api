@@ -9,6 +9,6 @@ class LoggedUserResponse
     public ?string $avatarId;
     public ?string $fullName;
     public mixed $role;
-    public ?bool $status;
+    public ?string $status;
     public ?array $ability;
 }

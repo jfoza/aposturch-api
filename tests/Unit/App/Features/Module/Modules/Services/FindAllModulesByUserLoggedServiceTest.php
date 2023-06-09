@@ -3,7 +3,7 @@
 namespace Tests\Unit\App\Features\Module\Modules\Services;
 
 use App\Exceptions\AppException;
-use App\Features\Module\Modules\Services\FindAllModulesByAuthAuthUserService;
+use App\Features\Module\Modules\Services\FindAllModulesByUserLoggedService;
 use App\Shared\ACL\Policy;
 use App\Shared\Enums\RulesEnum;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,9 +17,9 @@ class FindAllModulesByUserLoggedServiceTest extends TestCase
         parent::setUp();
     }
 
-    public function getFindAllModulesByUserLoggedService(): FindAllModulesByAuthAuthUserService
+    public function getFindAllModulesByUserLoggedService(): FindAllModulesByUserLoggedService
     {
-        $findAllModulesByUserLoggedService = new FindAllModulesByAuthAuthUserService();
+        $findAllModulesByUserLoggedService = new FindAllModulesByUserLoggedService();
 
         $findAllModulesByUserLoggedService->setAuthenticatedUser(MemberLists::getMemberUserLogged());
 

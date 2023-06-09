@@ -43,19 +43,6 @@ class AuthLists
         ];
     }
 
-    public static function getAuthenticatedUser(): array
-    {
-        return [
-            "id",
-            "email",
-            "avatarId",
-            "fullName",
-            'role',
-            'status',
-            'ability'
-        ];
-    }
-
     public static function getForgotPassword(string|Carbon $date = null, bool $active = true): object
     {
         $userId = Uuid::uuid4()->toString();
@@ -85,7 +72,7 @@ class AuthLists
 
         $authUserResponse->id = Uuid::uuid4()->toString();
         $authUserResponse->email = 'email@email.com';
-        $authUserResponse->avatarId = null;
+        $authUserResponse->avatar = null;
         $authUserResponse->fullName = 'Test';
         $authUserResponse->role = Collection::make([]);
         $authUserResponse->status = true;

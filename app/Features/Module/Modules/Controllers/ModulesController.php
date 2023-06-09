@@ -2,14 +2,14 @@
 
 namespace App\Features\Module\Modules\Controllers;
 
-use App\Features\Module\Modules\Contracts\FindAllModulesByAuthUserServiceInterface;
+use App\Features\Module\Modules\Contracts\FindAllModulesByUserLoggedServiceInterface;
 use Illuminate\Http\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 readonly class ModulesController
 {
     public function __construct(
-        private FindAllModulesByAuthUserServiceInterface $findAllModulesByUserLoggedService
+        private FindAllModulesByUserLoggedServiceInterface $findAllModulesByUserLoggedService
     ) {}
 
     public function showByUserLogged(): JsonResponse

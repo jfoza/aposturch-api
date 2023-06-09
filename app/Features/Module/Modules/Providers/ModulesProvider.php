@@ -3,10 +3,10 @@
 namespace App\Features\Module\Modules\Providers;
 
 use App\Features\Base\Providers\AbstractServiceProvider;
-use App\Features\Module\Modules\Contracts\FindAllModulesByAuthUserServiceInterface;
+use App\Features\Module\Modules\Contracts\FindAllModulesByUserLoggedServiceInterface;
 use App\Features\Module\Modules\Contracts\ModulesRepositoryInterface;
 use App\Features\Module\Modules\Repositories\ModulesRepository;
-use App\Features\Module\Modules\Services\FindAllModulesByAuthAuthUserService;
+use App\Features\Module\Modules\Services\FindAllModulesByUserLoggedService;
 
 class ModulesProvider extends AbstractServiceProvider
 {
@@ -17,8 +17,8 @@ class ModulesProvider extends AbstractServiceProvider
     public function register()
     {
         $this->bind(
-            FindAllModulesByAuthUserServiceInterface::class,
-            FindAllModulesByAuthAuthUserService::class
+            FindAllModulesByUserLoggedServiceInterface::class,
+            FindAllModulesByUserLoggedService::class
         );
     }
 }
