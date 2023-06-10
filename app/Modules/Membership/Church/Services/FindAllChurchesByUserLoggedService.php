@@ -50,7 +50,7 @@ class FindAllChurchesByUserLoggedService extends AuthenticatedService implements
     {
         $this->churchFiltersDTO->active = true;
 
-        $this->churchFiltersDTO->churchIds = $this->getChurchesUserMember()->pluck(Church::ID)->toArray();
+        $this->churchFiltersDTO->churchIds = $this->getUserMemberChurchIds();
 
         return $this->churchRepository->findAll($this->churchFiltersDTO);
     }

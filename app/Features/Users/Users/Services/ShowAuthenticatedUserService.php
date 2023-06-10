@@ -3,13 +3,12 @@
 namespace App\Features\Users\Users\Services;
 
 use App\Features\Base\Services\AuthenticatedService;
-use App\Features\Users\AdminUsers\Contracts\ShowLoggedUserServiceInterface;
+use App\Features\Users\AdminUsers\Contracts\ShowAuthenticatedUserServiceInterface;
 use App\Features\Users\AdminUsers\Responses\LoggedUserResponse;
 use App\Features\Users\Rules\Contracts\RulesRepositoryInterface;
 use App\Features\Users\Users\Traits\UserAbilityTrait;
-use App\Shared\Utils\Auth;
 
-class ShowLoggedUserService extends AuthenticatedService implements ShowLoggedUserServiceInterface
+class ShowAuthenticatedUserService extends AuthenticatedService implements ShowAuthenticatedUserServiceInterface
 {
     use UserAbilityTrait;
 

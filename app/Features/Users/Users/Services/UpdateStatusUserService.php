@@ -9,13 +9,14 @@ use App\Features\Users\Profiles\Enums\ProfileUniqueNameEnum;
 use App\Features\Users\Users\Contracts\UpdateStatusUserServiceInterface;
 use App\Features\Users\Users\Contracts\UsersRepositoryInterface;
 use App\Features\Users\Users\Validations\UsersValidations;
+use App\Modules\Membership\Church\Models\Church;
 use App\Modules\Membership\Members\Contracts\MembersRepositoryInterface;
 use App\Modules\Membership\Members\DTO\MembersFiltersDTO;
 use App\Modules\Membership\Members\Validations\MembersValidations;
 use App\Shared\Enums\RulesEnum;
 use App\Shared\Utils\Transaction;
 
-class UpdateStatusUserAuthenticatedService extends AuthenticatedService implements UpdateStatusUserServiceInterface
+class UpdateStatusUserService extends AuthenticatedService implements UpdateStatusUserServiceInterface
 {
     private string $userId;
     private bool $status;
@@ -67,22 +68,18 @@ class UpdateStatusUserAuthenticatedService extends AuthenticatedService implemen
         if(!$this->userPayloadIsEqualsAuthUser($this->userId))
         {
             $this->membersFiltersDTO->profileUniqueName = [
-                ProfileUniqueNameEnum::ADMIN_MASTER->value,
                 ProfileUniqueNameEnum::ADMIN_MODULE->value,
                 ProfileUniqueNameEnum::ASSISTANT->value,
                 ProfileUniqueNameEnum::MEMBER->value,
             ];
         }
 
+        $this->membersFiltersDTO->churchIds = $this->getUserMemberChurchIds();
+
         $userMember = MembersValidations::memberExists(
             $this->userId,
             $this->membersFiltersDTO,
             $this->membersRepository
-        );
-
-        MembersValidations::memberUserHasChurch(
-            $userMember,
-            $this->getChurchesUserMember()
         );
 
         $this->status = !$userMember->active;

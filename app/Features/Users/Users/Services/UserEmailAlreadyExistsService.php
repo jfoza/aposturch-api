@@ -10,7 +10,7 @@ use App\Shared\Enums\MessagesEnum;
 use App\Shared\Enums\RulesEnum;
 use Symfony\Component\HttpFoundation\Response;
 
-class UserEmailAlreadyExistsAuthenticatedService extends AuthenticatedService implements UserEmailAlreadyExistsServiceInterface
+class UserEmailAlreadyExistsService extends AuthenticatedService implements UserEmailAlreadyExistsServiceInterface
 {
     public function __construct(
         private readonly UsersRepositoryInterface $usersRepository,

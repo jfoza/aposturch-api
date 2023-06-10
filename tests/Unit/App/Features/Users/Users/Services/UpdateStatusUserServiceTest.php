@@ -5,7 +5,7 @@ namespace Tests\Unit\App\Features\Users\Users\Services;
 use App\Exceptions\AppException;
 use App\Features\Users\Users\Contracts\UsersRepositoryInterface;
 use App\Features\Users\Users\Repositories\UsersRepository;
-use App\Features\Users\Users\Services\UpdateStatusUserAuthenticatedService;
+use App\Features\Users\Users\Services\UpdateStatusUserService;
 use App\Modules\Membership\Church\Models\Church;
 use App\Modules\Membership\Members\Contracts\MembersRepositoryInterface;
 use App\Modules\Membership\Members\DTO\MembersFiltersDTO;
@@ -40,9 +40,9 @@ class UpdateStatusUserServiceTest extends TestCase
         $this->defaultChurchId = Uuid::uuid4Generate();
     }
 
-    public function getUpdateStatusUserService(): UpdateStatusUserAuthenticatedService
+    public function getUpdateStatusUserService(): UpdateStatusUserService
     {
-        $updateStatusUserService = new UpdateStatusUserAuthenticatedService(
+        $updateStatusUserService = new UpdateStatusUserService(
             $this->usersRepositoryMock,
             $this->membersRepositoryMock,
             $this->membersFiltersDtoMock,

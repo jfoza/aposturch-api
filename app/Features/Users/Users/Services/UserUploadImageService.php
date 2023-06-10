@@ -116,7 +116,7 @@ class UserUploadImageService extends AuthenticatedService implements UserUploadI
      */
     private function userMemberExistsAndCanBeUsed()
     {
-        $this->membersFiltersDTO->churchIds = $this->getChurchesUserMember()->pluck(Church::ID)->toArray();
+        $this->membersFiltersDTO->churchIds = $this->getUserMemberChurchIds();
 
         $this->userMember = MembersValidations::memberExists(
             $this->userId,

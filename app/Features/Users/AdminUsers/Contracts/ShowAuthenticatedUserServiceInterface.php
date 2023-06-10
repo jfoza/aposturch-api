@@ -4,7 +4,7 @@ namespace App\Features\Users\AdminUsers\Contracts;
 
 use App\Features\Users\AdminUsers\Responses\LoggedUserResponse;
 
-interface ShowLoggedUserServiceInterface
+interface ShowAuthenticatedUserServiceInterface
 {
     public function execute(): LoggedUserResponse;
 }

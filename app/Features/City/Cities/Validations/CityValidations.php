@@ -40,7 +40,7 @@ class CityValidations
         {
             throw new AppException(
                 MessagesEnum::INVALID_UF,
-                Response::HTTP_NOT_FOUND
+                Response::HTTP_UNPROCESSABLE_ENTITY
             );
         }
     }

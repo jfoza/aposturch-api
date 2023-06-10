@@ -5,7 +5,7 @@ namespace Tests\Unit\App\Features\Users\Users\Services;
 use App\Features\Users\AdminUsers\Responses\LoggedUserResponse;
 use App\Features\Users\Rules\Contracts\RulesRepositoryInterface;
 use App\Features\Users\Rules\Infra\Repositories\RulesRepository;
-use App\Features\Users\Users\Services\ShowLoggedUserService;
+use App\Features\Users\Users\Services\ShowAuthenticatedUserService;
 use PHPUnit\Framework\MockObject\MockObject;
 use Tests\TestCase;
 use Tests\Unit\App\Resources\AdminUsersLists;
@@ -23,9 +23,9 @@ class ShowLoggedUserServiceTest extends TestCase
         $this->loggedUserResponseMock = $this->createMock(LoggedUserResponse::class);
     }
 
-    public function getShowLoggedUserService(): ShowLoggedUserService
+    public function getShowLoggedUserService(): ShowAuthenticatedUserService
     {
-        $showLoggedUserService = new ShowLoggedUserService(
+        $showLoggedUserService = new ShowAuthenticatedUserService(
             $this->rulesRepositoryMock,
             $this->loggedUserResponseMock
         );

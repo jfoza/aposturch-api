@@ -2,7 +2,7 @@
 
 namespace App\Features\Users\Users\Controllers;
 
-use App\Features\Users\AdminUsers\Contracts\ShowLoggedUserServiceInterface;
+use App\Features\Users\AdminUsers\Contracts\ShowAuthenticatedUserServiceInterface;
 use App\Features\Users\Users\Contracts\UpdateStatusUserServiceInterface;
 use App\Features\Users\Users\Contracts\UserEmailAlreadyExistsServiceInterface;
 use Illuminate\Http\JsonResponse;
@@ -12,8 +12,8 @@ use Symfony\Component\HttpFoundation\Response;
 readonly class UsersController
 {
     public function __construct(
-        private ShowLoggedUserServiceInterface $showLoggedUserService,
-        private UpdateStatusUserServiceInterface $updateStatusUserService,
+        private ShowAuthenticatedUserServiceInterface  $showLoggedUserService,
+        private UpdateStatusUserServiceInterface       $updateStatusUserService,
         private UserEmailAlreadyExistsServiceInterface $userEmailAlreadyExistsService,
     ) {}
 

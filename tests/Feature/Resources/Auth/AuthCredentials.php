@@ -9,6 +9,13 @@ trait AuthCredentials
     private string $email;
     private string $password;
 
+    public string $inactiveUserEmail = 'inactive-user@hotmail.com';
+    public string $testUserEmail = 'usuario-para-testes@hotmail.com';
+    public string $defaultPass = 'Teste123';
+    public string $adminMasterUserEmail = 'gfozza@hotmail.com';
+    public string $adminChurchUserEmail = 'felipe-dutra@hotmail.com';
+    public string $adminModuleUserEmail = 'fabio-dutra@hotmail.com';
+
     public function getEmail(): string
     {
         return $this->email;
@@ -31,14 +38,14 @@ trait AuthCredentials
 
     public function defineAdminUserTypeCredentials(): void
     {
-        $this->setEmail('gfozza@hotmail.com');
-        $this->setPassword('Teste123');
+        $this->setEmail($this->adminMasterUserEmail);
+        $this->setPassword($this->defaultPass);
     }
 
     public function defineAdminUserTypeInactiveCredentials(): void
     {
-        $this->setEmail('inactive-user@hotmail.com');
-        $this->setPassword('Teste123');
+        $this->setEmail($this->inactiveUserEmail);
+        $this->setPassword($this->defaultPass);
     }
 
     public function getInvalidAuthorizationBearer(): array

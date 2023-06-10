@@ -3,6 +3,7 @@
 namespace App\Features\Base\Services;
 
 use App\Exceptions\AppException;
+use App\Modules\Membership\Church\Models\Church;
 use App\Shared\Enums\MessagesEnum;
 use Illuminate\Support\Collection;
 use Symfony\Component\HttpFoundation\Response;
@@ -49,6 +50,14 @@ abstract class AuthenticatedService extends BaseService
         }
 
         return collect($user->member->church);
+    }
+
+    /**
+     * @throws AppException
+     */
+    public function getUserMemberChurchIds(): array
+    {
+        return $this->getChurchesUserMember()->pluck(Church::ID)->toArray();
     }
 
     /**

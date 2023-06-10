@@ -58,7 +58,7 @@ class FindAllMembersService extends AuthenticatedService implements FindAllMembe
      */
     private function findAllByMembers(): LengthAwarePaginator|Collection
     {
-        $this->membersFiltersDTO->churchIds = $this->getChurchesUserMember()->pluck(Church::ID)->toArray();
+        $this->membersFiltersDTO->churchIds = $this->getUserMemberChurchIds();
 
         if(isset($this->membersFiltersDTO->churchIdInQueryParam))
         {
