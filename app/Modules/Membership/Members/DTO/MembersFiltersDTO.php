@@ -11,7 +11,8 @@ class MembersFiltersDTO extends FiltersDTO
     public ?string $email;
     public ?string $cityId;
     public ?string $churchIdInQueryParam;
-    public ?array $churchIds;
+    public ?array $churchesId;
+    public ?array $modulesId;
     public ?string $profileId;
     public ?array $profileUniqueName;
 }

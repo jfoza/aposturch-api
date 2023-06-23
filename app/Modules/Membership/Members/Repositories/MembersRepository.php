@@ -63,9 +63,10 @@ class MembersRepository implements MembersRepositoryInterface
                 isset($membersFiltersDTO->churchIds),
                 fn($q) => $q->whereHas(
                     'church',
-                    fn($c) => $c->whereIn(Church::tableField(Church::ID), $membersFiltersDTO->churchIds)
+                    fn($c) => $c->whereIn(Church::tableField(Church::ID), $membersFiltersDTO->churchesId)
                 )
             )
+
             ->where(User::tableField(User::ID), $userId)
             ->first();
     }

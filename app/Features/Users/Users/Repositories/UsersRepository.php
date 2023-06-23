@@ -6,6 +6,7 @@ use App\Features\Persons\Infra\Models\Person;
 use App\Features\Users\Users\Contracts\UsersRepositoryInterface;
 use App\Features\Users\Users\DTO\UserDTO;
 use App\Features\Users\Users\Models\User;
+use App\Modules\Membership\Members\DTO\GeneralDataUpdateDTO;
 
 class UsersRepository implements UsersRepositoryInterface
 {
@@ -63,30 +64,33 @@ class UsersRepository implements UsersRepositoryInterface
         return (object) $saved;
     }
 
-    public function saveInMembers(UserDTO $userDTO): object
+    public function saveInMembers(GeneralDataUpdateDTO $generalDataUpdateDTO): object
     {
         $saved = [
-            User::ID     => $userDTO->id,
-            User::NAME   => $userDTO->name,
-            User::EMAIL  => $userDTO->email,
+            User::ID     => $generalDataUpdateDTO->id,
+            User::NAME   => $generalDataUpdateDTO->name,
+            User::EMAIL  => $generalDataUpdateDTO->email,
+            User::ACTIVE => $generalDataUpdateDTO->active,
         ];
 
-        User::where(User::ID, $userDTO->id)->update($saved);
+        User::where(User::ID, $generalDataUpdateDTO->id)->update($saved);
 
         return (object) $saved;
     }
 
-    public function saveProfiles(string $userId, array $profiles): void {
+    public function saveProfiles(string $userId, array $profiles): void
+    {
         User::find($userId)->profile()->sync($profiles);
     }
 
-    public function saveModules(string $userId, array $modules): void {
+    public function saveModules(string $userId, array $modules): void
+    {
         User::find($userId)->module()->sync($modules);
     }
 
-    public function saveNewPassword(string $userId, string $password) {
-        return User::where(User::ID, $userId)
-            ->update([User::PASSWORD => $password]);
+    public function saveNewPassword(string $userId, string $password)
+    {
+        return User::where(User::ID, $userId)->update([User::PASSWORD => $password]);
     }
 
     public function saveStatus(string $userId, bool $status)

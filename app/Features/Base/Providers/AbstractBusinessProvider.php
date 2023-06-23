@@ -5,7 +5,7 @@ namespace App\Features\Base\Providers;
 use App\Features\Base\Traits\PolicyGenerationTrait;
 use Illuminate\Support\ServiceProvider;
 
-abstract class ServiceProviderAbstract extends ServiceProvider
+abstract class AbstractBusinessProvider extends ServiceProvider
 {
     use PolicyGenerationTrait;
 

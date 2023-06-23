@@ -2,13 +2,13 @@
 
 namespace App\Features\Users\CustomerUsers\Providers;
 
-use App\Features\Base\Providers\ServiceProviderAbstract;
+use App\Features\Base\Providers\AbstractBusinessProvider;
 use App\Features\Users\CustomerUsers\Business\CustomerUsersBusiness;
 use App\Features\Users\CustomerUsers\Contracts\CustomerUsersBusinessInterface;
 use App\Features\Users\CustomerUsers\Contracts\CustomerUsersRepositoryInterface;
 use App\Features\Users\CustomerUsers\Infra\Repositories\CustomerUsersRepository;
 
-class CustomerUsersBusinessProvider extends ServiceProviderAbstract
+class CustomerUsersBusinessProviderBusinessProvider extends AbstractBusinessProvider
 {
     public array $bindings = [
         CustomerUsersRepositoryInterface::class => CustomerUsersRepository::class,

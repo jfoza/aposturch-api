@@ -46,7 +46,6 @@ class CreateMemberService extends AuthenticatedService implements CreateMemberSe
 
     /**
      * @throws AppException
-     * @throws UserNotDefinedException
      */
     public function execute(UserDTO $userDTO): InsertMemberResponse
     {

@@ -74,7 +74,7 @@ class UpdateStatusUserService extends AuthenticatedService implements UpdateStat
             ];
         }
 
-        $this->membersFiltersDTO->churchIds = $this->getUserMemberChurchIds();
+        $this->membersFiltersDTO->churchesId = $this->getUserMemberChurchesId();
 
         $userMember = MembersValidations::memberExists(
             $this->userId,

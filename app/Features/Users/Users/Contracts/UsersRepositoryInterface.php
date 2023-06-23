@@ -3,10 +3,7 @@
 namespace App\Features\Users\Users\Contracts;
 
 use App\Features\Users\Users\DTO\UserDTO;
-use App\Features\Users\Users\DTO\UserFiltersDTO;
-use App\Features\Users\Users\Models\User;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Collection as CollectionSupport;
+use App\Modules\Membership\Members\DTO\GeneralDataUpdateDTO;
 
 interface UsersRepositoryInterface
 {
@@ -15,7 +12,7 @@ interface UsersRepositoryInterface
     public function findByPhone(string $phone): ?object;
     public function create(UserDTO $userDTO, bool $usePerson = false);
     public function save(UserDTO $userDTO);
-    public function saveInMembers(UserDTO $userDTO): object;
+    public function saveInMembers(GeneralDataUpdateDTO $generalDataUpdateDTO): object;
     public function saveProfiles(string $userId, array $profiles): void;
     public function saveModules(string $userId, array $modules): void;
     public function saveNewPassword(string $userId, string $password);

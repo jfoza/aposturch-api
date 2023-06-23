@@ -62,7 +62,7 @@ class ShowByUserIdService extends AuthenticatedService implements ShowByUserIdSe
             ProfileUniqueNameEnum::MEMBER->value,
         ];
 
-        $this->membersFiltersDTO->churchIds = $this->getUserMemberChurchIds();
+        $this->membersFiltersDTO->churchesId = $this->getUserMemberChurchesId();
 
         return $this->findOrFail();
     }
@@ -78,7 +78,7 @@ class ShowByUserIdService extends AuthenticatedService implements ShowByUserIdSe
             ProfileUniqueNameEnum::MEMBER->value,
         ];
 
-        $this->membersFiltersDTO->churchIds = $this->getUserMemberChurchIds();
+        $this->membersFiltersDTO->churchesId = $this->getUserMemberChurchesId();
 
         return $this->findOrFail();
     }
@@ -93,7 +93,7 @@ class ShowByUserIdService extends AuthenticatedService implements ShowByUserIdSe
             ProfileUniqueNameEnum::MEMBER->value,
         ];
 
-        $this->membersFiltersDTO->churchIds = $this->getUserMemberChurchIds();
+        $this->membersFiltersDTO->churchesId = $this->getUserMemberChurchesId();
 
         return $this->findOrFail();
     }

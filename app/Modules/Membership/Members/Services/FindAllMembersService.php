@@ -47,7 +47,7 @@ class FindAllMembersService extends AuthenticatedService implements FindAllMembe
     {
         if(isset($this->membersFiltersDTO->churchIdInQueryParam))
         {
-            $this->membersFiltersDTO->churchIds = [$this->membersFiltersDTO->churchIdInQueryParam];
+            $this->membersFiltersDTO->churchesId = [$this->membersFiltersDTO->churchIdInQueryParam];
         }
 
         return $this->membersRepository->findAll($this->membersFiltersDTO);
@@ -58,12 +58,12 @@ class FindAllMembersService extends AuthenticatedService implements FindAllMembe
      */
     private function findAllByMembers(): LengthAwarePaginator|Collection
     {
-        $this->membersFiltersDTO->churchIds = $this->getUserMemberChurchIds();
+        $this->membersFiltersDTO->churchesId = $this->getUserMemberChurchesId();
 
         if(isset($this->membersFiltersDTO->churchIdInQueryParam))
         {
             $this->churchIdExistsInChurchesUserLogged($this->membersFiltersDTO->churchIdInQueryParam);
-            $this->membersFiltersDTO->churchIds = [$this->membersFiltersDTO->churchIdInQueryParam];
+            $this->membersFiltersDTO->churchesId = [$this->membersFiltersDTO->churchIdInQueryParam];
         }
 
         if(isset($this->membersFiltersDTO->profileId))

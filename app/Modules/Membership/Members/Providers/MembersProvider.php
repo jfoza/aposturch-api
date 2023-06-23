@@ -7,12 +7,22 @@ use App\Modules\Membership\Members\Contracts\CreateMemberServiceInterface;
 use App\Modules\Membership\Members\Contracts\FindAllMembersServiceInterface;
 use App\Modules\Membership\Members\Contracts\MembersRepositoryInterface;
 use App\Modules\Membership\Members\Contracts\ShowByUserIdServiceInterface;
-use App\Modules\Membership\Members\Contracts\UpdateMemberServiceInterface;
+use App\Modules\Membership\Members\Contracts\Updates\AddressDataUpdateServiceInterface;
+use App\Modules\Membership\Members\Contracts\Updates\ChurchDataUpdateServiceInterface;
+use App\Modules\Membership\Members\Contracts\Updates\GeneralDataUpdateServiceInterface;
+use App\Modules\Membership\Members\Contracts\Updates\ModulesDataUpdateServiceInterface;
+use App\Modules\Membership\Members\Contracts\Updates\PasswordDataUpdateServiceInterface;
+use App\Modules\Membership\Members\Contracts\Updates\ProfileDataUpdateServiceInterface;
 use App\Modules\Membership\Members\Repositories\MembersRepository;
 use App\Modules\Membership\Members\Services\CreateMemberService;
 use App\Modules\Membership\Members\Services\FindAllMembersService;
 use App\Modules\Membership\Members\Services\ShowByUserIdService;
-use App\Modules\Membership\Members\Services\UpdateMemberService;
+use App\Modules\Membership\Members\Services\Updates\AddressDataUpdateService;
+use App\Modules\Membership\Members\Services\Updates\ChurchDataUpdateService;
+use App\Modules\Membership\Members\Services\Updates\GeneralDataUpdateService;
+use App\Modules\Membership\Members\Services\Updates\ModulesDataUpdateService;
+use App\Modules\Membership\Members\Services\Updates\PasswordDataUpdateService;
+use App\Modules\Membership\Members\Services\Updates\ProfileDataUpdateService;
 
 class MembersProvider extends AbstractServiceProvider
 {
@@ -38,8 +48,32 @@ class MembersProvider extends AbstractServiceProvider
         );
 
         $this->bind(
-            UpdateMemberServiceInterface::class,
-            UpdateMemberService::class
+            GeneralDataUpdateServiceInterface::class,
+            GeneralDataUpdateService::class
+        );
+        $this->bind(
+            AddressDataUpdateServiceInterface::class,
+            AddressDataUpdateService::class
+        );
+        $this->bind(
+            ChurchDataUpdateServiceInterface::class,
+            ChurchDataUpdateService::class
+        );
+        $this->bind(
+            ModulesDataUpdateServiceInterface::class,
+            ModulesDataUpdateService::class
+        );
+        $this->bind(
+            ProfileDataUpdateServiceInterface::class,
+            ProfileDataUpdateService::class
+        );
+        $this->bind(
+            ProfileDataUpdateServiceInterface::class,
+            ProfileDataUpdateService::class
+        );
+        $this->bind(
+            PasswordDataUpdateServiceInterface::class,
+            PasswordDataUpdateService::class
         );
     }
 }

@@ -19,7 +19,7 @@ trait MembersListsTrait
 {
     public function getBaseQueryBuilder(): QueryBuilder|EloquentBuilder
     {
-        return Member::with(['church'])
+        return Member::with(['user.module', 'church'])
             ->select($this->getSelectColumns())
             ->join(
                 User::tableName(),
@@ -79,7 +79,7 @@ trait MembersListsTrait
                 isset($membersFiltersDTO->churchIds),
                 fn($q) => $q->whereHas(
                     'church',
-                    fn($c) => $c->whereIn(Church::tableField(Church::ID), $membersFiltersDTO->churchIds)
+                    fn($c) => $c->whereIn(Church::tableField(Church::ID), $membersFiltersDTO->churchesId)
                 )
             );
     }
@@ -87,7 +87,6 @@ trait MembersListsTrait
     public function getSelectColumns(): array
     {
         return [
-            Member::tableField(Member::ID),
             Member::tableField(Member::ID)             .' as '.MembersDataAliasEnum::MEMBER_ID,
             Member::tableField(Member::CODE)           .' as '.MembersDataAliasEnum::MEMBER_CODE,
             User::tableField(User::ID)                 .' as '.MembersDataAliasEnum::USER_ID,
@@ -109,6 +108,9 @@ trait MembersListsTrait
             Person::tableField(Person::CITY_ID)        .' as '.MembersDataAliasEnum::USER_CITY_ID,
             City::tableField(City::DESCRIPTION)        .' as '.MembersDataAliasEnum::USER_CITY_DESCRIPTION,
             City::tableField(City::UF)                 .' as '.MembersDataAliasEnum::UF,
+
+            User::tableField(User::ID),
+            Member::tableField(Member::ID),
         ];
     }
 }

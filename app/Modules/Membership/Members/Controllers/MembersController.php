@@ -6,11 +6,9 @@ use App\Features\Users\Users\DTO\UserDTO;
 use App\Modules\Membership\Members\Contracts\CreateMemberServiceInterface;
 use App\Modules\Membership\Members\Contracts\FindAllMembersServiceInterface;
 use App\Modules\Membership\Members\Contracts\ShowByUserIdServiceInterface;
-use App\Modules\Membership\Members\Contracts\UpdateMemberServiceInterface;
 use App\Modules\Membership\Members\DTO\MembersFiltersDTO;
 use App\Modules\Membership\Members\Requests\MembersFiltersRequest;
 use App\Modules\Membership\Members\Requests\MembersRequest;
-use App\Modules\Membership\Members\Requests\MembersUpdateRequest;
 use App\Shared\Helpers\Helpers;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -22,7 +20,6 @@ readonly class MembersController
         private FindAllMembersServiceInterface $findAllMembersService,
         private ShowByUserIdServiceInterface $showByUserIdService,
         private CreateMemberServiceInterface $createMemberService,
-        private UpdateMemberServiceInterface $updateMemberService,
     ) {}
 
     public function index(
@@ -84,28 +81,5 @@ readonly class MembersController
         $created = $this->createMemberService->execute($userDTO);
 
         return response()->json($created, Response::HTTP_OK);
-    }
-
-    public function update(
-        MembersUpdateRequest $membersUpdateRequest,
-        UserDTO $userDTO
-    ): JsonResponse
-    {
-        $userDTO->id    = $membersUpdateRequest->id;
-        $userDTO->name  = $membersUpdateRequest->name;
-        $userDTO->email = $membersUpdateRequest->email;
-
-        $userDTO->person->phone         = $membersUpdateRequest->phone;
-        $userDTO->person->zipCode       = $membersUpdateRequest->zipCode;
-        $userDTO->person->address       = $membersUpdateRequest->address;
-        $userDTO->person->numberAddress = $membersUpdateRequest->numberAddress;
-        $userDTO->person->complement    = $membersUpdateRequest->complement;
-        $userDTO->person->district      = $membersUpdateRequest->district;
-        $userDTO->person->cityId        = $membersUpdateRequest->cityId;
-        $userDTO->person->uf            = $membersUpdateRequest->uf;
-
-        $updated = $this->updateMemberService->execute($userDTO);
-
-        return response()->json($updated, Response::HTTP_OK);
     }
 }

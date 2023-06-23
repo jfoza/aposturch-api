@@ -3,6 +3,7 @@
 namespace App\Features\Base\Services;
 
 use App\Exceptions\AppException;
+use App\Features\Module\Modules\Models\Module;
 use App\Modules\Membership\Church\Models\Church;
 use App\Shared\Enums\MessagesEnum;
 use Illuminate\Support\Collection;
@@ -55,9 +56,14 @@ abstract class AuthenticatedService extends BaseService
     /**
      * @throws AppException
      */
-    public function getUserMemberChurchIds(): array
+    public function getUserMemberChurchesId(): array
     {
         return $this->getChurchesUserMember()->pluck(Church::ID)->toArray();
+    }
+
+    public function getUserModulesId(): array
+    {
+        return $this->getModulesUserMember()->pluck(Module::ID)->toArray();
     }
 
     /**
