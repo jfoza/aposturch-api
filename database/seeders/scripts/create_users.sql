@@ -537,7 +537,7 @@ DO $$
         _name        varchar = 'Usuario Auxiliar Caxias';
         _email       varchar = 'usuario-auxiliar-caxias@hotmail.com';
         _password    varchar = general.generate_bcrypt_hash('Teste123');
-        _phone       varchar = '51999574813';
+        _phone       varchar = '51999574814';
         _zip_code    varchar = '95110314';
         _address     varchar = 'Rua Isidoro Dias Lopes';
         _district    varchar = 'Desvio Rizzo';
@@ -633,7 +633,7 @@ DO $$
         _name        varchar = 'Usuario para testes';
         _email       varchar = 'usuario-para-testes@hotmail.com';
         _password    varchar = general.generate_bcrypt_hash('Teste123');
-        _phone       varchar = '51999574813';
+        _phone       varchar = '51999574815';
         _zip_code    varchar = '95110314';
         _address     varchar = 'Rua Isidoro Dias Lopes';
         _district    varchar = 'Desvio Rizzo';

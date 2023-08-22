@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\App\Features\Users\Users\Services\Providers;
+namespace Tests\Unit\App\Features\Users\Users;
 
 use App\Features\Users\Profiles\Enums\ProfileUniqueNameEnum;
 use App\Shared\Enums\RulesEnum;

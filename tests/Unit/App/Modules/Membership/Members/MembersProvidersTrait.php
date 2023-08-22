@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\App\Modules\Membership\Members\Services\Providers;
+namespace Tests\Unit\App\Modules\Membership\Members;
 
 use App\Features\Users\Profiles\Enums\ProfileUniqueNameEnum;
 use App\Modules\Membership\Church\Models\Church;

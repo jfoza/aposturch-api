@@ -6,6 +6,7 @@ use App\Exceptions\AppException;
 use App\Modules\Membership\Members\Contracts\MembersRepositoryInterface;
 use App\Modules\Membership\Members\DTO\MembersFiltersDTO;
 use App\Modules\Membership\Members\Repositories\MembersRepository;
+use App\Modules\Membership\Members\Responses\MemberResponse;
 use App\Modules\Membership\Members\Services\ShowByUserIdService;
 use App\Shared\ACL\Policy;
 use App\Shared\Enums\RulesEnum;
@@ -19,6 +20,7 @@ class ShowByUserIdServiceTest extends TestCase
 {
     private MockObject|MembersRepositoryInterface $membersRepositoryMock;
     private MockObject|MembersFiltersDTO $membersFiltersDtoMock;
+    private MockObject|MemberResponse    $memberResponseMock;
 
     private string $churchId;
 
@@ -28,6 +30,7 @@ class ShowByUserIdServiceTest extends TestCase
 
         $this->membersRepositoryMock = $this->createMock(MembersRepository::class);
         $this->membersFiltersDtoMock = $this->createMock(MembersFiltersDTO::class);
+        $this->memberResponseMock    = $this->createMock(MemberResponse::class);
 
         $this->churchId  = Uuid::uuid4Generate();
     }
@@ -36,7 +39,8 @@ class ShowByUserIdServiceTest extends TestCase
     {
         $showByUserIdService = new ShowByUserIdService(
             $this->membersRepositoryMock,
-            $this->membersFiltersDtoMock
+            $this->membersFiltersDtoMock,
+            $this->memberResponseMock
         );
 
         $showByUserIdService->setAuthenticatedUser(MemberLists::getMemberUserLogged($this->churchId));

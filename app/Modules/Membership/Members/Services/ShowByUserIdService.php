@@ -9,6 +9,7 @@ use App\Modules\Membership\Church\Models\Church;
 use App\Modules\Membership\Members\Contracts\MembersRepositoryInterface;
 use App\Modules\Membership\Members\Contracts\ShowByUserIdServiceInterface;
 use App\Modules\Membership\Members\DTO\MembersFiltersDTO;
+use App\Modules\Membership\Members\Responses\MemberResponse;
 use App\Shared\Enums\MessagesEnum;
 use App\Shared\Enums\RulesEnum;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,13 +20,14 @@ class ShowByUserIdService extends AuthenticatedService implements ShowByUserIdSe
 
     public function __construct(
         private readonly MembersRepositoryInterface $membersRepository,
-        private readonly MembersFiltersDTO $membersFiltersDTO
+        private readonly MembersFiltersDTO $membersFiltersDTO,
+        private readonly MemberResponse $memberResponse,
     ) {}
 
     /**
      * @throws AppException
      */
-    public function execute(string $userId): object
+    public function execute(string $userId): MemberResponse
     {
         $this->userId = $userId;
 
@@ -45,7 +47,7 @@ class ShowByUserIdService extends AuthenticatedService implements ShowByUserIdSe
     /**
      * @throws AppException
      */
-    private function findByAdminMaster(): object
+    private function findByAdminMaster(): MemberResponse
     {
         return $this->findOrFail();
     }
@@ -53,7 +55,7 @@ class ShowByUserIdService extends AuthenticatedService implements ShowByUserIdSe
     /**
      * @throws AppException
      */
-    private function findByAdminChurch(): object
+    private function findByAdminChurch(): MemberResponse
     {
         $this->membersFiltersDTO->profileUniqueName = [
             ProfileUniqueNameEnum::ADMIN_CHURCH->value,
@@ -70,7 +72,7 @@ class ShowByUserIdService extends AuthenticatedService implements ShowByUserIdSe
     /**
      * @throws AppException
      */
-    private function findByAdminModule(): object
+    private function findByAdminModule(): MemberResponse
     {
         $this->membersFiltersDTO->profileUniqueName = [
             ProfileUniqueNameEnum::ADMIN_MODULE->value,
@@ -86,7 +88,7 @@ class ShowByUserIdService extends AuthenticatedService implements ShowByUserIdSe
     /**
      * @throws AppException
      */
-    private function findByAssistant(): object
+    private function findByAssistant(): MemberResponse
     {
         $this->membersFiltersDTO->profileUniqueName = [
             ProfileUniqueNameEnum::ASSISTANT->value,
@@ -101,7 +103,7 @@ class ShowByUserIdService extends AuthenticatedService implements ShowByUserIdSe
     /**
      * @throws AppException
      */
-    private function findOrFail(): object
+    private function findOrFail(): MemberResponse
     {
         if(!$member = $this->membersRepository->findOneByFilters($this->userId, $this->membersFiltersDTO))
         {
@@ -111,6 +113,8 @@ class ShowByUserIdService extends AuthenticatedService implements ShowByUserIdSe
             );
         }
 
-        return $member;
+        $this->memberResponse->setMemberResponse($member);
+
+        return $this->memberResponse;
     }
 }

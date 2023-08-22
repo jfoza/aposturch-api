@@ -19,7 +19,7 @@ use Illuminate\Http\UploadedFile;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
-use Tests\Unit\App\Features\Users\Users\Services\Providers\UsersDataProvidersTrait;
+use Tests\Unit\App\Features\Users\Users\UsersDataProvidersTrait;
 use Tests\Unit\App\Resources\ImagesLists;
 use Tests\Unit\App\Resources\MemberLists;
 use Tests\Unit\App\Resources\UsersLists;

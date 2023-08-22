@@ -23,8 +23,8 @@ enum MembersDataAliasEnum
     const COMPLEMENT              = 'complement';
     const DISTRICT                = 'district';
     const ZIP_CODE                = 'zip_code';
-    const USER_CITY_ID            = 'user_city_id';
-    const USER_CITY_DESCRIPTION   = 'user_city_description';
+    const CITY_ID                 = 'city_id';
+    const CITY_DESCRIPTION        = 'city_description';
     const UF = 'uf';
     const USER_CREATED_AT         = 'user_created_at';
 }

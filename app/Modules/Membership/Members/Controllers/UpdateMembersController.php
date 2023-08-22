@@ -2,7 +2,6 @@
 
 namespace App\Modules\Membership\Members\Controllers;
 
-use App\Features\Users\Users\DTO\UserDTO;
 use App\Modules\Membership\Members\Contracts\Updates\AddressDataUpdateServiceInterface;
 use App\Modules\Membership\Members\Contracts\Updates\ChurchDataUpdateServiceInterface;
 use App\Modules\Membership\Members\Contracts\Updates\GeneralDataUpdateServiceInterface;
@@ -17,6 +16,7 @@ use App\Modules\Membership\Members\Requests\Updates\GeneralDataUpdateRequest;
 use App\Modules\Membership\Members\Requests\Updates\ModulesDataUpdateRequest;
 use App\Modules\Membership\Members\Requests\Updates\PasswordDataUpdateRequest;
 use App\Modules\Membership\Members\Requests\Updates\ProfileDataUpdateRequest;
+use App\Shared\Helpers\Helpers;
 use Illuminate\Http\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -40,7 +40,7 @@ readonly class UpdateMembersController
         $generalDataUpdateDTO->name   = $generalDataUpdateRequest->name;
         $generalDataUpdateDTO->email  = $generalDataUpdateRequest->email;
         $generalDataUpdateDTO->active = $generalDataUpdateRequest->active;
-        $generalDataUpdateDTO->phone  = $generalDataUpdateRequest->phone;
+        $generalDataUpdateDTO->phone  = Helpers::onlyNumbers($generalDataUpdateRequest->phone);
 
         $updated = $this->generalDataUpdateService->execute($generalDataUpdateDTO);
 
@@ -53,7 +53,7 @@ readonly class UpdateMembersController
     ): JsonResponse
     {
         $addressDataUpdateDTO->id            = $addressDataUpdateRequest->id;
-        $addressDataUpdateDTO->zipCode       = $addressDataUpdateRequest->zipCode;
+        $addressDataUpdateDTO->zipCode       = Helpers::onlyNumbers($addressDataUpdateRequest->zipCode);
         $addressDataUpdateDTO->address       = $addressDataUpdateRequest->address;
         $addressDataUpdateDTO->numberAddress = $addressDataUpdateRequest->numberAddress;
         $addressDataUpdateDTO->complement    = $addressDataUpdateRequest->complement;

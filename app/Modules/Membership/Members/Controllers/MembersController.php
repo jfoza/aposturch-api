@@ -69,8 +69,8 @@ readonly class MembersController
 
         $userDTO->member->churchId      = $membersRequest->churchId;
 
-        $userDTO->person->phone         = $membersRequest->phone;
-        $userDTO->person->zipCode       = $membersRequest->zipCode;
+        $userDTO->person->phone         = Helpers::onlyNumbers($membersRequest->phone);
+        $userDTO->person->zipCode       = Helpers::onlyNumbers($membersRequest->zipCode);
         $userDTO->person->address       = $membersRequest->address;
         $userDTO->person->numberAddress = $membersRequest->numberAddress;
         $userDTO->person->complement    = $membersRequest->complement;

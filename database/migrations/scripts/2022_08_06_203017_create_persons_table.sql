@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS person.persons
 (
     id uuid default uuid_generate_v4() not null primary key,
     city_id uuid constraint "PersonsCityIdFk" references "city".cities,
-    phone varchar(15),
+    phone varchar(15) unique,
     zip_code varchar(8),
     address varchar,
     number_address varchar,

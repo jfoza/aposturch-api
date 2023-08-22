@@ -27,7 +27,7 @@ class MembersAssertions
             'district',
             'zip_code',
             'user_city_id',
-            'user_city_description',
+            'city_description',
             'uf',
             'church'
         ];

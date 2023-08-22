@@ -50,7 +50,7 @@ class MemberLists
             MembersDataAliasEnum::COMPLEMENT => '',
             MembersDataAliasEnum::DISTRICT => 'test',
             MembersDataAliasEnum::ZIP_CODE => '00000000',
-            MembersDataAliasEnum::USER_CITY_DESCRIPTION => Uuid::uuid4Generate(),
+            MembersDataAliasEnum::CITY_DESCRIPTION => Uuid::uuid4Generate(),
             MembersDataAliasEnum::UF => 'RS',
             'church' => $churches
         ]);
@@ -154,7 +154,7 @@ class MemberLists
                 MembersDataAliasEnum::COMPLEMENT => '',
                 MembersDataAliasEnum::DISTRICT => 'test',
                 MembersDataAliasEnum::ZIP_CODE => '00000000',
-                MembersDataAliasEnum::USER_CITY_DESCRIPTION => Uuid::uuid4Generate(),
+                MembersDataAliasEnum::CITY_DESCRIPTION => Uuid::uuid4Generate(),
                 MembersDataAliasEnum::UF => 'RS',
                 'church' => []
             ]

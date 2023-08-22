@@ -105,8 +105,8 @@ trait MembersListsTrait
             Person::tableField(Person::COMPLEMENT)     .' as '.MembersDataAliasEnum::COMPLEMENT,
             Person::tableField(Person::DISTRICT)       .' as '.MembersDataAliasEnum::DISTRICT,
             Person::tableField(Person::ZIP_CODE)       .' as '.MembersDataAliasEnum::ZIP_CODE,
-            Person::tableField(Person::CITY_ID)        .' as '.MembersDataAliasEnum::USER_CITY_ID,
-            City::tableField(City::DESCRIPTION)        .' as '.MembersDataAliasEnum::USER_CITY_DESCRIPTION,
+            Person::tableField(Person::CITY_ID)        .' as '.MembersDataAliasEnum::CITY_ID,
+            City::tableField(City::DESCRIPTION)        .' as '.MembersDataAliasEnum::CITY_DESCRIPTION,
             City::tableField(City::UF)                 .' as '.MembersDataAliasEnum::UF,
 
             User::tableField(User::ID),
