@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class CreateUsers extends Seeder
+class CreateUsers1 extends Seeder
 {
     public function run(): void
     {

@@ -13,7 +13,8 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             CreateChurch::class,
-            CreateUsers::class,
+            CreateUsers1::class,
+            CreateUsers2::class,
         ]);
     }
 }

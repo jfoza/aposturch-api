@@ -1,0 +1,100 @@
+{
+    "zipCodes": [
+        {
+            "zipCode": "99704564",
+            "address": "Rua Alcebíades da Cunha Cabral",
+            "district":  "Parque Lívia",
+            "number": "20",
+            "city": "Erechim",
+            "uf": "RS"
+        },
+        {
+            "zipCode": "97573972",
+            "address": "Rua Manduca Rodrigues 850",
+            "district":  "Centro",
+            "number": "20",
+            "city": "Santana do Livramento",
+            "uf": "RS"
+        },
+        {
+            "zipCode": "91240470",
+            "address": "Rua Irmã Teresilda Steffen",
+            "district":  "Protásio Alves",
+            "number": "20",
+            "city": "Porto Alegre",
+            "uf": "RS"
+        },
+        {
+            "zipCode": "91740564",
+            "address": "Beco Dois",
+            "district":  "Vila Nova",
+            "number": "20",
+            "city": "Porto Alegre",
+            "uf": "RS"
+        },
+        {
+            "zipCode": "94075100",
+            "address": "Rua Silva Jardim",
+            "district":  "São Judas Tadeu",
+            "number": "20",
+            "city": "Gravataí",
+            "uf": "RS"
+        },
+        {
+            "zipCode": "95030600",
+            "address": "Rua Nayr Leonzio Covolan",
+            "district":  "Santa Catarina",
+            "number": "20",
+            "city": "Caxias do Sul",
+            "uf": "RS"
+        },
+        {
+            "zipCode": "93320127",
+            "address": "Avenida Primeiro de Março",
+            "district":  "Pátria Nova",
+            "number": "20",
+            "city": "Novo Hamburgo",
+            "uf": "RS"
+        },
+        {
+            "zipCode": "98010620",
+            "address": "Rua Tupi",
+            "district":  "São Jorge",
+            "number": "20",
+            "city": "Cruz Alta",
+            "uf": "RS"
+        },
+        {
+            "zipCode": "99072263",
+            "address": "Travessa Jacob Covatti",
+            "district":  "Vila Luiza",
+            "number": "20",
+            "city": "Passo Fundo",
+            "uf": "RS"
+        },
+        {
+            "zipCode": "94196062",
+            "address": "Rua Marinho Dias da Silva",
+            "district":  "Passo da Caveira",
+            "number": "20",
+            "city": "Gravataí",
+            "uf": "RS"
+        },
+        {
+            "zipCode": "93150008",
+            "address": "Rua Osvaldo Pohlmann",
+            "district":  "Boa Vista",
+            "number": "20",
+            "city": "São Leopoldo",
+            "uf": "RS"
+        },
+        {
+            "zipCode": "93130160",
+            "address": "Rua Manoel da Fontoura",
+            "district":  "Campina",
+            "number": "20",
+            "city": "São Leopoldo",
+            "uf": "RS"
+        }
+    ]
+}
