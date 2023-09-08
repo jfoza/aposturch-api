@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\App\Features\Modules;
 
+use Tests\Feature\App\Features\Auth\Credentials;
 use Tests\Feature\BaseTestCase;
 
 class ModulesListTest extends BaseTestCase
@@ -24,7 +25,7 @@ class ModulesListTest extends BaseTestCase
             'updated_at'
         ];
 
-        $this->setAuthorizationBearerByAdminChurch();
+        $this->setAuthorizationBearer(Credentials::ADMIN_CHURCH_1);
     }
 
     public function test_should_return_auth_user_modules_list()

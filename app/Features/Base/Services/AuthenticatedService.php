@@ -80,4 +80,22 @@ abstract class AuthenticatedService extends BaseService
     {
         return $this->getAuthenticatedUserId() == $userId;
     }
+
+    /**
+     * @throws AppException
+     */
+    public function userHasAccessToChurch(array $churchesId)
+    {
+        $canAccess = $this->getChurchesUserMember()
+            ->whereIn(Church::ID, $churchesId)
+            ->all();
+
+        if(empty($canAccess))
+        {
+            throw new AppException(
+                MessagesEnum::NO_ACCESS_TO_CHURCH,
+                Response::HTTP_FORBIDDEN
+            );
+        }
+    }
 }

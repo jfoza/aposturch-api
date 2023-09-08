@@ -8,6 +8,7 @@ use App\Features\Users\Profiles\Models\Profile;
 use App\Features\Users\Users\Models\User;
 use App\Shared\Helpers\RandomStringHelper;
 use Ramsey\Uuid\Nonstandard\Uuid;
+use Tests\Feature\App\Features\Auth\Credentials;
 use Tests\Feature\BaseTestCase;
 
 class UpdateAdminUserTest extends BaseTestCase
@@ -20,7 +21,7 @@ class UpdateAdminUserTest extends BaseTestCase
 
         $this->endpoint = self::ADMIN_USERS_ROUTE;
 
-        $this->setAuthorizationBearer();
+        $this->setAuthorizationBearer(Credentials::ADMIN_MASTER);
     }
 
     public function dataProviderFormError(): array
@@ -160,6 +161,8 @@ class UpdateAdminUserTest extends BaseTestCase
      *
      * @param mixed $name
      * @param mixed $email
+     * @param mixed $password
+     * @param mixed $passwordConfirmation
      * @param mixed $active
      * @return void
      */

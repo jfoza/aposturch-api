@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\App\Features\Users\Users;
 
+use Tests\Feature\App\Features\Auth\Credentials;
 use Tests\Feature\BaseTestCase;
 
 class ShowAuthenticatedUserTest extends BaseTestCase
@@ -25,7 +26,7 @@ class ShowAuthenticatedUserTest extends BaseTestCase
             'ability',
         ];
 
-        $this->setAuthorizationBearerByAdminChurch();
+        $this->setAuthorizationBearer(Credentials::ADMIN_CHURCH_1);
     }
 
     public function test_should_return_authenticated_user()

@@ -17,7 +17,7 @@ use App\Shared\Enums\RulesEnum;
 use App\Shared\Utils\Hash;
 use App\Shared\Utils\Transaction;
 
-class CreateAdminUserAuthenticatedService extends AuthenticatedService implements CreateAdminUserServiceInterface
+class CreateAdminUserService extends AuthenticatedService implements CreateAdminUserServiceInterface
 {
     private UserDTO $userDTO;
     private mixed $profile;

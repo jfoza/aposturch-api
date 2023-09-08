@@ -5,13 +5,13 @@ namespace App\Features\Users\Users\Services;
 use App\Exceptions\AppException;
 use App\Features\Base\Services\AuthenticatedService;
 use App\Features\Base\Traits\EnvironmentException;
-use App\Features\Users\Profiles\Enums\ProfileUniqueNameEnum;
+use App\Features\Users\Profiles\Models\Profile;
+use App\Features\Users\Profiles\Validations\ProfileHierarchyValidations;
 use App\Features\Users\Users\Contracts\UpdateStatusUserServiceInterface;
 use App\Features\Users\Users\Contracts\UsersRepositoryInterface;
 use App\Features\Users\Users\Validations\UsersValidations;
-use App\Modules\Membership\Church\Models\Church;
+use App\Modules\Membership\Church\Utils\ChurchUtils;
 use App\Modules\Membership\Members\Contracts\MembersRepositoryInterface;
-use App\Modules\Membership\Members\DTO\MembersFiltersDTO;
 use App\Modules\Membership\Members\Validations\MembersValidations;
 use App\Shared\Enums\RulesEnum;
 use App\Shared\Utils\Transaction;
@@ -24,7 +24,6 @@ class UpdateStatusUserService extends AuthenticatedService implements UpdateStat
     public function __construct(
         private readonly UsersRepositoryInterface $usersRepository,
         private readonly MembersRepositoryInterface $membersRepository,
-        private readonly MembersFiltersDTO $membersFiltersDTO,
     ) {}
 
     /**
@@ -55,6 +54,13 @@ class UpdateStatusUserService extends AuthenticatedService implements UpdateStat
             $this->usersRepository
         );
 
+        if(!$this->userPayloadIsEqualsAuthUser($this->userId))
+        {
+            $profilesId = $user->profile->pluck(Profile::UNIQUE_NAME)->toArray();
+
+            ProfileHierarchyValidations::adminMasterValidation($profilesId);
+        }
+
         $this->status = !$user->active;
 
         return $this->handleUpdateStatus();
@@ -65,22 +71,19 @@ class UpdateStatusUserService extends AuthenticatedService implements UpdateStat
      */
     private function updateStatusByAdminChurch(): array
     {
-        if(!$this->userPayloadIsEqualsAuthUser($this->userId))
-        {
-            $this->membersFiltersDTO->profileUniqueName = [
-                ProfileUniqueNameEnum::ADMIN_MODULE->value,
-                ProfileUniqueNameEnum::ASSISTANT->value,
-                ProfileUniqueNameEnum::MEMBER->value,
-            ];
-        }
-
-        $this->membersFiltersDTO->churchesId = $this->getUserMemberChurchesId();
-
         $userMember = MembersValidations::memberExists(
             $this->userId,
-            $this->membersFiltersDTO,
             $this->membersRepository
         );
+
+        if(!$this->userPayloadIsEqualsAuthUser($this->userId))
+        {
+            ProfileHierarchyValidations::adminChurchValidation([$userMember->profile_unique_name]);
+        }
+
+        $churchesId = ChurchUtils::extractChurchesId($userMember);
+
+        $this->userHasAccessToChurch($churchesId);
 
         $this->status = !$userMember->active;
 

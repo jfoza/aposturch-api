@@ -6,7 +6,7 @@ use App\Exceptions\AppException;
 use App\Features\Users\AdminUsers\Contracts\AdminUsersRepositoryInterface;
 use App\Features\Users\AdminUsers\Repositories\AdminUsersRepository;
 use App\Features\Users\AdminUsers\Responses\AdminUserResponse;
-use App\Features\Users\AdminUsers\Services\CreateAdminUserAuthenticatedService;
+use App\Features\Users\AdminUsers\Services\CreateAdminUserService;
 use App\Features\Users\NewPasswordGenerations\DTO\NewPasswordGenerationsDTO;
 use App\Features\Users\Profiles\Contracts\ProfilesRepositoryInterface;
 use App\Features\Users\Profiles\Repositories\ProfilesRepository;
@@ -41,9 +41,9 @@ class CreateAdminUserServiceTest extends TestCase
         $this->userDtoMock              = $this->createMock(UserDTO::class);
     }
 
-    public function getCreateAdminUserService(): CreateAdminUserAuthenticatedService
+    public function getCreateAdminUserService(): CreateAdminUserService
     {
-        return new CreateAdminUserAuthenticatedService(
+        return new CreateAdminUserService(
             $this->adminUsersRepositoryMock,
             $this->usersRepositoryMock,
             $this->profilesRepositoryMock,

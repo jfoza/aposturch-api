@@ -48,11 +48,10 @@ class MembersValidations
      */
     public static function memberExists(
         string $userId,
-        MembersFiltersDTO $membersFiltersDTO,
         MembersRepositoryInterface $membersRepository
     ): object
     {
-        if(!$userMember = $membersRepository->findOneByFilters($userId, $membersFiltersDTO))
+        if(!$userMember = $membersRepository->findByUserId($userId))
         {
             throw new AppException(
                 MessagesEnum::USER_NOT_FOUND,

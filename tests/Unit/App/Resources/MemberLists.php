@@ -8,6 +8,7 @@ use App\Modules\Membership\Members\Enums\MembersDataAliasEnum;
 use App\Modules\Membership\Members\Models\Member;
 use App\Shared\Libraries\Uuid;
 use Illuminate\Database\Eloquent\Collection as DatabaseCollection;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Collection as SupportCollection;
 
 class MemberLists
@@ -20,16 +21,11 @@ class MemberLists
     }
 
     public static function getMemberDataView(
-        array $churches = [],
+        Collection $churches,
         string $profileUniqueName = null,
         string $userId = null,
     ): object
     {
-        if(is_null($profileUniqueName))
-        {
-            $profileUniqueName = ProfileUniqueNameEnum::ADMIN_CHURCH->value;
-        }
-
         if(is_null($userId))
         {
             $userId = Uuid::uuid4Generate();
@@ -52,14 +48,14 @@ class MemberLists
             MembersDataAliasEnum::ZIP_CODE => '00000000',
             MembersDataAliasEnum::CITY_DESCRIPTION => Uuid::uuid4Generate(),
             MembersDataAliasEnum::UF => 'RS',
-            'church' => $churches
+            'church' => !empty($churches) ? $churches : Collection::make()
         ]);
     }
 
     public static function getMemberUserLogged(
-        ?string $churchId = null,
-        ?string $churchUniqueName = null,
-        ?string $userId = null,
+        string $churchId = null,
+        string $churchUniqueName = null,
+        string $userId = null,
     ): object
     {
         if(is_null($churchId))

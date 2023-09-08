@@ -43,36 +43,13 @@ class AuthLists
         ];
     }
 
-    public static function getForgotPassword(string|Carbon $date = null, bool $active = true): object
-    {
-        $userId = Uuid::uuid4()->toString();
-
-        if (is_null($date)) {
-            $currentDate = Helpers::getCurrentTimestampCarbon();
-
-            $date = $currentDate->addDay()->format('Y-m-d H:i:s');
-        }
-
-        return (object)([
-            'id' => Uuid::uuid4()->toString(),
-            'user_id' => $userId,
-            'code' => Uuid::uuid4()->toString(),
-            'validate' => $date,
-            'active' => $active,
-
-            'user' => (object)([
-                'id' => $userId,
-            ])
-        ]);
-    }
-
     public static function getAuthUserResponse(): AuthUserResponse
     {
         $authUserResponse = new AuthUserResponse();
 
         $authUserResponse->id = Uuid::uuid4()->toString();
         $authUserResponse->email = 'email@email.com';
-        $authUserResponse->avatar = null;
+        $authUserResponse->avatarId = null;
         $authUserResponse->fullName = 'Test';
         $authUserResponse->role = Collection::make([]);
         $authUserResponse->status = true;

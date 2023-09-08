@@ -36,7 +36,7 @@ enum MessagesEnum: string {
     case CODE_NOT_FOUND = 'Código não encontrado.';
     case INVALID_CODE = 'Código inválido.';
     case PROFILE_NOT_FOUND = 'Perfil não encontrado.';
-    case PROFILE_NOT_ALLOWED = 'Perfil não permitido.';
+    case PROFILE_NOT_ALLOWED = 'Perfil com acesso não permitido.';
     case EMAIL_ALREADY_EXISTS = 'O E-mail informado já existe no sistema.';
     case PHONE_ALREADY_EXISTS = 'O número de telefone informado já existe no sistema.';
     case INVALID_CURRENT_PASSWORD = 'Senha atual inválida';
@@ -61,6 +61,7 @@ enum MessagesEnum: string {
     case USER_CHURCH_RELATIONSHIP_NOT_FOUND = 'Este usuário não possui vínculo com esta igreja.';
     case USER_HAS_NO_CHURCH = 'Usuário não possui vínculo com nenhuma igreja.';
     case USER_PAYLOAD_HAS_NO_CHURCH = 'O usuário informado não possui vínculo com nenhuma igreja.';
+    case NO_ACCESS_TO_CHURCH = 'Não é possível acessar informações de membros vinculados à outras igrejas.';
     case MEMBER_NOT_FOUND = 'Membro não encontrado.';
     case MODULE_NOT_FOUND = 'Módulo não encontrado.';
     case INVALID_RESP_MEMBERS_QUANTITY = 'São permitidos apenas 3 membros responsáveis por igreja.';

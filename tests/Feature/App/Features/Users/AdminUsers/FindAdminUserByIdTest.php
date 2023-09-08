@@ -7,6 +7,7 @@ use App\Features\Users\Profiles\Enums\ProfileUniqueNameEnum;
 use App\Features\Users\Profiles\Models\Profile;
 use App\Features\Users\Users\Models\User;
 use Ramsey\Uuid\Uuid;
+use Tests\Feature\App\Features\Auth\Credentials;
 use Tests\Feature\BaseTestCase;
 use Tests\Feature\Resources\Users\Assertions;
 
@@ -20,7 +21,7 @@ class FindAdminUserByIdTest extends BaseTestCase
 
         $this->endpoint = self::ADMIN_USERS_ROUTE;
 
-        $this->setAuthorizationBearer();
+        $this->setAuthorizationBearer(Credentials::ADMIN_MASTER);
     }
 
     public function test_should_return_unique_admin_user_by_id()

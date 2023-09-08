@@ -12,7 +12,7 @@ use App\Shared\Enums\RulesEnum;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 
-class FindAllAdminUsersAuthenticatedService extends AuthenticatedService implements FindAllAdminUsersServiceInterface
+class FindAllAdminUsersService extends AuthenticatedService implements FindAllAdminUsersServiceInterface
 {
     private AdminUsersFiltersDTO $adminUsersFiltersDTO;
 

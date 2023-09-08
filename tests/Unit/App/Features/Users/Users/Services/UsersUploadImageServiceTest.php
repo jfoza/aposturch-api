@@ -9,6 +9,7 @@ use App\Features\General\Images\Repositories\ImagesRepository;
 use App\Features\Users\Users\Contracts\UsersRepositoryInterface;
 use App\Features\Users\Users\Repositories\UsersRepository;
 use App\Features\Users\Users\Services\UserUploadImageService;
+use App\Modules\Membership\Church\Models\Church;
 use App\Modules\Membership\Members\Contracts\MembersRepositoryInterface;
 use App\Modules\Membership\Members\DTO\MembersFiltersDTO;
 use App\Modules\Membership\Members\Repositories\MembersRepository;
@@ -16,6 +17,7 @@ use App\Shared\ACL\Policy;
 use App\Shared\Enums\RulesEnum;
 use App\Shared\Libraries\Uuid;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Collection;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
@@ -38,7 +40,7 @@ class UsersUploadImageServiceTest extends TestCase
 
     private string $userId;
     private string $churchId;
-    private array $churches;
+    private Collection $churches;
     private string $imageId;
     private string $imagePath;
 
@@ -59,9 +61,9 @@ class UsersUploadImageServiceTest extends TestCase
         $this->imageId = Uuid::uuid4Generate();
         $this->imagePath = 'user-avatar/test.png';
 
-        $this->churches = [
-            $this->churchId
-        ];
+        $this->churches = Collection::make([
+            (object) ([Church::ID => $this->churchId])
+        ]);
     }
 
     public function getUsersUploadImageService(): UserUploadImageService
@@ -70,7 +72,6 @@ class UsersUploadImageServiceTest extends TestCase
             $this->usersRepositoryMock,
             $this->membersRepositoryMock,
             $this->imagesRepositoryMock,
-            $this->membersFiltersDtoMock,
         );
     }
 
@@ -135,7 +136,7 @@ class UsersUploadImageServiceTest extends TestCase
 
         $this
             ->membersRepositoryMock
-            ->method('findOneByFilters')
+            ->method('findByUserId')
             ->willReturn(MemberLists::getMemberDataView($this->churches, $profileUniqueName));
 
         $this
@@ -180,7 +181,7 @@ class UsersUploadImageServiceTest extends TestCase
 
         $this
             ->membersRepositoryMock
-            ->method('findOneByFilters')
+            ->method('findByUserId')
             ->willReturn(
                 MemberLists::getMemberDataView(
                     $this->churches,
@@ -231,7 +232,7 @@ class UsersUploadImageServiceTest extends TestCase
 
         $this
             ->membersRepositoryMock
-            ->method('findOneByFilters')
+            ->method('findByUserId')
             ->willReturn(null);
 
         $this->expectException(AppException::class);
@@ -243,12 +244,10 @@ class UsersUploadImageServiceTest extends TestCase
     /**
      * @dataProvider dataProviderUploadImageMemberItself
      *
-     * @param string $rule
-     * @param string $profileUniqueName
      * @return void
      * @throws AppException
      */
-    public function test_should_return_exception_if_user_tries_to_upload_image_a_user_other_than_his()
+    public function test_should_return_exception_if_user_tries_to_upload_image_a_user_other_than_his(): void
     {
         $usersUploadImageService = $this->getUsersUploadImageService();
 
@@ -264,7 +263,7 @@ class UsersUploadImageServiceTest extends TestCase
 
         $this
             ->membersRepositoryMock
-            ->method('findOneByFilters')
+            ->method('findByUserId')
             ->willReturn(
                 MemberLists::getMemberDataView(
                     $this->churches,

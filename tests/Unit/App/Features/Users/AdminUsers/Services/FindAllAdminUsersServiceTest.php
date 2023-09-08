@@ -6,7 +6,7 @@ use App\Exceptions\AppException;
 use App\Features\Users\AdminUsers\Contracts\AdminUsersRepositoryInterface;
 use App\Features\Users\AdminUsers\DTO\AdminUsersFiltersDTO;
 use App\Features\Users\AdminUsers\Repositories\AdminUsersRepository;
-use App\Features\Users\AdminUsers\Services\FindAllAdminUsersAuthenticatedService;
+use App\Features\Users\AdminUsers\Services\FindAllAdminUsersService;
 use App\Shared\ACL\Policy;
 use App\Shared\Enums\RulesEnum;
 use Illuminate\Support\Collection;
@@ -28,9 +28,9 @@ class FindAllAdminUsersServiceTest extends TestCase
         $this->adminUsersFiltersDtoMock = $this->createMock(AdminUsersFiltersDTO::class);
     }
 
-    public function getFindAllAdminUsersService(): FindAllAdminUsersAuthenticatedService
+    public function getFindAllAdminUsersService(): FindAllAdminUsersService
     {
-        return new FindAllAdminUsersAuthenticatedService(
+        return new FindAllAdminUsersService(
             $this->adminUsersRepositoryMock,
         );
     }

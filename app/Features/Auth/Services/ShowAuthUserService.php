@@ -6,8 +6,8 @@ use App\Exceptions\AppException;
 use App\Features\Auth\Contracts\ShowAuthUserServiceInterface;
 use App\Features\Auth\DTO\AuthDTO;
 use App\Features\Auth\Responses\AuthUserResponse;
-use App\Features\Auth\Traits\ProfilesVerificationTrait;
 use App\Features\Auth\Validations\AuthValidations;
+use App\Features\Users\Profiles\Validations\ProfileHierarchyValidations;
 use App\Features\Users\Rules\Contracts\RulesRepositoryInterface;
 use App\Features\Users\Users\Contracts\UsersRepositoryInterface;
 use App\Features\Users\Users\Traits\UserAbilityTrait;
@@ -16,7 +16,6 @@ use App\Shared\Utils\Hash;
 class ShowAuthUserService implements ShowAuthUserServiceInterface
 {
     use UserAbilityTrait;
-    use ProfilesVerificationTrait;
 
     private ?object $user;
 
@@ -51,9 +50,9 @@ class ShowAuthUserService implements ShowAuthUserServiceInterface
 
         match (true)
         {
-            $this->supportAuth($profiles)        => $this->validateByAdminMaster(),
-            $this->administrativeAuth($profiles) => $this->validateByAdminMaster(),
-            $this->boardAuth($profiles)          => $this->validateByGeneralAdminProfiles(),
+            ProfileHierarchyValidations::supportAuth($profiles)        => $this->validateByAdminMaster(),
+            ProfileHierarchyValidations::administrativeAuth($profiles) => $this->validateByAdminMaster(),
+            ProfileHierarchyValidations::boardAuth($profiles)          => $this->validateByGeneralAdminProfiles(),
         };
 
         return $this->getAuthUserResponse();

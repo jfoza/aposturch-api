@@ -11,7 +11,7 @@ use App\Shared\Enums\MessagesEnum;
 use App\Shared\Enums\RulesEnum;
 use Symfony\Component\HttpFoundation\Response;
 
-class ShowAdminUserAuthenticatedService extends AuthenticatedService implements ShowAdminUserServiceInterface
+class ShowAdminUserService extends AuthenticatedService implements ShowAdminUserServiceInterface
 {
     private string $userId;
 

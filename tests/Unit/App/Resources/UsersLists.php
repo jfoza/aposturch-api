@@ -13,6 +13,7 @@ use App\Shared\Helpers\RandomStringHelper;
 use App\Shared\Libraries\Uuid;
 use App\Shared\Utils\Hash;
 use Illuminate\Database\Eloquent\Collection as DatabaseCollection;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Collection as SupportCollection;
 
 class UsersLists
@@ -30,7 +31,10 @@ class UsersLists
         ]);
     }
 
-    public static function showUser(?string $id = null): object
+    public static function showUser(
+        string $id = null,
+        string $profileUniqueName = null,
+    ): object
     {
         if(is_null($id))
         {
@@ -47,6 +51,12 @@ class UsersLists
                 Person::ID    => Uuid::uuid4Generate(),
                 Person::PHONE => '51998765432'
             ]),
+            'profile'      => Collection::make(([
+                (object) ([
+                    Profile::ID    => Uuid::uuid4Generate(),
+                    Profile::UNIQUE_NAME => $profileUniqueName
+                ])
+            ])),
         ]);
     }
 

@@ -5,6 +5,7 @@ namespace Tests\Feature\App\Features\Users\Users;
 use App\Features\Users\Users\Models\User;
 use Illuminate\Http\UploadedFile;
 use Ramsey\Uuid\Uuid;
+use Tests\Feature\App\Features\Auth\Credentials;
 use Tests\Feature\BaseTestCase;
 use Tests\Feature\Resources\Modules\Churches\ChurchesDataProviders;
 
@@ -23,9 +24,9 @@ class UploadUserAvatarImageTest extends BaseTestCase
 
     public function test_must_insert_a_new_user_avatar_image_by_admin_master()
     {
-        $this->setAuthorizationBearer();
+        $this->setAuthorizationBearer(Credentials::ADMIN_MASTER);
 
-        $user = User::where(User::EMAIL, 'usuario-auxiliar@hotmail.com')->first();
+        $user = User::where(User::EMAIL, Credentials::ASSISTANT_1)->first();
 
         $image = UploadedFile::fake()->image('test.png');
 
@@ -56,9 +57,9 @@ class UploadUserAvatarImageTest extends BaseTestCase
 
     public function test_must_insert_a_new_user_avatar_image_by_members()
     {
-        $this->setAuthorizationBearerByAdminChurch();
+        $this->setAuthorizationBearer(Credentials::ADMIN_CHURCH_1);
 
-        $user = User::where(User::EMAIL, 'felipe-dutra@hotmail.com')->first();
+        $user = User::where(User::EMAIL, Credentials::ADMIN_CHURCH_1)->first();
 
         $image = UploadedFile::fake()->image('test.png');
 
@@ -89,7 +90,7 @@ class UploadUserAvatarImageTest extends BaseTestCase
 
     public function test_should_return_error_if_user_not_exists_by_admin_master()
     {
-        $this->setAuthorizationBearer();
+        $this->setAuthorizationBearer(Credentials::ADMIN_CHURCH_1);
 
         $id = Uuid::uuid4()->toString();
 
@@ -117,7 +118,7 @@ class UploadUserAvatarImageTest extends BaseTestCase
 
     public function test_should_return_error_if_user_not_exists_by_members()
     {
-        $this->setAuthorizationBearerByAdminChurch();
+        $this->setAuthorizationBearer(Credentials::ADMIN_CHURCH_1);
 
         $id = Uuid::uuid4()->toString();
 
@@ -145,9 +146,9 @@ class UploadUserAvatarImageTest extends BaseTestCase
 
     public function test_should_return_error_if_user_payload_is_from_another_church()
     {
-        $this->setAuthorizationBearerByAdminChurch();
+        $this->setAuthorizationBearer(Credentials::ADMIN_CHURCH_1);
 
-        $user = User::where(User::EMAIL, 'fabio-dutra@hotmail.com')->first();
+        $user = User::where(User::EMAIL, Credentials::ASSISTANT_2)->first();
 
         $image = UploadedFile::fake()->image('test.png');
 
@@ -168,14 +169,14 @@ class UploadUserAvatarImageTest extends BaseTestCase
             $server
         );
 
-        $response->assertNotFound();
+        $response->assertForbidden();
     }
 
     public function test_should_return_error_if_user_is_from_a_higher_profile()
     {
-        $this->setAuthorizationBearerByAssistant();
+        $this->setAuthorizationBearer(Credentials::ASSISTANT_1);
 
-        $user = User::where(User::EMAIL, 'felipe-dutra@hotmail.com')->first();
+        $user = User::where(User::EMAIL, Credentials::ADMIN_CHURCH_1)->first();
 
         $image = UploadedFile::fake()->image('test.png');
 

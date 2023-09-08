@@ -12,7 +12,7 @@ class UsersRepository implements UsersRepositoryInterface
 {
     public function findById(string $id): ?object
     {
-        return User::where(User::ID, $id)->first();
+        return User::with('profile')->where(User::ID, $id)->first();
     }
 
     public function findByEmail(string $email): ?object

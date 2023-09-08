@@ -2,11 +2,11 @@
 
 namespace Tests\Feature\App\Features\Auth;
 
+use App\Shared\Libraries\Uuid;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\Feature\BaseTestCase;
 use Tests\Unit\App\Resources\AuthLists;
 
-class AuthTest extends BaseTestCase
+class AuthTest extends BaseAuthTestCase
 {
     private string $loginRoute;
     private string $logoutRoute;
@@ -19,9 +19,30 @@ class AuthTest extends BaseTestCase
         $this->logoutRoute = self::LOGOUT_ROUTE;
     }
 
-    public function test_should_authenticate_admin_user_by_returning_jwt_token()
+    public function dataProviderCredentials(): array
     {
-        $this->defineAdminUserTypeCredentials();
+        return [
+            'Admin Master' => [Credentials::ADMIN_MASTER, Credentials::PASSWORD],
+            'Admin Church' => [Credentials::ADMIN_CHURCH_1, Credentials::PASSWORD],
+            'Admin Module' => [Credentials::ADMIN_MODULE, Credentials::PASSWORD],
+            'Assistant'    => [Credentials::ASSISTANT_1, Credentials::PASSWORD],
+        ];
+    }
+
+    /**
+     * @dataProvider dataProviderCredentials
+     *
+     * @param string $email
+     * @param string $password
+     * @return void
+     */
+    public function test_should_authenticate_admin_user_by_returning_jwt_token(
+        string $email,
+        string $password,
+    ): void
+    {
+        $this->setEmail($email);
+        $this->setPassword($password);
 
         $response = $this->postJson(
             $this->loginRoute,
@@ -37,7 +58,7 @@ class AuthTest extends BaseTestCase
 
     public function test_should_return_error_if_invalid_email_format()
     {
-        $this->defineAdminUserTypeCredentials();
+        $this->setPassword(Credentials::PASSWORD);
 
         $response = $this->postJson(
             $this->loginRoute,
@@ -52,7 +73,7 @@ class AuthTest extends BaseTestCase
 
     public function test_should_return_exception_if_user_not_exists()
     {
-        $this->defineAdminUserTypeCredentials();
+        $this->setPassword(Credentials::PASSWORD);
 
         $response = $this->postJson(
             $this->loginRoute,
@@ -67,7 +88,7 @@ class AuthTest extends BaseTestCase
 
     public function test_should_return_exception_if_passwords_not_match()
     {
-        $this->defineAdminUserTypeCredentials();
+        $this->setEmail(Credentials::ADMIN_MASTER);
 
         $response = $this->postJson(
             $this->loginRoute,
@@ -82,7 +103,8 @@ class AuthTest extends BaseTestCase
 
     public function test_should_return_exception_if_user_is_inactive()
     {
-        $this->defineAdminUserTypeInactiveCredentials();
+        $this->setEmail(Credentials::INACTIVE_USER);
+        $this->setPassword(Credentials::PASSWORD);
 
         $response = $this->postJson(
             $this->loginRoute,
@@ -97,7 +119,8 @@ class AuthTest extends BaseTestCase
 
     public function test_should_perform_logout_action()
     {
-        $this->defineAdminUserTypeCredentials();
+        $this->setEmail(Credentials::ADMIN_MASTER);
+        $this->setPassword(Credentials::PASSWORD);
 
         $loginResponse = $this->postJson(
             $this->loginRoute,
@@ -119,9 +142,11 @@ class AuthTest extends BaseTestCase
 
     public function test_should_return_unauthorized_in_logout_if_token_is_invalid()
     {
+        $token = hash('sha256', Uuid::uuid4Generate());
+
         $response = $this->getJson(
             $this->logoutRoute,
-            $this->getInvalidAuthorizationBearer()
+            ['Authorization' => "Bearer {$token}"]
         );
 
         $response->assertUnauthorized();

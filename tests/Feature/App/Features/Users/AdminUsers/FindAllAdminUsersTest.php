@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\App\Features\Users\AdminUsers;
 
+use Tests\Feature\App\Features\Auth\Credentials;
 use Tests\Feature\BaseTestCase;
 use Tests\Feature\Resources\Users\Assertions;
 
@@ -20,7 +21,7 @@ class FindAllAdminUsersTest extends BaseTestCase
 
         $this->endpoint = self::ADMIN_USERS_ROUTE;
 
-        $this->setAuthorizationBearer();
+        $this->setAuthorizationBearer(Credentials::ADMIN_MASTER);
     }
 
     public function test_should_return_admin_users_list()

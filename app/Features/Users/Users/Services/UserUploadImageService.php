@@ -12,9 +12,8 @@ use App\Features\Users\AdminUsers\Validations\AllowedProfilesValidations;
 use App\Features\Users\Users\Contracts\UsersRepositoryInterface;
 use App\Features\Users\Users\Contracts\UserUploadImageServiceInterface;
 use App\Features\Users\Users\Validations\UsersValidations;
-use App\Modules\Membership\Church\Models\Church;
+use App\Modules\Membership\Church\Utils\ChurchUtils;
 use App\Modules\Membership\Members\Contracts\MembersRepositoryInterface;
-use App\Modules\Membership\Members\DTO\MembersFiltersDTO;
 use App\Modules\Membership\Members\Validations\MembersValidations;
 use App\Shared\Enums\RulesEnum;
 use App\Shared\Utils\Transaction;
@@ -29,7 +28,6 @@ class UserUploadImageService extends AuthenticatedService implements UserUploadI
         private readonly UsersRepositoryInterface $usersRepository,
         private readonly MembersRepositoryInterface $membersRepository,
         private readonly ImagesRepositoryInterface $imagesRepository,
-        private readonly MembersFiltersDTO $membersFiltersDTO,
     ) {}
 
     /**
@@ -116,13 +114,14 @@ class UserUploadImageService extends AuthenticatedService implements UserUploadI
      */
     private function userMemberExistsAndCanBeUsed()
     {
-        $this->membersFiltersDTO->churchesId = $this->getUserMemberChurchesId();
-
         $this->userMember = MembersValidations::memberExists(
             $this->userId,
-            $this->membersFiltersDTO,
             $this->membersRepository
         );
+
+        $churchesId = ChurchUtils::extractChurchesId($this->userMember);
+
+        $this->userHasAccessToChurch($churchesId);
     }
 
     /**
