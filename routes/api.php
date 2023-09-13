@@ -26,8 +26,6 @@ Route::prefix('/cities')
 Route::prefix('/states')
     ->group(app_path('Features/City/States/Routes/stateRoute.php'));
 
-Route::prefix('/customers')
-    ->group(app_path('Features/Users/CustomerUsers/Http/Routes/publicCustomerUsersRoute.php'));
 
 Route::prefix('/zip-code')
     ->group(app_path('Features/ZipCode/Http/Routes/zipCodeRoute.php'));

@@ -10,14 +10,9 @@ use Illuminate\Database\Eloquent\Builder;
 
 trait AdminUsersListTrait
 {
-    public function baseQueryBuilder(array $profiles): Builder
+    public function baseQueryBuilder(): Builder
     {
         return User::with(['adminUser', 'profile'])
-            ->whereRelation(
-                'profile',
-                Profile::tableField(Profile::UNIQUE_NAME),
-                $profiles
-            )
             ->whereRelation(
                 'adminUser',
                 AdminUser::USER_ID,
@@ -28,7 +23,7 @@ trait AdminUsersListTrait
     public function baseQueryBuilderFilters(AdminUsersFiltersDTO $adminUsersFiltersDTO)
     {
         return $this
-            ->baseQueryBuilder($adminUsersFiltersDTO->profileUniqueName)
+            ->baseQueryBuilder()
             ->when(
                 isset($adminUsersFiltersDTO->name),
                 fn($q) => $q->where(
@@ -40,6 +35,16 @@ trait AdminUsersListTrait
             ->when(
                 isset($adminUsersFiltersDTO->email),
                 fn($q) => $q->where(User::EMAIL, $adminUsersFiltersDTO->email)
+            )
+            ->when(
+                isset($adminUsersFiltersDTO->profileUniqueName),
+                fn($q) => $q->whereHas(
+                    'profile',
+                    fn($p) => $p->whereIn(
+                        Profile::tableField(Profile::UNIQUE_NAME),
+                        $adminUsersFiltersDTO->profileUniqueName
+                    )
+                )
             );
     }
 }

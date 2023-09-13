@@ -12,7 +12,6 @@ use App\Features\Users\Users\Models\User;
 use App\Modules\Membership\Church\Models\Church;
 use App\Modules\Membership\ChurchesMembers\Models\ChurchMember;
 use App\Modules\Membership\Members\Models\Member;
-use App\Modules\Membership\MemberTypes\Models\MemberType;
 use App\Shared\Enums\ModulesUniqueNameEnum;
 use App\Shared\Helpers\Helpers;
 use App\Shared\Helpers\RandomStringHelper;
@@ -106,7 +105,6 @@ class CreateUsers2 extends Seeder
 
             $member = Member::create([
                 Member::USER_ID        => $user->id,
-                Member::TYPE_MEMBER_ID => MemberType::where(MemberType::UNIQUE_NAME, 'RESPONSIBLE')->first()->id,
                 Member::CODE           => RandomStringHelper::numericGenerate(6),
                 Member::ACTIVE         => true,
             ]);
@@ -172,7 +170,6 @@ class CreateUsers2 extends Seeder
 
                 $member = Member::create([
                     Member::USER_ID        => $user->id,
-                    Member::TYPE_MEMBER_ID => MemberType::where(MemberType::UNIQUE_NAME, 'COMMON_MEMBER')->first()->id,
                     Member::CODE           => RandomStringHelper::numericGenerate(6),
                     Member::ACTIVE         => true,
                 ]);
@@ -242,7 +239,6 @@ class CreateUsers2 extends Seeder
 
                 $member = Member::create([
                     Member::USER_ID        => $user->id,
-                    Member::TYPE_MEMBER_ID => MemberType::where(MemberType::UNIQUE_NAME, 'COMMON_MEMBER')->first()->id,
                     Member::CODE           => RandomStringHelper::numericGenerate(6),
                     Member::ACTIVE         => true,
                 ]);

@@ -28,10 +28,10 @@ class AdminUsersRepository implements AdminUsersRepositoryInterface
          return $this->paginateOrGet($builder, $adminUsersFiltersDTO->paginationOrder);
     }
 
-    public function findById(string $userId, array $profiles): ?object
+    public function findByUserId(string $userId): ?object
     {
         return $this
-            ->baseQueryBuilder($profiles)
+            ->baseQueryBuilder()
             ->where(
                 User::ID,
                 $userId
@@ -39,10 +39,10 @@ class AdminUsersRepository implements AdminUsersRepositoryInterface
             ->first();
     }
 
-    public function findByEmail(string $userEmail, array $profiles): ?object
+    public function findByUserEmail(string $userEmail): ?object
     {
         return $this
-            ->baseQueryBuilder($profiles)
+            ->baseQueryBuilder()
             ->where(
                 User::EMAIL,
                 $userEmail

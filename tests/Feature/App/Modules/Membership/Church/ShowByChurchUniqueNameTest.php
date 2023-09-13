@@ -4,6 +4,7 @@ namespace Tests\Feature\App\Modules\Membership\Church;
 
 use App\Modules\Membership\Church\Models\Church;
 use App\Shared\Helpers\RandomStringHelper;
+use Tests\Feature\App\Features\Auth\Credentials;
 use Tests\Feature\BaseTestCase;
 use Tests\Feature\Resources\Modules\Churches\ChurchesAssertions;
 
@@ -17,7 +18,7 @@ class ShowByChurchUniqueNameTest extends BaseTestCase
 
         $this->endpoint = self::CHURCHES_ROUTE;
 
-        $this->setAuthorizationBearer();
+        $this->setAuthorizationBearer(Credentials::ADMIN_MASTER);
     }
 
     public function test_should_return_unique_church()

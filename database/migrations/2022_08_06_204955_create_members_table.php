@@ -24,7 +24,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropColumns('members.members', ['user_id', 'type_member_id']);
         Schema::dropIfExists('members.members');
     }
 };

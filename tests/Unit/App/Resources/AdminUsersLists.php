@@ -3,40 +3,89 @@
 namespace Tests\Unit\App\Resources;
 
 use App\Features\Module\Modules\Models\Module;
-use Illuminate\Support\Collection as CollectionSupport;
-use Ramsey\Uuid\Uuid;
+use App\Features\Users\AdminUsers\Models\AdminUser;
+use App\Features\Users\Profiles\Enums\ProfileUniqueNameEnum;
+use App\Features\Users\Profiles\Models\Profile;
+use App\Features\Users\Users\Models\User;
+use App\Shared\Libraries\Uuid;
+use Illuminate\Support\Collection;
 
 class AdminUsersLists
 {
-    public static function getAllAdminUsers(): CollectionSupport
+    public static function getAllAdminUsers(): Collection
     {
-        return CollectionSupport::make([
+        $userId = Uuid::uuid4Generate();
+
+        return Collection::make([
             [
-                "admin_user_id"       => "cacdd8aa-ee9d-4008-8bcc-27cb8fd8ae88",
-                "user_id"             => "9d13e085-20f9-4668-b427-7e9142fd7cfe",
-                "user_name"           => "Kainara Appelt 30",
-                "user_email"          => "kaiappelt453@gmail.com",
-                "user_active"         => true,
-                "user_created_at"     => "2023-03-12 20:26:12",
-                "profile_id"          => "d5f39470-767b-4f35-99ca-ae68224cedee",
-                "profile_unique_name" => "employee",
-                "profile_description" => "Colaborador"
+                User::ID        => $userId,
+                User::PERSON_ID => Uuid::uuid4Generate(),
+                User::AVATAR_ID => "Test",
+                User::NAME      => "test@gmail.com",
+                User::ACTIVE    => true,
+                'adminUser' => (object) ([
+                    AdminUser::ID => Uuid::uuid4Generate(),
+                    AdminUser::USER_ID => $userId,
+                ]),
+                'profile' => Collection::make([
+                    (object) ([
+                        Profile::ID => Uuid::uuid4Generate(),
+                        Profile::DESCRIPTION => 'AdminMaster',
+                        Profile::UNIQUE_NAME => ProfileUniqueNameEnum::ADMIN_MASTER->value,
+                        Profile::ACTIVE => true,
+                    ])
+                ])
             ]
         ]);
     }
 
-    public static function getUniqueAdminUser(): CollectionSupport
+    public static function getUniqueAdminUser(): object
     {
-        return CollectionSupport::make([
-            "admin_user_id"       => "cacdd8aa-ee9d-4008-8bcc-27cb8fd8ae88",
-            "user_id"             => "9d13e085-20f9-4668-b427-7e9142fd7cfe",
-            "user_name"           => "Kainara Appelt 30",
-            "user_email"          => "kaiappelt453@gmail.com",
-            "user_active"         => true,
-            "user_created_at"     => "2023-03-12 20:26:12",
-            "profile_id"          => "d5f39470-767b-4f35-99ca-ae68224cedee",
-            "profile_unique_name" => "employee",
-            "profile_description" => "Colaborador"
+        $userId = Uuid::uuid4Generate();
+
+        return (object) ([
+            User::ID        => $userId,
+            User::PERSON_ID => Uuid::uuid4Generate(),
+            User::AVATAR_ID => "Test",
+            User::NAME      => "test@gmail.com",
+            User::ACTIVE    => true,
+            'adminUser' => (object) ([
+                AdminUser::ID => Uuid::uuid4Generate(),
+                AdminUser::USER_ID => $userId,
+            ]),
+            'profile' => Collection::make([
+                (object) ([
+                    Profile::ID => Uuid::uuid4Generate(),
+                    Profile::DESCRIPTION => 'AdminMaster',
+                    Profile::UNIQUE_NAME => ProfileUniqueNameEnum::ADMIN_MASTER->value,
+                    Profile::ACTIVE => true,
+                ])
+            ])
+        ]);
+    }
+
+    public static function getUniqueTechnicalSupportUser(): object
+    {
+        $userId = Uuid::uuid4Generate();
+
+        return (object) ([
+            User::ID        => $userId,
+            User::PERSON_ID => Uuid::uuid4Generate(),
+            User::AVATAR_ID => "Test",
+            User::NAME      => "test@gmail.com",
+            User::ACTIVE    => true,
+            'adminUser' => (object) ([
+                AdminUser::ID => Uuid::uuid4Generate(),
+                AdminUser::USER_ID => $userId,
+            ]),
+            'profile' => Collection::make([
+                (object) ([
+                    Profile::ID => Uuid::uuid4Generate(),
+                    Profile::DESCRIPTION => 'Suporte Técnico',
+                    Profile::UNIQUE_NAME => ProfileUniqueNameEnum::TECHNICAL_SUPPORT->value,
+                    Profile::ACTIVE => true,
+                ])
+            ])
         ]);
     }
 
@@ -59,7 +108,7 @@ class AdminUsersLists
                     "updated_at" => "2022-09-15T23:12:53.905905Z",
                 ]
             ]),
-            'module' => CollectionSupport::make([
+            'module' => Collection::make([
                 (object) ([
                     Module::ID => Uuid::uuid4()->toString()
                 ])

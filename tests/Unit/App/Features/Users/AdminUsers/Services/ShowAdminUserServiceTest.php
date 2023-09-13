@@ -9,9 +9,8 @@ use App\Features\Users\AdminUsers\Repositories\AdminUsersRepository;
 use App\Features\Users\AdminUsers\Services\ShowAdminUserService;
 use App\Shared\ACL\Policy;
 use App\Shared\Enums\RulesEnum;
-use Illuminate\Support\Collection;
+use App\Shared\Libraries\Uuid;
 use PHPUnit\Framework\MockObject\MockObject;
-use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 use Tests\Unit\App\Resources\AdminUsersLists;
@@ -58,12 +57,29 @@ class ShowAdminUserServiceTest extends TestCase
 
         $this
             ->adminUsersRepositoryMock
-            ->method('findById')
+            ->method('findByUserId')
             ->willReturn(AdminUsersLists::getUniqueAdminUser());
 
-        $adminUsers = $showAdminUserService->execute(Uuid::uuid4()->toString());
+        $adminUsers = $showAdminUserService->execute(Uuid::uuid4Generate());
 
-        $this->assertInstanceOf(Collection::class, $adminUsers);
+        $this->assertIsObject($adminUsers);
+    }
+
+    public function test_should_return_exception_if_the_user_tries_to_view_a_superior_profile()
+    {
+        $showAdminUserService = $this->getShowAdminUserService();
+
+        $showAdminUserService->setPolicy(new Policy([RulesEnum::ADMIN_USERS_ADMIN_MASTER_VIEW->value]));
+
+        $this
+            ->adminUsersRepositoryMock
+            ->method('findByUserId')
+            ->willReturn(AdminUsersLists::getUniqueTechnicalSupportUser());
+
+        $this->expectException(AppException::class);
+        $this->expectExceptionCode(Response::HTTP_FORBIDDEN);
+
+        $showAdminUserService->execute(Uuid::uuid4Generate());
     }
 
     public function test_should_return_exception_if_user_is_not_authorized()
@@ -75,6 +91,6 @@ class ShowAdminUserServiceTest extends TestCase
         $this->expectException(AppException::class);
         $this->expectExceptionCode(Response::HTTP_FORBIDDEN);
 
-        $showAdminUserService->execute(Uuid::uuid4()->toString());
+        $showAdminUserService->execute(Uuid::uuid4Generate());
     }
 }

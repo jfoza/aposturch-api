@@ -34,8 +34,8 @@ readonly class AdminUsersController
         $adminUsersFiltersDTO->paginationOrder->setPerPage($adminUsersFiltersRequest->perPage);
         $adminUsersFiltersDTO->paginationOrder->setPage($adminUsersFiltersRequest->page);
 
-        $adminUsersFiltersDTO->name      = $adminUsersFiltersRequest->name;
-        $adminUsersFiltersDTO->email     = $adminUsersFiltersRequest->email;
+        $adminUsersFiltersDTO->name  = $adminUsersFiltersRequest->name;
+        $adminUsersFiltersDTO->email = $adminUsersFiltersRequest->email;
 
         $users = $this->adminUsersListingService->execute($adminUsersFiltersDTO);
 
@@ -58,9 +58,9 @@ readonly class AdminUsersController
     {
         $userDTO->name      = $insertUserRequest->name;
         $userDTO->email     = $insertUserRequest->email;
-        $userDTO->password  = $insertUserRequest->password;
-        $userDTO->active    = $insertUserRequest->active;
         $userDTO->profileId = $insertUserRequest->profileId;
+
+        $userDTO->passwordDTO->password = $insertUserRequest->password;
 
         $newAdminUser = $this->createAdminUserService->execute($userDTO);
 
@@ -75,8 +75,8 @@ readonly class AdminUsersController
         $userDTO->id       = $updateUserRequest->id;
         $userDTO->name     = $updateUserRequest->name;
         $userDTO->email    = $updateUserRequest->email;
-        $userDTO->password = $updateUserRequest->password;
-        $userDTO->active   = $updateUserRequest->active;
+
+        $userDTO->passwordDTO->password = $updateUserRequest->password;
 
         $updated = $this->updateAdminUserService->execute($userDTO);
 

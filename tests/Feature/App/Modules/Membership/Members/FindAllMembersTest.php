@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\App\Modules\Membership\Members;
 
+use Tests\Feature\App\Features\Auth\Credentials;
 use Tests\Feature\BaseTestCase;
 use Tests\Feature\Resources\Modules\Members\MembersAssertions;
 
@@ -20,7 +21,7 @@ class FindAllMembersTest extends BaseTestCase
 
         $this->endpoint = self::MEMBERS_ROUTE;
 
-        $this->setAuthorizationBearer();
+        $this->setAuthorizationBearer(Credentials::ADMIN_MASTER);
     }
 
     public function test_should_return_churches_list_with_pagination_and_order()
@@ -51,7 +52,7 @@ class FindAllMembersTest extends BaseTestCase
         $params = http_build_query([
             'page'    => $this->page,
             'perPage' => $this->perPage,
-            'name'    => 'Felipe',
+            'name'    => 'Admin',
         ]);
 
         $response = $this->getJson(

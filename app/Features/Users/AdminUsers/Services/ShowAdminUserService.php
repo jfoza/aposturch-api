@@ -4,9 +4,10 @@ namespace App\Features\Users\AdminUsers\Services;
 
 use App\Exceptions\AppException;
 use App\Features\Base\Services\AuthenticatedService;
+use App\Features\Base\Validations\ProfileHierarchyValidation;
 use App\Features\Users\AdminUsers\Contracts\AdminUsersRepositoryInterface;
 use App\Features\Users\AdminUsers\Contracts\ShowAdminUserServiceInterface;
-use App\Features\Users\Profiles\Enums\ProfileUniqueNameEnum;
+use App\Features\Users\Profiles\Models\Profile;
 use App\Shared\Enums\MessagesEnum;
 use App\Shared\Enums\RulesEnum;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,14 +29,49 @@ class ShowAdminUserService extends AuthenticatedService implements ShowAdminUser
 
         $policy = $this->getPolicy();
 
-        $adminUser = match (true) {
+        return match (true) {
             $policy->haveRule(RulesEnum::ADMIN_USERS_SUPPORT_VIEW->value)      => $this->showBySupport(),
             $policy->haveRule(RulesEnum::ADMIN_USERS_ADMIN_MASTER_VIEW->value) => $this->showByAdminMaster(),
 
             default  => $policy->dispatchForbiddenError(),
         };
+    }
 
-        if(empty($adminUser)) {
+    /**
+     * @throws AppException
+     */
+    private function showBySupport(): object
+    {
+        $adminUser = $this->findOrFail();
+
+        $profilesUniqueName = $adminUser->profile->pluck(Profile::UNIQUE_NAME)->toArray();
+
+        ProfileHierarchyValidation::technicalSupportInListingsValidation($profilesUniqueName);
+
+        return $adminUser;
+    }
+
+    /**
+     * @throws AppException
+     */
+    private function showByAdminMaster(): object
+    {
+        $adminUser = $this->findOrFail();
+
+        $profilesUniqueName = $adminUser->profile->pluck(Profile::UNIQUE_NAME)->toArray();
+
+        ProfileHierarchyValidation::adminMasterInListingsValidation($profilesUniqueName);
+
+        return $adminUser;
+    }
+
+    /**
+     * @throws AppException
+     */
+    private function findOrFail(): object
+    {
+        if(!$adminUser = $this->adminUsersRepository->findByUserId($this->userId))
+        {
             throw new AppException(
                 MessagesEnum::USER_NOT_FOUND,
                 Response::HTTP_NOT_FOUND
@@ -43,24 +79,5 @@ class ShowAdminUserService extends AuthenticatedService implements ShowAdminUser
         }
 
         return $adminUser;
-    }
-
-    private function showBySupport(): ?object
-    {
-        $profiles = [
-            ProfileUniqueNameEnum::TECHNICAL_SUPPORT->value,
-            ProfileUniqueNameEnum::ADMIN_MASTER->value,
-        ];
-
-        return $this->adminUsersRepository->findById($this->userId, $profiles);
-    }
-
-    private function showByAdminMaster(): ?object
-    {
-        $profiles = [
-            ProfileUniqueNameEnum::ADMIN_MASTER->value,
-        ];
-
-        return $this->adminUsersRepository->findById($this->userId, $profiles);
     }
 }

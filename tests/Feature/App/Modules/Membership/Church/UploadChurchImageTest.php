@@ -7,6 +7,7 @@ use App\Features\General\Images\Models\Image;
 use App\Modules\Membership\Church\Models\Church;
 use Illuminate\Http\UploadedFile;
 use Ramsey\Uuid\Uuid;
+use Tests\Feature\App\Features\Auth\Credentials;
 use Tests\Feature\BaseTestCase;
 use Tests\Feature\Resources\Modules\Churches\ChurchesDataProviders;
 
@@ -22,7 +23,7 @@ class UploadChurchImageTest extends BaseTestCase
 
         $this->endpoint = self::CHURCHES_ROUTE.'/upload/image';
 
-        $this->setAuthorizationBearer();
+        $this->setAuthorizationBearer(Credentials::ADMIN_MASTER);
     }
 
     public function test_must_insert_a_new_product_image()

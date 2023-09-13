@@ -73,14 +73,6 @@ class CreateAdminUserTest extends BaseTestCase
                 true,
                 Uuid::uuid4()->toString()
             ],
-            'Active empty' => [
-                'Test',
-                'email@email.com',
-                'pass',
-                'pass',
-                null,
-                Uuid::uuid4()->toString()
-            ],
             'Profile id empty' => [
                 'Test',
                 'email@email.com',
@@ -111,7 +103,6 @@ class CreateAdminUserTest extends BaseTestCase
             'email'                => $name.'@email.com',
             'password'             => 'pass',
             'passwordConfirmation' => 'pass',
-            'active'               => true,
             'profileId'            => $profile->id
         ];
 
@@ -131,7 +122,6 @@ class CreateAdminUserTest extends BaseTestCase
      * @param mixed $email
      * @param mixed $password
      * @param mixed $passwordConfirmation
-     * @param mixed $active
      * @param mixed $profileId
      * @return void
      */
@@ -140,7 +130,6 @@ class CreateAdminUserTest extends BaseTestCase
         mixed $email,
         mixed $password,
         mixed $passwordConfirmation,
-        mixed $active,
         mixed $profileId,
     ): void
     {
@@ -149,7 +138,6 @@ class CreateAdminUserTest extends BaseTestCase
             'email'                => $email,
             'password'             => $password,
             'passwordConfirmation' => $passwordConfirmation,
-            'active'               => $active,
             'profileId'            => $profileId,
         ];
 
@@ -171,7 +159,6 @@ class CreateAdminUserTest extends BaseTestCase
             'email'                => $name.'@email.com',
             'password'             => "pass",
             'passwordConfirmation' => "pass",
-            'active'               => true,
             'profileId'            => Uuid::uuid4()->toString()
         ];
 

@@ -57,12 +57,7 @@ class ShowByUserIdService extends AuthenticatedService implements ShowByUserIdSe
      */
     private function findByAdminChurch(): MemberResponse
     {
-        $this->membersFiltersDTO->profileUniqueName = [
-            ProfileUniqueNameEnum::ADMIN_CHURCH->value,
-            ProfileUniqueNameEnum::ADMIN_MODULE->value,
-            ProfileUniqueNameEnum::ASSISTANT->value,
-            ProfileUniqueNameEnum::MEMBER->value,
-        ];
+
 
         $this->membersFiltersDTO->churchesId = $this->getUserMemberChurchesId();
 
@@ -105,7 +100,7 @@ class ShowByUserIdService extends AuthenticatedService implements ShowByUserIdSe
      */
     private function findOrFail(): MemberResponse
     {
-        if(!$member = $this->membersRepository->findOneByFilters($this->userId, $this->membersFiltersDTO))
+        if(!$member = $this->membersRepository->findByUserId($this->userId))
         {
             throw new AppException(
                 MessagesEnum::USER_NOT_FOUND,

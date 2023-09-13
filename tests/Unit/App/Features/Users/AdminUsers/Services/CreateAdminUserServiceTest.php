@@ -7,10 +7,10 @@ use App\Features\Users\AdminUsers\Contracts\AdminUsersRepositoryInterface;
 use App\Features\Users\AdminUsers\Repositories\AdminUsersRepository;
 use App\Features\Users\AdminUsers\Responses\AdminUserResponse;
 use App\Features\Users\AdminUsers\Services\CreateAdminUserService;
-use App\Features\Users\NewPasswordGenerations\DTO\NewPasswordGenerationsDTO;
 use App\Features\Users\Profiles\Contracts\ProfilesRepositoryInterface;
 use App\Features\Users\Profiles\Repositories\ProfilesRepository;
 use App\Features\Users\Users\Contracts\UsersRepositoryInterface;
+use App\Features\Users\Users\DTO\PasswordDTO;
 use App\Features\Users\Users\DTO\UserDTO;
 use App\Features\Users\Users\Repositories\UsersRepository;
 use App\Shared\ACL\Policy;
@@ -53,12 +53,13 @@ class CreateAdminUserServiceTest extends TestCase
 
     public function populateUsersDTO(string $profileId)
     {
-        $this->userDtoMock->newPasswordGenerationsDTO = $this->createMock(NewPasswordGenerationsDTO::class);
+        $this->userDtoMock->passwordDTO = $this->createMock(PasswordDTO::class);
+
+        $this->userDtoMock->passwordDTO->password  = 'user_password';
 
         $this->userDtoMock->id        = Uuid::uuid4()->toString();
         $this->userDtoMock->name      = 'User Name';
         $this->userDtoMock->email     = 'email.example@email.com';
-        $this->userDtoMock->password  = 'user_password';
         $this->userDtoMock->active    = true;
         $this->userDtoMock->profileId = $profileId;
     }
@@ -180,7 +181,7 @@ class CreateAdminUserServiceTest extends TestCase
         $createAdminUserService = $this->getCreateAdminUserService();
 
         $createAdminUserService->setPolicy(new Policy([
-            RulesEnum::ADMIN_USERS_ADMIN_MODULE_INSERT->value
+            RulesEnum::ADMIN_USERS_ADMIN_MASTER_INSERT->value
         ]));
 
         $profileId = Uuid::uuid4()->toString();
@@ -195,7 +196,7 @@ class CreateAdminUserServiceTest extends TestCase
         $this
             ->profilesRepositoryMock
             ->method('findById')
-            ->willReturn(ProfilesLists::getAdminMasterProfile($profileId));
+            ->willReturn(ProfilesLists::getAdminTechnicalSupportProfile($profileId));
 
         $this->expectException(AppException::class);
         $this->expectExceptionCode(Response::HTTP_FORBIDDEN);

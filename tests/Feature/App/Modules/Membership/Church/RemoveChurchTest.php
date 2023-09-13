@@ -4,10 +4,10 @@ namespace Tests\Feature\App\Modules\Membership\Church;
 
 use App\Features\General\Images\Enums\TypeUploadImageEnum;
 use App\Features\General\Images\Models\Image;
-use App\Features\Products\Products\Infra\Models\Product;
 use App\Modules\Membership\Church\Models\Church;
 use App\Modules\Membership\Members\Models\Member;
 use Ramsey\Uuid\Uuid;
+use Tests\Feature\App\Features\Auth\Credentials;
 use Tests\Feature\BaseTestCase;
 
 class RemoveChurchTest extends BaseTestCase
@@ -20,7 +20,7 @@ class RemoveChurchTest extends BaseTestCase
 
         $this->endpoint = self::CHURCHES_ROUTE;
 
-        $this->setAuthorizationBearer();
+        $this->setAuthorizationBearer(Credentials::ADMIN_MASTER);
     }
 
     public function test_should_remove_a_unique_church()

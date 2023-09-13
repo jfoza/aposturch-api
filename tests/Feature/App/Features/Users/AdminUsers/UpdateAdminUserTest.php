@@ -55,13 +55,6 @@ class UpdateAdminUserTest extends BaseTestCase
                 'new-pass2',
                 true,
             ],
-            'Active empty' => [
-                'Test',
-                'email@email.com',
-                '',
-                '',
-                null,
-            ],
         ];
     }
 
@@ -82,7 +75,6 @@ class UpdateAdminUserTest extends BaseTestCase
         $payload = [
             'name'    => $name,
             'email'   => $name.'@email.com',
-            'active'  => true,
         ];
 
         $response = $this->putJson(
@@ -113,7 +105,6 @@ class UpdateAdminUserTest extends BaseTestCase
             'email'                => $name.'@email.com',
             'password'             => 'new-pass',
             'passwordConfirmation' => 'new-pass',
-            'active'               => true,
         ];
 
         $response = $this->putJson(
@@ -144,7 +135,6 @@ class UpdateAdminUserTest extends BaseTestCase
         $payload = [
             'name'    => $name,
             'email'   => $user2->email,
-            'active'  => true,
         ];
 
         $response = $this->putJson(
@@ -163,7 +153,6 @@ class UpdateAdminUserTest extends BaseTestCase
      * @param mixed $email
      * @param mixed $password
      * @param mixed $passwordConfirmation
-     * @param mixed $active
      * @return void
      */
     public function test_should_return_error(
@@ -171,7 +160,6 @@ class UpdateAdminUserTest extends BaseTestCase
         mixed $email,
         mixed $password,
         mixed $passwordConfirmation,
-        mixed $active,
     ): void
     {
         $payload = [
@@ -179,7 +167,6 @@ class UpdateAdminUserTest extends BaseTestCase
             'email'                => $email,
             'password'             => $password,
             'passwordConfirmation' => $passwordConfirmation,
-            'active'               => $active,
         ];
 
         $id = Uuid::uuid4()->toString();
@@ -198,7 +185,6 @@ class UpdateAdminUserTest extends BaseTestCase
         $payload = [
             'name'    => 'test',
             'email'   => 'test986754@email.com',
-            'active'  => true,
         ];
 
         $id = Uuid::uuid4()->toString();

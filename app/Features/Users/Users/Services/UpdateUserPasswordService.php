@@ -4,7 +4,7 @@ namespace App\Features\Users\Users\Services;
 
 use App\Exceptions\AppException;
 use App\Features\Users\Users\Contracts\UsersRepositoryInterface;
-use App\Features\Users\Users\DTO\PasswordDTO;
+use App\Features\Users\Users\DTO\NewPasswordDTO;
 use App\Features\Users\Users\Validations\UsersValidations;
 use App\Shared\Cache\PolicyCache;
 use App\Shared\Utils\Hash;
@@ -18,7 +18,7 @@ class UpdateUserPasswordService
     /**
      * @throws AppException
      */
-    public function execute(PasswordDTO $passwordDTO): void
+    public function execute(NewPasswordDTO $passwordDTO): void
     {
         $user = UsersValidations::validateUserExistsById(
             $passwordDTO->userId,

@@ -3,12 +3,9 @@
 namespace App\Modules\Membership\Members\Models;
 
 use App\Features\Base\Infra\Models\Register;
-use App\Features\Module\Modules\Models\Module;
-use App\Features\Users\ModulesUsers\Infra\Models\ModuleUser;
 use App\Features\Users\Users\Models\User;
 use App\Modules\Membership\Church\Models\Church;
 use App\Modules\Membership\ChurchesMembers\Models\ChurchMember;
-use App\Modules\Membership\MemberTypes\Models\MemberType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -40,11 +37,6 @@ class Member extends Register
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
-    }
-
-    public function memberType(): BelongsTo
-    {
-        return $this->belongsTo(MemberType::class);
     }
 
     public function church(): BelongsToMany

@@ -21,7 +21,7 @@ class MemberLists
     }
 
     public static function getMemberDataView(
-        Collection $churches,
+        Collection|null $churches = null,
         string $profileUniqueName = null,
         string $userId = null,
     ): object

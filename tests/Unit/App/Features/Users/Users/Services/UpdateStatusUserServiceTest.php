@@ -9,9 +9,9 @@ use App\Features\Users\Users\Repositories\UsersRepository;
 use App\Features\Users\Users\Services\UpdateStatusUserService;
 use App\Modules\Membership\Church\Models\Church;
 use App\Modules\Membership\Members\Contracts\MembersRepositoryInterface;
-use App\Modules\Membership\Members\DTO\MembersFiltersDTO;
 use App\Modules\Membership\Members\Repositories\MembersRepository;
 use App\Shared\ACL\Policy;
+use App\Shared\Enums\MessagesEnum;
 use App\Shared\Enums\RulesEnum;
 use App\Shared\Libraries\Uuid;
 use Illuminate\Support\Collection;
@@ -46,6 +46,54 @@ class UpdateStatusUserServiceTest extends TestCase
             $this->usersRepositoryMock,
             $this->membersRepositoryMock,
         );
+    }
+
+    public function dataProviderAdminProfilesProfilesValidations(): array
+    {
+        return [
+            'From Admin Master to Technical Support' => [
+                RulesEnum::USERS_ADMIN_MASTER_UPDATE_STATUS->value,
+                ProfileUniqueNameEnum::TECHNICAL_SUPPORT->value
+            ],
+            'From Technical Support to Technical Support' => [
+                RulesEnum::USERS_TECHNICAL_SUPPORT_UPDATE_STATUS->value,
+                ProfileUniqueNameEnum::TECHNICAL_SUPPORT->value
+            ],
+            'From Admin Master to Admin Master' => [
+                RulesEnum::USERS_ADMIN_MASTER_UPDATE_STATUS->value,
+                ProfileUniqueNameEnum::ADMIN_MASTER->value
+            ],
+        ];
+    }
+
+    public function dataProviderMemberProfilesProfilesValidations(): array
+    {
+        return [
+            'From Admin Church to Admin Church' => [
+                RulesEnum::USERS_ADMIN_CHURCH_UPDATE_STATUS->value,
+                ProfileUniqueNameEnum::ADMIN_CHURCH->value
+            ],
+        ];
+    }
+
+    public function test_should_update_status_by_technical_support()
+    {
+        $updateStatusUserService = $this->getUpdateStatusUserService();
+
+        $updateStatusUserService->setAuthenticatedUser(MemberLists::getMemberUserLogged($this->defaultChurchId));
+
+        $updateStatusUserService->setPolicy(new Policy([
+            RulesEnum::USERS_TECHNICAL_SUPPORT_UPDATE_STATUS->value
+        ]));
+
+        $this
+            ->usersRepositoryMock
+            ->method('findById')
+            ->willReturn(UsersLists::showUser($this->userId, ProfileUniqueNameEnum::ASSISTANT->value));
+
+        $result = $updateStatusUserService->execute($this->userId);
+
+        $this->assertIsArray($result);
     }
 
     public function test_should_update_status_by_admin_master()
@@ -104,19 +152,55 @@ class UpdateStatusUserServiceTest extends TestCase
         $this->assertIsArray($result);
     }
 
-    public function test_should_update_status_user_member_itself()
+    /**
+     * @dataProvider dataProviderAdminProfilesProfilesValidations
+     *
+     * @param string $rule
+     * @param string $profile
+     * @return void
+     * @throws AppException
+     */
+    public function test_should_return_exception_if_the_user_tries_to_update_a_superior_profile_in_admins(
+        string $rule,
+        string $profile,
+    ): void
     {
         $updateStatusUserService = $this->getUpdateStatusUserService();
 
-        $userId = Uuid::uuid4Generate();
+        $updateStatusUserService->setAuthenticatedUser(MemberLists::getMemberUserLogged($this->defaultChurchId));
 
-        $updateStatusUserService->setAuthenticatedUser(
-            MemberLists::getMemberUserLogged(
-                $this->defaultChurchId,
-                null,
-                $userId
-            )
+        $updateStatusUserService->setPolicy(
+            new Policy([$rule])
         );
+
+        $this
+            ->usersRepositoryMock
+            ->method('findById')
+            ->willReturn(UsersLists::showUser($this->userId, $profile));
+
+        $this->expectException(AppException::class);
+        $this->expectExceptionCode(Response::HTTP_FORBIDDEN);
+        $this->expectExceptionMessage(json_encode(MessagesEnum::PROFILE_NOT_ALLOWED));
+
+        $updateStatusUserService->execute($this->userId);
+    }
+
+    /**
+     * @dataProvider dataProviderMemberProfilesProfilesValidations
+     *
+     * @param string $rule
+     * @param string $profile
+     * @return void
+     * @throws AppException
+     */
+    public function test_should_return_exception_if_the_user_tries_to_update_a_superior_profile_in_members(
+        string $rule,
+        string $profile,
+    ): void
+    {
+        $updateStatusUserService = $this->getUpdateStatusUserService();
+
+        $updateStatusUserService->setAuthenticatedUser(MemberLists::getMemberUserLogged($this->defaultChurchId));
 
         $updateStatusUserService->setPolicy(new Policy([
             RulesEnum::USERS_ADMIN_CHURCH_UPDATE_STATUS->value
@@ -139,14 +223,55 @@ class UpdateStatusUserServiceTest extends TestCase
             ->willReturn(
                 MemberLists::getMemberDataView(
                     $church,
-                    ProfileUniqueNameEnum::ADMIN_CHURCH->value,
-                    $userId
+                    $profile
                 )
             );
 
-        $result = $updateStatusUserService->execute($userId);
+        $this->expectException(AppException::class);
+        $this->expectExceptionCode(Response::HTTP_FORBIDDEN);
+        $this->expectExceptionMessage(json_encode(MessagesEnum::PROFILE_NOT_ALLOWED));
 
-        $this->assertIsArray($result);
+        $updateStatusUserService->execute($this->userId);
+    }
+
+    public function test_should_return_exception_if_the_authenticated_user_is_not_linked_to_the_churches()
+    {
+        $updateStatusUserService = $this->getUpdateStatusUserService();
+
+        $updateStatusUserService->setAuthenticatedUser(
+            MemberLists::getMemberUserLogged()
+        );
+
+        $updateStatusUserService->setPolicy(new Policy([
+            RulesEnum::USERS_ADMIN_CHURCH_UPDATE_STATUS->value
+        ]));
+
+        $church = Collection::make([
+            (object)([
+                Church::ID          => Uuid::uuid4Generate(),
+                Church::NAME        => "Igreja Teste 1",
+                Church::UNIQUE_NAME => "igreja-teste-1",
+                Church::PHONE       => "51999999999",
+                Church::EMAIL       => "ibvcx@gmail.com",
+                Church::ACTIVE      => true,
+            ])
+        ]);
+
+        $this
+            ->membersRepositoryMock
+            ->method('findByUserId')
+            ->willReturn(
+                MemberLists::getMemberDataView(
+                    $church,
+                    ProfileUniqueNameEnum::ASSISTANT->value
+                )
+            );
+
+        $this->expectException(AppException::class);
+        $this->expectExceptionCode(Response::HTTP_FORBIDDEN);
+        $this->expectExceptionMessage(json_encode(MessagesEnum::NO_ACCESS_TO_CHURCH));
+
+        $updateStatusUserService->execute(Uuid::uuid4Generate());
     }
 
     public function test_should_return_exception_if_user_is_not_authorized()

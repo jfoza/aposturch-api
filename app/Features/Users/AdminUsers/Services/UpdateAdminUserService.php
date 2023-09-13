@@ -5,11 +5,13 @@ namespace App\Features\Users\AdminUsers\Services;
 use App\Exceptions\AppException;
 use App\Features\Base\Services\AuthenticatedService;
 use App\Features\Base\Traits\EnvironmentException;
+use App\Features\Base\Validations\ProfileHierarchyValidation;
 use App\Features\Users\AdminUsers\Contracts\AdminUsersRepositoryInterface;
 use App\Features\Users\AdminUsers\Contracts\UpdateAdminUserServiceInterface;
 use App\Features\Users\AdminUsers\Responses\AdminUserResponse;
 use App\Features\Users\AdminUsers\Validations\AdminUsersValidations;
 use App\Features\Users\Profiles\Enums\ProfileUniqueNameEnum;
+use App\Features\Users\Profiles\Models\Profile;
 use App\Features\Users\Users\Contracts\UsersRepositoryInterface;
 use App\Features\Users\Users\DTO\UserDTO;
 use App\Features\Users\Users\Validations\UsersValidations;
@@ -21,7 +23,6 @@ use App\Shared\Utils\Transaction;
 class UpdateAdminUserService extends AuthenticatedService implements UpdateAdminUserServiceInterface
 {
     private UserDTO $userDTO;
-    private mixed $profile;
 
     public function __construct(
         private readonly AdminUsersRepositoryInterface $adminUsersRepository,
@@ -51,12 +52,15 @@ class UpdateAdminUserService extends AuthenticatedService implements UpdateAdmin
      */
     private function updateBySupport(): AdminUserResponse
     {
-        $profilesAllowed = [
-            ProfileUniqueNameEnum::TECHNICAL_SUPPORT->value,
-            ProfileUniqueNameEnum::ADMIN_MASTER->value
-        ];
+        $adminUser = $this->findOrFail();
 
-        $this->handleValidations($profilesAllowed);
+        ProfileHierarchyValidation::handleBaseValidationInPersistence(
+            $adminUser->profile->pluck(Profile::UNIQUE_NAME)->toArray(),
+            [
+                ProfileUniqueNameEnum::TECHNICAL_SUPPORT->value,
+                ProfileUniqueNameEnum::ADMIN_MASTER->value,
+            ]
+        );
 
         return $this->updateBaseOperation();
     }
@@ -66,11 +70,12 @@ class UpdateAdminUserService extends AuthenticatedService implements UpdateAdmin
      */
     private function updateByAdminMaster(): AdminUserResponse
     {
-        $profilesAllowed = [
-            ProfileUniqueNameEnum::ADMIN_MASTER->value
-        ];
+        $adminUser = $this->findOrFail();
 
-        $this->handleValidations($profilesAllowed);
+        ProfileHierarchyValidation::handleBaseValidationInPersistence(
+            $adminUser->profile->pluck(Profile::UNIQUE_NAME)->toArray(),
+            [ProfileUniqueNameEnum::ADMIN_MASTER->value]
+        );
 
         return $this->updateBaseOperation();
     }
@@ -78,19 +83,21 @@ class UpdateAdminUserService extends AuthenticatedService implements UpdateAdmin
     /**
      * @throws AppException
      */
-    private function handleValidations(array $profiles)
+    private function findOrFail(): object
     {
-        if(!$this->adminUsersRepository->findById($this->userDTO->id, $profiles))
+        if(!$adminUserById = $this->adminUsersRepository->findByUserId($this->userDTO->id))
         {
             AdminUsersValidations::adminUserNotFoundException();
         }
 
-        $user = $this->adminUsersRepository->findByEmail($this->userDTO->email, $profiles);
+        $adminUserByEmail = $this->adminUsersRepository->findByUserEmail($this->userDTO->email);
 
-        if($user && $user->id != $this->userDTO->id)
+        if($adminUserByEmail && $adminUserByEmail->id != $this->userDTO->id)
         {
             UsersValidations::emailAlreadyExistsUpdateException();
         }
+
+        return $adminUserById;
     }
 
     /**
@@ -104,9 +111,9 @@ class UpdateAdminUserService extends AuthenticatedService implements UpdateAdmin
         try {
             $this->usersRepository->save($this->userDTO);
 
-            if(!is_null($this->userDTO->password))
+            if(!is_null($this->userDTO->passwordDTO->password))
             {
-                $newPassword = Hash::generateHash($this->userDTO->password);
+                $newPassword = Hash::generateHash($this->userDTO->passwordDTO->password);
 
                 $this->usersRepository->saveNewPassword(
                     $this->userDTO->id,
@@ -121,7 +128,6 @@ class UpdateAdminUserService extends AuthenticatedService implements UpdateAdmin
             $this->adminUserResponse->id     = $this->userDTO->id;
             $this->adminUserResponse->name   = $this->userDTO->name;
             $this->adminUserResponse->email  = $this->userDTO->email;
-            $this->adminUserResponse->active = $this->userDTO->active;
 
             return $this->adminUserResponse;
         } catch(\Exception $e) {

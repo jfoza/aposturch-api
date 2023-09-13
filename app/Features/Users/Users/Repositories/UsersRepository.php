@@ -38,8 +38,7 @@ class UsersRepository implements UsersRepositoryInterface
         $create = [
             User::NAME      => $userDTO->name,
             User::EMAIL     => $userDTO->email,
-            User::PASSWORD  => $userDTO->newPasswordGenerationsDTO->passwordEncrypt,
-            User::ACTIVE    => $userDTO->active,
+            User::PASSWORD  => $userDTO->passwordDTO->encryptedPassword,
         ];
 
         if($usePerson) {
@@ -55,7 +54,6 @@ class UsersRepository implements UsersRepositoryInterface
             User::ID     => $userDTO->id,
             User::NAME   => $userDTO->name,
             User::EMAIL  => $userDTO->email,
-            User::ACTIVE => $userDTO->active,
         ];
 
         User::where(User::ID, $userDTO->id)
@@ -70,7 +68,6 @@ class UsersRepository implements UsersRepositoryInterface
             User::ID     => $generalDataUpdateDTO->id,
             User::NAME   => $generalDataUpdateDTO->name,
             User::EMAIL  => $generalDataUpdateDTO->email,
-            User::ACTIVE => $generalDataUpdateDTO->active,
         ];
 
         User::where(User::ID, $generalDataUpdateDTO->id)->update($saved);

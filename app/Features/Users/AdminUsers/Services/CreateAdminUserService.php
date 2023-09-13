@@ -5,11 +5,12 @@ namespace App\Features\Users\AdminUsers\Services;
 use App\Exceptions\AppException;
 use App\Features\Base\Services\AuthenticatedService;
 use App\Features\Base\Traits\EnvironmentException;
+use App\Features\Base\Validations\ProfileHierarchyValidation;
 use App\Features\Users\AdminUsers\Contracts\AdminUsersRepositoryInterface;
 use App\Features\Users\AdminUsers\Contracts\CreateAdminUserServiceInterface;
 use App\Features\Users\AdminUsers\Responses\AdminUserResponse;
-use App\Features\Users\AdminUsers\Validations\AllowedProfilesValidations;
 use App\Features\Users\Profiles\Contracts\ProfilesRepositoryInterface;
+use App\Features\Users\Profiles\Enums\ProfileUniqueNameEnum;
 use App\Features\Users\Users\Contracts\UsersRepositoryInterface;
 use App\Features\Users\Users\DTO\UserDTO;
 use App\Features\Users\Users\Validations\UsersValidations;
@@ -53,7 +54,13 @@ class CreateAdminUserService extends AuthenticatedService implements CreateAdmin
     {
         $this->handleValidations();
 
-        AllowedProfilesValidations::validateSupportProfile($this->profile->unique_name);
+        ProfileHierarchyValidation::handleBaseValidationInPersistence(
+            [$this->profile->unique_name],
+            [
+                ProfileUniqueNameEnum::TECHNICAL_SUPPORT->value,
+                ProfileUniqueNameEnum::ADMIN_MASTER->value,
+            ]
+        );
 
         return $this->baseInsertOperation();
     }
@@ -65,7 +72,10 @@ class CreateAdminUserService extends AuthenticatedService implements CreateAdmin
     {
         $this->handleValidations();
 
-        AllowedProfilesValidations::validateAdminMasterProfile($this->profile->unique_name);
+        ProfileHierarchyValidation::handleBaseValidationInPersistence(
+            [$this->profile->unique_name],
+            [ProfileUniqueNameEnum::ADMIN_MASTER->value]
+        );
 
         return $this->baseInsertOperation();
     }
@@ -90,7 +100,7 @@ class CreateAdminUserService extends AuthenticatedService implements CreateAdmin
 
         try
         {
-            $this->userDTO->newPasswordGenerationsDTO->passwordEncrypt = Hash::generateHash($this->userDTO->password);
+            $this->userDTO->passwordDTO->encryptedPassword = Hash::generateHash($this->userDTO->passwordDTO->password);
 
             $user = $this->usersRepository->create($this->userDTO);
             $this->userDTO->id = $user->id;
@@ -104,7 +114,6 @@ class CreateAdminUserService extends AuthenticatedService implements CreateAdmin
             $this->adminUserResponse->id                 = $user->id;
             $this->adminUserResponse->name               = $user->name;
             $this->adminUserResponse->email              = $user->email;
-            $this->adminUserResponse->active             = $user->active;
             $this->adminUserResponse->profileId          = $this->profile->id;
             $this->adminUserResponse->profileDescription = $this->profile->description;
 

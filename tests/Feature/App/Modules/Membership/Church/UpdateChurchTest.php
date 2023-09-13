@@ -6,6 +6,7 @@ use App\Features\City\Cities\Models\City;
 use App\Modules\Membership\Church\Models\Church;
 use App\Shared\Helpers\RandomStringHelper;
 use Ramsey\Uuid\Uuid;
+use Tests\Feature\App\Features\Auth\Credentials;
 use Tests\Feature\BaseTestCase;
 use Tests\Feature\Resources\Modules\Churches\ChurchesDataProviders;
 
@@ -21,7 +22,7 @@ class UpdateChurchTest extends BaseTestCase
 
         $this->endpoint = self::CHURCHES_ROUTE;
 
-        $this->setAuthorizationBearer();
+        $this->setAuthorizationBearer(Credentials::ADMIN_MASTER);
     }
 
     public function test_should_update_unique_church()

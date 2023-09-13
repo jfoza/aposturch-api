@@ -4,7 +4,6 @@ namespace App\Features\Auth\Business;
 
 use App\Exceptions\AppException;
 use App\Features\Auth\Validations\AuthValidations;
-use App\Features\Users\CustomerUsers\Contracts\CustomerUsersRepositoryInterface;
 use App\Features\Users\ForgotPassword\Business\ForgotPasswordBusinessInterface;
 use App\Features\Users\ForgotPassword\Contracts\ForgotPasswordRepositoryInterface;
 use App\Features\Users\ForgotPassword\DTO\ForgotPasswordDTO;
@@ -24,7 +23,6 @@ class ForgotPasswordBusiness implements ForgotPasswordBusinessInterface
     public function __construct(
         private readonly ForgotPasswordRepositoryInterface $forgotPasswordRepository,
         private readonly UsersRepositoryInterface $usersRepository,
-        private readonly CustomerUsersRepositoryInterface $customerUsersRepository,
     ) {
         $this->currentDate = Helpers::getCurrentTimestampCarbon();
     }
@@ -34,7 +32,7 @@ class ForgotPasswordBusiness implements ForgotPasswordBusinessInterface
      */
     public function sendEmailForgotPassword(ForgotPasswordDTO $forgotPasswordDTO): void
     {
-        $customerUser = $this->customerUsersRepository->findByUserEmail($forgotPasswordDTO->email);
+        $customerUser = (object) ([]);
         $user         = AuthValidations::userExistsForgotPassword($customerUser);
 
         AuthValidations::validateIfUserHasAlreadyVerifiedEmail($customerUser->verified_email, false);

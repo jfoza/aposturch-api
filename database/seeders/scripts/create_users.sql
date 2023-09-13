@@ -1,3 +1,71 @@
+-- SUPPORT
+START TRANSACTION;
+
+DO $$
+
+    DECLARE
+
+        _user_uuid   uuid    = uuid_generate_v4();
+        _name        varchar = 'Technical Support User';
+        _email       varchar = 'technical-support-user@email.com';
+        _password    varchar = general.generate_bcrypt_hash('Teste123');
+
+        _profile varchar := 'TECHNICAL_SUPPORT';
+        _profile_uuid uuid;
+
+        _module1 uuid;
+        _module2 uuid;
+        _module3 uuid;
+        _module4 uuid;
+        _module5 uuid;
+        _module6 uuid;
+        _module7 uuid;
+
+    BEGIN
+        SELECT id INTO _profile_uuid FROM users.profiles WHERE unique_name = _profile;
+
+        SELECT id INTO _module1 FROM module.modules WHERE module_unique_name = 'USERS';
+        SELECT id INTO _module2 FROM module.modules WHERE module_unique_name = 'FINANCE';
+        SELECT id INTO _module3 FROM module.modules WHERE module_unique_name = 'MEMBERSHIP';
+        SELECT id INTO _module4 FROM module.modules WHERE module_unique_name = 'STORE';
+        SELECT id INTO _module5 FROM module.modules WHERE module_unique_name = 'GROUPS';
+        SELECT id INTO _module6 FROM module.modules WHERE module_unique_name = 'SCHEDULE';
+        SELECT id INTO _module7 FROM module.modules WHERE module_unique_name = 'PATRIMONY';
+
+        INSERT INTO users.users (id, name, email, password, active)
+        VALUES
+            (   _user_uuid,
+                _name,
+                _email,
+                _password,
+                true
+            );
+
+        INSERT INTO users.admin_users (user_id)
+        VALUES
+            (
+                _user_uuid
+            );
+
+        INSERT INTO users.modules_users (user_id, module_id)
+        VALUES
+            (_user_uuid, _module1),
+            (_user_uuid, _module2),
+            (_user_uuid, _module3),
+            (_user_uuid, _module4),
+            (_user_uuid, _module5),
+            (_user_uuid, _module6),
+            (_user_uuid, _module7);
+
+        INSERT INTO users.profiles_users (profile_id, user_id)
+        VALUES
+            (
+                _profile_uuid,
+                _user_uuid
+            );
+    END $$;
+commit;
+
 -- USER 1
 START TRANSACTION;
 

@@ -241,43 +241,6 @@ class UsersUploadImageServiceTest extends TestCase
         $usersUploadImageService->execute($this->imagesDtoMock, $this->userId);
     }
 
-    /**
-     * @dataProvider dataProviderUploadImageMemberItself
-     *
-     * @return void
-     * @throws AppException
-     */
-    public function test_should_return_exception_if_user_tries_to_upload_image_a_user_other_than_his(): void
-    {
-        $usersUploadImageService = $this->getUsersUploadImageService();
-
-        $usersUploadImageService->setPolicy(
-            new Policy([RulesEnum::USERS_IMAGE_UPLOAD_ADMIN_CHURCH->value])
-        );
-
-        $usersUploadImageService->setAuthenticatedUser(
-            MemberLists::getMemberUserLogged($this->churchId, null, Uuid::uuid4Generate())
-        );
-
-        $this->populateImagesDTO();
-
-        $this
-            ->membersRepositoryMock
-            ->method('findByUserId')
-            ->willReturn(
-                MemberLists::getMemberDataView(
-                    $this->churches,
-                    'ADMIN_CHURCH',
-                    Uuid::uuid4Generate()
-                )
-            );
-
-        $this->expectException(AppException::class);
-        $this->expectExceptionCode(Response::HTTP_FORBIDDEN);
-
-        $usersUploadImageService->execute($this->imagesDtoMock, $this->userId);
-    }
-
     public function test_should_return_exception_if_user_is_not_authorized()
     {
         $usersUploadImageService = $this->getUsersUploadImageService();

@@ -10,9 +10,7 @@ use App\Features\City\Cities\Validations\CityValidations;
 use App\Features\Module\Modules\Contracts\ModulesRepositoryInterface;
 use App\Features\Module\Modules\Validations\ModulesValidations;
 use App\Features\Persons\Contracts\PersonsRepositoryInterface;
-use App\Features\Users\AdminUsers\Validations\AllowedProfilesValidations;
 use App\Features\Users\Profiles\Contracts\ProfilesRepositoryInterface;
-use App\Features\Users\Profiles\Enums\ProfileUniqueNameEnum;
 use App\Features\Users\Users\Contracts\UsersRepositoryInterface;
 use App\Features\Users\Users\DTO\UserDTO;
 use App\Features\Users\Users\Validations\UsersValidations;
@@ -26,7 +24,6 @@ use App\Shared\Enums\RulesEnum;
 use App\Shared\Utils\Hash;
 use App\Shared\Utils\Transaction;
 use Exception;
-use Tymon\JWTAuth\Exceptions\UserNotDefinedException;
 
 class CreateMemberService extends AuthenticatedService implements CreateMemberServiceInterface
 {
@@ -171,7 +168,7 @@ class CreateMemberService extends AuthenticatedService implements CreateMemberSe
 
         try
         {
-            $this->userDTO->newPasswordGenerationsDTO->passwordEncrypt = Hash::generateHash($this->userDTO->password);
+            $this->userDTO->passwordDTO->encryptedPassword = Hash::generateHash($this->userDTO->passwordDTO->password);
 
             $person = $this->personsRepository->create($this->userDTO->person);
             $this->userDTO->personId = $person->id;

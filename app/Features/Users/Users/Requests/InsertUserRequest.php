@@ -19,7 +19,6 @@ class InsertUserRequest extends FormRequest
             'email'                => 'required|email:rfc,dns',
             'password'             => 'required|string',
             'passwordConfirmation' => 'required|same:password',
-            'active'               => 'required|bool',
             'profileId'            => ['string', 'required', new Uuid4Rule],
         ];
     }
@@ -31,7 +30,6 @@ class InsertUserRequest extends FormRequest
             'email'                => 'Email',
             'password'             => 'Password',
             'passwordConfirmation' => 'Password confirmation',
-            'active'               => 'Active',
             'profileId'            => 'Profile',
         ];
     }

@@ -3,6 +3,7 @@
 namespace Tests\Unit\App\Modules\Membership\Members\Services;
 
 use App\Exceptions\AppException;
+use App\Modules\Membership\Church\Models\Church;
 use App\Modules\Membership\Members\Contracts\MembersRepositoryInterface;
 use App\Modules\Membership\Members\DTO\MembersFiltersDTO;
 use App\Modules\Membership\Members\Repositories\MembersRepository;
@@ -11,6 +12,7 @@ use App\Modules\Membership\Members\Services\ShowByUserIdService;
 use App\Shared\ACL\Policy;
 use App\Shared\Enums\RulesEnum;
 use App\Shared\Libraries\Uuid;
+use Illuminate\Support\Collection;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
@@ -95,7 +97,11 @@ class ShowByUserIdServiceTest extends TestCase
         $this
             ->membersRepositoryMock
             ->method('findOneByFilters')
-            ->willReturn(MemberLists::getMemberDataView([$this->churchId]));
+            ->willReturn(MemberLists::getMemberDataView(
+                Collection::make([
+                    (object) ([Church::ID => $this->churchId])
+                ])
+            ));
 
         $userMember = $showByUserIdService->execute(Uuid::uuid4Generate());
 

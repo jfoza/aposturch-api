@@ -103,13 +103,9 @@ DO $$
         _rule68 uuid := uuid_generate_v4();
         _rule69 uuid := uuid_generate_v4();
         _rule70 uuid := uuid_generate_v4();
+        _rule71 uuid := uuid_generate_v4();
 
     BEGIN
-        INSERT INTO membership.member_types(unique_name, description)
-        values
-            ('RESPONSIBLE', 'Responsável'),
-            ('COMMON_MEMBER', 'Membro Comum');
-
         INSERT INTO module.modules (id, module_description, module_unique_name, active)
         VALUES
             (_module1, 'Usuários', 'USERS', true),
@@ -221,7 +217,9 @@ DO $$
             (_rule68, 'USERS_IMAGE_UPLOAD_ADMIN_MODULE', 'USERS_IMAGE_UPLOAD_ADMIN_MODULE', 'UPLOAD'),
             (_rule69, 'USERS_IMAGE_UPLOAD_ADMIN_ASSISTANT', 'USERS_IMAGE_UPLOAD_ADMIN_ASSISTANT', 'UPLOAD'),
 
-            (_rule70, 'MEMBERSHIP_MODULE_MEMBERS_ADMIN_MASTER_VIEW', 'MEMBERSHIP_MODULE_MEMBERS_ADMIN_MASTER', 'VIEW');
+            (_rule70, 'MEMBERSHIP_MODULE_MEMBERS_ADMIN_MASTER_VIEW', 'MEMBERSHIP_MODULE_MEMBERS_ADMIN_MASTER', 'VIEW'),
+
+            (_rule71, 'USERS_TECHNICAL_SUPPORT_UPDATE_STATUS', 'USERS_TECHNICAL_SUPPORT_UPDATE_STATUS', 'UPDATE');
 
 
         INSERT INTO users.modules_rules (rule_id, module_id)
@@ -341,6 +339,7 @@ DO $$
             (_profile1, _rule65),
             (_profile1, _rule66),
             (_profile1, _rule70),
+            (_profile1, _rule71),
 
             -- ADMIN MASTER
             (_profile2, _rule1),

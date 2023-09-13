@@ -18,7 +18,6 @@ class UpdateUserRequest extends FormRequest
             'email'                => 'required|email:rfc,dns',
             'password'             => 'nullable|string',
             'passwordConfirmation' => 'nullable|same:password',
-            'active'               => 'required|bool',
         ];
     }
 
@@ -29,7 +28,6 @@ class UpdateUserRequest extends FormRequest
             'email'                => 'E-mail',
             'password'             => 'Password',
             'passwordConfirmation' => 'Password Confirmation',
-            'active'               => 'Active',
         ];
     }
 }

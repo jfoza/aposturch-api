@@ -5,10 +5,10 @@ namespace App\Features\Users\Users\Services;
 use App\Exceptions\AppException;
 use App\Features\Base\Services\AuthenticatedService;
 use App\Features\Base\Traits\EnvironmentException;
+use App\Features\Base\Validations\ProfileHierarchyValidation;
 use App\Features\General\Images\Contracts\ImagesRepositoryInterface;
 use App\Features\General\Images\DTO\ImagesDTO;
 use App\Features\General\Images\Enums\TypeUploadImageEnum;
-use App\Features\Users\AdminUsers\Validations\AllowedProfilesValidations;
 use App\Features\Users\Users\Contracts\UsersRepositoryInterface;
 use App\Features\Users\Users\Contracts\UserUploadImageServiceInterface;
 use App\Features\Users\Users\Validations\UsersValidations;
@@ -71,10 +71,7 @@ class UserUploadImageService extends AuthenticatedService implements UserUploadI
     {
         $this->userMemberExistsAndCanBeUsed();
 
-        if(!$this->userPayloadIsEqualsAuthUser($this->userId))
-        {
-            AllowedProfilesValidations::validateAdminChurchProfile($this->userMember->profile_unique_name);
-        }
+        ProfileHierarchyValidation::adminChurchInListingsValidation([$this->userMember->profile_unique_name]);
 
         return $this->baseUploadOperation();
     }
@@ -86,10 +83,7 @@ class UserUploadImageService extends AuthenticatedService implements UserUploadI
     {
         $this->userMemberExistsAndCanBeUsed();
 
-        if(!$this->userPayloadIsEqualsAuthUser($this->userId))
-        {
-            AllowedProfilesValidations::validateAdminModuleProfile($this->userMember->profile_unique_name);
-        }
+        ProfileHierarchyValidation::adminModuleInListingsValidation([$this->userMember->profile_unique_name]);
 
         return $this->baseUploadOperation();
     }
@@ -101,10 +95,7 @@ class UserUploadImageService extends AuthenticatedService implements UserUploadI
     {
         $this->userMemberExistsAndCanBeUsed();
 
-        if(!$this->userPayloadIsEqualsAuthUser($this->userId))
-        {
-            AllowedProfilesValidations::validateAssistantProfile($this->userMember->profile_unique_name);
-        }
+        ProfileHierarchyValidation::assistantInListingsValidation([$this->userMember->profile_unique_name]);
 
         return $this->baseUploadOperation();
     }
@@ -119,9 +110,9 @@ class UserUploadImageService extends AuthenticatedService implements UserUploadI
             $this->membersRepository
         );
 
-        $churchesId = ChurchUtils::extractChurchesId($this->userMember);
+        $churchesUniqueNameUser = ChurchUtils::extractChurchesId($this->userMember);
 
-        $this->userHasAccessToChurch($churchesId);
+        $this->userHasAccessToChurch($churchesUniqueNameUser);
     }
 
     /**

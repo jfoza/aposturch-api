@@ -8,8 +8,6 @@ use App\Modules\Membership\Church\DTO\ChurchDTO;
 use App\Modules\Membership\Church\DTO\ChurchFiltersDTO;
 use App\Modules\Membership\Church\Models\Church;
 use App\Modules\Membership\Members\Models\Member;
-use App\Modules\Membership\MemberTypes\Models\MemberType;
-use App\Shared\Enums\MemberTypesEnum;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 
@@ -55,7 +53,7 @@ class ChurchRepository implements ChurchRepositoryInterface
         return Church::with([
                 'imagesChurch',
                 'city',
-                'member' => fn($member) => $member->with(['user', 'memberType'])
+                'member' => fn($member) => $member->with(['user'])
             ])
             ->find($churchId);
     }
@@ -71,7 +69,7 @@ class ChurchRepository implements ChurchRepositoryInterface
                 'imagesChurch',
                 'city',
                 'member' => function($member) {
-                    return $member->with(['user', 'memberType']);
+                    return $member->with(['user']);
                 }
             ])
             ->find($churchId);

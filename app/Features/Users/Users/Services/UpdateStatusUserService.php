@@ -5,8 +5,9 @@ namespace App\Features\Users\Users\Services;
 use App\Exceptions\AppException;
 use App\Features\Base\Services\AuthenticatedService;
 use App\Features\Base\Traits\EnvironmentException;
+use App\Features\Base\Validations\ProfileHierarchyValidation;
+use App\Features\Users\Profiles\Enums\ProfileUniqueNameEnum;
 use App\Features\Users\Profiles\Models\Profile;
-use App\Features\Users\Profiles\Validations\ProfileHierarchyValidations;
 use App\Features\Users\Users\Contracts\UpdateStatusUserServiceInterface;
 use App\Features\Users\Users\Contracts\UsersRepositoryInterface;
 use App\Features\Users\Users\Validations\UsersValidations;
@@ -37,11 +38,45 @@ class UpdateStatusUserService extends AuthenticatedService implements UpdateStat
 
         return match (true)
         {
-            $policy->haveRule(RulesEnum::USERS_ADMIN_MASTER_UPDATE_STATUS->value) => $this->updateStatusByAdminMaster(),
-            $policy->haveRule(RulesEnum::USERS_ADMIN_CHURCH_UPDATE_STATUS->value) => $this->updateStatusByAdminChurch(),
+            $policy->haveRule(RulesEnum::USERS_TECHNICAL_SUPPORT_UPDATE_STATUS->value)
+                => $this->updateStatusBySupport(),
+
+            $policy->haveRule(RulesEnum::USERS_ADMIN_MASTER_UPDATE_STATUS->value)
+                => $this->updateStatusByAdminMaster(),
+
+            $policy->haveRule(RulesEnum::USERS_ADMIN_CHURCH_UPDATE_STATUS->value)
+                => $this->updateStatusByAdminChurch(),
 
             default => $policy->dispatchForbiddenError()
         };
+    }
+
+    /**
+     * @throws AppException
+     */
+    private function updateStatusBySupport(): array
+    {
+        $user = UsersValidations::validateUserExistsById(
+            $this->userId,
+            $this->usersRepository
+        );
+
+        $profilesUniqueName = $user->profile->pluck(Profile::UNIQUE_NAME)->toArray();
+
+        ProfileHierarchyValidation::handleBaseValidationInPersistence(
+            $profilesUniqueName,
+            [
+                ProfileUniqueNameEnum::ADMIN_MASTER->value,
+                ProfileUniqueNameEnum::ADMIN_CHURCH->value,
+                ProfileUniqueNameEnum::ADMIN_MODULE->value,
+                ProfileUniqueNameEnum::ASSISTANT->value,
+                ProfileUniqueNameEnum::MEMBER->value,
+            ]
+        );
+
+        $this->status = !$user->active;
+
+        return $this->handleUpdateStatus();
     }
 
     /**
@@ -54,12 +89,17 @@ class UpdateStatusUserService extends AuthenticatedService implements UpdateStat
             $this->usersRepository
         );
 
-        if(!$this->userPayloadIsEqualsAuthUser($this->userId))
-        {
-            $profilesId = $user->profile->pluck(Profile::UNIQUE_NAME)->toArray();
+        $profilesUniqueName = $user->profile->pluck(Profile::UNIQUE_NAME)->toArray();
 
-            ProfileHierarchyValidations::adminMasterValidation($profilesId);
-        }
+        ProfileHierarchyValidation::handleBaseValidationInPersistence(
+            $profilesUniqueName,
+            [
+                ProfileUniqueNameEnum::ADMIN_CHURCH->value,
+                ProfileUniqueNameEnum::ADMIN_MODULE->value,
+                ProfileUniqueNameEnum::ASSISTANT->value,
+                ProfileUniqueNameEnum::MEMBER->value,
+            ]
+        );
 
         $this->status = !$user->active;
 
@@ -76,14 +116,18 @@ class UpdateStatusUserService extends AuthenticatedService implements UpdateStat
             $this->membersRepository
         );
 
-        if(!$this->userPayloadIsEqualsAuthUser($this->userId))
-        {
-            ProfileHierarchyValidations::adminChurchValidation([$userMember->profile_unique_name]);
-        }
+        ProfileHierarchyValidation::handleBaseValidationInPersistence(
+            [$userMember->profile_unique_name],
+            [
+                ProfileUniqueNameEnum::ADMIN_MODULE->value,
+                ProfileUniqueNameEnum::ASSISTANT->value,
+                ProfileUniqueNameEnum::MEMBER->value,
+            ]
+        );
 
-        $churchesId = ChurchUtils::extractChurchesId($userMember);
+        $churchesIdUserPayload = ChurchUtils::extractChurchesId($userMember);
 
-        $this->userHasAccessToChurch($churchesId);
+        $this->userHasAccessToChurch($churchesIdUserPayload);
 
         $this->status = !$userMember->active;
 

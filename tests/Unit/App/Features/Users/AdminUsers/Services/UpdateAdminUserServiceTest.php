@@ -7,9 +7,10 @@ use App\Features\Users\AdminUsers\Contracts\AdminUsersRepositoryInterface;
 use App\Features\Users\AdminUsers\Repositories\AdminUsersRepository;
 use App\Features\Users\AdminUsers\Responses\AdminUserResponse;
 use App\Features\Users\AdminUsers\Services\UpdateAdminUserService;
-use App\Features\Users\NewPasswordGenerations\DTO\NewPasswordGenerationsDTO;
+use App\Features\Users\Profiles\Enums\ProfileUniqueNameEnum;
 use App\Features\Users\Profiles\Repositories\ProfilesRepository;
 use App\Features\Users\Users\Contracts\UsersRepositoryInterface;
+use App\Features\Users\Users\DTO\PasswordDTO;
 use App\Features\Users\Users\DTO\UserDTO;
 use App\Features\Users\Users\Repositories\UsersRepository;
 use App\Shared\ACL\Policy;
@@ -50,12 +51,13 @@ class UpdateAdminUserServiceTest extends TestCase
 
     public function populateUsersDTO()
     {
-        $this->userDtoMock->newPasswordGenerationsDTO = $this->createMock(NewPasswordGenerationsDTO::class);
+        $this->userDtoMock->passwordDTO = $this->createMock(PasswordDTO::class);
+
+        $this->userDtoMock->passwordDTO->password  = 'user_password';
 
         $this->userDtoMock->id        = Uuid::uuid4()->toString();
         $this->userDtoMock->name      = 'User Name';
         $this->userDtoMock->email     = 'email.example@email.com';
-        $this->userDtoMock->password  = 'user_password';
         $this->userDtoMock->active    = true;
     }
 
@@ -94,8 +96,8 @@ class UpdateAdminUserServiceTest extends TestCase
 
         $this
             ->adminUsersRepositoryMock
-            ->method('findById')
-            ->willReturn(UsersLists::showUser($id));
+            ->method('findByUserId')
+            ->willReturn(UsersLists::showUser($id, ProfileUniqueNameEnum::ADMIN_MASTER->value));
 
         $this
             ->usersRepositoryMock
@@ -126,7 +128,7 @@ class UpdateAdminUserServiceTest extends TestCase
 
         $this
             ->adminUsersRepositoryMock
-            ->method('findById')
+            ->method('findByUserId')
             ->willReturn(null);
 
         $this->expectException(AppException::class);
@@ -149,12 +151,12 @@ class UpdateAdminUserServiceTest extends TestCase
 
         $this
             ->adminUsersRepositoryMock
-            ->method('findById')
+            ->method('findByUserId')
             ->willReturn(UsersLists::showUser());
 
         $this
             ->adminUsersRepositoryMock
-            ->method('findByEmail')
+            ->method('findByUserEmail')
             ->willReturn(UsersLists::showUser());
 
         $this->expectException(AppException::class);
@@ -170,25 +172,20 @@ class UpdateAdminUserServiceTest extends TestCase
         $updateAdminUserService = $this->getUpdateAdminUserService();
 
         $updateAdminUserService->setPolicy(new Policy([
-            RulesEnum::ADMIN_USERS_ADMIN_MODULE_UPDATE->value
+            RulesEnum::ADMIN_USERS_ADMIN_MASTER_UPDATE->value
         ]));
 
         $this->populateUsersDTO();
 
         $this
             ->adminUsersRepositoryMock
-            ->method('findById')
-            ->willReturn(UsersLists::showUser());
+            ->method('findByUserId')
+            ->willReturn(UsersLists::showUser(null, ProfileUniqueNameEnum::TECHNICAL_SUPPORT->value));
 
         $this
             ->usersRepositoryMock
             ->method('findByEmail')
             ->willReturn(null);
-
-        $this
-            ->usersRepositoryMock
-            ->method('create')
-            ->willReturn(UsersLists::showUser());
 
         $this->expectException(AppException::class);
         $this->expectExceptionCode(Response::HTTP_FORBIDDEN);

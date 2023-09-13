@@ -51,12 +51,12 @@ class UsersLists
                 Person::ID    => Uuid::uuid4Generate(),
                 Person::PHONE => '51998765432'
             ]),
-            'profile'      => Collection::make(([
+            'profile'      => Collection::make([
                 (object) ([
                     Profile::ID    => Uuid::uuid4Generate(),
                     Profile::UNIQUE_NAME => $profileUniqueName
                 ])
-            ])),
+            ]),
         ]);
     }
 

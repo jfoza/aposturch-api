@@ -4,6 +4,7 @@ namespace Tests\Feature\App\Modules\Membership\Church;
 
 use App\Features\City\Cities\Models\City;
 use App\Shared\Helpers\RandomStringHelper;
+use Tests\Feature\App\Features\Auth\Credentials;
 use Tests\Feature\BaseTestCase;
 use Tests\Feature\Resources\Modules\Churches\ChurchesDataProviders;
 
@@ -19,7 +20,7 @@ class CreateChurchTest extends BaseTestCase
 
         $this->endpoint = self::CHURCHES_ROUTE;
 
-        $this->setAuthorizationBearer();
+        $this->setAuthorizationBearer(Credentials::ADMIN_MASTER);
     }
 
     public function test_should_create_new_church()
