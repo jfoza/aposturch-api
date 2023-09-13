@@ -19,11 +19,46 @@ class ShowByUserIdTest extends BaseTestCase
         $this->endpoint = self::MEMBERS_ROUTE;
     }
 
-    public function test_should_return_unique_user_member_by_admin_master_rule()
+    public static function dataProviderShowMember(): array
     {
-        $this->setAuthorizationBearer(Credentials::ADMIN_MASTER);
+        return [
+            'By Admin Master' => [Credentials::ADMIN_MASTER],
+            'By Admin Church' => [Credentials::ADMIN_CHURCH_1],
+            'By Admin Module' => [Credentials::MEMBERSHIP_ADMIN_MODULE],
+            'By Assistant'    => [Credentials::ASSISTANT_1],
+        ];
+    }
 
-        $user = User::where(User::EMAIL, Credentials::ADMIN_MODULE)->first();
+    public static function dataProviderShowMemberChurchValidation(): array
+    {
+        return [
+            'By Admin Church' => [Credentials::ADMIN_CHURCH_1],
+            'By Admin Module' => [Credentials::MEMBERSHIP_ADMIN_MODULE],
+            'By Assistant'    => [Credentials::ASSISTANT_1],
+        ];
+    }
+
+    public static function dataProviderShowMemberProfilesValidation(): array
+    {
+        return [
+            'By Admin Module' => [Credentials::MEMBERSHIP_ADMIN_MODULE],
+            'By Assistant'    => [Credentials::ASSISTANT_1],
+        ];
+    }
+
+    /**
+     * @dataProvider dataProviderShowMember
+     *
+     * @param string $credential
+     * @return void
+     */
+    public function test_should_return_unique_user_member_by_admin_master_rule(
+        string $credential
+    ): void
+    {
+        $this->setAuthorizationBearer($credential);
+
+        $user = User::where(User::EMAIL, Credentials::ASSISTANT_1)->first();
 
         $response = $this->getJson(
             $this->endpoint."/user/{$user->id}",
@@ -31,63 +66,72 @@ class ShowByUserIdTest extends BaseTestCase
         );
 
         $response->assertOk();
-        $response->assertJsonStructure(MembersAssertions::getMemberAssertion());
+        $response->assertJsonStructure(MembersAssertions::getMemberIdAssertion());
     }
 
-//    public function test_should_return_error_if_user_not_exists_by_admin_master_rule()
-//    {
-//        $this->setAuthorizationBearer(Credentials::ADMIN_MASTER);
-//
-//        $user = Uuid::uuid4Generate();
-//
-//        $response = $this->getJson(
-//            $this->endpoint."/user/{$user}",
-//            $this->getAuthorizationBearer()
-//        );
-//
-//        $response->assertNotFound();
-//    }
-//
-//    public function test_should_return_unique_user_member_by_admin_church_rule()
-//    {
-//        $this->setAuthorizationBearer(Credentials::ADMIN_CHURCH_1);
-//
-//        $user = User::where(User::EMAIL, Credentials::ADMIN_CHURCH_1)->first();
-//
-//        $response = $this->getJson(
-//            $this->endpoint."/user/{$user->id}",
-//            $this->getAuthorizationBearer()
-//        );
-//
-//        $response->assertOk();
-//        $response->assertJsonStructure(MembersAssertions::getMemberAssertion());
-//    }
-//
-//    public function test_should_return_error_if_user_is_from_a_higher_profile()
-//    {
-//        $this->setAuthorizationBearer(Credentials::ASSISTANT_1);
-//
-//        $user = User::where(User::EMAIL, Credentials::ADMIN_MODULE)->first();
-//
-//        $response = $this->getJson(
-//            $this->endpoint."/user/{$user->id}",
-//            $this->getAuthorizationBearer()
-//        );
-//
-//        $response->assertNotFound();
-//    }
-//
-//    public function test_should_return_error_if_user_payload_is_from_another_church()
-//    {
-//        $this->setAuthorizationBearer(Credentials::ADMIN_CHURCH_1);
-//
-//        $user = User::where(User::EMAIL, Credentials::ASSISTANT_2)->first();
-//
-//        $response = $this->getJson(
-//            $this->endpoint."/user/{$user->id}",
-//            $this->getAuthorizationBearer()
-//        );
-//
-//        $response->assertNotFound();
-//    }
+    /**
+     * @dataProvider dataProviderShowMember
+     *
+     * @param string $credential
+     * @return void
+     */
+    public function test_should_return_error_if_user_not_exists(
+        string $credential
+    ): void
+    {
+        $this->setAuthorizationBearer($credential);
+
+        $user = Uuid::uuid4Generate();
+
+        $response = $this->getJson(
+            $this->endpoint."/user/{$user}",
+            $this->getAuthorizationBearer()
+        );
+
+        $response->assertNotFound();
+    }
+
+    /**
+     * @dataProvider dataProviderShowMemberProfilesValidation
+     *
+     * @param string $credential
+     * @return void
+     */
+    public function test_should_return_error_if_user_is_from_a_higher_profile(
+        string $credential
+    ): void
+    {
+        $this->setAuthorizationBearer($credential);
+
+        $user = User::where(User::EMAIL, Credentials::ADMIN_CHURCH_1)->first();
+
+        $response = $this->getJson(
+            $this->endpoint."/user/{$user->id}",
+            $this->getAuthorizationBearer()
+        );
+
+        $response->assertForbidden();
+    }
+
+    /**
+     * @dataProvider dataProviderShowMemberChurchValidation
+     *
+     * @param string $credential
+     * @return void
+     */
+    public function test_should_return_error_if_user_payload_is_from_another_church(
+        string $credential
+    ): void
+    {
+        $this->setAuthorizationBearer($credential);
+
+        $user = User::where(User::EMAIL, Credentials::ASSISTANT_2)->first();
+
+        $response = $this->getJson(
+            $this->endpoint."/user/{$user->id}",
+            $this->getAuthorizationBearer()
+        );
+
+        $response->assertForbidden();
+    }
 }

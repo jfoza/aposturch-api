@@ -6,6 +6,7 @@ use App\Features\Users\Users\DTO\UserDTO;
 use App\Modules\Membership\Members\Contracts\CreateMemberServiceInterface;
 use App\Modules\Membership\Members\Contracts\FindAllMembersServiceInterface;
 use App\Modules\Membership\Members\Contracts\ShowByUserIdServiceInterface;
+use App\Modules\Membership\Members\Contracts\UpdateStatusMemberServiceInterface;
 use App\Modules\Membership\Members\DTO\MembersFiltersDTO;
 use App\Modules\Membership\Members\Requests\MembersFiltersRequest;
 use App\Modules\Membership\Members\Requests\MembersRequest;
@@ -20,6 +21,7 @@ readonly class MembersController
         private FindAllMembersServiceInterface $findAllMembersService,
         private ShowByUserIdServiceInterface $showByUserIdService,
         private CreateMemberServiceInterface $createMemberService,
+        private UpdateStatusMemberServiceInterface $updateStatusMemberService,
     ) {}
 
     public function index(
@@ -80,5 +82,14 @@ readonly class MembersController
         $created = $this->createMemberService->execute($userDTO);
 
         return response()->json($created, Response::HTTP_OK);
+    }
+
+    public function updateStatus(Request $request): JsonResponse
+    {
+        $userId = $request->id;
+
+        $status = $this->updateStatusMemberService->execute($userId);
+
+        return response()->json($status, Response::HTTP_OK);
     }
 }

@@ -5,6 +5,7 @@ namespace App\Modules\Membership\Members\Services;
 use App\Exceptions\AppException;
 use App\Features\Base\Services\AuthenticatedService;
 use App\Features\Base\Traits\EnvironmentException;
+use App\Features\Base\Validations\ProfileHierarchyValidation;
 use App\Features\City\Cities\Contracts\CityRepositoryInterface;
 use App\Features\City\Cities\Validations\CityValidations;
 use App\Features\Module\Modules\Contracts\ModulesRepositoryInterface;
@@ -78,12 +79,11 @@ class CreateMemberService extends AuthenticatedService implements CreateMemberSe
     {
         $this->handleValidations();
 
-        AllowedProfilesValidations::validateAdminChurchProfile($this->profile->unique_name);
-
-        ChurchValidations::memberHasChurchById(
-            $this->userDTO->member->churchId,
-            $this->getChurchesUserMember()
+        ProfileHierarchyValidation::adminChurchInPersistenceValidation(
+            [$this->profile->unique_name]
         );
+
+        $this->userHasAccessToChurch([$this->userDTO->member->churchId]);
 
         return $this->createNewMember();
     }
@@ -95,12 +95,11 @@ class CreateMemberService extends AuthenticatedService implements CreateMemberSe
     {
         $this->handleValidations();
 
-        AllowedProfilesValidations::validateAdminModuleProfile($this->profile->unique_name);
-
-        ChurchValidations::memberHasChurchById(
-            $this->userDTO->member->churchId,
-            $this->getChurchesUserMember()
+        ProfileHierarchyValidation::adminModuleInPersistenceValidation(
+            [$this->profile->unique_name]
         );
+
+        $this->userHasAccessToChurch([$this->userDTO->member->churchId]);
 
         return $this->createNewMember();
     }
@@ -112,12 +111,11 @@ class CreateMemberService extends AuthenticatedService implements CreateMemberSe
     {
         $this->handleValidations();
 
-        AllowedProfilesValidations::validateAssistantProfile($this->profile->unique_name);
-
-        ChurchValidations::memberHasChurchById(
-            $this->userDTO->member->churchId,
-            $this->getChurchesUserMember()
+        ProfileHierarchyValidation::assistantInPersistenceValidation(
+            [$this->profile->unique_name]
         );
+
+        $this->userHasAccessToChurch([$this->userDTO->member->churchId]);
 
         return $this->createNewMember();
     }
@@ -125,7 +123,7 @@ class CreateMemberService extends AuthenticatedService implements CreateMemberSe
     /**
      * @throws AppException
      */
-    private function handleValidations()
+    private function handleValidations(): void
     {
         $this->profile = MembersValidations::profileIsValid(
             $this->userDTO->profileId,

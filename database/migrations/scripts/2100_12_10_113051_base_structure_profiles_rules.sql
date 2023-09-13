@@ -104,6 +104,7 @@ DO $$
         _rule69 uuid := uuid_generate_v4();
         _rule70 uuid := uuid_generate_v4();
         _rule71 uuid := uuid_generate_v4();
+        _rule72 uuid := uuid_generate_v4();
 
     BEGIN
         INSERT INTO module.modules (id, module_description, module_unique_name, active)
@@ -219,8 +220,8 @@ DO $$
 
             (_rule70, 'MEMBERSHIP_MODULE_MEMBERS_ADMIN_MASTER_VIEW', 'MEMBERSHIP_MODULE_MEMBERS_ADMIN_MASTER', 'VIEW'),
 
-            (_rule71, 'USERS_TECHNICAL_SUPPORT_UPDATE_STATUS', 'USERS_TECHNICAL_SUPPORT_UPDATE_STATUS', 'UPDATE');
-
+            (_rule71, 'USERS_TECHNICAL_SUPPORT_UPDATE_STATUS', 'USERS_TECHNICAL_SUPPORT_UPDATE_STATUS', 'UPDATE'),
+            (_rule72, 'USERS_ADMIN_MODULE_UPDATE_STATUS', 'USERS_ADMIN_MODULE_UPDATE_STATUS', 'UPDATE');
 
         INSERT INTO users.modules_rules (rule_id, module_id)
         VALUES
@@ -430,6 +431,7 @@ DO $$
             (_profile4, _rule64),
             (_profile4, _rule65),
             (_profile4, _rule68),
+            (_profile4, _rule72),
 
             -- ASSISTANT
             (_profile5, _rule1),

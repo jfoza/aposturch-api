@@ -11,6 +11,8 @@ Route::get('/user/{id}', [MembersController::class, 'showByUserId'])->middleware
 
 Route::post('/', [MembersController::class, 'insert']);
 
+Route::put('/status/id/{id}', [MembersController::class, 'updateStatus'])->middleware(MiddlewareEnum::UUID);
+
 Route::put('/general-data/id/{id}',  [UpdateMembersController::class, 'updateGeneralData'])->middleware([MiddlewareEnum::UUID]);
 Route::put('/address-data/id/{id}',  [UpdateMembersController::class, 'updateAddressData'])->middleware([MiddlewareEnum::UUID]);
 Route::put('/church-data/id/{id}',   [UpdateMembersController::class, 'updateChurchData'])->middleware([MiddlewareEnum::UUID]);

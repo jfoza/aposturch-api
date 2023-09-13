@@ -84,7 +84,7 @@ abstract class AuthenticatedService extends BaseService
     /**
      * @throws AppException
      */
-    public function userHasAccessToChurch(array $churchesId)
+    public function userHasAccessToChurch(array $churchesId): void
     {
         $canAccess = $this->getChurchesUserMember()
             ->whereIn(Church::ID, $churchesId)

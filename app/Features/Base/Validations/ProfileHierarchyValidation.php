@@ -133,10 +133,7 @@ class ProfileHierarchyValidation
         {
             if(!in_array($profileUniqueName, $allowedProfiles))
             {
-                throw new AppException(
-                    MessagesEnum::PROFILE_NOT_ALLOWED,
-                    Response::HTTP_FORBIDDEN
-                );
+                self::dispatchExceptionProfileNotAllowed();
             }
         }
     }
@@ -154,11 +151,19 @@ class ProfileHierarchyValidation
             }
             else
             {
-                throw new AppException(
-                    MessagesEnum::PROFILE_NOT_ALLOWED,
-                    Response::HTTP_FORBIDDEN
-                );
+                self::dispatchExceptionProfileNotAllowed();
             }
         }
+    }
+
+    /**
+     * @throws AppException
+     */
+    public static function dispatchExceptionProfileNotAllowed()
+    {
+        throw new AppException(
+            MessagesEnum::PROFILE_NOT_ALLOWED,
+            Response::HTTP_FORBIDDEN
+        );
     }
 }

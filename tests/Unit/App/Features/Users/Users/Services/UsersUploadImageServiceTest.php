@@ -69,13 +69,13 @@ class UsersUploadImageServiceTest extends TestCase
     public function getUsersUploadImageService(): UserUploadImageService
     {
         return new UserUploadImageService(
-            $this->usersRepositoryMock,
             $this->membersRepositoryMock,
+            $this->usersRepositoryMock,
             $this->imagesRepositoryMock,
         );
     }
 
-    public function populateImagesDTO()
+    public function populateImagesDTO(): void
     {
         $this->imagesDtoMock->image = $this->uploadedFileMock;
         $this->imagesDtoMock->id = $this->imageId;

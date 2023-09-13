@@ -8,148 +8,47 @@ use App\Shared\Enums\RulesEnum;
 
 trait MembersProvidersTrait
 {
-    public string $defaultChurchId = 'e0365ae3-f334-47b9-bb49-55507f6e4304';
-
-    public function dataProviderUpdateUserMemberItself(): array
+    public static function dataProviderUpdateStatusMember(): array
     {
         return [
-            'By Admin Church' => [
-                RulesEnum::MEMBERSHIP_MODULE_MEMBERS_ADMIN_CHURCH_UPDATE->value,
-                [
-                    (object)([
-                        Church::ID          => $this->defaultChurchId,
-                        Church::NAME        => "Igreja Teste 1",
-                        Church::UNIQUE_NAME => "igreja-teste-1",
-                        Church::PHONE       => "51999999999",
-                        Church::EMAIL       => "ibvcx@gmail.com",
-                        Church::ACTIVE      => true,
-                    ])
-                ]
-            ],
-
-            'By Admin Module' => [
-                RulesEnum::MEMBERSHIP_MODULE_MEMBERS_ADMIN_MODULE_UPDATE->value,
-                [
-                    (object)([
-                        Church::ID          => $this->defaultChurchId,
-                        Church::NAME        => "Igreja Teste 1",
-                        Church::UNIQUE_NAME => "igreja-teste-1",
-                        Church::PHONE       => "51999999999",
-                        Church::EMAIL       => "ibvcx@gmail.com",
-                        Church::ACTIVE      => true,
-                    ])
-                ]
-            ],
-
-            'By Assistant' => [
-                RulesEnum::MEMBERSHIP_MODULE_MEMBERS_ASSISTANT_UPDATE->value,
-                [
-                    (object)([
-                        Church::ID          => $this->defaultChurchId,
-                        Church::NAME        => "Igreja Teste 1",
-                        Church::UNIQUE_NAME => "igreja-teste-1",
-                        Church::PHONE       => "51999999999",
-                        Church::EMAIL       => "ibvcx@gmail.com",
-                        Church::ACTIVE      => true,
-                    ])
-                ]
-            ],
+            'By Admin Master' => [RulesEnum::USERS_ADMIN_MASTER_UPDATE_STATUS->value],
+            'By Admin Church' => [RulesEnum::USERS_ADMIN_CHURCH_UPDATE_STATUS->value],
+            'By Admin Module' => [RulesEnum::USERS_ADMIN_MODULE_UPDATE_STATUS->value],
         ];
     }
 
-    public function dataProviderUpdateUniqueUserMember(): array
+    public static function dataProviderMemberProfilesValidations(): array
     {
         return [
-            'By Admin Master' => [
-                RulesEnum::MEMBERSHIP_MODULE_MEMBERS_ADMIN_MASTER_UPDATE->value,
-                [
-                    (object)([
-                        Church::ID          => $this->defaultChurchId,
-                        Church::NAME        => "Igreja Teste 1",
-                        Church::UNIQUE_NAME => "igreja-teste-1",
-                        Church::PHONE       => "51999999999",
-                        Church::EMAIL       => "ibvcx@gmail.com",
-                        Church::ACTIVE      => true,
-                    ])
-                ]
-            ],
-
-            'By Admin Church' => [
-                RulesEnum::MEMBERSHIP_MODULE_MEMBERS_ADMIN_CHURCH_UPDATE->value,
-                [
-                    (object)([
-                        Church::ID          => $this->defaultChurchId,
-                        Church::NAME        => "Igreja Teste 1",
-                        Church::UNIQUE_NAME => "igreja-teste-1",
-                        Church::PHONE       => "51999999999",
-                        Church::EMAIL       => "ibvcx@gmail.com",
-                        Church::ACTIVE      => true,
-                    ])
-                ]
-            ],
-
-            'By Admin Module' => [
-                RulesEnum::MEMBERSHIP_MODULE_MEMBERS_ADMIN_MODULE_UPDATE->value,
-                [
-                    (object)([
-                        Church::ID          => $this->defaultChurchId,
-                        Church::NAME        => "Igreja Teste 1",
-                        Church::UNIQUE_NAME => "igreja-teste-1",
-                        Church::PHONE       => "51999999999",
-                        Church::EMAIL       => "ibvcx@gmail.com",
-                        Church::ACTIVE      => true,
-                    ])
-                ]
-            ],
-
-            'By Assistant' => [
-                RulesEnum::MEMBERSHIP_MODULE_MEMBERS_ASSISTANT_UPDATE->value,
-                [
-                    (object)([
-                        Church::ID          => $this->defaultChurchId,
-                        Church::NAME        => "Igreja Teste 1",
-                        Church::UNIQUE_NAME => "igreja-teste-1",
-                        Church::PHONE       => "51999999999",
-                        Church::EMAIL       => "ibvcx@gmail.com",
-                        Church::ACTIVE      => true,
-                    ])
-                ]
-            ],
+            'To Admin Module' => [RulesEnum::USERS_ADMIN_MODULE_UPDATE_STATUS->value],
+            'To Admin Church' => [RulesEnum::USERS_ADMIN_CHURCH_UPDATE_STATUS->value],
         ];
     }
 
-    public function dataProviderUpdateUserMemberProfilesNotAllowed(): array
+    public static function dataProviderInsertNewMember(): array
     {
         return [
-            'By Admin Church' => [
-                RulesEnum::MEMBERSHIP_MODULE_MEMBERS_ADMIN_CHURCH_UPDATE->value,
-                ProfileUniqueNameEnum::ADMIN_CHURCH->value
-            ],
+            'By Admin Master' => [RulesEnum::MEMBERSHIP_MODULE_MEMBERS_ADMIN_MASTER_INSERT->value],
+            'By Admin Church' => [RulesEnum::MEMBERSHIP_MODULE_MEMBERS_ADMIN_CHURCH_INSERT->value],
+            'By Admin Module' => [RulesEnum::MEMBERSHIP_MODULE_MEMBERS_ADMIN_MODULE_INSERT->value],
+            'By Assistant'    => [RulesEnum::MEMBERSHIP_MODULE_MEMBERS_ASSISTANT_INSERT->value],
+        ];
+    }
 
-            'By Admin Module 1' => [
-                RulesEnum::MEMBERSHIP_MODULE_MEMBERS_ADMIN_MODULE_UPDATE->value,
-                ProfileUniqueNameEnum::ADMIN_MODULE->value
-            ],
+    public static function dataProviderInsertNewMemberChurchValidation(): array
+    {
+        return [
+            'By Admin Church' => [RulesEnum::MEMBERSHIP_MODULE_MEMBERS_ADMIN_CHURCH_INSERT->value],
+            'By Admin Module' => [RulesEnum::MEMBERSHIP_MODULE_MEMBERS_ADMIN_MODULE_INSERT->value],
+            'By Assistant'    => [RulesEnum::MEMBERSHIP_MODULE_MEMBERS_ASSISTANT_INSERT->value],
+        ];
+    }
 
-            'By Admin Module 2' => [
-                RulesEnum::MEMBERSHIP_MODULE_MEMBERS_ADMIN_MODULE_UPDATE->value,
-                ProfileUniqueNameEnum::ADMIN_CHURCH->value
-            ],
-
-            'By Assistant' => [
-                RulesEnum::MEMBERSHIP_MODULE_MEMBERS_ASSISTANT_UPDATE->value,
-                ProfileUniqueNameEnum::ASSISTANT->value
-            ],
-
-            'By Assistant 2' => [
-                RulesEnum::MEMBERSHIP_MODULE_MEMBERS_ASSISTANT_UPDATE->value,
-                ProfileUniqueNameEnum::ADMIN_MODULE->value
-            ],
-
-            'By Assistant 3' => [
-                RulesEnum::MEMBERSHIP_MODULE_MEMBERS_ASSISTANT_UPDATE->value,
-                ProfileUniqueNameEnum::ADMIN_CHURCH->value
-            ],
+    public static function dataProviderInsertNewMemberProfilesValidation(): array
+    {
+        return [
+            'By Admin Module' => [RulesEnum::MEMBERSHIP_MODULE_MEMBERS_ADMIN_MODULE_INSERT->value],
+            'By Assistant'    => [RulesEnum::MEMBERSHIP_MODULE_MEMBERS_ASSISTANT_INSERT->value],
         ];
     }
 }

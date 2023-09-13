@@ -3,26 +3,23 @@
 namespace App\Modules\Membership\Members\Services;
 
 use App\Exceptions\AppException;
-use App\Features\Base\Services\AuthenticatedService;
 use App\Features\Users\Profiles\Enums\ProfileUniqueNameEnum;
-use App\Modules\Membership\Church\Models\Church;
 use App\Modules\Membership\Members\Contracts\MembersRepositoryInterface;
 use App\Modules\Membership\Members\Contracts\ShowByUserIdServiceInterface;
-use App\Modules\Membership\Members\DTO\MembersFiltersDTO;
 use App\Modules\Membership\Members\Responses\MemberResponse;
-use App\Shared\Enums\MessagesEnum;
 use App\Shared\Enums\RulesEnum;
-use Symfony\Component\HttpFoundation\Response;
 
-class ShowByUserIdService extends AuthenticatedService implements ShowByUserIdServiceInterface
+class ShowByUserIdService extends MembersBaseService implements ShowByUserIdServiceInterface
 {
     private string $userId;
 
     public function __construct(
-        private readonly MembersRepositoryInterface $membersRepository,
-        private readonly MembersFiltersDTO $membersFiltersDTO,
-        private readonly MemberResponse $memberResponse,
-    ) {}
+        protected MembersRepositoryInterface $membersRepository,
+        protected readonly MemberResponse $memberResponse,
+    )
+    {
+        parent::__construct($this->membersRepository);
+    }
 
     /**
      * @throws AppException
@@ -49,7 +46,11 @@ class ShowByUserIdService extends AuthenticatedService implements ShowByUserIdSe
      */
     private function findByAdminMaster(): MemberResponse
     {
-        return $this->findOrFail();
+        $member = $this->findOrFail($this->userId);
+
+        $this->memberResponse->setMemberResponse($member);
+
+        return $this->memberResponse;
     }
 
     /**
@@ -57,11 +58,14 @@ class ShowByUserIdService extends AuthenticatedService implements ShowByUserIdSe
      */
     private function findByAdminChurch(): MemberResponse
     {
+        $member = $this->findOrFailWithHierarchy(
+            $this->userId,
+            ProfileUniqueNameEnum::ADMIN_CHURCH->value,
+        );
 
+        $this->memberResponse->setMemberResponse($member);
 
-        $this->membersFiltersDTO->churchesId = $this->getUserMemberChurchesId();
-
-        return $this->findOrFail();
+        return $this->memberResponse;
     }
 
     /**
@@ -69,15 +73,14 @@ class ShowByUserIdService extends AuthenticatedService implements ShowByUserIdSe
      */
     private function findByAdminModule(): MemberResponse
     {
-        $this->membersFiltersDTO->profileUniqueName = [
+        $member = $this->findOrFailWithHierarchy(
+            $this->userId,
             ProfileUniqueNameEnum::ADMIN_MODULE->value,
-            ProfileUniqueNameEnum::ASSISTANT->value,
-            ProfileUniqueNameEnum::MEMBER->value,
-        ];
+        );
 
-        $this->membersFiltersDTO->churchesId = $this->getUserMemberChurchesId();
+        $this->memberResponse->setMemberResponse($member);
 
-        return $this->findOrFail();
+        return $this->memberResponse;
     }
 
     /**
@@ -85,28 +88,10 @@ class ShowByUserIdService extends AuthenticatedService implements ShowByUserIdSe
      */
     private function findByAssistant(): MemberResponse
     {
-        $this->membersFiltersDTO->profileUniqueName = [
+        $member = $this->findOrFailWithHierarchy(
+            $this->userId,
             ProfileUniqueNameEnum::ASSISTANT->value,
-            ProfileUniqueNameEnum::MEMBER->value,
-        ];
-
-        $this->membersFiltersDTO->churchesId = $this->getUserMemberChurchesId();
-
-        return $this->findOrFail();
-    }
-
-    /**
-     * @throws AppException
-     */
-    private function findOrFail(): MemberResponse
-    {
-        if(!$member = $this->membersRepository->findByUserId($this->userId))
-        {
-            throw new AppException(
-                MessagesEnum::USER_NOT_FOUND,
-                Response::HTTP_NOT_FOUND
-            );
-        }
+        );
 
         $this->memberResponse->setMemberResponse($member);
 

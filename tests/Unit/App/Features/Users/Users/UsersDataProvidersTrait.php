@@ -7,7 +7,7 @@ use App\Shared\Enums\RulesEnum;
 
 trait UsersDataProvidersTrait
 {
-    public function dataProviderUploadImageDifferentUser(): array
+    public static function dataProviderUploadImageDifferentUser(): array
     {
         return [
             'By Admin Church Rule' => [
@@ -25,7 +25,7 @@ trait UsersDataProvidersTrait
         ];
     }
 
-    public function dataProviderUploadImageMemberItself(): array
+    public static function dataProviderUploadImageMemberItself(): array
     {
         return [
             'By Admin Church Rule case' => [

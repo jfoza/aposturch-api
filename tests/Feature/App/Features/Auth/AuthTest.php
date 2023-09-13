@@ -19,12 +19,12 @@ class AuthTest extends BaseAuthTestCase
         $this->logoutRoute = self::LOGOUT_ROUTE;
     }
 
-    public function dataProviderCredentials(): array
+    public static function dataProviderCredentials(): array
     {
         return [
             'Admin Master' => [Credentials::ADMIN_MASTER, Credentials::PASSWORD],
             'Admin Church' => [Credentials::ADMIN_CHURCH_1, Credentials::PASSWORD],
-            'Admin Module' => [Credentials::ADMIN_MODULE, Credentials::PASSWORD],
+            'Admin Module' => [Credentials::MEMBERSHIP_ADMIN_MODULE, Credentials::PASSWORD],
             'Assistant'    => [Credentials::ASSISTANT_1, Credentials::PASSWORD],
         ];
     }

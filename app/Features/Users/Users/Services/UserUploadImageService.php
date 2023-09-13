@@ -3,32 +3,32 @@
 namespace App\Features\Users\Users\Services;
 
 use App\Exceptions\AppException;
-use App\Features\Base\Services\AuthenticatedService;
 use App\Features\Base\Traits\EnvironmentException;
-use App\Features\Base\Validations\ProfileHierarchyValidation;
 use App\Features\General\Images\Contracts\ImagesRepositoryInterface;
 use App\Features\General\Images\DTO\ImagesDTO;
 use App\Features\General\Images\Enums\TypeUploadImageEnum;
+use App\Features\Users\Profiles\Enums\ProfileUniqueNameEnum;
 use App\Features\Users\Users\Contracts\UsersRepositoryInterface;
 use App\Features\Users\Users\Contracts\UserUploadImageServiceInterface;
 use App\Features\Users\Users\Validations\UsersValidations;
-use App\Modules\Membership\Church\Utils\ChurchUtils;
 use App\Modules\Membership\Members\Contracts\MembersRepositoryInterface;
-use App\Modules\Membership\Members\Validations\MembersValidations;
+use App\Modules\Membership\Members\Services\MembersBaseService;
 use App\Shared\Enums\RulesEnum;
 use App\Shared\Utils\Transaction;
 
-class UserUploadImageService extends AuthenticatedService implements UserUploadImageServiceInterface
+class UserUploadImageService extends MembersBaseService implements UserUploadImageServiceInterface
 {
+    public function __construct(
+        protected MembersRepositoryInterface $membersRepository,
+        protected readonly UsersRepositoryInterface $usersRepository,
+        protected readonly ImagesRepositoryInterface $imagesRepository,
+    )
+    {
+        parent::__construct($this->membersRepository);
+    }
+
     private ImagesDTO $imagesDTO;
     private string $userId;
-    private object $userMember;
-
-    public function __construct(
-        private readonly UsersRepositoryInterface $usersRepository,
-        private readonly MembersRepositoryInterface $membersRepository,
-        private readonly ImagesRepositoryInterface $imagesRepository,
-    ) {}
 
     /**
      * @throws AppException
@@ -69,9 +69,10 @@ class UserUploadImageService extends AuthenticatedService implements UserUploadI
      */
     private function uploadByAdminChurch(): ?object
     {
-        $this->userMemberExistsAndCanBeUsed();
-
-        ProfileHierarchyValidation::adminChurchInListingsValidation([$this->userMember->profile_unique_name]);
+        $this->findOrFailWithHierarchy(
+            $this->userId,
+            ProfileUniqueNameEnum::ADMIN_CHURCH->value
+        );
 
         return $this->baseUploadOperation();
     }
@@ -81,9 +82,10 @@ class UserUploadImageService extends AuthenticatedService implements UserUploadI
      */
     private function uploadByAdminModule(): ?object
     {
-        $this->userMemberExistsAndCanBeUsed();
-
-        ProfileHierarchyValidation::adminModuleInListingsValidation([$this->userMember->profile_unique_name]);
+        $this->findOrFailWithHierarchy(
+            $this->userId,
+            ProfileUniqueNameEnum::ADMIN_MODULE->value
+        );
 
         return $this->baseUploadOperation();
     }
@@ -93,26 +95,12 @@ class UserUploadImageService extends AuthenticatedService implements UserUploadI
      */
     private function uploadByAssistant(): ?object
     {
-        $this->userMemberExistsAndCanBeUsed();
-
-        ProfileHierarchyValidation::assistantInListingsValidation([$this->userMember->profile_unique_name]);
-
-        return $this->baseUploadOperation();
-    }
-
-    /**
-     * @throws AppException
-     */
-    private function userMemberExistsAndCanBeUsed()
-    {
-        $this->userMember = MembersValidations::memberExists(
+        $this->findOrFailWithHierarchy(
             $this->userId,
-            $this->membersRepository
+            ProfileUniqueNameEnum::ASSISTANT->value
         );
 
-        $churchesUniqueNameUser = ChurchUtils::extractChurchesId($this->userMember);
-
-        $this->userHasAccessToChurch($churchesUniqueNameUser);
+        return $this->baseUploadOperation();
     }
 
     /**

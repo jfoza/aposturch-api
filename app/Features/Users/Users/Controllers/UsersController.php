@@ -3,7 +3,6 @@
 namespace App\Features\Users\Users\Controllers;
 
 use App\Features\Users\AdminUsers\Contracts\ShowAuthenticatedUserServiceInterface;
-use App\Features\Users\Users\Contracts\UpdateStatusUserServiceInterface;
 use App\Features\Users\Users\Contracts\UserEmailAlreadyExistsServiceInterface;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -13,7 +12,6 @@ readonly class UsersController
 {
     public function __construct(
         private ShowAuthenticatedUserServiceInterface  $showLoggedUserService,
-        private UpdateStatusUserServiceInterface       $updateStatusUserService,
         private UserEmailAlreadyExistsServiceInterface $userEmailAlreadyExistsService,
     ) {}
 
@@ -24,13 +22,8 @@ readonly class UsersController
         return response()->json($user, Response::HTTP_OK);
     }
 
-    public function updateStatus(Request $request): JsonResponse
+    public function updateStatus(Request $request)
     {
-        $userId = $request->id;
-
-        $status = $this->updateStatusUserService->execute($userId);
-
-        return response()->json($status, Response::HTTP_OK);
     }
 
     public function userEmailAlreadyExists(Request $request): JsonResponse
