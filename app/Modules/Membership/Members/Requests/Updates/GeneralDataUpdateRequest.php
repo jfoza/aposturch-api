@@ -14,7 +14,6 @@ class GeneralDataUpdateRequest extends FormRequest
             'name'   => $requiredString,
             'email'  => 'required|email:rfc,dns',
             'phone'  => $requiredString,
-            'active' => 'required|boolean',
         ];
     }
 
@@ -24,7 +23,6 @@ class GeneralDataUpdateRequest extends FormRequest
             'name'   => 'Name',
             'email'  => 'Email',
             'phone'  => 'Phone',
-            'active' => 'Active',
         ];
     }
 }

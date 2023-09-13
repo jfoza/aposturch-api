@@ -8,14 +8,14 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class ProfileType extends Register
 {
     const ID = 'id';
+    const DESCRIPTION = 'description';
+    const UNIQUE_NAME = 'unique_name';
 
     protected $table = 'users.profile_types';
 
     protected $primaryKey = self::ID;
 
     protected $keyType = 'string';
-
-    protected $fillable = [];
 
     public function profile(): HasMany
     {

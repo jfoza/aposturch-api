@@ -4,6 +4,7 @@ namespace Tests\Unit\App\Features\Users\Profiles\Services;
 
 use App\Exceptions\AppException;
 use App\Features\Users\Profiles\Contracts\ProfilesRepositoryInterface;
+use App\Features\Users\Profiles\DTO\ProfilesFiltersDTO;
 use App\Features\Users\Profiles\Repositories\ProfilesRepository;
 use App\Features\Users\Profiles\Services\FindAllProfilesByUserAbilityAuthenticatedService;
 use App\Shared\ACL\Policy;
@@ -17,12 +18,14 @@ use Tests\Unit\App\Resources\ProfilesLists;
 class FindAllProfilesByUserAbilityServiceTest extends TestCase
 {
     private MockObject|ProfilesRepositoryInterface $profilesRepositoryMock;
+    private MockObject|ProfilesFiltersDTO $profilesFiltersDtoMock;
 
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->profilesRepositoryMock = $this->createMock(ProfilesRepository::class);
+        $this->profilesFiltersDtoMock = $this->createMock(ProfilesFiltersDTO::class);
     }
 
     public function getFindAllProfilesByUserAbilityService(): FindAllProfilesByUserAbilityAuthenticatedService
@@ -32,7 +35,7 @@ class FindAllProfilesByUserAbilityServiceTest extends TestCase
         );
     }
 
-    public function dataProviderFindAllProfiles(): array
+    public static function dataProviderFindAllProfiles(): array
     {
         return [
             'By Support Rule'      => [RulesEnum::PROFILES_SUPPORT_VIEW->value],
@@ -60,10 +63,10 @@ class FindAllProfilesByUserAbilityServiceTest extends TestCase
 
         $this
             ->profilesRepositoryMock
-            ->method('findAllByUniqueName')
+            ->method('findAll')
             ->willReturn(ProfilesLists::getAllProfiles());
 
-        $profiles = $findAllProfilesByUserAbilityService->execute();
+        $profiles = $findAllProfilesByUserAbilityService->execute($this->profilesFiltersDtoMock);
 
         $this->assertInstanceOf(Collection::class, $profiles);
     }
@@ -79,6 +82,6 @@ class FindAllProfilesByUserAbilityServiceTest extends TestCase
         $this->expectException(AppException::class);
         $this->expectExceptionCode(Response::HTTP_FORBIDDEN);
 
-        $findAllProfilesByUserAbilityService->execute();
+        $findAllProfilesByUserAbilityService->execute($this->profilesFiltersDtoMock);
     }
 }

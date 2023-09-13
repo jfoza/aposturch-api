@@ -2,10 +2,11 @@
 
 namespace App\Features\Users\Profiles\Contracts;
 
+use App\Features\Users\Profiles\DTO\ProfilesFiltersDTO;
+
 interface ProfilesRepositoryInterface
 {
-    public function findAll();
-    public function findAllByUniqueName(array $uniqueNames);
+    public function findAll(ProfilesFiltersDTO $profilesFiltersDTO);
     public function findOneByUniqueName(string $uniqueName);
     public function findById(string $id);
     public function findByIds(array $ids);

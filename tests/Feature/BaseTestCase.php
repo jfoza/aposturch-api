@@ -10,6 +10,7 @@ class BaseTestCase extends TestCase
 {
     const ADMIN_USERS_ROUTE = '/api/admin/admin-users';
     const USERS_ROUTE = '/api/admin/users';
+    const PROFILES_ROUTE = '/api/admin/profiles';
     const CITIES_ROUTE = '/api/cities';
     const MODULES_ROUTE = '/api/admin/modules';
     const ZIP_CODE_ROUTE = '/api/zip-code';

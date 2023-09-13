@@ -3,19 +3,40 @@
 namespace App\Features\Users\Profiles\Repositories;
 
 use App\Features\Users\Profiles\Contracts\ProfilesRepositoryInterface;
+use App\Features\Users\Profiles\DTO\ProfilesFiltersDTO;
 use App\Features\Users\Profiles\Models\Profile;
+use App\Features\Users\Profiles\Models\ProfileType;
 use App\Features\Users\ProfilesUsers\Infra\Models\ProfileUser;
 
 class ProfilesRepository implements ProfilesRepositoryInterface
 {
-    public function findAll()
+    public function findAll(ProfilesFiltersDTO $profilesFiltersDTO)
     {
-        return Profile::get();
-    }
+        return Profile::select(
+                Profile::ID,
+                Profile::PROFILE_TYPE_ID,
+                Profile::DESCRIPTION,
+                Profile::UNIQUE_NAME,
+                Profile::ACTIVE,
+            )
+            ->when(
+                isset($profilesFiltersDTO->profileTypeId),
+                fn($q) => $q->where(Profile::PROFILE_TYPE_ID, $profilesFiltersDTO->profileTypeId)
+            )
+            ->when(
+                isset($profilesFiltersDTO->profileTypeUniqueName),
+                fn($q) => $q->whereRelation(
+                    'profileType',
+                    ProfileType::UNIQUE_NAME,
+                    $profilesFiltersDTO->profileTypeUniqueName
+                )
+            )
+            ->when(
+                isset($profilesFiltersDTO->profilesUniqueName),
+                fn($q) => $q->whereIn(Profile::UNIQUE_NAME, $profilesFiltersDTO->profilesUniqueName)
+            )
+            ->get();
 
-    public function findAllByUniqueName(array $uniqueNames)
-    {
-        return Profile::whereIn(Profile::UNIQUE_NAME, $uniqueNames)->get();
     }
 
     public function findOneByUniqueName(string $uniqueName)

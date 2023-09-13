@@ -6,11 +6,14 @@ use App\Exceptions\AppException;
 use App\Features\Base\Services\AuthenticatedService;
 use App\Features\Users\Profiles\Contracts\FindAllProfilesByUserAbilityServiceInterface;
 use App\Features\Users\Profiles\Contracts\ProfilesRepositoryInterface;
+use App\Features\Users\Profiles\DTO\ProfilesFiltersDTO;
 use App\Features\Users\Profiles\Enums\ProfileUniqueNameEnum;
 use App\Shared\Enums\RulesEnum;
 
 class FindAllProfilesByUserAbilityAuthenticatedService extends AuthenticatedService implements FindAllProfilesByUserAbilityServiceInterface
 {
+    private ProfilesFiltersDTO $profilesFiltersDTO;
+
     public function __construct(
         private readonly ProfilesRepositoryInterface $profileRepository,
     ) {}
@@ -18,8 +21,10 @@ class FindAllProfilesByUserAbilityAuthenticatedService extends AuthenticatedServ
     /**
      * @throws AppException
      */
-    public function execute()
+    public function execute(ProfilesFiltersDTO $profilesFiltersDTO)
     {
+        $this->profilesFiltersDTO = $profilesFiltersDTO;
+
         $policy = $this->getPolicy();
 
         return match (true) {
@@ -35,48 +40,52 @@ class FindAllProfilesByUserAbilityAuthenticatedService extends AuthenticatedServ
 
     private function findAllBySupport()
     {
-        return $this->profileRepository->findAllByUniqueName([
-            ProfileUniqueNameEnum::TECHNICAL_SUPPORT->value,
-            ProfileUniqueNameEnum::ADMIN_MASTER->value,
-            ProfileUniqueNameEnum::ADMIN_CHURCH->value,
-            ProfileUniqueNameEnum::ADMIN_MODULE->value,
-            ProfileUniqueNameEnum::ASSISTANT->value,
-        ]);
+        return $this->profileRepository->findAll($this->profilesFiltersDTO);
     }
 
     private function findAllByAdminMaster()
     {
-        return $this->profileRepository->findAllByUniqueName([
+        $this->profilesFiltersDTO->profilesUniqueName = [
             ProfileUniqueNameEnum::ADMIN_MASTER->value,
             ProfileUniqueNameEnum::ADMIN_CHURCH->value,
             ProfileUniqueNameEnum::ADMIN_MODULE->value,
             ProfileUniqueNameEnum::ASSISTANT->value,
-        ]);
+            ProfileUniqueNameEnum::MEMBER->value,
+        ];
+
+        return $this->profileRepository->findAll($this->profilesFiltersDTO);
     }
 
     private function findAllByAdminChurch()
     {
-        return $this->profileRepository->findAllByUniqueName([
+        $this->profilesFiltersDTO->profilesUniqueName = [
+            ProfileUniqueNameEnum::ADMIN_CHURCH->value,
             ProfileUniqueNameEnum::ADMIN_MODULE->value,
             ProfileUniqueNameEnum::ASSISTANT->value,
             ProfileUniqueNameEnum::MEMBER->value,
-        ]);
+        ];
+
+        return $this->profileRepository->findAll($this->profilesFiltersDTO);
     }
 
     private function findAllByAdminModule()
     {
-        return $this->profileRepository->findAllByUniqueName([
+        $this->profilesFiltersDTO->profilesUniqueName = [
             ProfileUniqueNameEnum::ADMIN_MODULE->value,
             ProfileUniqueNameEnum::ASSISTANT->value,
             ProfileUniqueNameEnum::MEMBER->value,
-        ]);
+        ];
+
+        return $this->profileRepository->findAll($this->profilesFiltersDTO);
     }
 
     private function findAllByAssistant()
     {
-        return $this->profileRepository->findAllByUniqueName([
+        $this->profilesFiltersDTO->profilesUniqueName = [
             ProfileUniqueNameEnum::ASSISTANT->value,
             ProfileUniqueNameEnum::MEMBER->value,
-        ]);
+        ];
+
+        return $this->profileRepository->findAll($this->profilesFiltersDTO);
     }
 }

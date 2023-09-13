@@ -233,23 +233,22 @@ DO $$
             (_module_rule6, _module6),
             (_module_rule7, _module7);
 
-        INSERT INTO users.profile_types (id, description)
+        INSERT INTO users.profile_types (id, description, unique_name)
         VALUES
             (
                 _profile_type1,
-                'Suporte'
+                'Administrativo',
+                'ADMINISTRATIVE'
             ),
             (
                 _profile_type2,
-                'Administrativo'
+                'Membresia',
+                'MEMBERSHIP'
             ),
             (
                 _profile_type3,
-                'Diretoria'
-            ),
-            (
-                _profile_type4,
-                'Usuário Comum'
+                'Usuário Comum',
+                'COMMON_USER'
             );
 
         INSERT INTO users.profiles (id, profile_type_id, description, unique_name)
@@ -262,37 +261,37 @@ DO $$
             ),
             (
                 _profile2,
-                _profile_type2,
+                _profile_type1,
                 'Admin Master',
                 'ADMIN_MASTER'
             ),
             (
                 _profile3,
-                _profile_type3,
+                _profile_type2,
                 'Admin Igreja',
                 'ADMIN_CHURCH'
             ),
             (
                 _profile4,
-                _profile_type3,
+                _profile_type2,
                 'Admin Módulo',
                 'ADMIN_MODULE'
             ),
             (
                 _profile5,
-                _profile_type3,
+                _profile_type2,
                 'Auxiliar',
                 'ASSISTANT'
             ),
             (
                 _profile6,
-                _profile_type4,
+                _profile_type2,
                 'Membro',
                 'MEMBER'
             ),
             (
                 _profile7,
-                _profile_type4,
+                _profile_type3,
                 'VISITANTE',
                 'VISITOR'
             );

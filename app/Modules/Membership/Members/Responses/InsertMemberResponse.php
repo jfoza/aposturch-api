@@ -8,7 +8,6 @@ class InsertMemberResponse
         public string $id,
         public string $name,
         public string $email,
-        public string $active,
         public string $profileId,
         public string $profileDescription,
         public string $church,

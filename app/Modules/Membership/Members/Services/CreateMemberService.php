@@ -196,7 +196,6 @@ class CreateMemberService extends AuthenticatedService implements CreateMemberSe
                 $user->id,
                 $user->name,
                 $user->email,
-                $user->active,
                 $this->profile->id,
                 $this->profile->description,
                 $this->church->name,

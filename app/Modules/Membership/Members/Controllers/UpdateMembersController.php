@@ -39,7 +39,6 @@ readonly class UpdateMembersController
         $generalDataUpdateDTO->id     = $generalDataUpdateRequest->id;
         $generalDataUpdateDTO->name   = $generalDataUpdateRequest->name;
         $generalDataUpdateDTO->email  = $generalDataUpdateRequest->email;
-        $generalDataUpdateDTO->active = $generalDataUpdateRequest->active;
         $generalDataUpdateDTO->phone  = Helpers::onlyNumbers($generalDataUpdateRequest->phone);
 
         $updated = $this->generalDataUpdateService->execute($generalDataUpdateDTO);

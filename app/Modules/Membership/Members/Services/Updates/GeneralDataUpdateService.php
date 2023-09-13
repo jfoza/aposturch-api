@@ -178,7 +178,6 @@ class GeneralDataUpdateService extends AuthenticatedService implements GeneralDa
             $this->updateMemberResponse->name   = $user->name;
             $this->updateMemberResponse->email  = $user->email;
             $this->updateMemberResponse->phone  = $person->phone;
-            $this->updateMemberResponse->active = $user->active;
 
             Transaction::commit();
 
