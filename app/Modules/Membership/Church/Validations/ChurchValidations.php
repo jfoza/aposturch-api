@@ -22,7 +22,7 @@ class ChurchValidations
         if(!$church = $churchRepository->findById($churchId))
         {
             throw new AppException(
-                MessagesEnum::REGISTER_NOT_FOUND,
+                MessagesEnum::CHURCH_NOT_FOUND,
                 Response::HTTP_NOT_FOUND
             );
         }

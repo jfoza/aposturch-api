@@ -60,7 +60,6 @@ class MembersBaseService extends AuthenticatedService
         };
 
         $churchesId = $member->church->pluck(Church::ID)->toArray();
-
         $this->userHasAccessToChurch($churchesId);
 
         return $member;
@@ -69,7 +68,7 @@ class MembersBaseService extends AuthenticatedService
     /**
      * @throws AppException
      */
-    protected function findOrFailWithHierarchyInActive(
+    protected function findOrFailWithHierarchyInUpdate(
         string $userId,
         string $profileForValidation,
     ): object
@@ -103,7 +102,6 @@ class MembersBaseService extends AuthenticatedService
         };
 
         $churchesId = $member->church->pluck(Church::ID)->toArray();
-
         $this->userHasAccessToChurch($churchesId);
 
         return $member;

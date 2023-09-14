@@ -3,6 +3,7 @@
 namespace Tests\Unit\App\Resources;
 
 use App\Features\Module\Modules\Models\Module;
+use App\Features\Persons\Infra\Models\Person;
 use App\Features\Users\Profiles\Enums\ProfileUniqueNameEnum;
 use App\Modules\Membership\Members\Enums\MembersDataAliasEnum;
 use App\Modules\Membership\Members\Models\Member;
@@ -154,6 +155,21 @@ class MemberLists
                 MembersDataAliasEnum::UF => 'RS',
                 'church' => []
             ]
+        ]);
+    }
+
+    public static function getPerson(): object
+    {
+        return (object) ([
+            Person::ID             => Uuid::uuid4Generate(),
+            Person::ZIP_CODE       => '00000000',
+            Person::PHONE          => '5199999999',
+            Person::ADDRESS        => 'test',
+            Person::NUMBER_ADDRESS => '00',
+            Person::COMPLEMENT     => 'test',
+            Person::DISTRICT       => 'test',
+            Person::CITY_ID        => Uuid::uuid4Generate(),
+            Person::UF             => 'RS',
         ]);
     }
 }

@@ -60,7 +60,7 @@ class UpdateStatusMemberService extends MembersBaseService implements UpdateStat
      */
     private function updateStatusByAdminChurch(): array
     {
-        $userMember = $this->findOrFailWithHierarchyInActive(
+        $userMember = $this->findOrFailWithHierarchyInUpdate(
             $this->userId,
             ProfileUniqueNameEnum::ADMIN_CHURCH->value
         );
@@ -75,7 +75,7 @@ class UpdateStatusMemberService extends MembersBaseService implements UpdateStat
      */
     private function updateStatusByAdminModule(): array
     {
-        $userMember = $this->findOrFailWithHierarchyInActive(
+        $userMember = $this->findOrFailWithHierarchyInUpdate(
             $this->userId,
             ProfileUniqueNameEnum::ADMIN_MODULE->value
         );

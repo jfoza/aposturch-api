@@ -3,7 +3,6 @@
 namespace App\Modules\Membership\Members\Services\Updates;
 
 use App\Exceptions\AppException;
-use App\Features\Base\Services\AuthenticatedService;
 use App\Features\Base\Traits\EnvironmentException;
 use App\Features\Users\Profiles\Contracts\ProfilesRepositoryInterface;
 use App\Features\Users\Profiles\Enums\ProfileUniqueNameEnum;
@@ -11,27 +10,26 @@ use App\Features\Users\Users\Contracts\UsersRepositoryInterface;
 use App\Features\Users\Users\Validations\UsersValidations;
 use App\Modules\Membership\Members\Contracts\MembersRepositoryInterface;
 use App\Modules\Membership\Members\Contracts\Updates\ProfileDataUpdateServiceInterface;
-use App\Modules\Membership\Members\DTO\MembersFiltersDTO;
 use App\Modules\Membership\Members\Responses\UpdateMemberResponse;
-use App\Shared\Enums\MessagesEnum;
+use App\Modules\Membership\Members\Services\MembersBaseService;
 use App\Shared\Enums\RulesEnum;
 use App\Shared\Utils\Transaction;
 use Exception;
-use Symfony\Component\HttpFoundation\Response;
 
-class ProfileDataUpdateService extends AuthenticatedService implements ProfileDataUpdateServiceInterface
+class ProfileDataUpdateService extends MembersBaseService implements ProfileDataUpdateServiceInterface
 {
 
     private string $userId;
     private string $profileId;
 
     public function __construct(
+        protected MembersRepositoryInterface $membersRepository,
         private readonly UsersRepositoryInterface    $usersRepository,
-        private readonly MembersRepositoryInterface  $membersRepository,
         private readonly ProfilesRepositoryInterface $profilesRepository,
-        private readonly MembersFiltersDTO           $membersFiltersDTO,
         private readonly UpdateMemberResponse        $updateMemberResponse,
-    ) {}
+    ) {
+        parent::__construct($this->membersRepository);
+    }
 
     /**
      * @throws AppException
@@ -60,6 +58,8 @@ class ProfileDataUpdateService extends AuthenticatedService implements ProfileDa
      */
     private function updateByAdminMaster(): UpdateMemberResponse
     {
+        $this->findOrFail($this->userId);
+
         $this->handleGeneralValidations();
 
         return $this->updateMemberData();
@@ -70,21 +70,10 @@ class ProfileDataUpdateService extends AuthenticatedService implements ProfileDa
      */
     private function updateByAdminChurch(): UpdateMemberResponse
     {
-        if($this->userPayloadIsEqualsAuthUser($this->userId))
-        {
-            throw new AppException(
-                MessagesEnum::ACCESS_DENIED,
-                Response::HTTP_FORBIDDEN
-            );
-        }
-
-        $this->membersFiltersDTO->profileUniqueName = [
-            ProfileUniqueNameEnum::ADMIN_MODULE->value,
-            ProfileUniqueNameEnum::ASSISTANT->value,
-            ProfileUniqueNameEnum::MEMBER->value,
-        ];
-
-        $this->membersFiltersDTO->churchesId = $this->getUserMemberChurchesId();
+        $this->findOrFailWithHierarchyInUpdate(
+            $this->userId,
+            ProfileUniqueNameEnum::ADMIN_CHURCH->value,
+        );
 
         $this->handleGeneralValidations();
 
@@ -94,16 +83,8 @@ class ProfileDataUpdateService extends AuthenticatedService implements ProfileDa
     /**
      * @throws AppException
      */
-    private function handleGeneralValidations()
+    private function handleGeneralValidations(): void
     {
-        if(!$this->membersRepository->findOneByFilters($this->userId, $this->membersFiltersDTO))
-        {
-            throw new AppException(
-                MessagesEnum::USER_NOT_FOUND,
-                Response::HTTP_NOT_FOUND
-            );
-        }
-
         UsersValidations::returnProfileExists(
             $this->profilesRepository,
             $this->profileId

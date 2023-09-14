@@ -76,7 +76,7 @@ trait MembersListsTrait
                 fn($q) => $q->where(Profile::tableField(Profile::ID), $membersFiltersDTO->profileId)
             )
             ->when(
-                isset($membersFiltersDTO->churchIds),
+                isset($membersFiltersDTO->churchesId),
                 fn($q) => $q->whereHas(
                     'church',
                     fn($c) => $c->whereIn(Church::tableField(Church::ID), $membersFiltersDTO->churchesId)

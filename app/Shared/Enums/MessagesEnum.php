@@ -64,7 +64,9 @@ enum MessagesEnum: string {
     case NO_ACCESS_TO_CHURCH = 'Não é possível acessar informações de membros vinculados à outras igrejas.';
     case MEMBER_NOT_FOUND = 'Membro não encontrado.';
     case MODULE_NOT_FOUND = 'Módulo não encontrado.';
+    case USER_HAS_NO_LINKED_MODULES = 'Usuário não possui módulos vinculados.';
     case INVALID_RESP_MEMBERS_QUANTITY = 'São permitidos apenas 3 membros responsáveis por igreja.';
     case INVALID_RESP_MEMBER_TYPE = 'O membro selecionado possui um tipo inválido.';
     case INVALID_RESP_MEMBER_PROFILE = 'Somente usuários com perfil Admin Igreja podem ser responsáveis por uma igreja.';
+    case CHURCH_NOT_FOUND = 'Igreja não encontrada';
 }

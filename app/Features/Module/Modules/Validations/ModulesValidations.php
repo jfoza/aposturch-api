@@ -19,10 +19,17 @@ class ModulesValidations
         ModulesRepositoryInterface $modulesRepository,
     ): void
     {
-        $modulesId = $modulesRepository
-            ->findByModulesIdInCreateMembers($modulesIdPayload)
-            ->pluck(Module::ID)
-            ->toArray();
+        $modules = $modulesRepository->findByModulesIdInCreateMembers($modulesIdPayload);
+
+        if(empty($modules))
+        {
+            throw new AppException(
+                MessagesEnum::MODULE_NOT_FOUND,
+                Response::HTTP_NOT_FOUND
+            );
+        }
+
+        $modulesId = $modules->pluck(Module::ID)->toArray();
 
         $notFound = [];
 

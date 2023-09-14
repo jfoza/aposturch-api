@@ -3,7 +3,6 @@
 namespace App\Modules\Membership\Members\Services\Updates;
 
 use App\Exceptions\AppException;
-use App\Features\Base\Services\AuthenticatedService;
 use App\Features\Base\Traits\EnvironmentException;
 use App\Features\Persons\Contracts\PersonsRepositoryInterface;
 use App\Features\Users\Profiles\Enums\ProfileUniqueNameEnum;
@@ -11,28 +10,27 @@ use App\Features\Users\Users\Contracts\UsersRepositoryInterface;
 use App\Modules\Membership\Members\Contracts\MembersRepositoryInterface;
 use App\Modules\Membership\Members\Contracts\Updates\GeneralDataUpdateServiceInterface;
 use App\Modules\Membership\Members\DTO\GeneralDataUpdateDTO;
-use App\Modules\Membership\Members\DTO\MembersFiltersDTO;
 use App\Modules\Membership\Members\Responses\UpdateMemberResponse;
+use App\Modules\Membership\Members\Services\MembersBaseService;
 use App\Modules\Membership\Members\Validations\MembersValidations;
 use App\Shared\Cache\PolicyCache;
-use App\Shared\Enums\MessagesEnum;
 use App\Shared\Enums\RulesEnum;
 use App\Shared\Utils\Transaction;
 use Exception;
-use Symfony\Component\HttpFoundation\Response;
 
-class GeneralDataUpdateService extends AuthenticatedService implements GeneralDataUpdateServiceInterface
+class GeneralDataUpdateService extends MembersBaseService implements GeneralDataUpdateServiceInterface
 {
     private GeneralDataUpdateDTO $generalDataUpdateDTO;
     private mixed $userMember;
 
     public function __construct(
+        protected MembersRepositoryInterface $membersRepository,
         private readonly PersonsRepositoryInterface  $personsRepository,
         private readonly UsersRepositoryInterface    $usersRepository,
-        private readonly MembersRepositoryInterface  $membersRepository,
-        private readonly MembersFiltersDTO           $membersFiltersDTO,
         private readonly UpdateMemberResponse        $updateMemberResponse,
-    ) {}
+    ) {
+        parent::__construct($this->membersRepository);
+    }
 
     /**
      * @throws AppException
@@ -66,6 +64,8 @@ class GeneralDataUpdateService extends AuthenticatedService implements GeneralDa
      */
     private function updateByAdminMaster(): UpdateMemberResponse
     {
+        $this->userMember = $this->findOrFail($this->generalDataUpdateDTO->id);
+
         $this->handleGeneralValidations();
 
         return $this->updateMemberData();
@@ -76,16 +76,10 @@ class GeneralDataUpdateService extends AuthenticatedService implements GeneralDa
      */
     private function updateByAdminChurch(): UpdateMemberResponse
     {
-        if(!$this->userPayloadIsEqualsAuthUser($this->generalDataUpdateDTO->id))
-        {
-            $this->membersFiltersDTO->profileUniqueName = [
-                ProfileUniqueNameEnum::ADMIN_MODULE->value,
-                ProfileUniqueNameEnum::ASSISTANT->value,
-                ProfileUniqueNameEnum::MEMBER->value,
-            ];
-        }
-
-        $this->membersFiltersDTO->churchesId = $this->getUserMemberChurchesId();
+        $this->userMember = $this->findOrFailWithHierarchy(
+            $this->generalDataUpdateDTO->id,
+            ProfileUniqueNameEnum::ADMIN_CHURCH->value,
+        );
 
         $this->handleGeneralValidations();
 
@@ -97,15 +91,10 @@ class GeneralDataUpdateService extends AuthenticatedService implements GeneralDa
      */
     private function updateByAdminModule(): UpdateMemberResponse
     {
-        if(!$this->userPayloadIsEqualsAuthUser($this->generalDataUpdateDTO->id))
-        {
-            $this->membersFiltersDTO->profileUniqueName = [
-                ProfileUniqueNameEnum::ASSISTANT->value,
-                ProfileUniqueNameEnum::MEMBER->value,
-            ];
-        }
-
-        $this->membersFiltersDTO->churchesId = $this->getUserMemberChurchesId();
+        $this->userMember = $this->findOrFailWithHierarchy(
+            $this->generalDataUpdateDTO->id,
+            ProfileUniqueNameEnum::ADMIN_MODULE->value,
+        );
 
         $this->handleGeneralValidations();
 
@@ -117,14 +106,10 @@ class GeneralDataUpdateService extends AuthenticatedService implements GeneralDa
      */
     private function updateByAssistant(): UpdateMemberResponse
     {
-        if(!$this->userPayloadIsEqualsAuthUser($this->generalDataUpdateDTO->id))
-        {
-            $this->membersFiltersDTO->profileUniqueName = [
-                ProfileUniqueNameEnum::MEMBER->value,
-            ];
-        }
-
-        $this->membersFiltersDTO->churchesId = $this->getUserMemberChurchesId();
+        $this->userMember = $this->findOrFailWithHierarchy(
+            $this->generalDataUpdateDTO->id,
+            ProfileUniqueNameEnum::ASSISTANT->value,
+        );
 
         $this->handleGeneralValidations();
 
@@ -134,16 +119,8 @@ class GeneralDataUpdateService extends AuthenticatedService implements GeneralDa
     /**
      * @throws AppException
      */
-    private function handleGeneralValidations()
+    private function handleGeneralValidations(): void
     {
-        if(!$this->userMember = $this->membersRepository->findOneByFilters($this->generalDataUpdateDTO->id, $this->membersFiltersDTO))
-        {
-            throw new AppException(
-                MessagesEnum::USER_NOT_FOUND,
-                Response::HTTP_NOT_FOUND
-            );
-        }
-
         MembersValidations::emailAlreadyExistsInUpdate(
             $this->generalDataUpdateDTO->id,
             $this->generalDataUpdateDTO->email,

@@ -3,33 +3,31 @@
 namespace App\Modules\Membership\Members\Services\Updates;
 
 use App\Exceptions\AppException;
-use App\Features\Base\Services\AuthenticatedService;
 use App\Features\Base\Traits\EnvironmentException;
 use App\Features\Users\Profiles\Enums\ProfileUniqueNameEnum;
 use App\Modules\Membership\Church\Contracts\ChurchRepositoryInterface;
 use App\Modules\Membership\Church\Validations\ChurchValidations;
 use App\Modules\Membership\Members\Contracts\MembersRepositoryInterface;
 use App\Modules\Membership\Members\Contracts\Updates\ChurchDataUpdateServiceInterface;
-use App\Modules\Membership\Members\DTO\MembersFiltersDTO;
 use App\Modules\Membership\Members\Responses\UpdateMemberResponse;
-use App\Shared\Enums\MessagesEnum;
+use App\Modules\Membership\Members\Services\MembersBaseService;
 use App\Shared\Enums\RulesEnum;
 use App\Shared\Utils\Transaction;
 use Exception;
-use Symfony\Component\HttpFoundation\Response;
 
-class ChurchDataUpdateService extends AuthenticatedService implements ChurchDataUpdateServiceInterface
+class ChurchDataUpdateService extends MembersBaseService implements ChurchDataUpdateServiceInterface
 {
     private string $userId;
     private string $churchId;
     private mixed $userMember;
 
     public function __construct(
-        private readonly MembersRepositoryInterface $membersRepository,
+        protected MembersRepositoryInterface $membersRepository,
         private readonly ChurchRepositoryInterface  $churchRepository,
-        private readonly MembersFiltersDTO          $membersFiltersDTO,
         private readonly UpdateMemberResponse       $updateMemberResponse,
-    ) {}
+    ) {
+        parent::__construct($this->membersRepository);
+    }
 
     /**
      * @throws AppException
@@ -58,6 +56,8 @@ class ChurchDataUpdateService extends AuthenticatedService implements ChurchData
      */
     private function updateByAdminMaster(): UpdateMemberResponse
     {
+        $this->userMember = $this->findOrFail($this->userId);
+
         $this->handleGeneralValidations();
 
         return $this->updateMemberData();
@@ -68,16 +68,10 @@ class ChurchDataUpdateService extends AuthenticatedService implements ChurchData
      */
     private function updateByAdminChurch(): UpdateMemberResponse
     {
-        if(!$this->userPayloadIsEqualsAuthUser($this->userId))
-        {
-            $this->membersFiltersDTO->profileUniqueName = [
-                ProfileUniqueNameEnum::ADMIN_MODULE->value,
-                ProfileUniqueNameEnum::ASSISTANT->value,
-                ProfileUniqueNameEnum::MEMBER->value,
-            ];
-        }
-
-        $this->membersFiltersDTO->churchesId = $this->getUserMemberChurchesId();
+        $this->userMember = $this->findOrFailWithHierarchy(
+            $this->userId,
+            ProfileUniqueNameEnum::ADMIN_CHURCH->value,
+        );
 
         $this->handleGeneralValidations();
 
@@ -87,16 +81,8 @@ class ChurchDataUpdateService extends AuthenticatedService implements ChurchData
     /**
      * @throws AppException
      */
-    private function handleGeneralValidations()
+    private function handleGeneralValidations(): void
     {
-        if(!$this->userMember = $this->membersRepository->findOneByFilters($this->userId, $this->membersFiltersDTO))
-        {
-            throw new AppException(
-                MessagesEnum::USER_NOT_FOUND,
-                Response::HTTP_NOT_FOUND
-            );
-        }
-
         ChurchValidations::churchIdExists(
             $this->churchRepository,
             $this->churchId

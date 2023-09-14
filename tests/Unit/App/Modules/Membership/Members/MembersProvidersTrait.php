@@ -51,4 +51,47 @@ trait MembersProvidersTrait
             'By Assistant'    => [RulesEnum::MEMBERSHIP_MODULE_MEMBERS_ASSISTANT_INSERT->value],
         ];
     }
+
+    public static function dataProviderUpdate(): array
+    {
+        return [
+            'By Admin Master' => [RulesEnum::MEMBERSHIP_MODULE_MEMBERS_ADMIN_MASTER_UPDATE->value],
+            'By Admin Church' => [RulesEnum::MEMBERSHIP_MODULE_MEMBERS_ADMIN_CHURCH_UPDATE->value],
+            'By Admin Module' => [RulesEnum::MEMBERSHIP_MODULE_MEMBERS_ADMIN_MODULE_UPDATE->value],
+            'By Assistant'    => [RulesEnum::MEMBERSHIP_MODULE_MEMBERS_ASSISTANT_UPDATE->value],
+        ];
+    }
+
+    public static function dataProviderUpdateMemberValidationChurch(): array
+    {
+        return [
+            'By Admin Church' => [RulesEnum::MEMBERSHIP_MODULE_MEMBERS_ADMIN_CHURCH_UPDATE->value],
+            'By Admin Module' => [RulesEnum::MEMBERSHIP_MODULE_MEMBERS_ADMIN_MODULE_UPDATE->value],
+            'By Assistant'    => [RulesEnum::MEMBERSHIP_MODULE_MEMBERS_ASSISTANT_UPDATE->value],
+        ];
+    }
+
+    public static function dataProviderUpdateMemberWithAdminMasterAndAdminChurch(): array
+    {
+        return [
+            'By Admin Master' => [RulesEnum::MEMBERSHIP_MODULE_MEMBERS_ADMIN_MASTER_UPDATE->value],
+            'By Admin Church' => [RulesEnum::MEMBERSHIP_MODULE_MEMBERS_ADMIN_CHURCH_UPDATE->value],
+        ];
+    }
+
+    public static function dataProviderUpdateMemberValidationProfileAndModules(): array
+    {
+        return [
+            'By Admin Module' => [RulesEnum::MEMBERSHIP_MODULE_MEMBERS_ADMIN_MODULE_UPDATE->value],
+            'By Assistant'    => [RulesEnum::MEMBERSHIP_MODULE_MEMBERS_ASSISTANT_UPDATE->value],
+        ];
+    }
+
+    public static function dataProviderUpdateChurchData(): array
+    {
+        return [
+            'By Admin Master' => [RulesEnum::MEMBERSHIP_MODULE_MEMBERS_ADMIN_MASTER_UPDATE->value],
+            'By Admin Church' => [RulesEnum::MEMBERSHIP_MODULE_MEMBERS_ADMIN_CHURCH_UPDATE->value],
+        ];
+    }
 }
