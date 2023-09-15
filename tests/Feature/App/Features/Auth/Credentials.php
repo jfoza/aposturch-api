@@ -14,5 +14,11 @@ class Credentials
     const ASSISTANT_2     = 'assistant2@email.com';
     const ASSISTANT_3     = 'assistant3@email.com';
 
+    const PHONE_ALREADY_EXISTS = '51999999999';
+
+    const CHURCH_1 = 'igreja-biblica-viver-caxias';
+    const CHURCH_2 = 'igreja-teste-1';
+
     const MEMBERSHIP_ADMIN_MODULE = 'membership-admin-module1@email.com';
+    const USER_WITHOUT_MODULES = 'user-without-modules@hotmail.com';
 }

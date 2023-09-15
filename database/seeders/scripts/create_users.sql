@@ -665,7 +665,7 @@ DO $$
         _name        varchar = 'Usuário Auxiliar 3';
         _email       varchar = 'assistant3@email.com';
         _password    varchar = general.generate_bcrypt_hash('Teste123');
-        _phone       varchar = '99991849584';
+        _phone       varchar = '51999999999';
         _zip_code    varchar = '96010165';
         _address     varchar = 'Rua Tiradentes';
         _district    varchar = 'Centro';

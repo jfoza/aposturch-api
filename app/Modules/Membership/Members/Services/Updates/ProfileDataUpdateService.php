@@ -4,8 +4,10 @@ namespace App\Modules\Membership\Members\Services\Updates;
 
 use App\Exceptions\AppException;
 use App\Features\Base\Traits\EnvironmentException;
+use App\Features\Base\Validations\ProfileHierarchyValidation;
 use App\Features\Users\Profiles\Contracts\ProfilesRepositoryInterface;
 use App\Features\Users\Profiles\Enums\ProfileUniqueNameEnum;
+use App\Features\Users\Profiles\Models\Profile;
 use App\Features\Users\Users\Contracts\UsersRepositoryInterface;
 use App\Features\Users\Users\Validations\UsersValidations;
 use App\Modules\Membership\Members\Contracts\MembersRepositoryInterface;
@@ -21,6 +23,7 @@ class ProfileDataUpdateService extends MembersBaseService implements ProfileData
 
     private string $userId;
     private string $profileId;
+    private mixed $profile;
 
     public function __construct(
         protected MembersRepositoryInterface $membersRepository,
@@ -62,6 +65,8 @@ class ProfileDataUpdateService extends MembersBaseService implements ProfileData
 
         $this->handleGeneralValidations();
 
+        ProfileHierarchyValidation::adminChurchInPersistenceValidation([$this->profile->unique_name]);
+
         return $this->updateMemberData();
     }
 
@@ -77,6 +82,8 @@ class ProfileDataUpdateService extends MembersBaseService implements ProfileData
 
         $this->handleGeneralValidations();
 
+        ProfileHierarchyValidation::adminChurchInPersistenceValidation([$this->profile->unique_name]);
+
         return $this->updateMemberData();
     }
 
@@ -85,7 +92,7 @@ class ProfileDataUpdateService extends MembersBaseService implements ProfileData
      */
     private function handleGeneralValidations(): void
     {
-        UsersValidations::returnProfileExists(
+        $this->profile = UsersValidations::returnProfileExists(
             $this->profilesRepository,
             $this->profileId
         );

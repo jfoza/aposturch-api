@@ -13,7 +13,6 @@ use App\Modules\Membership\Members\Responses\UpdateMemberResponse;
 use App\Modules\Membership\Members\Services\Updates\PasswordDataUpdateService;
 use App\Shared\ACL\Policy;
 use App\Shared\Enums\MessagesEnum;
-use App\Shared\Enums\RulesEnum;
 use App\Shared\Libraries\Uuid;
 use Illuminate\Support\Collection;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -52,7 +51,7 @@ class PasswordDataUpdateServiceTest extends TestCase
     }
 
     /**
-     * @dataProvider dataProviderUpdateMemberWithAdminMasterAndAdminChurch
+     * @dataProvider dataProviderUpdate
      *
      * @param string $rule
      * @return void
@@ -78,7 +77,7 @@ class PasswordDataUpdateServiceTest extends TestCase
             ->willReturn(
                 MemberLists::getMemberDataView(
                     Collection::make([(object) ([Church::ID => $this->churchId])]),
-                    ProfileUniqueNameEnum::ASSISTANT->value
+                    ProfileUniqueNameEnum::MEMBER->value
                 )
             );
 
@@ -88,7 +87,7 @@ class PasswordDataUpdateServiceTest extends TestCase
     }
 
     /**
-     * @dataProvider dataProviderUpdateMemberWithAdminMasterAndAdminChurch
+     * @dataProvider dataProviderUpdate
      *
      * @param string $rule
      * @return void
@@ -120,12 +119,59 @@ class PasswordDataUpdateServiceTest extends TestCase
         $passwordDataUpdateService->execute(Uuid::uuid4Generate(), 'password');
     }
 
-    public function test_should_return_exception_if_the_authenticated_user_is_not_linked_to_the_churches()
+    /**
+     * @dataProvider dataProviderUpdateMemberValidationProfileAndModules
+     *
+     * @param string $rule
+     * @return void
+     * @throws AppException
+     */
+    public function test_should_return_exception_if_the_user_tries_to_update_a_superior_profile_in_members(
+        string $rule,
+    ): void
     {
         $passwordDataUpdateService = $this->getPasswordDataUpdateService();
 
         $passwordDataUpdateService->setPolicy(
-            new Policy([RulesEnum::MEMBERSHIP_MODULE_MEMBERS_ADMIN_CHURCH_UPDATE->value])
+            new Policy([$rule])
+        );
+
+        $passwordDataUpdateService->setAuthenticatedUser(
+            MemberLists::getMemberUserLogged($this->churchId)
+        );
+
+        $this
+            ->membersRepositoryMock
+            ->method('findByUserId')
+            ->willReturn(
+                MemberLists::getMemberDataView(
+                    Collection::make([(object) ([Church::ID => $this->churchId])]),
+                    ProfileUniqueNameEnum::ADMIN_CHURCH->value
+                )
+            );
+
+        $this->expectException(AppException::class);
+        $this->expectExceptionCode(Response::HTTP_FORBIDDEN);
+        $this->expectExceptionMessage(json_encode(MessagesEnum::PROFILE_NOT_ALLOWED));
+
+        $passwordDataUpdateService->execute(Uuid::uuid4Generate(), 'password');
+    }
+
+    /**
+     * @dataProvider dataProviderUpdateMemberValidationChurch
+     *
+     * @param string $rule
+     * @return void
+     * @throws AppException
+     */
+    public function test_should_return_exception_if_the_authenticated_user_is_not_linked_to_the_churches(
+        string $rule,
+    ): void
+    {
+        $passwordDataUpdateService = $this->getPasswordDataUpdateService();
+
+        $passwordDataUpdateService->setPolicy(
+            new Policy([$rule])
         );
 
         $passwordDataUpdateService->setAuthenticatedUser(
@@ -138,13 +184,13 @@ class PasswordDataUpdateServiceTest extends TestCase
             ->willReturn(
                 MemberLists::getMemberDataView(
                     Collection::make([(object) ([Church::ID => Uuid::uuid4Generate()])]),
-                    ProfileUniqueNameEnum::ASSISTANT->value
+                    ProfileUniqueNameEnum::MEMBER->value
                 )
             );
 
         $this->expectException(AppException::class);
         $this->expectExceptionCode(Response::HTTP_FORBIDDEN);
-        $this->expectExceptionMessage(json_encode(MessagesEnum::NO_ACCESS_TO_CHURCH));
+        $this->expectExceptionMessage(json_encode(MessagesEnum::NO_ACCESS_TO_CHURCH_MEMBERS));
 
         $passwordDataUpdateService->execute(Uuid::uuid4Generate(), 'password');
     }

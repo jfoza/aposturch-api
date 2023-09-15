@@ -84,7 +84,7 @@ abstract class AuthenticatedService extends BaseService
     /**
      * @throws AppException
      */
-    public function userHasAccessToChurch(array $churchesId): void
+    public function canAccessTheChurch(array $churchesId, string $message = null): void
     {
         $canAccess = $this->getChurchesUserMember()
             ->whereIn(Church::ID, $churchesId)
@@ -93,7 +93,7 @@ abstract class AuthenticatedService extends BaseService
         if(empty($canAccess))
         {
             throw new AppException(
-                MessagesEnum::NO_ACCESS_TO_CHURCH,
+                !is_null($message) ? $message : MessagesEnum::NO_ACCESS_TO_CHURCH,
                 Response::HTTP_FORBIDDEN
             );
         }

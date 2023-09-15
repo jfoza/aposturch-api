@@ -61,7 +61,8 @@ enum MessagesEnum: string {
     case USER_CHURCH_RELATIONSHIP_NOT_FOUND = 'Este usuário não possui vínculo com esta igreja.';
     case USER_HAS_NO_CHURCH = 'Usuário não possui vínculo com nenhuma igreja.';
     case USER_PAYLOAD_HAS_NO_CHURCH = 'O usuário informado não possui vínculo com nenhuma igreja.';
-    case NO_ACCESS_TO_CHURCH = 'Não é possível acessar informações de membros vinculados à outras igrejas.';
+    case NO_ACCESS_TO_CHURCH = 'Não é possível acessar/utilizar esta igreja.';
+    case NO_ACCESS_TO_CHURCH_MEMBERS = 'Não é possível acessar informações de membros vinculados à outras igrejas.';
     case MEMBER_NOT_FOUND = 'Membro não encontrado.';
     case MODULE_NOT_FOUND = 'Módulo não encontrado.';
     case USER_HAS_NO_LINKED_MODULES = 'Usuário não possui módulos vinculados.';

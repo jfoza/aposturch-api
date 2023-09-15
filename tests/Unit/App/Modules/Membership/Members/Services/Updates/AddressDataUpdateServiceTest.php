@@ -277,7 +277,7 @@ class AddressDataUpdateServiceTest extends TestCase
 
         $this->expectException(AppException::class);
         $this->expectExceptionCode(Response::HTTP_FORBIDDEN);
-        $this->expectExceptionMessage(json_encode(MessagesEnum::NO_ACCESS_TO_CHURCH));
+        $this->expectExceptionMessage(json_encode(MessagesEnum::NO_ACCESS_TO_CHURCH_MEMBERS));
 
         $addressDataUpdateService->execute($this->addressDataUpdateDtoMock);
     }

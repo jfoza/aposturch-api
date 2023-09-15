@@ -47,6 +47,12 @@ class PasswordDataUpdateService extends MembersBaseService implements PasswordDa
             $policy->haveRule(RulesEnum::MEMBERSHIP_MODULE_MEMBERS_ADMIN_CHURCH_UPDATE->value)
                 => $this->updateByAdminChurch(),
 
+            $policy->haveRule(RulesEnum::MEMBERSHIP_MODULE_MEMBERS_ADMIN_MODULE_UPDATE->value)
+                => $this->updateByAdminModule(),
+
+            $policy->haveRule(RulesEnum::MEMBERSHIP_MODULE_MEMBERS_ASSISTANT_UPDATE->value)
+                => $this->updateByAssistant(),
+
             default => $policy->dispatchForbiddenError(),
         };
     }
@@ -66,10 +72,45 @@ class PasswordDataUpdateService extends MembersBaseService implements PasswordDa
      */
     private function updateByAdminChurch(): UpdateMemberResponse
     {
-        $this->findOrFailWithHierarchy(
-            $this->userId,
-            ProfileUniqueNameEnum::ADMIN_CHURCH->value,
-        );
+        if(!$this->userPayloadIsEqualsAuthUser($this->userId))
+        {
+            $this->findOrFailWithHierarchyInUpdate(
+                $this->userId,
+                ProfileUniqueNameEnum::ADMIN_CHURCH->value,
+            );
+        }
+
+        return $this->updateMemberData();
+    }
+
+    /**
+     * @throws AppException
+     */
+    private function updateByAdminModule(): UpdateMemberResponse
+    {
+        if(!$this->userPayloadIsEqualsAuthUser($this->userId))
+        {
+            $this->findOrFailWithHierarchyInUpdate(
+                $this->userId,
+                ProfileUniqueNameEnum::ADMIN_MODULE->value,
+            );
+        }
+
+        return $this->updateMemberData();
+    }
+
+    /**
+     * @throws AppException
+     */
+    private function updateByAssistant(): UpdateMemberResponse
+    {
+        if(!$this->userPayloadIsEqualsAuthUser($this->userId))
+        {
+            $this->findOrFailWithHierarchyInUpdate(
+                $this->userId,
+                ProfileUniqueNameEnum::ASSISTANT->value,
+            );
+        }
 
         return $this->updateMemberData();
     }

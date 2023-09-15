@@ -83,7 +83,7 @@ class CreateMemberService extends AuthenticatedService implements CreateMemberSe
             [$this->profile->unique_name]
         );
 
-        $this->userHasAccessToChurch([$this->userDTO->member->churchId]);
+        $this->canAccessTheChurch([$this->userDTO->member->churchId]);
 
         return $this->createNewMember();
     }
@@ -99,7 +99,7 @@ class CreateMemberService extends AuthenticatedService implements CreateMemberSe
             [$this->profile->unique_name]
         );
 
-        $this->userHasAccessToChurch([$this->userDTO->member->churchId]);
+        $this->canAccessTheChurch([$this->userDTO->member->churchId]);
 
         return $this->createNewMember();
     }
@@ -115,7 +115,7 @@ class CreateMemberService extends AuthenticatedService implements CreateMemberSe
             [$this->profile->unique_name]
         );
 
-        $this->userHasAccessToChurch([$this->userDTO->member->churchId]);
+        $this->canAccessTheChurch([$this->userDTO->member->churchId]);
 
         return $this->createNewMember();
     }

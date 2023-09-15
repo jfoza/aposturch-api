@@ -75,6 +75,8 @@ class ChurchDataUpdateService extends MembersBaseService implements ChurchDataUp
 
         $this->handleGeneralValidations();
 
+        $this->canAccessTheChurch([$this->churchId]);
+
         return $this->updateMemberData();
     }
 

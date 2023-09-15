@@ -3,6 +3,7 @@
 namespace App\Modules\Membership\Members\Requests;
 
 use App\Features\Base\Http\Requests\FormRequest;
+use App\Shared\Enums\StatesEnum;
 use App\Shared\Rules\ManyUuidv4Rule;
 use App\Shared\Rules\Uuid4Rule;
 
@@ -10,6 +11,10 @@ class MembersRequest extends FormRequest
 {
     public function rules(): array
     {
+        $states = implode(',', array_column(StatesEnum::cases(), 'value'));
+
+        $stateRules = ['required', 'string', "in:$states"];
+
         $requiredString = 'required|string';
         $nullableString = 'nullable|string';
         $requiredUuid4 = ['string', 'required', new Uuid4Rule];
@@ -17,10 +22,9 @@ class MembersRequest extends FormRequest
 
         return [
             'name'                 => $requiredString,
-            'email'                => 'required|email:rfc,dns',
+            'email'                => 'required|email',
             'password'             => $requiredString,
             'passwordConfirmation' => 'required|same:password',
-            'active'               => 'required|bool',
             'profileId'            => $requiredUuid4,
             'modulesId'            => $requiredManyUuid4,
             'churchId'             => $requiredUuid4,
@@ -31,7 +35,7 @@ class MembersRequest extends FormRequest
             'complement'           => $nullableString,
             'district'             => $requiredString,
             'cityId'               => $requiredUuid4,
-            'uf'                   => $requiredString,
+            'uf'                   => $stateRules,
         ];
     }
 
@@ -42,7 +46,6 @@ class MembersRequest extends FormRequest
             'email'                => 'Email',
             'password'             => 'Password',
             'passwordConfirmation' => 'Password confirmation',
-            'active'               => 'Active',
             'profileId'            => 'Profile',
             'churchId'             => 'Church Id',
             'phone'                => 'Phone',

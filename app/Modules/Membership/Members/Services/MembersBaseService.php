@@ -60,7 +60,7 @@ class MembersBaseService extends AuthenticatedService
         };
 
         $churchesId = $member->church->pluck(Church::ID)->toArray();
-        $this->userHasAccessToChurch($churchesId);
+        $this->canAccessTheChurch($churchesId, MessagesEnum::NO_ACCESS_TO_CHURCH_MEMBERS->value);
 
         return $member;
     }
@@ -98,11 +98,19 @@ class MembersBaseService extends AuthenticatedService
                     ]
                 ),
 
+            ProfileUniqueNameEnum::ASSISTANT->value =>
+                ProfileHierarchyValidation::handleBaseValidationInListings(
+                    $userProfile,
+                    [
+                        ProfileUniqueNameEnum::MEMBER->value,
+                    ]
+                ),
+
             default => ProfileHierarchyValidation::dispatchExceptionProfileNotAllowed(),
         };
 
         $churchesId = $member->church->pluck(Church::ID)->toArray();
-        $this->userHasAccessToChurch($churchesId);
+        $this->canAccessTheChurch($churchesId, MessagesEnum::NO_ACCESS_TO_CHURCH_MEMBERS->value);
 
         return $member;
     }

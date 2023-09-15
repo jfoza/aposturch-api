@@ -3,12 +3,17 @@
 namespace App\Modules\Membership\Members\Requests\Updates;
 
 use App\Features\Base\Http\Requests\FormRequest;
+use App\Shared\Enums\StatesEnum;
 use App\Shared\Rules\Uuid4Rule;
 
 class AddressDataUpdateRequest extends FormRequest
 {
     public function rules(): array
     {
+        $states = implode(',', array_column(StatesEnum::cases(), 'value'));
+
+        $stateRules = ['required', 'string', "in:$states"];
+
         $requiredString = 'required|string';
         $nullableString = 'nullable|string';
         $requiredUuid4 = ['string', 'required', new Uuid4Rule];
@@ -20,7 +25,7 @@ class AddressDataUpdateRequest extends FormRequest
             'complement'    => $nullableString,
             'district'      => $requiredString,
             'cityId'        => $requiredUuid4,
-            'uf'            => $requiredString,
+            'uf'            => $stateRules,
         ];
     }
 

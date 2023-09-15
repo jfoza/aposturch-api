@@ -6,7 +6,7 @@ use Ramsey\Uuid\Uuid;
 
 trait ChurchesDataProviders
 {
-    public function formErrorsDataProvider(): array
+    public static function formErrorsDataProvider(): array
     {
         return [
             'Name is empty' => [
