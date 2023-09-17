@@ -71,13 +71,15 @@ class FindAllMembersService extends AuthenticatedService implements FindAllMembe
             $this->profileIsAllowed($this->membersFiltersDTO->profileId);
         }
 
+//        $this->membersFiltersDTO->modulesId = $this->getUserModulesId();
+
         return $this->membersRepository->findAll($this->membersFiltersDTO);
     }
 
     /**
      * @throws AppException
      */
-    private function churchIdExistsInChurchesUserLogged(string $churchId)
+    private function churchIdExistsInChurchesUserLogged(string $churchId): void
     {
         $result = $this
             ->getChurchesUserMember()
@@ -96,7 +98,7 @@ class FindAllMembersService extends AuthenticatedService implements FindAllMembe
     /**
      * @throws AppException
      */
-    private function profileIsAllowed(string $profileId)
+    private function profileIsAllowed(string $profileId): void
     {
         if(!$profile = $this->profilesRepository->findById($profileId))
         {

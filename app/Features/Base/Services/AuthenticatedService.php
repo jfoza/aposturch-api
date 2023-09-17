@@ -63,13 +63,13 @@ abstract class AuthenticatedService extends BaseService
 
     public function getUserModulesId(): array
     {
-        return $this->getModulesUserMember()->pluck(Module::ID)->toArray();
+        return $this->getModulesUser()->pluck(Module::ID)->toArray();
     }
 
     /**
      * @return Collection
      */
-    public function getModulesUserMember(): Collection
+    public function getModulesUser(): Collection
     {
         $user = $this->getAuthenticatedUser();
 
