@@ -127,6 +127,7 @@ class MemberLists
                 (object) ([
                     Module::ID => Uuid::uuid4Generate(),
                     Module::MODULE_DESCRIPTION => 'MEMBERSHIP',
+                    Module::MODULE_UNIQUE_NAME => 'MEMBERSHIP',
                     Module::ACTIVE => true,
                 ])
             ]),
