@@ -353,6 +353,33 @@ class CreateMemberTest extends BaseTestCase
         $response->assertForbidden();
     }
 
+    /**
+     * @dataProvider dataProviderCreateUpdateMembersProfileValidations
+     *
+     * @param string $credential
+     * @return void
+     */
+    public function test_should_return_error_if_user_is_from_a_different_module(
+        string $credential,
+    ): void
+    {
+        $this->setAuthorizationBearer($credential);
+
+        $payload = $this->getPayload();
+
+        $module = Module::where(Module::MODULE_UNIQUE_NAME, 'GROUPS')->first();
+
+        $payload['modulesId'] = [$module->id];
+
+        $response = $this->postJson(
+            $this->endpoint,
+            $payload,
+            $this->getAuthorizationBearer()
+        );
+
+        $response->assertForbidden();
+    }
+
     public function test_should_return_error_if_the_user_does_not_have_modules()
     {
         $this->setAuthorizationBearer(Credentials::USER_WITHOUT_MODULES);

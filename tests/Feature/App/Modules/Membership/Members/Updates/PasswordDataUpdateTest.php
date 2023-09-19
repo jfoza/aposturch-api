@@ -154,6 +154,29 @@ class PasswordDataUpdateTest extends BaseTestCase
     }
 
     /**
+     * @dataProvider dataProviderCreateUpdateMembersProfileValidations
+     *
+     * @param string $credential
+     * @return void
+     */
+    public function test_should_return_error_if_user_is_from_a_different_module(
+        string $credential,
+    ): void
+    {
+        $this->setAuthorizationBearer($credential);
+
+        $userPayload = User::where(User::EMAIL, Credentials::GROUPS_ADMIN_MODULE)->first();
+
+        $response = $this->putJson(
+            "$this->endpoint/password-data/id/".$userPayload->id,
+            $this->getPayload(),
+            $this->getAuthorizationBearer()
+        );
+
+        $response->assertForbidden();
+    }
+
+    /**
      * @dataProvider dataProviderCreateUpdateMembersChurchValidations
      *
      * @param string $credential

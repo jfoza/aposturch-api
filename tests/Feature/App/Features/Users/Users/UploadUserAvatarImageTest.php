@@ -172,6 +172,34 @@ class UploadUserAvatarImageTest extends BaseTestCase
         $response->assertForbidden();
     }
 
+    public function test_should_return_error_if_user_is_from_a_different_module()
+    {
+        $this->setAuthorizationBearer(Credentials::MEMBERSHIP_ADMIN_MODULE);
+
+        $user = User::where(User::EMAIL, Credentials::GROUPS_ADMIN_MODULE)->first();
+
+        $image = UploadedFile::fake()->image('test.png');
+
+        $server = $this->transformHeadersToServerVars(
+            $this->getAuthorizationBearer()
+        );
+
+        $payload = [
+            'userId' => $user->id
+        ];
+
+        $response = $this->call(
+            'POST',
+            $this->endpoint,
+            $payload,
+            [],
+            ['image' => $image],
+            $server
+        );
+
+        $response->assertForbidden();
+    }
+
     public function test_should_return_error_if_user_is_from_a_higher_profile()
     {
         $this->setAuthorizationBearer(Credentials::ASSISTANT_1);

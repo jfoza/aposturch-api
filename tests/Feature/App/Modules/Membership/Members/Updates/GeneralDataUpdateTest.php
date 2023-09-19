@@ -3,7 +3,6 @@
 namespace Tests\Feature\App\Modules\Membership\Members\Updates;
 
 use App\Features\Users\Users\Models\User;
-use App\Modules\Membership\Church\Models\Church;
 use App\Shared\Helpers\Helpers;
 use App\Shared\Libraries\Uuid;
 use Faker\Generator;
@@ -208,6 +207,29 @@ class GeneralDataUpdateTest extends BaseTestCase
         $this->setAuthorizationBearer($credential);
 
         $userPayload = User::where(User::EMAIL, Credentials::ADMIN_CHURCH_1)->first();
+
+        $response = $this->putJson(
+            "$this->endpoint/general-data/id/".$userPayload->id,
+            $this->getPayload(),
+            $this->getAuthorizationBearer()
+        );
+
+        $response->assertForbidden();
+    }
+
+    /**
+     * @dataProvider dataProviderCreateUpdateMembersProfileValidations
+     *
+     * @param string $credential
+     * @return void
+     */
+    public function test_should_return_error_if_user_is_from_a_different_module(
+        string $credential,
+    ): void
+    {
+        $this->setAuthorizationBearer($credential);
+
+        $userPayload = User::where(User::EMAIL, Credentials::GROUPS_ADMIN_MODULE)->first();
 
         $response = $this->putJson(
             "$this->endpoint/general-data/id/".$userPayload->id,

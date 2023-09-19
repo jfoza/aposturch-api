@@ -121,6 +121,29 @@ class UpdateStatusMemberTest extends BaseTestCase
      * @param string $credential
      * @return void
      */
+    public function test_should_return_error_if_user_is_from_a_different_module(
+        string $credential,
+    ): void
+    {
+        $this->setAuthorizationBearer(Credentials::MEMBERSHIP_ADMIN_MODULE);
+
+        $user = $this->getUser(Credentials::GROUPS_ADMIN_MODULE);
+
+        $response = $this->putJson(
+            $this->endpoint."/status/id/{$user->id}",
+            [],
+            $this->getAuthorizationBearer()
+        );
+
+        $response->assertForbidden();
+    }
+
+    /**
+     * @dataProvider dataProviderUpdateStatusValidation
+     *
+     * @param string $credential
+     * @return void
+     */
     public function test_should_return_error_if_user_is_from_a_higher_profile(
         string $credential,
     ): void

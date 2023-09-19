@@ -21,5 +21,6 @@ class Credentials
     const CHURCH_2 = 'igreja-teste-1';
 
     const MEMBERSHIP_ADMIN_MODULE = 'membership-admin-module1@email.com';
+    const GROUPS_ADMIN_MODULE = 'groups-admin-module1@email.com';
     const USER_WITHOUT_MODULES = 'user-without-modules@hotmail.com';
 }

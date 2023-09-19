@@ -114,6 +114,28 @@ class ShowByUserIdTest extends BaseTestCase
     }
 
     /**
+     * @dataProvider dataProviderShowMemberProfilesValidation
+     *
+     * @param string $credential
+     * @return void
+     */
+    public function test_should_return_error_if_user_is_from_a_different_module(
+        string $credential,
+    ): void
+    {
+        $this->setAuthorizationBearer($credential);
+
+        $user = User::where(User::EMAIL, Credentials::GROUPS_ADMIN_MODULE)->first();
+
+        $response = $this->getJson(
+            $this->endpoint."/user/{$user->id}",
+            $this->getAuthorizationBearer()
+        );
+
+        $response->assertForbidden();
+    }
+
+    /**
      * @dataProvider dataProviderShowMemberChurchValidation
      *
      * @param string $credential
