@@ -327,6 +327,50 @@ class GeneralDataUpdateServiceTest extends TestCase
     }
 
     /**
+     * @dataProvider dataProviderUpdateMemberValidationProfileAndModules
+     *
+     * @param string $rule
+     * @return void
+     * @throws AppException
+     */
+    public function test_should_return_exception_if_authenticated_user_does_not_have_access_to_module(
+        string $rule,
+    ): void
+    {
+        $generalDataUpdateService = $this->getGeneralDataUpdateService();
+
+        $generalDataUpdateService->setPolicy(
+            new Policy([$rule])
+        );
+
+        $generalDataUpdateService->setAuthenticatedUser(
+            MemberLists::getMemberUserLogged(
+                $this->churchId,
+                Uuid::uuid4Generate(),
+            )
+        );
+
+        $this->populateGeneralDataUpdateDTO();
+
+        $this
+            ->membersRepositoryMock
+            ->method('findByUserId')
+            ->willReturn(
+                MemberLists::getMemberDataView(
+                    $this->churches,
+                    Collection::make([(object) ([Module::ID => Uuid::uuid4Generate()])]),
+                    ProfileUniqueNameEnum::ASSISTANT->value,
+                )
+            );
+
+        $this->expectException(AppException::class);
+        $this->expectExceptionCode(Response::HTTP_FORBIDDEN);
+        $this->expectExceptionMessage(json_encode(MessagesEnum::MODULE_NOT_ALLOWED));
+
+        $generalDataUpdateService->execute($this->generalDataUpdateDtoMock);
+    }
+
+    /**
      * @dataProvider dataProviderUpdateMemberValidationChurch
      *
      * @param string $rule

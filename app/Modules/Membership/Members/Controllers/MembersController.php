@@ -34,12 +34,12 @@ readonly class MembersController
         $membersFiltersDTO->paginationOrder->setColumnName($membersFiltersRequest->columnName);
         $membersFiltersDTO->paginationOrder->setColumnOrder($membersFiltersRequest->columnOrder);
 
-        $membersFiltersDTO->name                 = $membersFiltersRequest->name;
-        $membersFiltersDTO->email                = $membersFiltersRequest->email;
-        $membersFiltersDTO->phone                = Helpers::onlyNumbers($membersFiltersRequest->phone);
-        $membersFiltersDTO->churchIdInQueryParam = $membersFiltersRequest->churchId;
-        $membersFiltersDTO->profileId            = $membersFiltersRequest->profileId;
-        $membersFiltersDTO->cityId               = $membersFiltersRequest->cityId;
+        $membersFiltersDTO->name       = $membersFiltersRequest->name;
+        $membersFiltersDTO->email      = $membersFiltersRequest->email;
+        $membersFiltersDTO->cityId     = $membersFiltersRequest->cityId;
+        $membersFiltersDTO->phone      = Helpers::onlyNumbers($membersFiltersRequest->phone);
+        $membersFiltersDTO->profileId  = $membersFiltersRequest->profileId;
+        $membersFiltersDTO->churchesId = $membersFiltersRequest->churchId ? [$membersFiltersRequest->churchId] : null;
 
         $members = $this->findAllMembersService->execute($membersFiltersDTO);
 

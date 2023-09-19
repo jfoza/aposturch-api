@@ -7,6 +7,7 @@ use App\Features\General\Images\Contracts\ImagesRepositoryInterface;
 use App\Features\General\Images\DTO\ImagesDTO;
 use App\Features\General\Images\Repositories\ImagesRepository;
 use App\Features\Module\Modules\Models\Module;
+use App\Features\Users\Profiles\Enums\ProfileUniqueNameEnum;
 use App\Features\Users\Users\Contracts\UsersRepositoryInterface;
 use App\Features\Users\Users\Repositories\UsersRepository;
 use App\Features\Users\Users\Services\UserUploadImageService;
@@ -15,6 +16,7 @@ use App\Modules\Membership\Members\Contracts\MembersRepositoryInterface;
 use App\Modules\Membership\Members\DTO\MembersFiltersDTO;
 use App\Modules\Membership\Members\Repositories\MembersRepository;
 use App\Shared\ACL\Policy;
+use App\Shared\Enums\MessagesEnum;
 use App\Shared\Enums\RulesEnum;
 use App\Shared\Libraries\Uuid;
 use Illuminate\Http\UploadedFile;
@@ -258,6 +260,55 @@ class UsersUploadImageServiceTest extends TestCase
 
         $this->expectException(AppException::class);
         $this->expectExceptionCode(Response::HTTP_NOT_FOUND);
+
+        $usersUploadImageService->execute($this->imagesDtoMock, $this->userId);
+    }
+
+    /**
+     * @dataProvider dataProviderUploadImageModulesValidation
+     *
+     * @param string $rule
+     * @return void
+     * @throws AppException
+     */
+    public function test_should_return_exception_if_authenticated_user_does_not_have_access_to_module(
+        string $rule,
+    ): void
+    {
+        $usersUploadImageService = $this->getUsersUploadImageService();
+
+        $usersUploadImageService->setPolicy(
+            new Policy([$rule])
+        );
+
+        $usersUploadImageService->setAuthenticatedUser(
+            MemberLists::getMemberUserLogged(
+                $this->churchId,
+                Uuid::uuid4Generate(),
+            )
+        );
+
+        $this->populateImagesDTO();
+
+        $this
+            ->membersRepositoryMock
+            ->method('findByUserId')
+            ->willReturn(
+                MemberLists::getMemberDataView(
+                    $this->churches,
+                    Collection::make([(object) ([Module::ID => Uuid::uuid4Generate()])]),
+                    ProfileUniqueNameEnum::ASSISTANT->value,
+                )
+            );
+
+        $this
+            ->uploadedFileMock
+            ->method('store')
+            ->willReturn($this->imagePath);
+
+        $this->expectException(AppException::class);
+        $this->expectExceptionCode(Response::HTTP_FORBIDDEN);
+        $this->expectExceptionMessage(json_encode(MessagesEnum::MODULE_NOT_ALLOWED));
 
         $usersUploadImageService->execute($this->imagesDtoMock, $this->userId);
     }

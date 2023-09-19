@@ -25,6 +25,18 @@ trait UsersDataProvidersTrait
         ];
     }
 
+    public static function dataProviderUploadImageModulesValidation(): array
+    {
+        return [
+            'By Admin Module Rule' => [
+                RulesEnum::USERS_IMAGE_UPLOAD_ADMIN_MODULE->value,
+            ],
+            'By Assistant' => [
+                RulesEnum::USERS_IMAGE_UPLOAD_ADMIN_ASSISTANT->value,
+            ],
+        ];
+    }
+
     public static function dataProviderUploadImageMemberItself(): array
     {
         return [

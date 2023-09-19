@@ -56,8 +56,8 @@ class MembersRepository implements MembersRepositoryInterface
     {
         return $this->getBaseQueryBuilder()
             ->when(
-                isset($membersFiltersDTO->profileUniqueName),
-                fn($q) => $q->whereIn(Profile::tableField(Profile::UNIQUE_NAME), $membersFiltersDTO->profileUniqueName)
+                isset($membersFiltersDTO->profilesUniqueName),
+                fn($q) => $q->whereIn(Profile::tableField(Profile::UNIQUE_NAME), $membersFiltersDTO->profilesUniqueName)
             )
             ->when(
                 isset($membersFiltersDTO->churchIds),

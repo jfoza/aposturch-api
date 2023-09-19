@@ -13,6 +13,7 @@ use App\Modules\Membership\Members\Repositories\MembersRepository;
 use App\Modules\Membership\Members\Services\UpdateStatusMemberService;
 use App\Shared\ACL\Policy;
 use App\Shared\Enums\MessagesEnum;
+use App\Shared\Enums\RulesEnum;
 use App\Shared\Libraries\Uuid;
 use Illuminate\Support\Collection;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -159,6 +160,52 @@ class UpdateStatusUserServiceTest extends TestCase
         $this->expectException(AppException::class);
         $this->expectExceptionCode(Response::HTTP_FORBIDDEN);
         $this->expectExceptionMessage(json_encode(MessagesEnum::PROFILE_NOT_ALLOWED));
+
+        $updateStatusMemberService->execute($this->userId);
+    }
+
+    public function test_should_return_exception_if_authenticated_user_does_not_have_access_to_module()
+    {
+        $churchId = Uuid::uuid4Generate();
+
+        $updateStatusMemberService = $this->getUpdateStatusMemberService();
+
+        $updateStatusMemberService->setAuthenticatedUser(
+            MemberLists::getMemberUserLogged(
+                $churchId,
+                Uuid::uuid4Generate(),
+            )
+        );
+
+        $updateStatusMemberService->setPolicy(
+            new Policy([RulesEnum::USERS_ADMIN_MODULE_UPDATE_STATUS->value])
+        );
+
+        $church = Collection::make([
+            (object)([
+                Church::ID          => $churchId,
+                Church::NAME        => "Igreja Teste 1",
+                Church::UNIQUE_NAME => "igreja-teste-1",
+                Church::PHONE       => "51999999999",
+                Church::EMAIL       => "ibvcx@gmail.com",
+                Church::ACTIVE      => true,
+            ])
+        ]);
+
+        $this
+            ->membersRepositoryMock
+            ->method('findByUserId')
+            ->willReturn(
+                MemberLists::getMemberDataView(
+                    $church,
+                    Collection::make([(object) ([Module::ID => Uuid::uuid4Generate()])]),
+                    ProfileUniqueNameEnum::ASSISTANT->value,
+                )
+            );
+
+        $this->expectException(AppException::class);
+        $this->expectExceptionCode(Response::HTTP_FORBIDDEN);
+        $this->expectExceptionMessage(json_encode(MessagesEnum::MODULE_NOT_ALLOWED));
 
         $updateStatusMemberService->execute($this->userId);
     }

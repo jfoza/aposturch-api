@@ -267,6 +267,50 @@ class AddressDataUpdateServiceTest extends TestCase
     }
 
     /**
+     * @dataProvider dataProviderUpdateMemberValidationProfileAndModules
+     *
+     * @param string $rule
+     * @return void
+     * @throws AppException
+     */
+    public function test_should_return_exception_if_authenticated_user_does_not_have_access_to_module(
+        string $rule,
+    ): void
+    {
+        $addressDataUpdateService = $this->getAddressDataUpdateService();
+
+        $addressDataUpdateService->setPolicy(
+            new Policy([$rule])
+        );
+
+        $addressDataUpdateService->setAuthenticatedUser(
+            MemberLists::getMemberUserLogged(
+                $this->churchId,
+                Uuid::uuid4Generate(),
+            )
+        );
+
+        $this->populateAddressDataUpdateDTO();
+
+        $this
+            ->membersRepositoryMock
+            ->method('findByUserId')
+            ->willReturn(
+                MemberLists::getMemberDataView(
+                    $this->churches,
+                    Collection::make([(object) ([Module::ID => Uuid::uuid4Generate()])]),
+                    ProfileUniqueNameEnum::ASSISTANT->value,
+                )
+            );
+
+        $this->expectException(AppException::class);
+        $this->expectExceptionCode(Response::HTTP_FORBIDDEN);
+        $this->expectExceptionMessage(json_encode(MessagesEnum::MODULE_NOT_ALLOWED));
+
+        $addressDataUpdateService->execute($this->addressDataUpdateDtoMock);
+    }
+
+    /**
      * @dataProvider dataProviderUpdateMemberValidationChurch
      *
      * @param string $rule

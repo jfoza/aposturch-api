@@ -83,7 +83,7 @@ class ShowByUserIdServiceTest extends TestCase
         ];
     }
 
-    public static function dataProviderMembersProfileValidations(): array
+    public static function dataProviderMembersProfileModulesValidations(): array
     {
         return [
             'By Admin Module' => [RulesEnum::MEMBERSHIP_MODULE_MEMBERS_ADMIN_MODULE_DETAILS_VIEW->value],
@@ -125,7 +125,7 @@ class ShowByUserIdServiceTest extends TestCase
     }
 
     /**
-     * @dataProvider dataProviderMembersProfileValidations
+     * @dataProvider dataProviderMembersProfileModulesValidations
      *
      * @param string $rule
      * @return void
@@ -155,6 +155,48 @@ class ShowByUserIdServiceTest extends TestCase
         $this->expectException(AppException::class);
         $this->expectExceptionCode(Response::HTTP_FORBIDDEN);
         $this->expectExceptionMessage(json_encode(MessagesEnum::PROFILE_NOT_ALLOWED));
+
+        $showByUserIdService->execute(Uuid::uuid4Generate());
+    }
+
+    /**
+     * @dataProvider dataProviderMembersProfileModulesValidations
+     *
+     * @param string $rule
+     * @return void
+     * @throws AppException
+     */
+    public function test_should_return_exception_if_authenticated_user_does_not_have_access_to_module(
+        string $rule,
+    ): void
+    {
+        $showByUserIdService = $this->getShowByUserIdService();
+
+        $showByUserIdService->setAuthenticatedUser(
+            MemberLists::getMemberUserLogged(
+                $this->churchId,
+                Uuid::uuid4Generate(),
+            )
+        );
+
+        $showByUserIdService->setPolicy(
+            new Policy([$rule])
+        );
+
+        $this
+            ->membersRepositoryMock
+            ->method('findByUserId')
+            ->willReturn(
+                MemberLists::getMemberDataView(
+                    $this->churches,
+                    Collection::make([(object) ([Module::ID => Uuid::uuid4Generate()])]),
+                    ProfileUniqueNameEnum::ASSISTANT->value,
+                )
+            );
+
+        $this->expectException(AppException::class);
+        $this->expectExceptionCode(Response::HTTP_FORBIDDEN);
+        $this->expectExceptionMessage(json_encode(MessagesEnum::MODULE_NOT_ALLOWED));
 
         $showByUserIdService->execute(Uuid::uuid4Generate());
     }

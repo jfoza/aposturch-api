@@ -10,9 +10,10 @@ class MembersFiltersDTO extends FiltersDTO
     public ?string $phone;
     public ?string $email;
     public ?string $cityId;
-    public ?string $churchIdInQueryParam;
+
+    public ?string $profileId;
+
     public ?array $churchesId;
     public ?array $modulesId;
-    public ?string $profileId;
-    public ?array $profileUniqueName;
+    public ?array $profilesUniqueName;
 }

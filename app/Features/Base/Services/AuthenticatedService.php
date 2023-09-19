@@ -4,6 +4,7 @@ namespace App\Features\Base\Services;
 
 use App\Exceptions\AppException;
 use App\Features\Module\Modules\Models\Module;
+use App\Features\Users\Profiles\Models\Profile;
 use App\Modules\Membership\Church\Models\Church;
 use App\Shared\Enums\MessagesEnum;
 use Illuminate\Support\Collection;
@@ -14,19 +15,19 @@ abstract class AuthenticatedService extends BaseService
     private object $authenticatedUser;
 
     /**
-     * @return object
-     */
-    public function getAuthenticatedUser(): object
-    {
-        return $this->authenticatedUser;
-    }
-
-    /**
      * @param object $authenticatedUser
      */
     public function setAuthenticatedUser(object $authenticatedUser): void
     {
         $this->authenticatedUser = $authenticatedUser;
+    }
+
+    /**
+     * @return object
+     */
+    public function getAuthenticatedUser(): object
+    {
+        return $this->authenticatedUser;
     }
 
     public function getAuthenticatedUserId(): string
@@ -61,11 +62,6 @@ abstract class AuthenticatedService extends BaseService
         return $this->getChurchesUserMember()->pluck(Church::ID)->toArray();
     }
 
-    public function getUserModulesId(): array
-    {
-        return $this->getModulesUser()->pluck(Module::ID)->toArray();
-    }
-
     /**
      * @return Collection
      */
@@ -74,6 +70,23 @@ abstract class AuthenticatedService extends BaseService
         $user = $this->getAuthenticatedUser();
 
         return collect($user->module);
+    }
+
+    public function getUserModulesId(): array
+    {
+        return $this->getModulesUser()->pluck(Module::ID)->toArray();
+    }
+
+    public function getProfilesUser(): Collection
+    {
+        $user = $this->getAuthenticatedUser();
+
+        return collect($user->profile);
+    }
+
+    public function getProfilesId(): array
+    {
+        return $this->getProfilesUser()->pluck(Profile::ID)->toArray();
     }
 
     public function userPayloadIsEqualsAuthUser(string $userId): bool
@@ -86,11 +99,7 @@ abstract class AuthenticatedService extends BaseService
      */
     public function canAccessTheChurch(array $churchesId, string $message = null): void
     {
-        $canAccess = $this->getChurchesUserMember()
-            ->whereIn(Church::ID, $churchesId)
-            ->all();
-
-        if(empty($canAccess))
+        if(empty($this->getChurchesUserMember()->whereIn(Church::ID, $churchesId)->all()))
         {
             throw new AppException(
                 !is_null($message) ? $message : MessagesEnum::NO_ACCESS_TO_CHURCH,
@@ -104,14 +113,41 @@ abstract class AuthenticatedService extends BaseService
      */
     public function canAccessModules(array $modulesId): void
     {
-        $canAccess = $this->getModulesUser()
-            ->whereIn(Church::ID, $modulesId)
-            ->all();
-
-        if(empty($canAccess))
+        if(empty($this->getModulesUser()->whereIn(Module::ID, $modulesId)->all()))
         {
             throw new AppException(
                 MessagesEnum::MODULE_NOT_ALLOWED,
+                Response::HTTP_FORBIDDEN
+            );
+        }
+    }
+
+    /**
+     * @throws AppException
+     */
+    public function canAccessEachModules(array $modulesId): void
+    {
+        foreach ($modulesId as $moduleId)
+        {
+            if(empty($this->getModulesUser()->where(Module::ID, $moduleId)->first()))
+            {
+                throw new AppException(
+                    MessagesEnum::MODULE_NOT_ALLOWED,
+                    Response::HTTP_FORBIDDEN
+                );
+            }
+        }
+    }
+
+    /**
+     * @throws AppException
+     */
+    public function canAccessProfile(string $profileId): void
+    {
+        if(empty($this->getProfilesUser()->where(Profile::ID, $profileId)->first()))
+        {
+            throw new AppException(
+                MessagesEnum::PROFILE_NOT_ALLOWED,
                 Response::HTTP_FORBIDDEN
             );
         }

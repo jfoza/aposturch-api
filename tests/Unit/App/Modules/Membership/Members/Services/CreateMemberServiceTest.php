@@ -123,7 +123,12 @@ class CreateMemberServiceTest extends TestCase
             $this->modulesRepositoryMock,
         );
 
-        $createMembersService->setAuthenticatedUser(MemberLists::getMemberUserLogged($this->churchId));
+        $createMembersService->setAuthenticatedUser(
+            MemberLists::getMemberUserLogged(
+                $this->churchId,
+                $this->moduleId,
+            )
+        );
 
         return $createMembersService;
     }
@@ -441,6 +446,67 @@ class CreateMemberServiceTest extends TestCase
     }
 
     /**
+     * @dataProvider dataProviderInsertNewMemberProfilesModulesValidation
+     *
+     * @param string $rule
+     * @return void
+     * @throws AppException
+     */
+    public function test_should_return_exception_if_authenticated_user_does_not_have_access_to_module(
+        string $rule,
+    ): void
+    {
+        $createMembersService = $this->getCreateMemberService();
+
+        $createMembersService->setAuthenticatedUser(
+            MemberLists::getMemberUserLogged(
+                $this->churchId,
+                Uuid::uuid4Generate(),
+            )
+        );
+
+        $createMembersService->setPolicy(
+            new Policy([$rule])
+        );
+
+        $this
+            ->profilesRepositoryMock
+            ->method('findById')
+            ->willReturn(ProfilesLists::getAssistantProfile($this->profileId));
+
+        $this
+            ->modulesRepositoryMock
+            ->method('findByModulesIdInCreateMembers')
+            ->willReturn(ModulesLists::getModulesByIdInCreateMembers($this->moduleId));
+
+        $this
+            ->usersRepositoryMock
+            ->method('findByEmail')
+            ->willReturn(null);
+
+        $this
+            ->usersRepositoryMock
+            ->method('findByPhone')
+            ->willReturn(null);
+
+        $this
+            ->churchRepositoryMock
+            ->method('findById')
+            ->willReturn(ChurchLists::showChurch($this->churchId));
+
+        $this
+            ->cityRepositoryMock
+            ->method('findById')
+            ->willReturn(CitiesLists::showCityById($this->cityId));
+
+        $this->expectException(AppException::class);
+        $this->expectExceptionCode(Response::HTTP_FORBIDDEN);
+        $this->expectExceptionMessage(json_encode(MessagesEnum::MODULE_NOT_ALLOWED));
+
+        $createMembersService->execute($this->userDtoMock);
+    }
+
+    /**
      * @dataProvider dataProviderInsertNewMemberChurchValidation
      *
      * @param string $rule
@@ -496,7 +562,7 @@ class CreateMemberServiceTest extends TestCase
     }
 
     /**
-     * @dataProvider dataProviderInsertNewMemberProfilesValidation
+     * @dataProvider dataProviderInsertNewMemberProfilesModulesValidation
      *
      * @param string $rule
      * @return void

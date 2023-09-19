@@ -8,6 +8,25 @@ use App\Shared\Enums\RulesEnum;
 
 trait MembersProvidersTrait
 {
+    public static function dataProviderListMembers(): array
+    {
+        return [
+            'By Admin Master' => [RulesEnum::MEMBERSHIP_MODULE_MEMBERS_ADMIN_MASTER_VIEW->value],
+            'By Admin Church' => [RulesEnum::MEMBERSHIP_MODULE_MEMBERS_ADMIN_CHURCH_VIEW->value],
+            'By Admin Module' => [RulesEnum::MEMBERSHIP_MODULE_MEMBERS_ADMIN_MODULE_VIEW->value],
+            'By Assistant'    => [RulesEnum::MEMBERSHIP_MODULE_MEMBERS_ASSISTANT_VIEW->value],
+        ];
+    }
+
+    public static function dataProviderListMembersValidations(): array
+    {
+        return [
+            'By Admin Church' => [RulesEnum::MEMBERSHIP_MODULE_MEMBERS_ADMIN_CHURCH_VIEW->value],
+            'By Admin Module' => [RulesEnum::MEMBERSHIP_MODULE_MEMBERS_ADMIN_MODULE_VIEW->value],
+            'By Assistant'    => [RulesEnum::MEMBERSHIP_MODULE_MEMBERS_ASSISTANT_VIEW->value],
+        ];
+    }
+
     public static function dataProviderUpdateStatusMember(): array
     {
         return [
@@ -44,7 +63,7 @@ trait MembersProvidersTrait
         ];
     }
 
-    public static function dataProviderInsertNewMemberProfilesValidation(): array
+    public static function dataProviderInsertNewMemberProfilesModulesValidation(): array
     {
         return [
             'By Admin Module' => [RulesEnum::MEMBERSHIP_MODULE_MEMBERS_ADMIN_MODULE_INSERT->value],

@@ -3,6 +3,7 @@
 namespace App\Modules\Membership\Members\Traits;
 
 use App\Features\City\Cities\Models\City;
+use App\Features\Module\Modules\Models\Module;
 use App\Features\Persons\Infra\Models\Person;
 use App\Features\Users\Profiles\Models\Profile;
 use App\Features\Users\ProfilesUsers\Infra\Models\ProfileUser;
@@ -72,6 +73,10 @@ trait MembersListsTrait
                 fn($q) => $q->where(City::tableField(City::ID), $membersFiltersDTO->cityId)
             )
             ->when(
+                isset($membersFiltersDTO->profilesUniqueName),
+                fn($q) => $q->whereIn(Profile::tableField(Profile::UNIQUE_NAME), $membersFiltersDTO->profilesUniqueName)
+            )
+            ->when(
                 isset($membersFiltersDTO->profileId),
                 fn($q) => $q->where(Profile::tableField(Profile::ID), $membersFiltersDTO->profileId)
             )
@@ -80,6 +85,16 @@ trait MembersListsTrait
                 fn($q) => $q->whereHas(
                     'church',
                     fn($c) => $c->whereIn(Church::tableField(Church::ID), $membersFiltersDTO->churchesId)
+                )
+            )
+            ->when(
+                isset($membersFiltersDTO->modulesId),
+                fn($q) => $q->whereHas(
+                    'user',
+                    fn($u) => $u->whereHas(
+                        'module',
+                        fn($m) => $m->whereIn(Module::tableField(Module::ID), $membersFiltersDTO->modulesId)
+                    )
                 )
             );
     }

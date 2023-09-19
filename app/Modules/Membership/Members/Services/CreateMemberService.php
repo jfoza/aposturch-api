@@ -100,6 +100,7 @@ class CreateMemberService extends AuthenticatedService implements CreateMemberSe
         );
 
         $this->canAccessTheChurch([$this->userDTO->member->churchId]);
+        $this->canAccessEachModules($this->userDTO->modulesId);
 
         return $this->createNewMember();
     }
@@ -116,6 +117,7 @@ class CreateMemberService extends AuthenticatedService implements CreateMemberSe
         );
 
         $this->canAccessTheChurch([$this->userDTO->member->churchId]);
+        $this->canAccessEachModules($this->userDTO->modulesId);
 
         return $this->createNewMember();
     }
