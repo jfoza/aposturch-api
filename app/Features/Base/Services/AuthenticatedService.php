@@ -98,4 +98,22 @@ abstract class AuthenticatedService extends BaseService
             );
         }
     }
+
+    /**
+     * @throws AppException
+     */
+    public function canAccessModules(array $modulesId): void
+    {
+        $canAccess = $this->getModulesUser()
+            ->whereIn(Church::ID, $modulesId)
+            ->all();
+
+        if(empty($canAccess))
+        {
+            throw new AppException(
+                MessagesEnum::MODULE_NOT_ALLOWED,
+                Response::HTTP_FORBIDDEN
+            );
+        }
+    }
 }

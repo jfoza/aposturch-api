@@ -6,6 +6,7 @@ use App\Exceptions\AppException;
 use App\Features\General\Images\Contracts\ImagesRepositoryInterface;
 use App\Features\General\Images\DTO\ImagesDTO;
 use App\Features\General\Images\Repositories\ImagesRepository;
+use App\Features\Module\Modules\Models\Module;
 use App\Features\Users\Users\Contracts\UsersRepositoryInterface;
 use App\Features\Users\Users\Repositories\UsersRepository;
 use App\Features\Users\Users\Services\UserUploadImageService;
@@ -40,7 +41,9 @@ class UsersUploadImageServiceTest extends TestCase
 
     private string $userId;
     private string $churchId;
-    private Collection $churches;
+    private string $moduleId;
+    private mixed $churches;
+    private mixed $modules;
     private string $imageId;
     private string $imagePath;
 
@@ -58,12 +61,13 @@ class UsersUploadImageServiceTest extends TestCase
 
         $this->userId = Uuid::uuid4Generate();
         $this->churchId = Uuid::uuid4Generate();
+        $this->moduleId = Uuid::uuid4Generate();
         $this->imageId = Uuid::uuid4Generate();
         $this->imagePath = 'user-avatar/test.png';
 
-        $this->churches = Collection::make([
-            (object) ([Church::ID => $this->churchId])
-        ]);
+        $this->churches = Collection::make([(object) ([Church::ID => $this->churchId])]);
+
+        $this->modules = Collection::make([(object) ([Module::ID => $this->moduleId])]);
     }
 
     public function getUsersUploadImageService(): UserUploadImageService
@@ -130,14 +134,25 @@ class UsersUploadImageServiceTest extends TestCase
             new Policy([$rule])
         );
 
-        $usersUploadImageService->setAuthenticatedUser(MemberLists::getMemberUserLogged($this->churchId));
+        $usersUploadImageService->setAuthenticatedUser(
+            MemberLists::getMemberUserLogged(
+                $this->churchId,
+                $this->moduleId,
+            )
+        );
 
         $this->populateImagesDTO();
 
         $this
             ->membersRepositoryMock
             ->method('findByUserId')
-            ->willReturn(MemberLists::getMemberDataView($this->churches, $profileUniqueName));
+            ->willReturn(
+                MemberLists::getMemberDataView(
+                    $this->churches,
+                    $this->modules,
+                    $profileUniqueName,
+                )
+            );
 
         $this
             ->uploadedFileMock
@@ -174,7 +189,10 @@ class UsersUploadImageServiceTest extends TestCase
         );
 
         $usersUploadImageService->setAuthenticatedUser(
-            MemberLists::getMemberUserLogged($this->churchId, null, $this->userId)
+            MemberLists::getMemberUserLogged(
+                $this->churchId,
+                $this->moduleId,
+            )
         );
 
         $this->populateImagesDTO();
@@ -185,8 +203,8 @@ class UsersUploadImageServiceTest extends TestCase
             ->willReturn(
                 MemberLists::getMemberDataView(
                     $this->churches,
+                    $this->modules,
                     $profileUniqueName,
-                    $this->userId
                 )
             );
 
@@ -225,7 +243,10 @@ class UsersUploadImageServiceTest extends TestCase
         );
 
         $usersUploadImageService->setAuthenticatedUser(
-            MemberLists::getMemberUserLogged($this->churchId, null, $this->userId)
+            MemberLists::getMemberUserLogged(
+                $this->churchId,
+                $this->moduleId,
+            )
         );
 
         $this->populateImagesDTO();
@@ -244,8 +265,6 @@ class UsersUploadImageServiceTest extends TestCase
     public function test_should_return_exception_if_user_is_not_authorized()
     {
         $usersUploadImageService = $this->getUsersUploadImageService();
-
-        $usersUploadImageService->setAuthenticatedUser(MemberLists::getMemberUserLogged($this->churchId));
 
         $usersUploadImageService->setPolicy(
             new Policy([

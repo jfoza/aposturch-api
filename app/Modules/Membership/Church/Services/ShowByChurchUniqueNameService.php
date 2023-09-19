@@ -69,10 +69,7 @@ class ShowByChurchUniqueNameService extends AuthenticatedService implements Show
             $this->churchUniqueName
         );
 
-        ChurchValidations::memberHasChurchByUniqueName(
-            $church->unique_name,
-            $this->getChurchesUserMember()
-        );
+        $this->canAccessTheChurch([$church->id]);
 
         return $church;
     }

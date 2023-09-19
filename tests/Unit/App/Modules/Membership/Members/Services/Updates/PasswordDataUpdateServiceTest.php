@@ -3,6 +3,7 @@
 namespace Tests\Unit\App\Modules\Membership\Members\Services\Updates;
 
 use App\Exceptions\AppException;
+use App\Features\Module\Modules\Models\Module;
 use App\Features\Users\Profiles\Enums\ProfileUniqueNameEnum;
 use App\Features\Users\Users\Contracts\UsersRepositoryInterface;
 use App\Features\Users\Users\Repositories\UsersRepository;
@@ -28,7 +29,11 @@ class PasswordDataUpdateServiceTest extends TestCase
     protected MockObject|MembersRepositoryInterface $membersRepositoryMock;
     protected MockObject|UsersRepositoryInterface   $usersRepositoryMock;
 
-    protected string $churchId;
+    private string $churchId;
+    private string $moduleId;
+
+    private mixed $churches;
+    private mixed $modules;
 
     protected function setUp(): void
     {
@@ -38,7 +43,11 @@ class PasswordDataUpdateServiceTest extends TestCase
         $this->usersRepositoryMock      = $this->createMock(UsersRepository::class);
         $this->updateMemberResponseMock = $this->createMock(UpdateMemberResponse::class);
 
-        $this->churchId  = Uuid::uuid4Generate();
+        $this->churchId = Uuid::uuid4Generate();
+        $this->moduleId = Uuid::uuid4Generate();
+
+        $this->churches = Collection::make([(object) ([Church::ID => $this->churchId])]);
+        $this->modules  = Collection::make([(object) ([Module::ID => $this->moduleId])]);
     }
 
     public function getPasswordDataUpdateService(): PasswordDataUpdateService
@@ -68,7 +77,10 @@ class PasswordDataUpdateServiceTest extends TestCase
         );
 
         $passwordDataUpdateService->setAuthenticatedUser(
-            MemberLists::getMemberUserLogged($this->churchId)
+            MemberLists::getMemberUserLogged(
+                $this->churchId,
+                $this->moduleId,
+            )
         );
 
         $this
@@ -76,8 +88,9 @@ class PasswordDataUpdateServiceTest extends TestCase
             ->method('findByUserId')
             ->willReturn(
                 MemberLists::getMemberDataView(
-                    Collection::make([(object) ([Church::ID => $this->churchId])]),
-                    ProfileUniqueNameEnum::MEMBER->value
+                    $this->churches,
+                    $this->modules,
+                    ProfileUniqueNameEnum::MEMBER->value,
                 )
             );
 
@@ -104,7 +117,10 @@ class PasswordDataUpdateServiceTest extends TestCase
         );
 
         $passwordDataUpdateService->setAuthenticatedUser(
-            MemberLists::getMemberUserLogged($this->churchId)
+            MemberLists::getMemberUserLogged(
+                $this->churchId,
+                $this->moduleId,
+            )
         );
 
         $this
@@ -137,7 +153,10 @@ class PasswordDataUpdateServiceTest extends TestCase
         );
 
         $passwordDataUpdateService->setAuthenticatedUser(
-            MemberLists::getMemberUserLogged($this->churchId)
+            MemberLists::getMemberUserLogged(
+                $this->churchId,
+                $this->moduleId,
+            )
         );
 
         $this
@@ -145,8 +164,9 @@ class PasswordDataUpdateServiceTest extends TestCase
             ->method('findByUserId')
             ->willReturn(
                 MemberLists::getMemberDataView(
-                    Collection::make([(object) ([Church::ID => $this->churchId])]),
-                    ProfileUniqueNameEnum::ADMIN_CHURCH->value
+                    $this->churches,
+                    $this->modules,
+                    ProfileUniqueNameEnum::ADMIN_CHURCH->value,
                 )
             );
 
@@ -175,7 +195,10 @@ class PasswordDataUpdateServiceTest extends TestCase
         );
 
         $passwordDataUpdateService->setAuthenticatedUser(
-            MemberLists::getMemberUserLogged(Uuid::uuid4Generate())
+            MemberLists::getMemberUserLogged(
+                Uuid::uuid4Generate(),
+                $this->moduleId,
+            )
         );
 
         $this
@@ -183,8 +206,9 @@ class PasswordDataUpdateServiceTest extends TestCase
             ->method('findByUserId')
             ->willReturn(
                 MemberLists::getMemberDataView(
-                    Collection::make([(object) ([Church::ID => Uuid::uuid4Generate()])]),
-                    ProfileUniqueNameEnum::MEMBER->value
+                    $this->churches,
+                    $this->modules,
+                    ProfileUniqueNameEnum::MEMBER->value,
                 )
             );
 

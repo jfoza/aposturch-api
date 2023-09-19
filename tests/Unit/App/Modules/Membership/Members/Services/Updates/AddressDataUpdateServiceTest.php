@@ -5,6 +5,7 @@ namespace Tests\Unit\App\Modules\Membership\Members\Services\Updates;
 use App\Exceptions\AppException;
 use App\Features\City\Cities\Contracts\CityRepositoryInterface;
 use App\Features\City\Cities\Repositories\CityRepository;
+use App\Features\Module\Modules\Models\Module;
 use App\Features\Persons\Contracts\PersonsRepositoryInterface;
 use App\Features\Persons\Infra\Repositories\PersonsRepository;
 use App\Features\Users\Profiles\Enums\ProfileUniqueNameEnum;
@@ -36,7 +37,11 @@ class AddressDataUpdateServiceTest extends TestCase
 
     protected AddressDataUpdateDTO $addressDataUpdateDtoMock;
 
-    protected string $churchId;
+    private string $churchId;
+    private string $moduleId;
+
+    private mixed $churches;
+    private mixed $modules;
 
     protected function setUp(): void
     {
@@ -49,7 +54,11 @@ class AddressDataUpdateServiceTest extends TestCase
 
         $this->addressDataUpdateDtoMock = $this->createMock(AddressDataUpdateDTO::class);
 
-        $this->churchId  = Uuid::uuid4Generate();
+        $this->churchId = Uuid::uuid4Generate();
+        $this->moduleId = Uuid::uuid4Generate();
+
+        $this->churches = Collection::make([(object) ([Church::ID => $this->churchId])]);
+        $this->modules  = Collection::make([(object) ([Module::ID => $this->moduleId])]);
     }
 
     public function getAddressDataUpdateService(): AddressDataUpdateService
@@ -92,7 +101,10 @@ class AddressDataUpdateServiceTest extends TestCase
         );
 
         $addressDataUpdateService->setAuthenticatedUser(
-            MemberLists::getMemberUserLogged($this->churchId)
+            MemberLists::getMemberUserLogged(
+                $this->churchId,
+                $this->moduleId,
+            )
         );
 
         $this->populateAddressDataUpdateDTO();
@@ -102,8 +114,9 @@ class AddressDataUpdateServiceTest extends TestCase
             ->method('findByUserId')
             ->willReturn(
                 MemberLists::getMemberDataView(
-                    Collection::make([(object) ([Church::ID => $this->churchId])]),
-                    ProfileUniqueNameEnum::ASSISTANT->value
+                    $this->churches,
+                    $this->modules,
+                    ProfileUniqueNameEnum::ASSISTANT->value,
                 )
             );
 
@@ -140,7 +153,10 @@ class AddressDataUpdateServiceTest extends TestCase
         );
 
         $addressDataUpdateService->setAuthenticatedUser(
-            MemberLists::getMemberUserLogged($this->churchId)
+            MemberLists::getMemberUserLogged(
+                $this->churchId,
+                $this->moduleId,
+            )
         );
 
         $this->populateAddressDataUpdateDTO();
@@ -150,8 +166,9 @@ class AddressDataUpdateServiceTest extends TestCase
             ->method('findByUserId')
             ->willReturn(
                 MemberLists::getMemberDataView(
-                    Collection::make([(object) ([Church::ID => $this->churchId])]),
-                    ProfileUniqueNameEnum::ASSISTANT->value
+                    $this->churches,
+                    $this->modules,
+                    ProfileUniqueNameEnum::ASSISTANT->value,
                 )
             );
 
@@ -185,7 +202,10 @@ class AddressDataUpdateServiceTest extends TestCase
         );
 
         $addressDataUpdateService->setAuthenticatedUser(
-            MemberLists::getMemberUserLogged($this->churchId)
+            MemberLists::getMemberUserLogged(
+                $this->churchId,
+                $this->moduleId,
+            )
         );
 
         $this->populateAddressDataUpdateDTO();
@@ -220,7 +240,10 @@ class AddressDataUpdateServiceTest extends TestCase
         );
 
         $addressDataUpdateService->setAuthenticatedUser(
-            MemberLists::getMemberUserLogged($this->churchId)
+            MemberLists::getMemberUserLogged(
+                $this->churchId,
+                $this->moduleId,
+            )
         );
 
         $this->populateAddressDataUpdateDTO();
@@ -230,8 +253,9 @@ class AddressDataUpdateServiceTest extends TestCase
             ->method('findByUserId')
             ->willReturn(
                 MemberLists::getMemberDataView(
-                    Collection::make([(object) ([Church::ID => $this->churchId])]),
-                    ProfileUniqueNameEnum::ADMIN_CHURCH->value
+                    $this->churches,
+                    $this->modules,
+                    ProfileUniqueNameEnum::ADMIN_CHURCH->value,
                 )
             );
 
@@ -260,7 +284,10 @@ class AddressDataUpdateServiceTest extends TestCase
         );
 
         $addressDataUpdateService->setAuthenticatedUser(
-            MemberLists::getMemberUserLogged(Uuid::uuid4Generate())
+            MemberLists::getMemberUserLogged(
+                Uuid::uuid4Generate(),
+                $this->moduleId,
+            )
         );
 
         $this->populateAddressDataUpdateDTO();
@@ -271,7 +298,8 @@ class AddressDataUpdateServiceTest extends TestCase
             ->willReturn(
                 MemberLists::getMemberDataView(
                     Collection::make([(object) ([Church::ID => Uuid::uuid4Generate()])]),
-                    ProfileUniqueNameEnum::ASSISTANT->value
+                    $this->modules,
+                    ProfileUniqueNameEnum::ASSISTANT->value,
                 )
             );
 

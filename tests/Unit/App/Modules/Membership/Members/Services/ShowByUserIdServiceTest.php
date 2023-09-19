@@ -3,6 +3,7 @@
 namespace Tests\Unit\App\Modules\Membership\Members\Services;
 
 use App\Exceptions\AppException;
+use App\Features\Module\Modules\Models\Module;
 use App\Features\Users\Profiles\Enums\ProfileUniqueNameEnum;
 use App\Modules\Membership\Church\Models\Church;
 use App\Modules\Membership\Members\Contracts\MembersRepositoryInterface;
@@ -26,6 +27,10 @@ class ShowByUserIdServiceTest extends TestCase
     private MockObject|MemberResponse $memberResponseMock;
 
     private string $churchId;
+    private string $moduleId;
+
+    private mixed $churches;
+    private mixed $modules;
 
     protected function setUp(): void
     {
@@ -35,7 +40,11 @@ class ShowByUserIdServiceTest extends TestCase
         $this->membersFiltersDtoMock = $this->createMock(MembersFiltersDTO::class);
         $this->memberResponseMock    = $this->createMock(MemberResponse::class);
 
-        $this->churchId  = Uuid::uuid4Generate();
+        $this->churchId = Uuid::uuid4Generate();
+        $this->moduleId = Uuid::uuid4Generate();
+
+        $this->churches = Collection::make([(object) ([Church::ID => $this->churchId])]);
+        $this->modules  = Collection::make([(object) ([Module::ID => $this->moduleId])]);
     }
 
     public function getShowByUserIdService(): ShowByUserIdService
@@ -45,7 +54,12 @@ class ShowByUserIdServiceTest extends TestCase
             $this->memberResponseMock
         );
 
-        $showByUserIdService->setAuthenticatedUser(MemberLists::getMemberUserLogged($this->churchId));
+        $showByUserIdService->setAuthenticatedUser(
+            MemberLists::getMemberUserLogged(
+                $this->churchId,
+                $this->moduleId,
+            )
+        );
 
         return $showByUserIdService;
     }
@@ -97,12 +111,13 @@ class ShowByUserIdServiceTest extends TestCase
         $this
             ->membersRepositoryMock
             ->method('findByUserId')
-            ->willReturn(MemberLists::getMemberDataView(
-                Collection::make([
-                    (object) ([Church::ID => $this->churchId])
-                ]),
-                ProfileUniqueNameEnum::ASSISTANT->value
-            ));
+            ->willReturn(
+                MemberLists::getMemberDataView(
+                    $this->churches,
+                    $this->modules,
+                    ProfileUniqueNameEnum::ASSISTANT->value,
+                )
+            );
 
         $userMember = $showByUserIdService->execute(Uuid::uuid4Generate());
 
@@ -129,12 +144,13 @@ class ShowByUserIdServiceTest extends TestCase
         $this
             ->membersRepositoryMock
             ->method('findByUserId')
-            ->willReturn(MemberLists::getMemberDataView(
-                Collection::make([
-                    (object) ([Church::ID => $this->churchId])
-                ]),
-                ProfileUniqueNameEnum::ADMIN_CHURCH->value
-            ));
+            ->willReturn(
+                MemberLists::getMemberDataView(
+                    $this->churches,
+                    $this->modules,
+                    ProfileUniqueNameEnum::ADMIN_CHURCH->value,
+                )
+            );
 
         $this->expectException(AppException::class);
         $this->expectExceptionCode(Response::HTTP_FORBIDDEN);
@@ -163,12 +179,13 @@ class ShowByUserIdServiceTest extends TestCase
         $this
             ->membersRepositoryMock
             ->method('findByUserId')
-            ->willReturn(MemberLists::getMemberDataView(
-                Collection::make([
-                    (object) ([Church::ID => Uuid::uuid4Generate()])
-                ]),
-                ProfileUniqueNameEnum::ASSISTANT->value
-            ));
+            ->willReturn(
+                MemberLists::getMemberDataView(
+                    Collection::make([(object) ([Church::ID => Uuid::uuid4Generate()])]),
+                    $this->modules,
+                    ProfileUniqueNameEnum::ASSISTANT->value,
+                )
+            );
 
         $this->expectException(AppException::class);
         $this->expectExceptionCode(Response::HTTP_FORBIDDEN);

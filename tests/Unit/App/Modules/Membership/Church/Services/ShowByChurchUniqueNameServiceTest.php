@@ -8,20 +8,18 @@ use App\Modules\Membership\Church\Repositories\ChurchRepository;
 use App\Modules\Membership\Church\Services\ShowByChurchUniqueNameService;
 use App\Shared\ACL\Policy;
 use App\Shared\Enums\RulesEnum;
-use Illuminate\Support\Facades\Auth;
+use App\Shared\Libraries\Uuid;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 use Tests\Unit\App\Resources\ChurchLists;
 use Tests\Unit\App\Resources\MemberLists;
 use Tymon\JWTAuth\Exceptions\UserNotDefinedException;
-use Tymon\JWTAuth\Facades\JWTAuth;
 
 class ShowByChurchUniqueNameServiceTest extends TestCase
 {
     private MockObject|ChurchRepositoryInterface $churchRepositoryMock;
-
-    private string $churchUniqueName;
+    private string $churchId;
 
     protected function setUp(): void
     {
@@ -29,7 +27,7 @@ class ShowByChurchUniqueNameServiceTest extends TestCase
 
         $this->churchRepositoryMock = $this->createMock(ChurchRepository::class);
 
-        $this->churchUniqueName = 'church-test-unique-name';
+        $this->churchId = Uuid::uuid4Generate();
     }
 
     public function getShowByChurchUniqueNameService(): ShowByChurchUniqueNameService
@@ -38,12 +36,17 @@ class ShowByChurchUniqueNameServiceTest extends TestCase
             $this->churchRepositoryMock
         );
 
-        $showByChurchUniqueNameService->setAuthenticatedUser(MemberLists::getMemberUserLogged(null, $this->churchUniqueName));
+        $showByChurchUniqueNameService->setAuthenticatedUser(
+            MemberLists::getMemberUserLogged(
+                $this->churchId,
+                Uuid::uuid4Generate()
+            )
+        );
 
         return $showByChurchUniqueNameService;
     }
 
-    public function dataProviderShowChurch(): array
+    public static function dataProviderShowChurch(): array
     {
         return [
             'By Admin Master Rule' => [RulesEnum::MEMBERSHIP_MODULE_CHURCH_ADMIN_MASTER_DETAILS_VIEW->value],
@@ -70,10 +73,12 @@ class ShowByChurchUniqueNameServiceTest extends TestCase
             ->churchRepositoryMock
             ->method('findByUniqueName')
             ->willReturn(
-                ChurchLists::showChurchByUniqueName($this->churchUniqueName)
+                ChurchLists::showChurch(
+                    $this->churchId
+                )
             );
 
-        $church = $showByChurchUniqueNameService->execute($this->churchUniqueName);
+        $church = $showByChurchUniqueNameService->execute('test');
 
         $this->assertIsObject($church);
     }
@@ -94,7 +99,7 @@ class ShowByChurchUniqueNameServiceTest extends TestCase
         $this->expectException(AppException::class);
         $this->expectExceptionCode(Response::HTTP_NOT_FOUND);
 
-        $showByChurchUniqueNameService->execute($this->churchUniqueName);
+        $showByChurchUniqueNameService->execute('test');
     }
 
     public function test_should_return_exception_if_user_tries_to_view_a_church_other_than_his()
@@ -109,13 +114,15 @@ class ShowByChurchUniqueNameServiceTest extends TestCase
             ->churchRepositoryMock
             ->method('findByUniqueName')
             ->willReturn(
-                ChurchLists::showChurchByUniqueName()
+                ChurchLists::showChurch(
+                    Uuid::uuid4Generate()
+                )
             );
 
         $this->expectException(AppException::class);
         $this->expectExceptionCode(Response::HTTP_FORBIDDEN);
 
-        $showByChurchUniqueNameService->execute($this->churchUniqueName);
+        $showByChurchUniqueNameService->execute('test');
     }
 
     public function test_should_return_exception_if_user_is_not_authorized()
@@ -131,6 +138,6 @@ class ShowByChurchUniqueNameServiceTest extends TestCase
         $this->expectException(AppException::class);
         $this->expectExceptionCode(Response::HTTP_FORBIDDEN);
 
-        $showByChurchUniqueNameService->execute($this->churchUniqueName);
+        $showByChurchUniqueNameService->execute('test');
     }
 }

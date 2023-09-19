@@ -3,6 +3,7 @@
 namespace Tests\Unit\App\Modules\Membership\Members\Services\Updates;
 
 use App\Exceptions\AppException;
+use App\Features\Module\Modules\Models\Module;
 use App\Features\Users\Profiles\Enums\ProfileUniqueNameEnum;
 use App\Modules\Membership\Church\Contracts\ChurchRepositoryInterface;
 use App\Modules\Membership\Church\Models\Church;
@@ -31,7 +32,11 @@ class ChurchDataUpdateServiceTest extends TestCase
     protected MockObject|ChurchRepositoryInterface  $churchRepositoryMock;
     protected MockObject|UpdateMemberResponse       $updateMemberResponseMock;
 
-    protected string $churchId;
+    private string $churchId;
+    private string $moduleId;
+
+    private mixed $churches;
+    private mixed $modules;
 
     protected function setUp(): void
     {
@@ -42,6 +47,10 @@ class ChurchDataUpdateServiceTest extends TestCase
         $this->updateMemberResponseMock = $this->createMock(UpdateMemberResponse::class);
 
         $this->churchId = Uuid::uuid4Generate();
+        $this->moduleId = Uuid::uuid4Generate();
+
+        $this->churches = Collection::make([(object) ([Church::ID => $this->churchId])]);
+        $this->modules  = Collection::make([(object) ([Module::ID => $this->moduleId])]);
     }
 
     public function getChurchDataUpdateService(): ChurchDataUpdateService
@@ -71,7 +80,10 @@ class ChurchDataUpdateServiceTest extends TestCase
         );
 
         $churchDataUpdateService->setAuthenticatedUser(
-            MemberLists::getMemberUserLogged($this->churchId)
+            MemberLists::getMemberUserLogged(
+                $this->churchId,
+                $this->moduleId,
+            )
         );
 
         $this
@@ -79,8 +91,9 @@ class ChurchDataUpdateServiceTest extends TestCase
             ->method('findByUserId')
             ->willReturn(
                 MemberLists::getMemberDataView(
-                    Collection::make([(object) ([Church::ID => $this->churchId])]),
-                    ProfileUniqueNameEnum::ASSISTANT->value
+                    $this->churches,
+                    $this->modules,
+                    ProfileUniqueNameEnum::ASSISTANT->value,
                 )
             );
 
@@ -114,7 +127,10 @@ class ChurchDataUpdateServiceTest extends TestCase
         );
 
         $churchDataUpdateService->setAuthenticatedUser(
-            MemberLists::getMemberUserLogged($this->churchId)
+            MemberLists::getMemberUserLogged(
+                $this->churchId,
+                $this->moduleId,
+            )
         );
 
         $this
@@ -122,8 +138,9 @@ class ChurchDataUpdateServiceTest extends TestCase
             ->method('findByUserId')
             ->willReturn(
                 MemberLists::getMemberDataView(
-                    Collection::make([(object) ([Church::ID => $this->churchId])]),
-                    ProfileUniqueNameEnum::ASSISTANT->value
+                    $this->churches,
+                    $this->modules,
+                    ProfileUniqueNameEnum::ASSISTANT->value,
                 )
             );
 
@@ -159,7 +176,10 @@ class ChurchDataUpdateServiceTest extends TestCase
         );
 
         $churchDataUpdateService->setAuthenticatedUser(
-            MemberLists::getMemberUserLogged($this->churchId)
+            MemberLists::getMemberUserLogged(
+                $this->churchId,
+                $this->moduleId,
+            )
         );
 
         $this
@@ -185,7 +205,10 @@ class ChurchDataUpdateServiceTest extends TestCase
         );
 
         $churchDataUpdateService->setAuthenticatedUser(
-            MemberLists::getMemberUserLogged(Uuid::uuid4Generate())
+            MemberLists::getMemberUserLogged(
+                $this->churchId,
+                $this->moduleId,
+            )
         );
 
         $this
@@ -194,7 +217,8 @@ class ChurchDataUpdateServiceTest extends TestCase
             ->willReturn(
                 MemberLists::getMemberDataView(
                     Collection::make([(object) ([Church::ID => Uuid::uuid4Generate()])]),
-                    ProfileUniqueNameEnum::ASSISTANT->value
+                    $this->modules,
+                    ProfileUniqueNameEnum::ASSISTANT->value,
                 )
             );
 

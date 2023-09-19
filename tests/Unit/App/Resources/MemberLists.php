@@ -23,6 +23,7 @@ class MemberLists
 
     public static function getMemberDataView(
         Collection|null $churches = null,
+        Collection|null $modules = null,
         string $profileUniqueName = null,
         string $userId = null,
     ): object
@@ -49,12 +50,16 @@ class MemberLists
             MembersDataAliasEnum::ZIP_CODE => '00000000',
             MembersDataAliasEnum::CITY_DESCRIPTION => Uuid::uuid4Generate(),
             MembersDataAliasEnum::UF => 'RS',
-            'church' => !empty($churches) ? $churches : Collection::make()
+            'church' => !empty($churches) ? $churches : Collection::make(),
+            'user' => (object) ([
+                'module' => !empty($modules) ? $modules : Collection::make()
+            ]),
         ]);
     }
 
     public static function getMemberUserLogged(
         string $churchId = null,
+        string $moduleId = null,
         string $churchUniqueName = null,
         string $userId = null,
     ): object
@@ -123,9 +128,10 @@ class MemberLists
                     ])
                 ]),
             ]),
-            'module' => DatabaseCollection::make([
+
+            'module' => SupportCollection::make([
                 (object) ([
-                    Module::ID => Uuid::uuid4Generate(),
+                    Module::ID => is_null($moduleId) ? Uuid::uuid4Generate() : $moduleId,
                     Module::MODULE_DESCRIPTION => 'MEMBERSHIP',
                     Module::MODULE_UNIQUE_NAME => 'MEMBERSHIP',
                     Module::ACTIVE => true,

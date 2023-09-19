@@ -3,6 +3,7 @@
 namespace Tests\Unit\App\Modules\Membership\Members\Services\Updates;
 
 use App\Exceptions\AppException;
+use App\Features\Module\Modules\Models\Module;
 use App\Features\Users\Profiles\Contracts\ProfilesRepositoryInterface;
 use App\Features\Users\Profiles\Enums\ProfileUniqueNameEnum;
 use App\Features\Users\Profiles\Repositories\ProfilesRepository;
@@ -33,8 +34,11 @@ class ProfileDataUpdateServiceTest extends TestCase
     protected MockObject|UsersRepositoryInterface    $usersRepositoryMock;
     protected MockObject|ProfilesRepositoryInterface $profilesRepositoryMock;
 
-    protected string $churchId;
-    protected string $profileId;
+    private string $churchId;
+    private string $moduleId;
+    private string $profileId;
+    private mixed $churches;
+    private mixed $modules;
 
     protected function setUp(): void
     {
@@ -45,8 +49,12 @@ class ProfileDataUpdateServiceTest extends TestCase
         $this->profilesRepositoryMock   = $this->createMock(ProfilesRepository::class);
         $this->updateMemberResponseMock = $this->createMock(UpdateMemberResponse::class);
 
-        $this->churchId  = Uuid::uuid4Generate();
+        $this->churchId = Uuid::uuid4Generate();
+        $this->moduleId = Uuid::uuid4Generate();
         $this->profileId = Uuid::uuid4Generate();
+
+        $this->churches = Collection::make([(object) ([Church::ID => $this->churchId])]);
+        $this->modules  = Collection::make([(object) ([Module::ID => $this->moduleId])]);
     }
 
     public function getProfileDataUpdateService(): ProfileDataUpdateService
@@ -77,7 +85,10 @@ class ProfileDataUpdateServiceTest extends TestCase
         );
 
         $profileDataUpdateService->setAuthenticatedUser(
-            MemberLists::getMemberUserLogged($this->churchId)
+            MemberLists::getMemberUserLogged(
+                $this->churchId,
+                $this->moduleId,
+            )
         );
 
         $this
@@ -85,8 +96,9 @@ class ProfileDataUpdateServiceTest extends TestCase
             ->method('findByUserId')
             ->willReturn(
                 MemberLists::getMemberDataView(
-                    Collection::make([(object) ([Church::ID => $this->churchId])]),
-                    ProfileUniqueNameEnum::ASSISTANT->value
+                    $this->churches,
+                    $this->modules,
+                    ProfileUniqueNameEnum::ASSISTANT->value,
                 )
             );
 
@@ -121,7 +133,10 @@ class ProfileDataUpdateServiceTest extends TestCase
         );
 
         $profileDataUpdateService->setAuthenticatedUser(
-            MemberLists::getMemberUserLogged($this->churchId)
+            MemberLists::getMemberUserLogged(
+                $this->churchId,
+                $this->moduleId,
+            )
         );
 
         $this
@@ -129,8 +144,9 @@ class ProfileDataUpdateServiceTest extends TestCase
             ->method('findByUserId')
             ->willReturn(
                 MemberLists::getMemberDataView(
-                    Collection::make([(object) ([Church::ID => $this->churchId])]),
-                    ProfileUniqueNameEnum::ASSISTANT->value
+                    $this->churches,
+                    $this->modules,
+                    ProfileUniqueNameEnum::ASSISTANT->value,
                 )
             );
 
@@ -167,7 +183,10 @@ class ProfileDataUpdateServiceTest extends TestCase
         );
 
         $profileDataUpdateService->setAuthenticatedUser(
-            MemberLists::getMemberUserLogged($this->churchId)
+            MemberLists::getMemberUserLogged(
+                $this->churchId,
+                $this->moduleId,
+            )
         );
 
         $this
@@ -194,7 +213,10 @@ class ProfileDataUpdateServiceTest extends TestCase
         );
 
         $profileDataUpdateService->setAuthenticatedUser(
-            MemberLists::getMemberUserLogged(Uuid::uuid4Generate())
+            MemberLists::getMemberUserLogged(
+                $this->churchId,
+                $this->moduleId,
+            )
         );
 
         $this
@@ -203,7 +225,8 @@ class ProfileDataUpdateServiceTest extends TestCase
             ->willReturn(
                 MemberLists::getMemberDataView(
                     Collection::make([(object) ([Church::ID => Uuid::uuid4Generate()])]),
-                    ProfileUniqueNameEnum::ASSISTANT->value
+                    $this->modules,
+                    ProfileUniqueNameEnum::ASSISTANT->value,
                 )
             );
 

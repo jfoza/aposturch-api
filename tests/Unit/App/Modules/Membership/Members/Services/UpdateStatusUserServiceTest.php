@@ -3,6 +3,7 @@
 namespace Tests\Unit\App\Modules\Membership\Members\Services;
 
 use App\Exceptions\AppException;
+use App\Features\Module\Modules\Models\Module;
 use App\Features\Users\Profiles\Enums\ProfileUniqueNameEnum;
 use App\Features\Users\Users\Contracts\UsersRepositoryInterface;
 use App\Features\Users\Users\Repositories\UsersRepository;
@@ -28,6 +29,10 @@ class UpdateStatusUserServiceTest extends TestCase
     private MockObject|MembersRepositoryInterface $membersRepositoryMock;
 
     public string $userId;
+    private string $churchId;
+    private string $moduleId;
+
+    private mixed $modules;
 
     protected function setUp(): void
     {
@@ -37,6 +42,9 @@ class UpdateStatusUserServiceTest extends TestCase
         $this->membersRepositoryMock = $this->createMock(MembersRepository::class);
 
         $this->userId = Uuid::uuid4Generate();
+
+        $this->moduleId = Uuid::uuid4Generate();
+        $this->modules  = Collection::make([(object) ([Module::ID => $this->moduleId])]);
     }
 
     public function getUpdateStatusMemberService(): UpdateStatusMemberService
@@ -62,7 +70,12 @@ class UpdateStatusUserServiceTest extends TestCase
 
         $updateStatusMemberService = $this->getUpdateStatusMemberService();
 
-        $updateStatusMemberService->setAuthenticatedUser(MemberLists::getMemberUserLogged($churchId));
+        $updateStatusMemberService->setAuthenticatedUser(
+            MemberLists::getMemberUserLogged(
+                $churchId,
+                $this->moduleId,
+            )
+        );
 
         $updateStatusMemberService->setPolicy(
             new Policy([$rule])
@@ -85,7 +98,8 @@ class UpdateStatusUserServiceTest extends TestCase
             ->willReturn(
                 MemberLists::getMemberDataView(
                     $church,
-                    ProfileUniqueNameEnum::ASSISTANT->value
+                    $this->modules,
+                    ProfileUniqueNameEnum::ASSISTANT->value,
                 )
             );
 
@@ -109,7 +123,12 @@ class UpdateStatusUserServiceTest extends TestCase
 
         $updateStatusMemberService = $this->getUpdateStatusMemberService();
 
-        $updateStatusMemberService->setAuthenticatedUser(MemberLists::getMemberUserLogged($churchId));
+        $updateStatusMemberService->setAuthenticatedUser(
+            MemberLists::getMemberUserLogged(
+                $churchId,
+                $this->moduleId,
+            )
+        );
 
         $updateStatusMemberService->setPolicy(
             new Policy([$rule])
@@ -132,7 +151,8 @@ class UpdateStatusUserServiceTest extends TestCase
             ->willReturn(
                 MemberLists::getMemberDataView(
                     $church,
-                    ProfileUniqueNameEnum::ADMIN_CHURCH->value
+                    $this->modules,
+                    ProfileUniqueNameEnum::ADMIN_CHURCH->value,
                 )
             );
 
@@ -157,7 +177,10 @@ class UpdateStatusUserServiceTest extends TestCase
         $updateStatusMemberService = $this->getUpdateStatusMemberService();
 
         $updateStatusMemberService->setAuthenticatedUser(
-            MemberLists::getMemberUserLogged()
+            MemberLists::getMemberUserLogged(
+                Uuid::uuid4Generate(),
+                $this->moduleId
+            )
         );
 
         $updateStatusMemberService->setPolicy(
@@ -181,7 +204,8 @@ class UpdateStatusUserServiceTest extends TestCase
             ->willReturn(
                 MemberLists::getMemberDataView(
                     $church,
-                    ProfileUniqueNameEnum::ASSISTANT->value
+                    $this->modules,
+                    ProfileUniqueNameEnum::ASSISTANT->value,
                 )
             );
 

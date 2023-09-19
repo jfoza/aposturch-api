@@ -13,6 +13,7 @@ class Credentials
     const ASSISTANT_1     = 'assistant1@email.com';
     const ASSISTANT_2     = 'assistant2@email.com';
     const ASSISTANT_3     = 'assistant3@email.com';
+    const ASSISTANT_4     = 'assistant4@email.com';
 
     const PHONE_ALREADY_EXISTS = '51999999999';
 
