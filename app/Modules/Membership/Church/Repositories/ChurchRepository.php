@@ -2,7 +2,7 @@
 
 namespace App\Modules\Membership\Church\Repositories;
 
-use App\Features\Base\Traits\BuilderTrait;
+use App\Base\Traits\BuilderTrait;
 use App\Modules\Membership\Church\Contracts\ChurchRepositoryInterface;
 use App\Modules\Membership\Church\DTO\ChurchDTO;
 use App\Modules\Membership\Church\DTO\ChurchFiltersDTO;

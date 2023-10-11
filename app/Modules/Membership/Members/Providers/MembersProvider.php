@@ -2,7 +2,7 @@
 
 namespace App\Modules\Membership\Members\Providers;
 
-use App\Features\Base\Providers\AbstractServiceProvider;
+use App\Base\Providers\AbstractServiceProvider;
 use App\Modules\Membership\Members\Contracts\CreateMemberServiceInterface;
 use App\Modules\Membership\Members\Contracts\FindAllMembersServiceInterface;
 use App\Modules\Membership\Members\Contracts\MembersRepositoryInterface;

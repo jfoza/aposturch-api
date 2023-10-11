@@ -2,12 +2,11 @@
 
 namespace App\Modules\Membership\Church\Services;
 
+use App\Base\Services\AuthenticatedService;
 use App\Exceptions\AppException;
-use App\Features\Base\Services\AuthenticatedService;
 use App\Modules\Membership\Church\Contracts\ChurchRepositoryInterface;
 use App\Modules\Membership\Church\Contracts\FindAllChurchesByUserLoggedServiceInterface;
 use App\Modules\Membership\Church\DTO\ChurchFiltersDTO;
-use App\Modules\Membership\Church\Models\Church;
 use App\Shared\Enums\RulesEnum;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;

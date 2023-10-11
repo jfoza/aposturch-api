@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Features\Base\Providers;
+namespace App\Base\Providers;
 
-use App\Features\Base\Traits\PolicyGenerationTrait;
+use App\Base\Traits\PolicyGenerationTrait;
 use Illuminate\Support\ServiceProvider;
 
 abstract class AbstractBusinessProvider extends ServiceProvider

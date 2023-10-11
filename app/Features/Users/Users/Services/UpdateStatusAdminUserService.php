@@ -2,10 +2,10 @@
 
 namespace App\Features\Users\Users\Services;
 
+use App\Base\Services\AuthenticatedService;
+use App\Base\Traits\EnvironmentException;
+use App\Base\Validations\ProfileHierarchyValidation;
 use App\Exceptions\AppException;
-use App\Features\Base\Services\AuthenticatedService;
-use App\Features\Base\Traits\EnvironmentException;
-use App\Features\Base\Validations\ProfileHierarchyValidation;
 use App\Features\Users\Profiles\Enums\ProfileUniqueNameEnum;
 use App\Features\Users\Profiles\Models\Profile;
 use App\Features\Users\Users\Contracts\UsersRepositoryInterface;

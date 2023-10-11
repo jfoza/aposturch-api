@@ -2,7 +2,7 @@
 
 namespace App\Features\Users\ProfilesUsers\Infra\Models;
 
-use App\Features\Base\Infra\Models\Register;
+use App\Base\Infra\Models\Register;
 
 class ProfileUser extends Register
 {

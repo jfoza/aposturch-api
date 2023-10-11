@@ -2,7 +2,7 @@
 
 namespace App\Features\Users\Profiles\Models;
 
-use App\Features\Base\Infra\Models\Register;
+use App\Base\Infra\Models\Register;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class ProfileType extends Register

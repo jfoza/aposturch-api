@@ -2,8 +2,8 @@
 
 namespace App\Features\Users\AdminUsers\Services;
 
+use App\Base\Services\AuthenticatedService;
 use App\Exceptions\AppException;
-use App\Features\Base\Services\AuthenticatedService;
 use App\Features\Users\AdminUsers\Contracts\AdminUsersRepositoryInterface;
 use App\Features\Users\AdminUsers\Contracts\FindAllAdminUsersServiceInterface;
 use App\Features\Users\AdminUsers\DTO\AdminUsersFiltersDTO;

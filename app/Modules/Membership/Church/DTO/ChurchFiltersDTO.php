@@ -2,7 +2,7 @@
 
 namespace App\Modules\Membership\Church\DTO;
 
-use App\Features\Base\DTO\FiltersDTO;
+use App\Base\DTO\FiltersDTO;
 
 class ChurchFiltersDTO extends FiltersDTO
 {

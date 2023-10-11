@@ -2,7 +2,7 @@
 
 namespace App\Features\Users\AdminUsers\Repositories;
 
-use App\Features\Base\Traits\BuilderTrait;
+use App\Base\Traits\BuilderTrait;
 use App\Features\Users\AdminUsers\Contracts\AdminUsersRepositoryInterface;
 use App\Features\Users\AdminUsers\DTO\AdminUsersFiltersDTO;
 use App\Features\Users\AdminUsers\Models\AdminUser;

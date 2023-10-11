@@ -2,8 +2,8 @@
 
 namespace App\Modules\Membership\Members\Services\Updates;
 
+use App\Base\Traits\EnvironmentException;
 use App\Exceptions\AppException;
-use App\Features\Base\Traits\EnvironmentException;
 use App\Features\Persons\Contracts\PersonsRepositoryInterface;
 use App\Features\Users\Profiles\Enums\ProfileUniqueNameEnum;
 use App\Features\Users\Users\Contracts\UsersRepositoryInterface;

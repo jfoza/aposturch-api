@@ -2,7 +2,7 @@
 
 namespace App\Features\Users\ForgotPassword\Requests;
 
-use App\Features\Base\Http\Requests\FormRequest;
+use App\Base\Http\Requests\FormRequest;
 
 class ResetPasswordRequest extends FormRequest
 {

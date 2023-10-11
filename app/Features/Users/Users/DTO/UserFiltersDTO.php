@@ -2,7 +2,7 @@
 
 namespace App\Features\Users\Users\DTO;
 
-use App\Features\Base\DTO\FiltersDTO;
+use App\Base\DTO\FiltersDTO;
 
 class UserFiltersDTO extends FiltersDTO
 {

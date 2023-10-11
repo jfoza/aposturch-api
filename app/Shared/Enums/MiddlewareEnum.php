@@ -6,6 +6,7 @@ enum MiddlewareEnum
 {
     const JWT_AUTH            = 'jwt.auth';
     const ACTIVE_USER         = 'active.user';
+    const USER_CHECK          = 'user.check';
     const UUID                = 'uuid';
     const CODE                = 'forgot.password.code';
     const CNPJ                = 'cnpj';

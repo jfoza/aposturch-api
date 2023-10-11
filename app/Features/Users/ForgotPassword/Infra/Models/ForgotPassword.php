@@ -2,7 +2,7 @@
 
 namespace App\Features\Users\ForgotPassword\Infra\Models;
 
-use App\Features\Base\Infra\Models\Register;
+use App\Base\Infra\Models\Register;
 use App\Features\Users\Users\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;

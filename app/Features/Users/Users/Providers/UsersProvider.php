@@ -2,7 +2,7 @@
 
 namespace App\Features\Users\Users\Providers;
 
-use App\Features\Base\Providers\AbstractServiceProvider;
+use App\Base\Providers\AbstractServiceProvider;
 use App\Features\Users\AdminUsers\Contracts\ShowAuthenticatedUserServiceInterface;
 use App\Features\Users\Users\Contracts\UserEmailAlreadyExistsServiceInterface;
 use App\Features\Users\Users\Contracts\UsersRepositoryInterface;

@@ -8,6 +8,7 @@ create table "users".sessions
     final_date timestamp,
     token text not null,
     ip_address inet not null,
+    active boolean default true,
     created_at timestamp default now() not null,
     updated_at timestamp default now() not null
 );

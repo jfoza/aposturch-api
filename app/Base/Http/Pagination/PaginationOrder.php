@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Features\Base\Http\Pagination;
+namespace App\Base\Http\Pagination;
 
 class PaginationOrder
 {

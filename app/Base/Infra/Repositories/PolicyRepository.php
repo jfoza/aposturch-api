@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Features\Base\Infra\Repositories;
+namespace App\Base\Infra\Repositories;
 
 use App\Features\Users\ModulesRules\Infra\Models\ModuleRule;
 use App\Features\Users\Profiles\Models\Profile;

@@ -2,8 +2,8 @@
 
 namespace App\Modules\Membership\Church\Services;
 
+use App\Base\Services\AuthenticatedService;
 use App\Exceptions\AppException;
-use App\Features\Base\Services\AuthenticatedService;
 use App\Modules\Membership\Church\Contracts\ChurchRepositoryInterface;
 use App\Modules\Membership\Church\Contracts\ShowByChurchIdServiceInterface;
 use App\Modules\Membership\Church\Validations\ChurchValidations;

@@ -2,7 +2,7 @@
 
 namespace App\Modules\Membership\ChurchesMembers\Models;
 
-use App\Features\Base\Infra\Models\Register;
+use App\Base\Infra\Models\Register;
 
 class ChurchMember extends Register
 {

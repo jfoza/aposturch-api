@@ -2,8 +2,8 @@
 
 namespace App\Modules\Membership\Members\Services\Updates;
 
+use App\Base\Traits\EnvironmentException;
 use App\Exceptions\AppException;
-use App\Features\Base\Traits\EnvironmentException;
 use App\Features\City\Cities\Contracts\CityRepositoryInterface;
 use App\Features\City\Cities\Validations\CityValidations;
 use App\Features\Persons\Contracts\PersonsRepositoryInterface;

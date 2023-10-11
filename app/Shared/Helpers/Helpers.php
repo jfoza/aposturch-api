@@ -8,7 +8,7 @@ class Helpers
 {
     public static function onlyNumbers(string $value = null): string|null
     {
-        return isset($value) && !empty($value)
+        return !empty($value)
             ? preg_replace('/\D/is', '', $value)
             : null;
     }

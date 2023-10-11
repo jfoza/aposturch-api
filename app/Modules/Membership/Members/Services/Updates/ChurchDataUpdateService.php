@@ -2,8 +2,9 @@
 
 namespace App\Modules\Membership\Members\Services\Updates;
 
+use App\Base\Traits\AutomaticLogoutTrait;
+use App\Base\Traits\EnvironmentException;
 use App\Exceptions\AppException;
-use App\Features\Base\Traits\EnvironmentException;
 use App\Features\Users\Profiles\Enums\ProfileUniqueNameEnum;
 use App\Modules\Membership\Church\Contracts\ChurchRepositoryInterface;
 use App\Modules\Membership\Church\Validations\ChurchValidations;
@@ -17,6 +18,8 @@ use Exception;
 
 class ChurchDataUpdateService extends MembersBaseService implements ChurchDataUpdateServiceInterface
 {
+    use AutomaticLogoutTrait;
+
     private string $userId;
     private string $churchId;
     private mixed $userMember;
@@ -107,6 +110,8 @@ class ChurchDataUpdateService extends MembersBaseService implements ChurchDataUp
 
             $this->updateMemberResponse->id       = $this->userId;
             $this->updateMemberResponse->churchId = $this->churchId;
+
+            $this->invalidateSessionsUser($this->userId);
 
             Transaction::commit();
 

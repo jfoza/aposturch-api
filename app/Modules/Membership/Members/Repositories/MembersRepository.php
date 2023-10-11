@@ -2,7 +2,7 @@
 
 namespace App\Modules\Membership\Members\Repositories;
 
-use App\Features\Base\Traits\BuilderTrait;
+use App\Base\Traits\BuilderTrait;
 use App\Features\Users\Profiles\Models\Profile;
 use App\Features\Users\Users\Models\User;
 use App\Modules\Membership\Church\Models\Church;

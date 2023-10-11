@@ -2,13 +2,13 @@
 
 namespace App\Features\Users\AdminUsers\Providers;
 
-use App\Features\Base\Providers\AbstractServiceProvider;
+use App\Base\Providers\AbstractServiceProvider;
 use App\Features\Users\AdminUsers\Contracts\AdminUsersRepositoryInterface;
 use App\Features\Users\AdminUsers\Contracts\CreateAdminUserServiceInterface;
 use App\Features\Users\AdminUsers\Contracts\FindAllAdminUsersServiceInterface;
 use App\Features\Users\AdminUsers\Contracts\ShowAdminUserServiceInterface;
-use App\Features\Users\AdminUsers\Contracts\ShowCountAdminUsersByProfileInterface;
 use App\Features\Users\AdminUsers\Contracts\ShowAuthenticatedUserServiceInterface;
+use App\Features\Users\AdminUsers\Contracts\ShowCountAdminUsersByProfileInterface;
 use App\Features\Users\AdminUsers\Contracts\UpdateAdminUserServiceInterface;
 use App\Features\Users\AdminUsers\Repositories\AdminUsersRepository;
 use App\Features\Users\AdminUsers\Services\CreateAdminUserService;

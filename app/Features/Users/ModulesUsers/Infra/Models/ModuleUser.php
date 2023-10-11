@@ -2,7 +2,7 @@
 
 namespace App\Features\Users\ModulesUsers\Infra\Models;
 
-use App\Features\Base\Infra\Models\Register;
+use App\Base\Infra\Models\Register;
 
 class ModuleUser extends Register
 {

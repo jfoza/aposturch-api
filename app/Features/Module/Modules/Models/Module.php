@@ -2,7 +2,7 @@
 
 namespace App\Features\Module\Modules\Models;
 
-use App\Features\Base\Infra\Models\Register;
+use App\Base\Infra\Models\Register;
 use App\Features\Users\ModulesUsers\Infra\Models\ModuleUser;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 

@@ -2,7 +2,7 @@
 
 namespace App\Features\Users\Users\Models;
 
-use App\Features\Base\Infra\Models\Register;
+use App\Base\Infra\Models\Register;
 use App\Features\General\Images\Models\Image;
 use App\Features\Module\Modules\Models\Module;
 use App\Features\Persons\Infra\Models\Person;

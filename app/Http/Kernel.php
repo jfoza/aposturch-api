@@ -71,5 +71,6 @@ class Kernel extends HttpKernel
         'module.access' => \App\Http\Middleware\ModuleAccessValidation::class,
         'church.unique.name' => \App\Http\Middleware\ChurchUniqueName::class,
         'profile.unique.name' => \App\Http\Middleware\ValidateProfileUniqueName::class,
+        'user.check' => \App\Http\Middleware\UserCheck::class,
     ];
 }

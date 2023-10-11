@@ -2,9 +2,8 @@
 
 namespace App\Http\Middleware;
 
+use App\Base\Traits\PolicyGenerationTrait;
 use App\Exceptions\AppException;
-use App\Features\Base\Traits\PolicyGenerationTrait;
-use App\Shared\Enums\MessagesEnum;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;

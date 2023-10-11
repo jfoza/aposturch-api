@@ -2,8 +2,8 @@
 
 namespace App\Features\Users\Profiles\Services;
 
+use App\Base\Services\AuthenticatedService;
 use App\Exceptions\AppException;
-use App\Features\Base\Services\AuthenticatedService;
 use App\Features\Users\Profiles\Contracts\FindAllProfilesByUserAbilityServiceInterface;
 use App\Features\Users\Profiles\Contracts\ProfilesRepositoryInterface;
 use App\Features\Users\Profiles\DTO\ProfilesFiltersDTO;

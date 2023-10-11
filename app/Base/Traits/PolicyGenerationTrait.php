@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Features\Base\Traits;
+namespace App\Base\Traits;
 
-use App\Features\Base\Infra\Repositories\PolicyRepository;
+use App\Base\Infra\Repositories\PolicyRepository;
 use App\Features\Module\Modules\Models\Module;
 use App\Shared\ACL\Policy;
 use App\Shared\Cache\PolicyCache;

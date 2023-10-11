@@ -2,8 +2,9 @@
 
 namespace App\Modules\Membership\Members\Services\Updates;
 
+use App\Base\Traits\AutomaticLogoutTrait;
+use App\Base\Traits\EnvironmentException;
 use App\Exceptions\AppException;
-use App\Features\Base\Traits\EnvironmentException;
 use App\Features\Users\Profiles\Enums\ProfileUniqueNameEnum;
 use App\Features\Users\Users\Contracts\UsersRepositoryInterface;
 use App\Modules\Membership\Members\Contracts\MembersRepositoryInterface;
@@ -11,13 +12,14 @@ use App\Modules\Membership\Members\Contracts\Updates\PasswordDataUpdateServiceIn
 use App\Modules\Membership\Members\Responses\UpdateMemberResponse;
 use App\Modules\Membership\Members\Services\MembersBaseService;
 use App\Shared\Enums\RulesEnum;
-use App\Shared\Utils\Auth;
 use App\Shared\Utils\Hash;
 use App\Shared\Utils\Transaction;
 use Exception;
 
 class PasswordDataUpdateService extends MembersBaseService implements PasswordDataUpdateServiceInterface
 {
+    use AutomaticLogoutTrait;
+
     private string $userId;
     private string $password;
 
@@ -131,10 +133,7 @@ class PasswordDataUpdateService extends MembersBaseService implements PasswordDa
 
             $this->updateMemberResponse->id = $this->userId;
 
-            if($this->userPayloadIsEqualsAuthUser($this->userId))
-            {
-                Auth::logout();
-            }
+            $this->invalidateSessionsUser($this->userId);
 
             Transaction::commit();
 

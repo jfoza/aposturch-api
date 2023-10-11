@@ -3,7 +3,7 @@
 namespace App\Features\City\States\Models;
 
 
-use App\Features\Base\Infra\Models\Register;
+use App\Base\Infra\Models\Register;
 
 class State extends Register
 {

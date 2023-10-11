@@ -2,7 +2,7 @@
 
 namespace App\Features\Users\Users\Requests;
 
-use App\Features\Base\Http\Requests\FormRequest;
+use App\Base\Http\Requests\FormRequest;
 
 class PasswordRequest extends FormRequest
 {

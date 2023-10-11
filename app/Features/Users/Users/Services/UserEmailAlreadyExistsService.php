@@ -2,8 +2,8 @@
 
 namespace App\Features\Users\Users\Services;
 
+use App\Base\Services\AuthenticatedService;
 use App\Exceptions\AppException;
-use App\Features\Base\Services\AuthenticatedService;
 use App\Features\Users\Users\Contracts\UserEmailAlreadyExistsServiceInterface;
 use App\Features\Users\Users\Contracts\UsersRepositoryInterface;
 use App\Shared\Enums\MessagesEnum;

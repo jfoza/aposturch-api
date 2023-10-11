@@ -2,8 +2,8 @@
 
 namespace App\Features\ZipCode\Http\Requests;
 
+use App\Base\Http\Requests\FormRequest;
 use App\Shared\Rules\ZipCodeRule;
-use App\Features\Base\Http\Requests\FormRequest;
 
 class ZipCodeRequest extends FormRequest
 {

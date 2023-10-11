@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Features\Base\DTO;
+namespace App\Base\DTO;
 
-use App\Features\Base\Http\Pagination\PaginationOrder;
+use App\Base\Http\Pagination\PaginationOrder;
 
 class FiltersDTO
 {

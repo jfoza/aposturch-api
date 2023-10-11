@@ -2,8 +2,8 @@
 
 namespace App\Modules\Membership\Church\Providers;
 
-use App\Features\Base\Providers\AbstractServiceProvider;
-use App\Features\Base\Traits\PolicyGenerationTrait;
+use App\Base\Providers\AbstractServiceProvider;
+use App\Base\Traits\PolicyGenerationTrait;
 use App\Modules\Membership\Church\Contracts\ChurchRepositoryInterface;
 use App\Modules\Membership\Church\Contracts\ChurchUploadImageServiceInterface;
 use App\Modules\Membership\Church\Contracts\CreateChurchServiceInterface;

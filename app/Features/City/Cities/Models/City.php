@@ -2,7 +2,7 @@
 
 namespace App\Features\City\Cities\Models;
 
-use App\Features\Base\Infra\Models\Register;
+use App\Base\Infra\Models\Register;
 use App\Features\Persons\Infra\Models\Person;
 use App\Modules\Membership\Church\Models\Church;
 use Illuminate\Database\Eloquent\Relations\HasMany;

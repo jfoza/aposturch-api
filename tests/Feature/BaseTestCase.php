@@ -68,7 +68,7 @@ class BaseTestCase extends TestCase
 
             $token = Auth::generateAccessToken($user->id);
 
-            $this->authorizationBearer = ['Authorization' => "Bearer {$token}"];
+            $this->authorizationBearer = ['Authorization' => "Bearer $token"];
         }
     }
 }

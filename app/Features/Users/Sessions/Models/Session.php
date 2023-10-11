@@ -2,7 +2,7 @@
 
 namespace App\Features\Users\Sessions\Models;
 
-use App\Features\Base\Infra\Models\Register;
+use App\Base\Infra\Models\Register;
 use App\Features\Users\Users\Models\User;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -14,6 +14,7 @@ class Session extends Register
     const FINAL_DATE   = 'final_date';
     const TOKEN        = 'token';
     const IP_ADDRESS   = 'ip_address';
+    const ACTIVE       = 'active';
 
     protected $table = 'users.sessions';
 
@@ -28,6 +29,7 @@ class Session extends Register
         self::FINAL_DATE,
         self::TOKEN,
         self::IP_ADDRESS,
+        self::ACTIVE,
     ];
 
     public function user (): BelongsTo

@@ -2,7 +2,7 @@
 
 namespace App\Modules\Membership\Members\Requests;
 
-use App\Features\Base\Http\Requests\FormRequest;
+use App\Base\Http\Requests\FormRequest;
 
 class MemberIdRequest extends FormRequest
 {

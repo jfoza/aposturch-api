@@ -2,8 +2,7 @@
 
 namespace App\Modules\Membership\Church\Requests;
 
-use App\Features\Base\Http\Requests\FormRequest;
-use App\Shared\Rules\ManyUuidv4Rule;
+use App\Base\Http\Requests\FormRequest;
 use App\Shared\Rules\StatesRule;
 use App\Shared\Rules\Uuid4Rule;
 

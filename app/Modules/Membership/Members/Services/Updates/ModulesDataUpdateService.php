@@ -2,8 +2,9 @@
 
 namespace App\Modules\Membership\Members\Services\Updates;
 
+use App\Base\Traits\AutomaticLogoutTrait;
+use App\Base\Traits\EnvironmentException;
 use App\Exceptions\AppException;
-use App\Features\Base\Traits\EnvironmentException;
 use App\Features\Module\Modules\Contracts\ModulesRepositoryInterface;
 use App\Features\Module\Modules\Validations\ModulesValidations;
 use App\Features\Users\Profiles\Enums\ProfileUniqueNameEnum;
@@ -18,6 +19,8 @@ use Exception;
 
 class ModulesDataUpdateService extends MembersBaseService implements ModulesDataUpdateServiceInterface
 {
+    use AutomaticLogoutTrait;
+
     private string $userId;
     private array $modulesId;
     private mixed $userMember;
@@ -110,6 +113,8 @@ class ModulesDataUpdateService extends MembersBaseService implements ModulesData
 
             $this->updateMemberResponse->id        = $this->userId;
             $this->updateMemberResponse->modulesId = $this->modulesId;
+
+            $this->invalidateSessionsUser($this->userId);
 
             Transaction::commit();
 

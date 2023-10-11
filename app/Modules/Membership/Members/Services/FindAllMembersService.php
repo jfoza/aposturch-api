@@ -2,9 +2,9 @@
 
 namespace App\Modules\Membership\Members\Services;
 
+use App\Base\Services\AuthenticatedService;
+use App\Base\Validations\ProfileHierarchyValidation;
 use App\Exceptions\AppException;
-use App\Features\Base\Services\AuthenticatedService;
-use App\Features\Base\Validations\ProfileHierarchyValidation;
 use App\Modules\Membership\Members\Contracts\FindAllMembersServiceInterface;
 use App\Modules\Membership\Members\Contracts\MembersRepositoryInterface;
 use App\Modules\Membership\Members\DTO\MembersFiltersDTO;

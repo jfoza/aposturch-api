@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Features\Base\Traits;
+namespace App\Base\Traits;
 
-use App\Features\Base\Http\Pagination\PaginationOrder;
-use App\Features\Base\Http\Requests\FormRequest;
+use App\Base\Http\Pagination\PaginationOrder;
+use App\Base\Http\Requests\FormRequest;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
+use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Support\Collection;
 
 trait BuilderTrait

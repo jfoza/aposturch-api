@@ -34,7 +34,7 @@ Route::prefix('/zip-code')
 Route::prefix('admin')
     ->middleware([
         MiddlewareEnum::JWT_AUTH,
-        MiddlewareEnum::ACTIVE_USER
+        MiddlewareEnum::USER_CHECK
     ])
     ->group(function () {
         Route::prefix('/users')

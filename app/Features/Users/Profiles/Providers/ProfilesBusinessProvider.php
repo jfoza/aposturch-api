@@ -2,7 +2,7 @@
 
 namespace App\Features\Users\Profiles\Providers;
 
-use App\Features\Base\Providers\AbstractServiceProvider;
+use App\Base\Providers\AbstractServiceProvider;
 use App\Features\Users\Profiles\Contracts\FindAllProfilesByUserAbilityServiceInterface;
 use App\Features\Users\Profiles\Contracts\ProfilesRepositoryInterface;
 use App\Features\Users\Profiles\Repositories\ProfilesRepository;

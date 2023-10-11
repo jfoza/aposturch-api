@@ -2,7 +2,7 @@
 
 namespace App\Features\Users\Rules\Infra\Repositories;
 
-use App\Features\Base\Infra\Repositories\PolicyRepository;
+use App\Base\Infra\Repositories\PolicyRepository;
 use App\Features\Users\Rules\Contracts\RulesRepositoryInterface;
 use App\Features\Users\Rules\Infra\Models\Rule;
 

@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Features\Base\Providers;
+namespace App\Base\Providers;
 
-use App\Features\Base\Traits\PolicyGenerationTrait;
+use App\Base\Traits\PolicyGenerationTrait;
 use App\Shared\Utils\Auth;
 use Illuminate\Support\ServiceProvider;
 

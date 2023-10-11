@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Features\Base\Services;
+namespace App\Base\Services;
 
 use App\Exceptions\AppException;
 use App\Features\Module\Modules\Models\Module;

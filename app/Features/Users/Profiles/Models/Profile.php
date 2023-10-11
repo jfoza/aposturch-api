@@ -2,7 +2,7 @@
 
 namespace App\Features\Users\Profiles\Models;
 
-use App\Features\Base\Infra\Models\Register;
+use App\Base\Infra\Models\Register;
 use App\Features\Users\ProfilesRules\Infra\Models\ProfileRule;
 use App\Features\Users\ProfilesUsers\Infra\Models\ProfileUser;
 use App\Features\Users\Rules\Infra\Models\Rule;

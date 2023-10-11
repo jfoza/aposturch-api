@@ -2,7 +2,7 @@
 
 namespace App\Features\Auth\Requests;
 
-use App\Features\Base\Http\Requests\FormRequest;
+use App\Base\Http\Requests\FormRequest;
 
 class SessionsRequest extends FormRequest
 {

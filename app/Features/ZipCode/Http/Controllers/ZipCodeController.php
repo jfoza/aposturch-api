@@ -2,7 +2,7 @@
 
 namespace App\Features\ZipCode\Http\Controllers;
 
-use App\Features\Base\Http\Controllers\Controller;
+use App\Base\Http\Controllers\Controller;
 use App\Features\ZipCode\Contracts\ZipCodeBusinessInterface;
 use App\Features\ZipCode\Http\Requests\ZipCodeRequest;
 use Illuminate\Http\JsonResponse;

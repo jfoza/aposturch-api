@@ -2,12 +2,12 @@
 
 namespace App\Modules\Membership\Members\Services\Updates;
 
+use App\Base\Traits\AutomaticLogoutTrait;
+use App\Base\Traits\EnvironmentException;
+use App\Base\Validations\ProfileHierarchyValidation;
 use App\Exceptions\AppException;
-use App\Features\Base\Traits\EnvironmentException;
-use App\Features\Base\Validations\ProfileHierarchyValidation;
 use App\Features\Users\Profiles\Contracts\ProfilesRepositoryInterface;
 use App\Features\Users\Profiles\Enums\ProfileUniqueNameEnum;
-use App\Features\Users\Profiles\Models\Profile;
 use App\Features\Users\Users\Contracts\UsersRepositoryInterface;
 use App\Features\Users\Users\Validations\UsersValidations;
 use App\Modules\Membership\Members\Contracts\MembersRepositoryInterface;
@@ -20,6 +20,7 @@ use Exception;
 
 class ProfileDataUpdateService extends MembersBaseService implements ProfileDataUpdateServiceInterface
 {
+    use AutomaticLogoutTrait;
 
     private string $userId;
     private string $profileId;
@@ -112,6 +113,8 @@ class ProfileDataUpdateService extends MembersBaseService implements ProfileData
 
             $this->updateMemberResponse->id        = $this->userId;
             $this->updateMemberResponse->profileId = $this->profileId;
+
+            $this->invalidateSessionsUser($this->userId);
 
             Transaction::commit();
 

@@ -2,7 +2,7 @@
 
 namespace App\Modules\Membership\Church\Models;
 
-use App\Features\Base\Infra\Models\Register;
+use App\Base\Infra\Models\Register;
 use App\Features\City\Cities\Models\City;
 use App\Features\General\Images\Models\Image;
 use App\Modules\Membership\ChurchesImages\Models\ChurchImage;

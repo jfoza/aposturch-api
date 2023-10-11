@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Features\Base\Validations;
+namespace App\Base\Validations;
 
 use App\Exceptions\AppException;
 use App\Features\Users\Profiles\Enums\ProfileUniqueNameEnum;

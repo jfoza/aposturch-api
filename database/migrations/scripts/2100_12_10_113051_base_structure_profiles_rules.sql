@@ -71,6 +71,7 @@ DO $$
         _rule36 uuid := uuid_generate_v4();
         _rule37 uuid := uuid_generate_v4();
         _rule38 uuid := uuid_generate_v4();
+        _rule39 uuid := uuid_generate_v4();
         _rule40 uuid := uuid_generate_v4();
         _rule41 uuid := uuid_generate_v4();
         _rule42 uuid := uuid_generate_v4();
@@ -178,6 +179,7 @@ DO $$
             (_rule36, 'MEMBERSHIP_MODULE_CHURCH_DETAILS_VIEW', 'MEMBERSHIP_MODULE_CHURCH_DETAILS', 'VIEW'),
             (_rule37, 'MEMBERSHIP_MODULE_CHURCH_INSERT',       'MEMBERSHIP_MODULE_CHURCH', 'INSERT'),
             (_rule38, 'MEMBERSHIP_MODULE_CHURCH_UPDATE',       'MEMBERSHIP_MODULE_CHURCH', 'UPDATE'),
+            (_rule39, 'MEMBERSHIP_MODULE_MEMBERS',             'MEMBERSHIP_MODULE_MEMBERS', 'VIEW'),
 
             (_rule40, 'MEMBERSHIP_MODULE_MEMBERS_DETAILS_VIEW', 'MEMBERSHIP_MODULE_MEMBERS_DETAILS', 'VIEW'),
             (_rule41, 'MEMBERSHIP_MODULE_MEMBERS_INSERT', 'MEMBERSHIP_MODULE_MEMBERS', 'INSERT'),
@@ -329,6 +331,7 @@ DO $$
             (_profile1, _rule36),
             (_profile1, _rule37),
             (_profile1, _rule38),
+            (_profile1, _rule39),
             (_profile1, _rule40),
             (_profile1, _rule41),
             (_profile1, _rule42),
@@ -369,6 +372,7 @@ DO $$
             (_profile2, _rule36),
             (_profile2, _rule37),
             (_profile2, _rule38),
+            (_profile2, _rule39),
             (_profile2, _rule40),
             (_profile2, _rule41),
             (_profile2, _rule42),
@@ -398,6 +402,7 @@ DO $$
             (_profile3, _rule35),
             (_profile3, _rule36),
             (_profile3, _rule38),
+            (_profile3, _rule39),
             (_profile3, _rule40),
             (_profile3, _rule41),
             (_profile3, _rule42),
@@ -422,6 +427,7 @@ DO $$
             (_profile4, _rule30),
             (_profile4, _rule35),
             (_profile4, _rule36),
+            (_profile4, _rule39),
             (_profile4, _rule40),
             (_profile4, _rule41),
             (_profile4, _rule42),
@@ -446,6 +452,7 @@ DO $$
             (_profile5, _rule32),
             (_profile5, _rule35),
             (_profile5, _rule36),
+            (_profile5, _rule39),
             (_profile5, _rule40),
             (_profile5, _rule41),
             (_profile5, _rule42),

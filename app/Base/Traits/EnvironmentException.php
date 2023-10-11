@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Features\Base\Traits;
+namespace App\Base\Traits;
 
+use App\Exceptions\AppException;
 use App\Shared\Enums\EnvironmentEnum;
 use App\Shared\Enums\MessagesEnum;
-use App\Exceptions\AppException;
 use Exception;
 use Illuminate\Support\Facades\App;
 use Symfony\Component\HttpFoundation\Response;

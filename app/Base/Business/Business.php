@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Features\Base\Services;
+namespace App\Base\Business;
 
 use App\Shared\ACL\Policy;
 
-abstract class BaseService
+abstract class Business
 {
     private Policy $policy;
 
