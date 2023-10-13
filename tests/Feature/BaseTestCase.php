@@ -16,6 +16,8 @@ class BaseTestCase extends TestCase
     const ZIP_CODE_ROUTE = '/api/zip-code';
     const CHURCHES_ROUTE = '/api/admin/modules/membership/churches';
     const MEMBERS_ROUTE = '/api/admin/modules/membership/members';
+    const STORE_CATEGORIES_ROUTE = '/api/admin/modules/store/categories';
+    const STORE_SUBCATEGORIES_ROUTE = '/api/admin/modules/store/subcategories';
 
     private string $email;
     private string $password;

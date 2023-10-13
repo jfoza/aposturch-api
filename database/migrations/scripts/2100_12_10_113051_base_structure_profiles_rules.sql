@@ -1,5 +1,11 @@
 DO $$
     DECLARE
+        _view_action   varchar := 'VIEW';
+        _insert_action varchar := 'INSERT';
+        _update_action varchar := 'UPDATE';
+        _delete_action varchar := 'DELETE';
+        _upload_action varchar := 'UPLOAD';
+
         -- PROFILE TYPES
         _profile_type1 uuid := uuid_generate_v4();
         _profile_type2 uuid := uuid_generate_v4();
@@ -108,6 +114,21 @@ DO $$
         _rule73 uuid := uuid_generate_v4();
         _rule74 uuid := uuid_generate_v4();
         _rule75 uuid := uuid_generate_v4();
+        _rule76 uuid := uuid_generate_v4();
+        _rule77 uuid := uuid_generate_v4();
+        _rule78 uuid := uuid_generate_v4();
+        _rule79 uuid := uuid_generate_v4();
+        _rule80 uuid := uuid_generate_v4();
+        _rule81 uuid := uuid_generate_v4();
+        _rule82 uuid := uuid_generate_v4();
+        _rule83 uuid := uuid_generate_v4();
+        _rule84 uuid := uuid_generate_v4();
+        _rule85 uuid := uuid_generate_v4();
+        _rule86 uuid := uuid_generate_v4();
+        _rule87 uuid := uuid_generate_v4();
+        _rule88 uuid := uuid_generate_v4();
+        _rule89 uuid := uuid_generate_v4();
+        _rule90 uuid := uuid_generate_v4();
 
     BEGIN
         INSERT INTO module.modules (id, module_description, module_unique_name, active)
@@ -115,119 +136,138 @@ DO $$
             (_module1, 'Usuários', 'USERS', true),
             (_module2, 'Financeiro', 'FINANCE', true),
             (_module3, 'Membresia', 'MEMBERSHIP', true),
-            (_module4, 'Livraria', 'STORE', true),
+            (_module4, 'Loja Virtual', 'STORE', true),
             (_module5, 'Grupos', 'GROUPS', true),
             (_module6, 'Agenda', 'SCHEDULE', true),
             (_module7, 'Patrimônio', 'PATRIMONY', true);
 
         INSERT INTO users.rules (id,description, subject, action)
         VALUES
-            (_module_rule1, 'USERS_MODULE_VIEW', 'USERS_MODULE', 'VIEW'),
-            (_module_rule2, 'FINANCE_MODULE_VIEW', 'FINANCE_MODULE', 'VIEW'),
-            (_module_rule3, 'MEMBERSHIP_MODULE_VIEW', 'MEMBERSHIP_MODULE', 'VIEW'),
-            (_module_rule4, 'STORE_MODULE_VIEW', 'STORE_MODULE', 'VIEW'),
-            (_module_rule5, 'GROUPS_MODULE_VIEW', 'GROUPS_MODULE', 'VIEW'),
-            (_module_rule6, 'SCHEDULE_MODULE_VIEW', 'SCHEDULE_MODULE', 'VIEW'),
-            (_module_rule7, 'PATRIMONY_MODULE_VIEW', 'PATRIMONY_MODULE', 'VIEW'),
+            (_module_rule1, 'USERS_MODULE_VIEW', 'USERS_MODULE', _view_action),
+            (_module_rule2, 'FINANCE_MODULE_VIEW', 'FINANCE_MODULE', _view_action),
+            (_module_rule3, 'MEMBERSHIP_MODULE_VIEW', 'MEMBERSHIP_MODULE', _view_action),
+            (_module_rule4, 'STORE_MODULE_VIEW', 'STORE_MODULE', _view_action),
+            (_module_rule5, 'GROUPS_MODULE_VIEW', 'GROUPS_MODULE', _view_action),
+            (_module_rule6, 'SCHEDULE_MODULE_VIEW', 'SCHEDULE_MODULE', _view_action),
+            (_module_rule7, 'PATRIMONY_MODULE_VIEW', 'PATRIMONY_MODULE', _view_action),
 
-            (_rule1, 'ROOT', 'ROOT', 'VIEW'),
+            (_rule1, 'ROOT', 'ROOT', _view_action),
 
-            (_rule2, 'ADMIN_USERS_VIEW', 'ADMIN_USERS', 'VIEW'),
-            (_rule3, 'ADMIN_USERS_INSERT', 'ADMIN_USERS', 'INSERT'),
-            (_rule4, 'ADMIN_USERS_UPDATE', 'ADMIN_USERS', 'UPDATE'),
-            (_rule5, 'ADMIN_USERS_DELETE', 'ADMIN_USERS', 'DELETE'),
+            (_rule2, 'ADMIN_USERS_VIEW', 'ADMIN_USERS', _view_action),
+            (_rule3, 'ADMIN_USERS_INSERT', 'ADMIN_USERS', _insert_action),
+            (_rule4, 'ADMIN_USERS_UPDATE', 'ADMIN_USERS', _update_action),
+            (_rule5, 'ADMIN_USERS_DELETE', 'ADMIN_USERS', _delete_action),
 
-            (_rule6, 'ADMIN_USERS_SUPPORT_VIEW', 'ADMIN_USERS_SUPPORT', 'VIEW'),
-            (_rule7, 'ADMIN_USERS_SUPPORT_INSERT', 'ADMIN_USERS_SUPPORT', 'INSERT'),
-            (_rule8, 'ADMIN_USERS_SUPPORT_UPDATE', 'ADMIN_USERS_SUPPORT', 'UPDATE'),
+            (_rule6, 'ADMIN_USERS_SUPPORT_VIEW', 'ADMIN_USERS_SUPPORT', _view_action),
+            (_rule7, 'ADMIN_USERS_SUPPORT_INSERT', 'ADMIN_USERS_SUPPORT', _insert_action),
+            (_rule8, 'ADMIN_USERS_SUPPORT_UPDATE', 'ADMIN_USERS_SUPPORT', _update_action),
 
-            (_rule9, 'ADMIN_USERS_ADMIN_MASTER_VIEW', 'ADMIN_USERS_ADMIN_MASTER', 'VIEW'),
-            (_rule10, 'ADMIN_USERS_ADMIN_MASTER_INSERT', 'ADMIN_USERS_ADMIN_MASTER', 'INSERT'),
-            (_rule11, 'ADMIN_USERS_ADMIN_MASTER_UPDATE', 'ADMIN_USERS_ADMIN_MASTER', 'UPDATE'),
+            (_rule9, 'ADMIN_USERS_ADMIN_MASTER_VIEW', 'ADMIN_USERS_ADMIN_MASTER', _view_action),
+            (_rule10, 'ADMIN_USERS_ADMIN_MASTER_INSERT', 'ADMIN_USERS_ADMIN_MASTER', _insert_action),
+            (_rule11, 'ADMIN_USERS_ADMIN_MASTER_UPDATE', 'ADMIN_USERS_ADMIN_MASTER', _update_action),
 
-            (_rule12, 'PROFILES_SUPPORT_VIEW', 'PROFILES_SUPPORT', 'VIEW'),
-            (_rule13, 'PROFILES_ADMIN_MASTER_VIEW', 'PROFILES_ADMIN_MASTER', 'VIEW'),
-            (_rule14, 'PROFILES_ADMIN_CHURCH_VIEW', 'PROFILES_ADMIN_CHURCH', 'VIEW'),
-            (_rule15, 'PROFILES_ADMIN_MODULE_VIEW', 'PROFILES_ADMIN_MODULE', 'VIEW'),
-            (_rule16, 'PROFILES_ASSISTANT_VIEW', 'PROFILES_ASSISTANT', 'VIEW'),
+            (_rule12, 'PROFILES_SUPPORT_VIEW', 'PROFILES_SUPPORT', _view_action),
+            (_rule13, 'PROFILES_ADMIN_MASTER_VIEW', 'PROFILES_ADMIN_MASTER', _view_action),
+            (_rule14, 'PROFILES_ADMIN_CHURCH_VIEW', 'PROFILES_ADMIN_CHURCH', _view_action),
+            (_rule15, 'PROFILES_ADMIN_MODULE_VIEW', 'PROFILES_ADMIN_MODULE', _view_action),
+            (_rule16, 'PROFILES_ASSISTANT_VIEW', 'PROFILES_ASSISTANT', _view_action),
 
-            (_rule17, 'CITIES_VIEW', 'CITIES', 'VIEW' ),
-            (_rule18, 'STATES_VIEW', 'STATES', 'VIEW'),
+            (_rule17, 'CITIES_VIEW', 'CITIES', _view_action ),
+            (_rule18, 'STATES_VIEW', 'STATES', _view_action),
 
-            (_rule19, 'MEMBERSHIP_MODULE_CHURCH_ADMIN_MASTER_VIEW',         'MEMBERSHIP_MODULE_CHURCH_ADMIN_MASTER', 'VIEW'),
-            (_rule20, 'MEMBERSHIP_MODULE_CHURCH_ADMIN_MASTER_DETAILS_VIEW', 'MEMBERSHIP_MODULE_CHURCH_ADMIN_MASTER_DETAILS', 'VIEW'),
-            (_rule21, 'MEMBERSHIP_MODULE_CHURCH_ADMIN_MASTER_INSERT',       'MEMBERSHIP_MODULE_CHURCH_ADMIN_MASTER', 'INSERT'),
-            (_rule22, 'MEMBERSHIP_MODULE_CHURCH_ADMIN_MASTER_UPDATE',       'MEMBERSHIP_MODULE_CHURCH_ADMIN_MASTER', 'UPDATE'),
-            (_rule23, 'MEMBERSHIP_MODULE_CHURCH_ADMIN_MASTER_DELETE',       'MEMBERSHIP_MODULE_CHURCH_ADMIN_MASTER', 'DELETE'),
-            (_rule24, 'MEMBERSHIP_MODULE_CHURCH_ADMIN_MASTER_IMAGE_UPLOAD', 'MEMBERSHIP_MODULE_CHURCH_ADMIN_MASTER_IMAGE', 'UPLOAD'),
+            (_rule19, 'MEMBERSHIP_MODULE_CHURCH_ADMIN_MASTER_VIEW',         'MEMBERSHIP_MODULE_CHURCH_ADMIN_MASTER', _view_action),
+            (_rule20, 'MEMBERSHIP_MODULE_CHURCH_ADMIN_MASTER_DETAILS_VIEW', 'MEMBERSHIP_MODULE_CHURCH_ADMIN_MASTER_DETAILS', _view_action),
+            (_rule21, 'MEMBERSHIP_MODULE_CHURCH_ADMIN_MASTER_INSERT',       'MEMBERSHIP_MODULE_CHURCH_ADMIN_MASTER', _insert_action),
+            (_rule22, 'MEMBERSHIP_MODULE_CHURCH_ADMIN_MASTER_UPDATE',       'MEMBERSHIP_MODULE_CHURCH_ADMIN_MASTER', _update_action),
+            (_rule23, 'MEMBERSHIP_MODULE_CHURCH_ADMIN_MASTER_DELETE',       'MEMBERSHIP_MODULE_CHURCH_ADMIN_MASTER', _delete_action),
+            (_rule24, 'MEMBERSHIP_MODULE_CHURCH_ADMIN_MASTER_IMAGE_UPLOAD', 'MEMBERSHIP_MODULE_CHURCH_ADMIN_MASTER_IMAGE', _upload_action),
 
-            (_rule25, 'MEMBERSHIP_MODULE_CHURCH_ADMIN_CHURCH_VIEW',         'MEMBERSHIP_MODULE_CHURCH_ADMIN_CHURCH', 'VIEW'),
-            (_rule26, 'MEMBERSHIP_MODULE_CHURCH_ADMIN_CHURCH_DETAILS_VIEW', 'MEMBERSHIP_MODULE_CHURCH_ADMIN_CHURCH_DETAILS', 'VIEW'),
-            (_rule27, 'MEMBERSHIP_MODULE_CHURCH_ADMIN_CHURCH_UPDATE',       'MEMBERSHIP_MODULE_CHURCH_ADMIN_CHURCH', 'UPDATE'),
-            (_rule28, 'MEMBERSHIP_MODULE_CHURCH_ADMIN_CHURCH_IMAGE_UPLOAD', 'MEMBERSHIP_MODULE_CHURCH_ADMIN_CHURCH_IMAGE', 'UPLOAD'),
+            (_rule25, 'MEMBERSHIP_MODULE_CHURCH_ADMIN_CHURCH_VIEW',         'MEMBERSHIP_MODULE_CHURCH_ADMIN_CHURCH', _view_action),
+            (_rule26, 'MEMBERSHIP_MODULE_CHURCH_ADMIN_CHURCH_DETAILS_VIEW', 'MEMBERSHIP_MODULE_CHURCH_ADMIN_CHURCH_DETAILS', _view_action),
+            (_rule27, 'MEMBERSHIP_MODULE_CHURCH_ADMIN_CHURCH_UPDATE',       'MEMBERSHIP_MODULE_CHURCH_ADMIN_CHURCH', _update_action),
+            (_rule28, 'MEMBERSHIP_MODULE_CHURCH_ADMIN_CHURCH_IMAGE_UPLOAD', 'MEMBERSHIP_MODULE_CHURCH_ADMIN_CHURCH_IMAGE', _upload_action),
 
-            (_rule29, 'MEMBERSHIP_MODULE_CHURCH_ADMIN_MODULE_VIEW',         'MEMBERSHIP_MODULE_CHURCH_ADMIN_MODULE', 'VIEW'),
-            (_rule30, 'MEMBERSHIP_MODULE_CHURCH_ADMIN_MODULE_DETAILS_VIEW', 'MEMBERSHIP_MODULE_CHURCH_ADMIN_MODULE_DETAILS', 'VIEW'),
+            (_rule29, 'MEMBERSHIP_MODULE_CHURCH_ADMIN_MODULE_VIEW',         'MEMBERSHIP_MODULE_CHURCH_ADMIN_MODULE', _view_action),
+            (_rule30, 'MEMBERSHIP_MODULE_CHURCH_ADMIN_MODULE_DETAILS_VIEW', 'MEMBERSHIP_MODULE_CHURCH_ADMIN_MODULE_DETAILS', _view_action),
 
-            (_rule31, 'MEMBERSHIP_MODULE_CHURCH_ASSISTANT_VIEW', 'MEMBERSHIP_MODULE_CHURCH_ASSISTANT', 'VIEW'),
-            (_rule32, 'MEMBERSHIP_MODULE_CHURCH_ASSISTANT_DETAILS_VIEW', 'MEMBERSHIP_MODULE_CHURCH_ASSISTANT_DETAILS', 'VIEW'),
+            (_rule31, 'MEMBERSHIP_MODULE_CHURCH_ASSISTANT_VIEW', 'MEMBERSHIP_MODULE_CHURCH_ASSISTANT', _view_action),
+            (_rule32, 'MEMBERSHIP_MODULE_CHURCH_ASSISTANT_DETAILS_VIEW', 'MEMBERSHIP_MODULE_CHURCH_ASSISTANT_DETAILS', _view_action),
 
-            (_rule33, 'MEMBERSHIP_MODULE_CHURCH_ADMIN_MASTER_MEMBER_RELATIONSHIP_DELETE', 'MEMBERSHIP_MODULE_CHURCH_ADMIN_MASTER_MEMBER_RELATIONSHIP', 'DELETE'),
-            (_rule34, 'MEMBERSHIP_MODULE_CHURCH_ADMIN_CHURCH_MEMBER_RELATIONSHIP_DELETE', 'MEMBERSHIP_MODULE_CHURCH_ADMIN_CHURCH_MEMBER_RELATIONSHIP', 'DELETE'),
+            (_rule33, 'MEMBERSHIP_MODULE_CHURCH_ADMIN_MASTER_MEMBER_RELATIONSHIP_DELETE', 'MEMBERSHIP_MODULE_CHURCH_ADMIN_MASTER_MEMBER_RELATIONSHIP', _delete_action),
+            (_rule34, 'MEMBERSHIP_MODULE_CHURCH_ADMIN_CHURCH_MEMBER_RELATIONSHIP_DELETE', 'MEMBERSHIP_MODULE_CHURCH_ADMIN_CHURCH_MEMBER_RELATIONSHIP', _delete_action),
 
-            (_rule35, 'MEMBERSHIP_MODULE_CHURCH_VIEW',         'MEMBERSHIP_MODULE_CHURCH', 'VIEW'),
-            (_rule36, 'MEMBERSHIP_MODULE_CHURCH_DETAILS_VIEW', 'MEMBERSHIP_MODULE_CHURCH_DETAILS', 'VIEW'),
-            (_rule37, 'MEMBERSHIP_MODULE_CHURCH_INSERT',       'MEMBERSHIP_MODULE_CHURCH', 'INSERT'),
-            (_rule38, 'MEMBERSHIP_MODULE_CHURCH_UPDATE',       'MEMBERSHIP_MODULE_CHURCH', 'UPDATE'),
-            (_rule39, 'MEMBERSHIP_MODULE_MEMBERS',             'MEMBERSHIP_MODULE_MEMBERS', 'VIEW'),
+            (_rule35, 'MEMBERSHIP_MODULE_CHURCH_VIEW',         'MEMBERSHIP_MODULE_CHURCH', _view_action),
+            (_rule36, 'MEMBERSHIP_MODULE_CHURCH_DETAILS_VIEW', 'MEMBERSHIP_MODULE_CHURCH_DETAILS', _view_action),
+            (_rule37, 'MEMBERSHIP_MODULE_CHURCH_INSERT',       'MEMBERSHIP_MODULE_CHURCH', _insert_action),
+            (_rule38, 'MEMBERSHIP_MODULE_CHURCH_UPDATE',       'MEMBERSHIP_MODULE_CHURCH', _update_action),
+            (_rule39, 'MEMBERSHIP_MODULE_MEMBERS',             'MEMBERSHIP_MODULE_MEMBERS', _view_action),
 
-            (_rule40, 'MEMBERSHIP_MODULE_MEMBERS_DETAILS_VIEW', 'MEMBERSHIP_MODULE_MEMBERS_DETAILS', 'VIEW'),
-            (_rule41, 'MEMBERSHIP_MODULE_MEMBERS_INSERT', 'MEMBERSHIP_MODULE_MEMBERS', 'INSERT'),
-            (_rule42, 'MEMBERSHIP_MODULE_MEMBERS_UPDATE', 'MEMBERSHIP_MODULE_MEMBERS', 'UPDATE'),
+            (_rule40, 'MEMBERSHIP_MODULE_MEMBERS_DETAILS_VIEW', 'MEMBERSHIP_MODULE_MEMBERS_DETAILS', _view_action),
+            (_rule41, 'MEMBERSHIP_MODULE_MEMBERS_INSERT', 'MEMBERSHIP_MODULE_MEMBERS', _insert_action),
+            (_rule42, 'MEMBERSHIP_MODULE_MEMBERS_UPDATE', 'MEMBERSHIP_MODULE_MEMBERS', _update_action),
 
-            (_rule43, 'MEMBERSHIP_MODULE_MEMBERS_ADMIN_MASTER_DETAILS_VIEW', 'MEMBERSHIP_MODULE_MEMBERS_ADMIN_MASTER_DETAILS', 'VIEW'),
-            (_rule44, 'MEMBERSHIP_MODULE_MEMBERS_ADMIN_MASTER_INSERT',       'MEMBERSHIP_MODULE_MEMBERS_ADMIN_MASTER', 'INSERT'),
-            (_rule45, 'MEMBERSHIP_MODULE_MEMBERS_ADMIN_MASTER_UPDATE',       'MEMBERSHIP_MODULE_MEMBERS_ADMIN_MASTER', 'UPDATE'),
-            (_rule46, 'MEMBERSHIP_MODULE_MEMBERS_ADMIN_MASTER_IMAGE_UPLOAD', 'MEMBERSHIP_MODULE_MEMBERS_ADMIN_MASTER_IMAGE', 'UPLOAD'),
+            (_rule43, 'MEMBERSHIP_MODULE_MEMBERS_ADMIN_MASTER_DETAILS_VIEW', 'MEMBERSHIP_MODULE_MEMBERS_ADMIN_MASTER_DETAILS', _view_action),
+            (_rule44, 'MEMBERSHIP_MODULE_MEMBERS_ADMIN_MASTER_INSERT',       'MEMBERSHIP_MODULE_MEMBERS_ADMIN_MASTER', _insert_action),
+            (_rule45, 'MEMBERSHIP_MODULE_MEMBERS_ADMIN_MASTER_UPDATE',       'MEMBERSHIP_MODULE_MEMBERS_ADMIN_MASTER', _update_action),
+            (_rule46, 'MEMBERSHIP_MODULE_MEMBERS_ADMIN_MASTER_IMAGE_UPLOAD', 'MEMBERSHIP_MODULE_MEMBERS_ADMIN_MASTER_IMAGE', _upload_action),
 
-            (_rule47, 'MEMBERSHIP_MODULE_MEMBERS_ADMIN_CHURCH_DETAILS_VIEW', 'MEMBERSHIP_MODULE_MEMBERS_ADMIN_CHURCH_DETAILS', 'VIEW'),
-            (_rule48, 'MEMBERSHIP_MODULE_MEMBERS_ADMIN_CHURCH_INSERT',       'MEMBERSHIP_MODULE_MEMBERS_ADMIN_CHURCH', 'INSERT'),
-            (_rule49, 'MEMBERSHIP_MODULE_MEMBERS_ADMIN_CHURCH_UPDATE',       'MEMBERSHIP_MODULE_MEMBERS_ADMIN_CHURCH', 'UPDATE'),
-            (_rule50, 'MEMBERSHIP_MODULE_MEMBERS_ADMIN_CHURCH_IMAGE_UPLOAD', 'MEMBERSHIP_MODULE_MEMBERS_CHURCH_MASTER_IMAGE', 'UPLOAD'),
+            (_rule47, 'MEMBERSHIP_MODULE_MEMBERS_ADMIN_CHURCH_DETAILS_VIEW', 'MEMBERSHIP_MODULE_MEMBERS_ADMIN_CHURCH_DETAILS', _view_action),
+            (_rule48, 'MEMBERSHIP_MODULE_MEMBERS_ADMIN_CHURCH_INSERT',       'MEMBERSHIP_MODULE_MEMBERS_ADMIN_CHURCH', _insert_action),
+            (_rule49, 'MEMBERSHIP_MODULE_MEMBERS_ADMIN_CHURCH_UPDATE',       'MEMBERSHIP_MODULE_MEMBERS_ADMIN_CHURCH', _update_action),
+            (_rule50, 'MEMBERSHIP_MODULE_MEMBERS_ADMIN_CHURCH_IMAGE_UPLOAD', 'MEMBERSHIP_MODULE_MEMBERS_CHURCH_MASTER_IMAGE', _upload_action),
 
-            (_rule51, 'MEMBERSHIP_MODULE_MEMBERS_ADMIN_MODULE_DETAILS_VIEW', 'MEMBERSHIP_MODULE_MEMBERS_ADMIN_MODULE_DETAILS', 'VIEW'),
-            (_rule52, 'MEMBERSHIP_MODULE_MEMBERS_ADMIN_MODULE_INSERT',       'MEMBERSHIP_MODULE_MEMBERS_ADMIN_MODULE', 'INSERT'),
-            (_rule53, 'MEMBERSHIP_MODULE_MEMBERS_ADMIN_MODULE_UPDATE',       'MEMBERSHIP_MODULE_MEMBERS_ADMIN_MODULE', 'UPDATE'),
-            (_rule54, 'MEMBERSHIP_MODULE_MEMBERS_ADMIN_MODULE_IMAGE_UPLOAD', 'MEMBERSHIP_MODULE_MEMBERS_ADMIN_MODULE_IMAGE', 'UPLOAD'),
+            (_rule51, 'MEMBERSHIP_MODULE_MEMBERS_ADMIN_MODULE_DETAILS_VIEW', 'MEMBERSHIP_MODULE_MEMBERS_ADMIN_MODULE_DETAILS', _view_action),
+            (_rule52, 'MEMBERSHIP_MODULE_MEMBERS_ADMIN_MODULE_INSERT',       'MEMBERSHIP_MODULE_MEMBERS_ADMIN_MODULE', _insert_action),
+            (_rule53, 'MEMBERSHIP_MODULE_MEMBERS_ADMIN_MODULE_UPDATE',       'MEMBERSHIP_MODULE_MEMBERS_ADMIN_MODULE', _update_action),
+            (_rule54, 'MEMBERSHIP_MODULE_MEMBERS_ADMIN_MODULE_IMAGE_UPLOAD', 'MEMBERSHIP_MODULE_MEMBERS_ADMIN_MODULE_IMAGE', _upload_action),
 
-            (_rule55, 'MEMBERSHIP_MODULE_MEMBERS_ASSISTANT_DETAILS_VIEW', 'MEMBERSHIP_MODULE_MEMBERS_ASSISTANT_DETAILS', 'VIEW'),
-            (_rule56, 'MEMBERSHIP_MODULE_MEMBERS_ASSISTANT_INSERT',       'MEMBERSHIP_MODULE_MEMBERS_ASSISTANT', 'INSERT'),
-            (_rule57, 'MEMBERSHIP_MODULE_MEMBERS_ASSISTANT_UPDATE',       'MEMBERSHIP_MODULE_MEMBERS_ASSISTANT', 'UPDATE'),
-            (_rule58, 'MEMBERSHIP_MODULE_MEMBERS_ASSISTANT_IMAGE_UPLOAD', 'MEMBERSHIP_MODULE_MEMBERS_ASSISTANT_IMAGE', 'UPLOAD'),
+            (_rule55, 'MEMBERSHIP_MODULE_MEMBERS_ASSISTANT_DETAILS_VIEW', 'MEMBERSHIP_MODULE_MEMBERS_ASSISTANT_DETAILS', _view_action),
+            (_rule56, 'MEMBERSHIP_MODULE_MEMBERS_ASSISTANT_INSERT',       'MEMBERSHIP_MODULE_MEMBERS_ASSISTANT', _insert_action),
+            (_rule57, 'MEMBERSHIP_MODULE_MEMBERS_ASSISTANT_UPDATE',       'MEMBERSHIP_MODULE_MEMBERS_ASSISTANT', _update_action),
+            (_rule58, 'MEMBERSHIP_MODULE_MEMBERS_ASSISTANT_IMAGE_UPLOAD', 'MEMBERSHIP_MODULE_MEMBERS_ASSISTANT_IMAGE', _upload_action),
 
-            (_rule59, 'USERS_ADMIN_MASTER_UPDATE_STATUS', 'USERS_ADMIN_MASTER_UPDATE_STATUS', 'UPDATE'),
-            (_rule60, 'USERS_ADMIN_CHURCH_UPDATE_STATUS', 'USERS_ADMIN_CHURCH_UPDATE_STATUS', 'UPDATE'),
+            (_rule59, 'USERS_ADMIN_MASTER_UPDATE_STATUS', 'USERS_ADMIN_MASTER_UPDATE_STATUS', _update_action),
+            (_rule60, 'USERS_ADMIN_CHURCH_UPDATE_STATUS', 'USERS_ADMIN_CHURCH_UPDATE_STATUS', _update_action),
 
-            (_rule61, 'MEMBERSHIP_MODULE_MEMBERS_PROFILES_FILTER_VIEW', 'MEMBERSHIP_MODULE_MEMBERS_PROFILES_FILTER', 'VIEW'),
-            (_rule62, 'MEMBERSHIP_MODULE_MEMBERS_CHURCHES_FILTER_ADMIN_MASTER_VIEW', 'MEMBERSHIP_MODULE_MEMBERS_CHURCHES_FILTER_ADMIN_MASTER', 'VIEW'),
-            (_rule63, 'MEMBERSHIP_MODULE_MEMBERS_CHURCHES_FILTER_VIEW', 'MEMBERSHIP_MODULE_MEMBERS_CHURCHES_FILTER', 'VIEW'),
+            (_rule61, 'MEMBERSHIP_MODULE_MEMBERS_PROFILES_FILTER_VIEW', 'MEMBERSHIP_MODULE_MEMBERS_PROFILES_FILTER', _view_action),
+            (_rule62, 'MEMBERSHIP_MODULE_MEMBERS_CHURCHES_FILTER_ADMIN_MASTER_VIEW', 'MEMBERSHIP_MODULE_MEMBERS_CHURCHES_FILTER_ADMIN_MASTER', _view_action),
+            (_rule63, 'MEMBERSHIP_MODULE_MEMBERS_CHURCHES_FILTER_VIEW', 'MEMBERSHIP_MODULE_MEMBERS_CHURCHES_FILTER', _view_action),
 
-            (_rule64, 'MODULES_VIEW', 'MODULES', 'VIEW'),
+            (_rule64, 'MODULES_VIEW', 'MODULES', _view_action),
 
-            (_rule65, 'USERS_EMAIL_ALREADY_EXISTS_VERIFICATION_VIEW', 'USERS_EMAIL_ALREADY_EXISTS_VERIFICATION', 'VIEW'),
+            (_rule65, 'USERS_EMAIL_ALREADY_EXISTS_VERIFICATION_VIEW', 'USERS_EMAIL_ALREADY_EXISTS_VERIFICATION', _view_action),
 
-            (_rule66, 'USERS_IMAGE_UPLOAD_ADMIN_MASTER', 'USERS_IMAGE_UPLOAD_ADMIN_MASTER', 'UPLOAD'),
-            (_rule67, 'USERS_IMAGE_UPLOAD_ADMIN_CHURCH', 'USERS_IMAGE_UPLOAD_ADMIN_CHURCH', 'UPLOAD'),
-            (_rule68, 'USERS_IMAGE_UPLOAD_ADMIN_MODULE', 'USERS_IMAGE_UPLOAD_ADMIN_MODULE', 'UPLOAD'),
-            (_rule69, 'USERS_IMAGE_UPLOAD_ADMIN_ASSISTANT', 'USERS_IMAGE_UPLOAD_ADMIN_ASSISTANT', 'UPLOAD'),
+            (_rule66, 'USERS_IMAGE_UPLOAD_ADMIN_MASTER', 'USERS_IMAGE_UPLOAD_ADMIN_MASTER', _upload_action),
+            (_rule67, 'USERS_IMAGE_UPLOAD_ADMIN_CHURCH', 'USERS_IMAGE_UPLOAD_ADMIN_CHURCH', _upload_action),
+            (_rule68, 'USERS_IMAGE_UPLOAD_ADMIN_MODULE', 'USERS_IMAGE_UPLOAD_ADMIN_MODULE', _upload_action),
+            (_rule69, 'USERS_IMAGE_UPLOAD_ADMIN_ASSISTANT', 'USERS_IMAGE_UPLOAD_ADMIN_ASSISTANT', _upload_action),
 
-            (_rule70, 'USERS_TECHNICAL_SUPPORT_UPDATE_STATUS', 'USERS_TECHNICAL_SUPPORT_UPDATE_STATUS', 'UPDATE'),
-            (_rule71, 'USERS_ADMIN_MODULE_UPDATE_STATUS', 'USERS_ADMIN_MODULE_UPDATE_STATUS', 'UPDATE'),
+            (_rule70, 'USERS_TECHNICAL_SUPPORT_UPDATE_STATUS', 'USERS_TECHNICAL_SUPPORT_UPDATE_STATUS', _update_action),
+            (_rule71, 'USERS_ADMIN_MODULE_UPDATE_STATUS', 'USERS_ADMIN_MODULE_UPDATE_STATUS', _update_action),
 
-            (_rule72, 'MEMBERSHIP_MODULE_MEMBERS_ADMIN_MASTER_VIEW', 'MEMBERSHIP_MODULE_MEMBERS_ADMIN_MASTER', 'VIEW'),
-            (_rule73, 'MEMBERSHIP_MODULE_MEMBERS_ADMIN_CHURCH_VIEW', 'MEMBERSHIP_MODULE_MEMBERS_ADMIN_CHURCH', 'VIEW'),
-            (_rule74, 'MEMBERSHIP_MODULE_MEMBERS_ADMIN_MODULE_VIEW', 'MEMBERSHIP_MODULE_MEMBERS_ADMIN_MODULE', 'VIEW'),
-            (_rule75, 'MEMBERSHIP_MODULE_MEMBERS_ASSISTANT_VIEW',    'MEMBERSHIP_MODULE_MEMBERS_ASSISTANT',    'VIEW');
+            (_rule72, 'MEMBERSHIP_MODULE_MEMBERS_ADMIN_MASTER_VIEW', 'MEMBERSHIP_MODULE_MEMBERS_ADMIN_MASTER', _view_action),
+            (_rule73, 'MEMBERSHIP_MODULE_MEMBERS_ADMIN_CHURCH_VIEW', 'MEMBERSHIP_MODULE_MEMBERS_ADMIN_CHURCH', _view_action),
+            (_rule74, 'MEMBERSHIP_MODULE_MEMBERS_ADMIN_MODULE_VIEW', 'MEMBERSHIP_MODULE_MEMBERS_ADMIN_MODULE', _view_action),
+            (_rule75, 'MEMBERSHIP_MODULE_MEMBERS_ASSISTANT_VIEW',    'MEMBERSHIP_MODULE_MEMBERS_ASSISTANT',    _view_action),
+
+            (_rule76, 'STORE_MODULE_CATEGORIES_VIEW',   'STORE_MODULE_CATEGORIES', _view_action),
+            (_rule77, 'STORE_MODULE_CATEGORIES_INSERT', 'STORE_MODULE_CATEGORIES', _insert_action),
+            (_rule78, 'STORE_MODULE_CATEGORIES_UPDATE', 'STORE_MODULE_CATEGORIES', _update_action),
+            (_rule79, 'STORE_MODULE_CATEGORIES_DELETE', 'STORE_MODULE_CATEGORIES', _delete_action),
+
+            (_rule80, 'STORE_MODULE_SUBCATEGORIES_VIEW',   'STORE_MODULE_SUBCATEGORIES', _view_action),
+            (_rule81, 'STORE_MODULE_SUBCATEGORIES_INSERT', 'STORE_MODULE_SUBCATEGORIES', _insert_action),
+            (_rule82, 'STORE_MODULE_SUBCATEGORIES_UPDATE', 'STORE_MODULE_SUBCATEGORIES', _update_action),
+            (_rule83, 'STORE_MODULE_SUBCATEGORIES_DELETE', 'STORE_MODULE_SUBCATEGORIES', _delete_action),
+
+            (_rule84, 'STORE_MODULE_PRODUCTS_VIEW',   'STORE_MODULE_PRODUCTS', _view_action),
+            (_rule85, 'STORE_MODULE_PRODUCTS_INSERT', 'STORE_MODULE_PRODUCTS', _insert_action),
+            (_rule86, 'STORE_MODULE_PRODUCTS_UPDATE', 'STORE_MODULE_PRODUCTS', _update_action),
+            (_rule87, 'STORE_MODULE_PRODUCTS_DELETE', 'STORE_MODULE_PRODUCTS', _delete_action),
+
+            (_rule88, 'STORE_MODULE_CATEGORIES_STATUS_UPDATE',    'STORE_MODULE_PRODUCTS_STATUS', _update_action),
+            (_rule89, 'STORE_MODULE_SUBCATEGORIES_STATUS_UPDATE', 'STORE_MODULE_PRODUCTS_STATUS', _update_action),
+            (_rule90, 'STORE_MODULE_PRODUCTS_STATUS_UPDATE',      'STORE_MODULE_PRODUCTS_STATUS', _update_action);
 
 
         INSERT INTO users.modules_rules (rule_id, module_id)
@@ -347,7 +387,21 @@ DO $$
             (_profile1, _rule66),
             (_profile1, _rule70),
             (_profile1, _rule72),
-
+            (_profile1, _rule76),
+            (_profile1, _rule77),
+            (_profile1, _rule78),
+            (_profile1, _rule79),
+            (_profile1, _rule80),
+            (_profile1, _rule81),
+            (_profile1, _rule82),
+            (_profile1, _rule83),
+            (_profile1, _rule84),
+            (_profile1, _rule85),
+            (_profile1, _rule86),
+            (_profile1, _rule87),
+            (_profile1, _rule88),
+            (_profile1, _rule89),
+            (_profile1, _rule90),
 
             -- ADMIN MASTER
             (_profile2, _rule1),
@@ -387,7 +441,21 @@ DO $$
             (_profile2, _rule65),
             (_profile2, _rule66),
             (_profile2, _rule72),
-
+            (_profile2, _rule76),
+            (_profile2, _rule77),
+            (_profile2, _rule78),
+            (_profile2, _rule79),
+            (_profile2, _rule80),
+            (_profile2, _rule81),
+            (_profile2, _rule82),
+            (_profile2, _rule83),
+            (_profile2, _rule84),
+            (_profile2, _rule85),
+            (_profile2, _rule86),
+            (_profile2, _rule87),
+            (_profile2, _rule88),
+            (_profile2, _rule89),
+            (_profile2, _rule90),
 
             -- ADMIN CHURCH
             (_profile3, _rule1),
@@ -417,6 +485,21 @@ DO $$
             (_profile3, _rule65),
             (_profile3, _rule67),
             (_profile3, _rule73),
+            (_profile3, _rule76),
+            (_profile3, _rule77),
+            (_profile3, _rule78),
+            (_profile3, _rule79),
+            (_profile3, _rule80),
+            (_profile3, _rule81),
+            (_profile3, _rule82),
+            (_profile3, _rule83),
+            (_profile3, _rule84),
+            (_profile3, _rule85),
+            (_profile3, _rule86),
+            (_profile3, _rule87),
+            (_profile3, _rule88),
+            (_profile3, _rule89),
+            (_profile3, _rule90),
 
             -- ADMIN MODULE
             (_profile4, _rule1),
@@ -442,6 +525,21 @@ DO $$
             (_profile4, _rule68),
             (_profile4, _rule71),
             (_profile4, _rule74),
+            (_profile4, _rule76),
+            (_profile4, _rule77),
+            (_profile4, _rule78),
+            (_profile4, _rule79),
+            (_profile4, _rule80),
+            (_profile4, _rule81),
+            (_profile4, _rule82),
+            (_profile4, _rule83),
+            (_profile4, _rule84),
+            (_profile4, _rule85),
+            (_profile4, _rule86),
+            (_profile4, _rule87),
+            (_profile4, _rule88),
+            (_profile4, _rule89),
+            (_profile4, _rule90),
 
             -- ASSISTANT
             (_profile5, _rule1),
@@ -465,7 +563,17 @@ DO $$
             (_profile5, _rule64),
             (_profile5, _rule65),
             (_profile5, _rule69),
-            (_profile5, _rule75);
+            (_profile5, _rule75),
+            (_profile5, _rule76),
+            (_profile5, _rule77),
+            (_profile5, _rule78),
+            (_profile5, _rule80),
+            (_profile5, _rule81),
+            (_profile5, _rule82),
+            (_profile5, _rule84),
+            (_profile5, _rule85),
+            (_profile5, _rule86)
+            ;
 
         -- MEMBER
     END $$;

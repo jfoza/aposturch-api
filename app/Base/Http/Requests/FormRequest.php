@@ -15,6 +15,12 @@ abstract class FormRequest extends LaravelFormRequest
     CONST COLUMN_ORDER = 'columnOrder';
     CONST COLUMN_NAME  = 'columnName';
 
+    public array $sorting = [];
+
+    public bool $requiredPagination = false;
+
+    private ?string $columnsNameRules;
+
     abstract public function rules();
 
     abstract public function authorize();
@@ -27,15 +33,19 @@ abstract class FormRequest extends LaravelFormRequest
         );
     }
 
-    public function mergePaginationOrderRules(array $filters = [], bool $required = false): array
+    public function mergePaginationOrderRules(array $filters = []): array
     {
-        $paginationRules = $required ? 'required|integer' : 'nullable|integer';
+        $this->setColumnsNameRules();
+
+        $paginationRules  = $this->requiredPagination ? 'required|integer' : 'nullable|integer';
+
+        $columnOrderRules = 'nullable|string|in:asc,desc';
 
         $paginationOrderRules = [
             self::PAGE         => $paginationRules,
             self::PER_PAGE     => $paginationRules,
-            self::COLUMN_ORDER => 'nullable|string|in:asc,desc',
-            self::COLUMN_NAME  => 'nullable|string',
+            self::COLUMN_ORDER => $columnOrderRules,
+            self::COLUMN_NAME  => $this->getColumnsNameRules(),
         ];
 
         return array_merge($paginationOrderRules, $filters);
@@ -51,6 +61,23 @@ abstract class FormRequest extends LaravelFormRequest
         ];
 
         return array_merge($paginationOrderAttributes, $attributes);
+    }
+
+    private function setColumnsNameRules(): void
+    {
+        $this->columnsNameRules = 'nullable|string';
+
+        if(count($this->sorting) > 0)
+        {
+            $allowedColumns = implode(',', $this->sorting);
+
+            $this->columnsNameRules = "nullable|string|in:$allowedColumns";
+        }
+    }
+
+    private function getColumnsNameRules(): string
+    {
+        return $this->columnsNameRules;
     }
 }
 

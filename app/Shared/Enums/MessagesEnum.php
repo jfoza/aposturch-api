@@ -71,4 +71,12 @@ enum MessagesEnum: string {
     case INVALID_RESP_MEMBER_TYPE = 'O membro selecionado possui um tipo inválido.';
     case INVALID_RESP_MEMBER_PROFILE = 'Somente usuários com perfil Admin Igreja podem ser responsáveis por uma igreja.';
     case CHURCH_NOT_FOUND = 'Igreja não encontrada';
+
+    // MODULES - STORE
+    case CATEGORY_NOT_FOUND = 'Categoria não encontrada.';
+    case CATEGORY_NAME_ALREADY_EXISTS = 'Já existe uma categoria com este nome. Escolha outro.';
+    case CATEGORY_HAS_SUBCATEGORIES = 'Esta categoria possui subcategorias vinculadas a ela, remova estes vínculos e tente novamente.';
+
+    case SUBCATEGORY_NOT_FOUND = 'Subcategoria não encontrada.';
+    case SUBCATEGORY_NAME_ALREADY_EXISTS = 'Já existe uma subcategoria com este nome. Escolha outro.';
 }

@@ -15,6 +15,8 @@ class Credentials
     const ASSISTANT_3     = 'assistant3@email.com';
     const ASSISTANT_4     = 'assistant4@email.com';
 
+    const ASSISTANT_STORE_MODULE = 'assistant-store-module@email.com';
+
     const PHONE_ALREADY_EXISTS = '51999999999';
 
     const CHURCH_1 = 'igreja-biblica-viver-caxias';

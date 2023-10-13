@@ -155,6 +155,22 @@ execute_feature_tests () {
     $ARTISAN test --filter 'Tests\\Feature'
 }
 
+execute_feature_tests_membership () {
+    check_api_is_up
+    echo
+    echo "$ICON Executando testes no módulo Membresia..."
+    echo
+    $ARTISAN test --filter 'Tests\\Feature\\App\\Modules\\Membership'
+}
+
+execute_feature_tests_store () {
+    check_api_is_up
+    echo
+    echo "$ICON Executando testes no módulo Loja..."
+    echo
+    $ARTISAN test --filter 'Tests\\Feature\\App\\Modules\\Store'
+}
+
 execute_tests () {
     check_api_is_up
     echo
@@ -216,6 +232,8 @@ if [ $# -gt 0 ]; then
     "test") execute_tests $@ ;;
     "test-unit") execute_unit_tests $@ ;;
     "test-feature") execute_feature_tests $@ ;;
+    "test-feature-membership") execute_feature_tests_membership $@ ;;
+    "test-feature-store") execute_feature_tests_store $@ ;;
     "test-report") execute_tests_with_report $@ ;;
     *) show_commands;;
 

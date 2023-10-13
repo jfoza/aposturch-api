@@ -35,33 +35,6 @@ class UsersValidations
     /**
      * @throws AppException
      */
-    public static function validateUserExistsByIdAndHasChurch(
-        string $userId,
-        UsersRepositoryInterface $usersRepository
-    ): object
-    {
-        if(!$user = $usersRepository->findById($userId))
-        {
-            throw new AppException(
-                MessagesEnum::USER_NOT_FOUND,
-                Response::HTTP_NOT_FOUND
-            );
-        }
-
-        if(empty($user->church))
-        {
-            throw new AppException(
-                MessagesEnum::USER_CHURCH_RELATIONSHIP_NOT_FOUND,
-                Response::HTTP_NOT_FOUND
-            );
-        }
-
-        return $user;
-    }
-
-    /**
-     * @throws AppException
-     */
     public static function checkIfPasswordsMatch(
         string $payload,
         string $hashed
