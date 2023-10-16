@@ -8,10 +8,12 @@ use App\Modules\Store\Categories\Contracts\FindAllCategoriesServiceInterface;
 use App\Modules\Store\Categories\Contracts\FindByCategoryIdServiceInterface;
 use App\Modules\Store\Categories\Contracts\RemoveCategoryServiceInterface;
 use App\Modules\Store\Categories\Contracts\UpdateCategoryServiceInterface;
+use App\Modules\Store\Categories\Contracts\UpdateStatusCategoryServiceInterface;
 use App\Modules\Store\Categories\DTO\CategoriesDTO;
 use App\Modules\Store\Categories\DTO\CategoriesFiltersDTO;
 use App\Modules\Store\Categories\Requests\CategoriesFiltersRequest;
 use App\Modules\Store\Categories\Requests\CategoriesRequest;
+use App\Modules\Store\Categories\Requests\CategoriesUpdateStatusRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,11 +21,12 @@ use Symfony\Component\HttpFoundation\Response;
 readonly class CategoriesController
 {
     public function __construct(
-        private FindAllCategoriesServiceInterface $findAllCategoriesService,
-        private FindByCategoryIdServiceInterface  $findByCategoryIdService,
-        private CreateCategoryServiceInterface    $createCategoryService,
-        private UpdateCategoryServiceInterface    $updateCategoryService,
-        private RemoveCategoryServiceInterface    $removeCategoryService,
+        private FindAllCategoriesServiceInterface    $findAllCategoriesService,
+        private FindByCategoryIdServiceInterface     $findByCategoryIdService,
+        private CreateCategoryServiceInterface       $createCategoryService,
+        private UpdateCategoryServiceInterface       $updateCategoryService,
+        private UpdateStatusCategoryServiceInterface $updateStatusCategoryService,
+        private RemoveCategoryServiceInterface       $removeCategoryService,
     ) {}
 
     public function index(
@@ -58,8 +61,9 @@ readonly class CategoriesController
         CategoriesDTO $dto,
     ): JsonResponse
     {
-        $dto->name        = $request->name;
-        $dto->description = $request->description;
+        $dto->name            = $request->name;
+        $dto->description     = $request->description;
+        $dto->subcategoriesId = $request->subcategoriesId;
 
         $created = $this->createCategoryService->execute($dto);
 
@@ -71,13 +75,25 @@ readonly class CategoriesController
         CategoriesDTO $dto,
     ): JsonResponse
     {
-        $dto->id          = $request->id;
-        $dto->name        = $request->name;
-        $dto->description = $request->description;
+        $dto->id              = $request->id;
+        $dto->name            = $request->name;
+        $dto->description     = $request->description;
+        $dto->subcategoriesId = $request->subcategoriesId;
 
-        $created = $this->updateCategoryService->execute($dto);
+        $updated = $this->updateCategoryService->execute($dto);
 
-        return response()->json($created, Response::HTTP_OK);
+        return response()->json($updated, Response::HTTP_OK);
+    }
+
+    public function updateStatus(
+        CategoriesUpdateStatusRequest $request,
+    ): JsonResponse
+    {
+        $categoriesId = $request->categoriesId;
+
+        $updated = $this->updateStatusCategoryService->execute($categoriesId);
+
+        return response()->json($updated, Response::HTTP_OK);
     }
 
     public function delete(Request $request): JsonResponse

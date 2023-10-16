@@ -50,6 +50,13 @@ class CategoriesRepository implements CategoriesRepositoryInterface
         );
     }
 
+    public function findAllByIds(array $categoriesId): Collection
+    {
+        $categories = $this->getBaseQuery()->whereIn(Category::ID, $categoriesId)->get();
+
+        return collect($categories);
+    }
+
     public function findById(string $id): ?object
     {
         return $this->getBaseQuery()->find($id);
@@ -79,6 +86,16 @@ class CategoriesRepository implements CategoriesRepositoryInterface
         Category::where(Category::ID, $categoriesDTO->id)->update($update);
 
         return (object) ($update);
+    }
+
+    public function updateStatus(string $id, bool $status): object
+    {
+        Category::find($id)->update([Category::ACTIVE => $status]);
+
+        return (object) ([
+            Category::ID     => $id,
+            Category::ACTIVE => $status,
+        ]);
     }
 
     public function remove(string $id): void

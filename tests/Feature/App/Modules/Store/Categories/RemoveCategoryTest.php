@@ -75,10 +75,10 @@ class RemoveCategoryTest extends BaseTestCase
     {
         $this->setAuthorizationBearer(Credentials::ASSISTANT_STORE_MODULE);
 
-        $category = Category::factory()->create();
+        $category = Uuid::uuid4Generate();
 
         $response = $this->deleteJson(
-            "$this->endpoint/id/$category->id",
+            "$this->endpoint/id/$category",
             [],
             $this->getAuthorizationBearer()
         );
@@ -90,10 +90,10 @@ class RemoveCategoryTest extends BaseTestCase
     {
         $this->setAuthorizationBearer(Credentials::USER_WITHOUT_MODULES);
 
-        $category = Category::factory()->create();
+        $category = Uuid::uuid4Generate();
 
         $response = $this->deleteJson(
-            "$this->endpoint/id/$category->id",
+            "$this->endpoint/id/$category",
             [],
             $this->getAuthorizationBearer()
         );

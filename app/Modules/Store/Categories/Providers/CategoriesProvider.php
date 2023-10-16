@@ -9,12 +9,14 @@ use App\Modules\Store\Categories\Contracts\FindAllCategoriesServiceInterface;
 use App\Modules\Store\Categories\Contracts\FindByCategoryIdServiceInterface;
 use App\Modules\Store\Categories\Contracts\RemoveCategoryServiceInterface;
 use App\Modules\Store\Categories\Contracts\UpdateCategoryServiceInterface;
+use App\Modules\Store\Categories\Contracts\UpdateStatusCategoryServiceInterface;
 use App\Modules\Store\Categories\Repositories\CategoriesRepository;
 use App\Modules\Store\Categories\Services\CreateCategoryService;
 use App\Modules\Store\Categories\Services\FindAllCategoriesService;
 use App\Modules\Store\Categories\Services\FindByCategoryIdService;
 use App\Modules\Store\Categories\Services\RemoveCategoryService;
 use App\Modules\Store\Categories\Services\UpdateCategoryService;
+use App\Modules\Store\Categories\Services\UpdateStatusCategoryService;
 
 class CategoriesProvider extends AbstractServiceProvider
 {
@@ -47,6 +49,11 @@ class CategoriesProvider extends AbstractServiceProvider
         $this->bind(
             RemoveCategoryServiceInterface::class,
             RemoveCategoryService::class,
+        );
+
+        $this->bind(
+            UpdateStatusCategoryServiceInterface::class,
+            UpdateStatusCategoryService::class,
         );
     }
 }

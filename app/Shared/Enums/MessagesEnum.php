@@ -78,5 +78,6 @@ enum MessagesEnum: string {
     case CATEGORY_HAS_SUBCATEGORIES = 'Esta categoria possui subcategorias vinculadas a ela, remova estes vínculos e tente novamente.';
 
     case SUBCATEGORY_NOT_FOUND = 'Subcategoria não encontrada.';
+    case SUBCATEGORY_CANNOT_BE_USED = 'Uma ou mais subcategorias não podem ser utilizadas, pois já estão vinculadas a outra categoria.';
     case SUBCATEGORY_NAME_ALREADY_EXISTS = 'Já existe uma subcategoria com este nome. Escolha outro.';
 }

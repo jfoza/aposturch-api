@@ -45,6 +45,13 @@ class SubcategoriesRepository implements SubcategoriesRepositoryInterface
         );
     }
 
+    public function findAllByIds(array $subcategoriesId): Collection
+    {
+        $subcategories = $this->getBaseQuery()->whereIn(Subcategory::ID, $subcategoriesId)->get();
+
+        return collect($subcategories);
+    }
+
     public function findById(string $id): ?object
     {
        return $this
@@ -92,6 +99,11 @@ class SubcategoriesRepository implements SubcategoriesRepositoryInterface
         Subcategory::find($subcategoriesDTO->id)->update($update);
 
         return (object) ($update);
+    }
+
+    public function saveCategory(string $categoryId, array $subcategoriesId): void
+    {
+        Subcategory::whereIn(Subcategory::ID, $subcategoriesId)->update([Subcategory::CATEGORY_ID => $categoryId]);
     }
 
     public function remove(string $id): void

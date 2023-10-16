@@ -4,8 +4,10 @@ namespace App\Modules\Store\Categories\Validations;
 
 use App\Exceptions\AppException;
 use App\Modules\Store\Categories\Contracts\CategoriesRepositoryInterface;
+use App\Modules\Store\Categories\Models\Category;
 use App\Modules\Store\Subcategories\Contracts\SubcategoriesRepositoryInterface;
 use App\Shared\Enums\MessagesEnum;
+use Illuminate\Support\Collection;
 use Symfony\Component\HttpFoundation\Response;
 
 class CategoriesValidations
@@ -83,5 +85,38 @@ class CategoriesValidations
                 Response::HTTP_BAD_REQUEST
             );
         }
+    }
+
+    /**
+     * @throws AppException
+     */
+    public static function categoriesExists(
+        array $categoriesIdPayload,
+        CategoriesRepositoryInterface $categoriesRepository
+    ): Collection
+    {
+        $categories = $categoriesRepository->findAllByIds($categoriesIdPayload);
+
+        $categoriesId = $categories->pluck(Category::ID)->toArray();
+
+        $notFound = [];
+
+        foreach ($categoriesIdPayload as $categoryIdPayload)
+        {
+            if(!in_array($categoryIdPayload, $categoriesId))
+            {
+                $notFound[] = $categoryIdPayload;
+            }
+        }
+
+        if(!empty($notFound))
+        {
+            throw new AppException(
+                MessagesEnum::CATEGORY_NOT_FOUND,
+                Response::HTTP_NOT_FOUND
+            );
+        }
+
+        return $categories;
     }
 }
