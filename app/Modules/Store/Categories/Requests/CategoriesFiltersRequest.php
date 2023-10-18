@@ -16,6 +16,7 @@ class CategoriesFiltersRequest extends FormRequest
     {
         return $this->mergePaginationOrderRules([
             'name' => 'nullable|string',
+            'active' => 'nullable|boolean',
             'hasSubcategories' => 'nullable|boolean',
         ]);
     }
@@ -24,6 +25,7 @@ class CategoriesFiltersRequest extends FormRequest
     {
         return $this->mergePaginationOrderAttributes([
             'name' => 'Name',
+            'active' => 'Active',
             'hasSubcategories' => 'Has Subcategories'
         ]);
     }

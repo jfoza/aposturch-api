@@ -8,4 +8,5 @@ class SubcategoriesDTO
     public ?string $categoryId;
     public ?string $name;
     public ?string $description;
+    public ?array $productsId;
 }

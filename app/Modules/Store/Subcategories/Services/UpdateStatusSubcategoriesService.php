@@ -5,44 +5,42 @@ namespace App\Modules\Store\Subcategories\Services;
 use App\Base\Services\AuthenticatedService;
 use App\Base\Traits\EnvironmentException;
 use App\Exceptions\AppException;
-use App\Modules\Store\Products\Contracts\ProductsRepositoryInterface;
-use App\Modules\Store\Subcategories\Contracts\RemoveSubcategoryServiceInterface;
 use App\Modules\Store\Subcategories\Contracts\SubcategoriesRepositoryInterface;
+use App\Modules\Store\Subcategories\Contracts\UpdateStatusSubcategoriesServiceInterface;
 use App\Modules\Store\Subcategories\Validations\SubcategoriesValidations;
 use App\Shared\Enums\RulesEnum;
 use App\Shared\Utils\Transaction;
+use Illuminate\Support\Collection;
 
-class RemoveSubcategoryService extends AuthenticatedService implements RemoveSubcategoryServiceInterface
+class UpdateStatusSubcategoriesService extends AuthenticatedService implements UpdateStatusSubcategoriesServiceInterface
 {
     public function __construct(
         private readonly SubcategoriesRepositoryInterface $subcategoriesRepository,
-        private readonly ProductsRepositoryInterface $productsRepository,
     ) {}
 
     /**
      * @throws AppException
      */
-    public function execute(string $id): void
+    public function execute(array $subcategoriesId): Collection
     {
-        $this->getPolicy()->havePermission(RulesEnum::STORE_MODULE_SUBCATEGORIES_DELETE->value);
+        $this->getPolicy()->havePermission(RulesEnum::STORE_MODULE_SUBCATEGORIES_STATUS_UPDATE->value);
 
-        SubcategoriesValidations::subcategoryExists(
-            $id,
+        $subcategories = SubcategoriesValidations::subcategoriesExists(
+            $subcategoriesId,
             $this->subcategoriesRepository
-        );
-
-        SubcategoriesValidations::hasProducts(
-            $id,
-            $this->productsRepository
         );
 
         Transaction::beginTransaction();
 
         try
         {
-            $this->subcategoriesRepository->remove($id);
+            $subcategories = $subcategories->map(
+                fn($item) => $this->subcategoriesRepository->updateStatus($item->id, !$item->active)
+            );
 
             Transaction::commit();
+
+            return $subcategories;
         }
         catch (\Exception $e)
         {

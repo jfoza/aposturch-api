@@ -7,11 +7,13 @@ use App\Modules\Store\Subcategories\Contracts\CreateSubcategoryServiceInterface;
 use App\Modules\Store\Subcategories\Contracts\FindAllSubcategoriesServiceInterface;
 use App\Modules\Store\Subcategories\Contracts\FindBySubcategoryIdServiceInterface;
 use App\Modules\Store\Subcategories\Contracts\RemoveSubcategoryServiceInterface;
+use App\Modules\Store\Subcategories\Contracts\UpdateStatusSubcategoriesServiceInterface;
 use App\Modules\Store\Subcategories\Contracts\UpdateSubcategoryServiceInterface;
 use App\Modules\Store\Subcategories\DTO\SubcategoriesDTO;
 use App\Modules\Store\Subcategories\DTO\SubcategoriesFiltersDTO;
 use App\Modules\Store\Subcategories\Requests\SubcategoriesFiltersRequest;
 use App\Modules\Store\Subcategories\Requests\SubcategoriesRequest;
+use App\Modules\Store\Subcategories\Requests\SubcategoriesUpdateStatusRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,11 +21,12 @@ use Symfony\Component\HttpFoundation\Response;
 readonly class SubcategoriesController
 {
     public function __construct(
-        private FindAllSubcategoriesServiceInterface $findAllSubcategoriesService,
-        private FindBySubcategoryIdServiceInterface $findBySubcategoryIdService,
-        private CreateSubcategoryServiceInterface $createSubcategoryService,
-        private UpdateSubcategoryServiceInterface $updateSubcategoryService,
-        private RemoveSubcategoryServiceInterface $removeSubcategoryService,
+        private FindAllSubcategoriesServiceInterface      $findAllSubcategoriesService,
+        private FindBySubcategoryIdServiceInterface       $findBySubcategoryIdService,
+        private CreateSubcategoryServiceInterface         $createSubcategoryService,
+        private UpdateSubcategoryServiceInterface         $updateSubcategoryService,
+        private UpdateStatusSubcategoriesServiceInterface $updateStatusSubcategoriesService,
+        private RemoveSubcategoryServiceInterface         $removeSubcategoryService,
     ) {}
 
     public function index(
@@ -36,8 +39,10 @@ readonly class SubcategoriesController
         $filtersDTO->paginationOrder->setColumnName($request[FormRequest::COLUMN_NAME]);
         $filtersDTO->paginationOrder->setColumnOrder($request[FormRequest::COLUMN_ORDER]);
 
-        $filtersDTO->name       = $request->name;
-        $filtersDTO->categoryId = $request->categoryId;
+        $filtersDTO->name        = $request->name;
+        $filtersDTO->categoryId  = $request->categoryId;
+        $filtersDTO->active      = isset($request->active) ? (bool) $request->active : null;
+        $filtersDTO->hasProducts = isset($request->hasProducts) ? (bool) $request->hasProducts : null;
 
         $subcategories = $this->findAllSubcategoriesService->execute($filtersDTO);
 
@@ -61,6 +66,7 @@ readonly class SubcategoriesController
         $dto->categoryId  = $request->categoryId;
         $dto->name        = $request->name;
         $dto->description = $request->description;
+        $dto->productsId  = $request->productsId;
 
         $created = $this->createSubcategoryService->execute($dto);
 
@@ -76,8 +82,20 @@ readonly class SubcategoriesController
         $dto->categoryId  = $request->categoryId;
         $dto->name        = $request->name;
         $dto->description = $request->description;
+        $dto->productsId  = $request->productsId;
 
         $updated = $this->updateSubcategoryService->execute($dto);
+
+        return response()->json($updated, Response::HTTP_OK);
+    }
+
+    public function updateStatus(
+        SubcategoriesUpdateStatusRequest $request,
+    ): JsonResponse
+    {
+        $subcategoriesId = $request->subcategoriesId;
+
+        $updated = $this->updateStatusSubcategoriesService->execute($subcategoriesId);
 
         return response()->json($updated, Response::HTTP_OK);
     }

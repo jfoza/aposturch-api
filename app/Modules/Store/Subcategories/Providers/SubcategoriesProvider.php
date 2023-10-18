@@ -8,12 +8,14 @@ use App\Modules\Store\Subcategories\Contracts\FindAllSubcategoriesServiceInterfa
 use App\Modules\Store\Subcategories\Contracts\FindBySubcategoryIdServiceInterface;
 use App\Modules\Store\Subcategories\Contracts\RemoveSubcategoryServiceInterface;
 use App\Modules\Store\Subcategories\Contracts\SubcategoriesRepositoryInterface;
+use App\Modules\Store\Subcategories\Contracts\UpdateStatusSubcategoriesServiceInterface;
 use App\Modules\Store\Subcategories\Contracts\UpdateSubcategoryServiceInterface;
 use App\Modules\Store\Subcategories\Repositories\SubcategoriesRepository;
 use App\Modules\Store\Subcategories\Services\CreateSubcategoryService;
 use App\Modules\Store\Subcategories\Services\FindAllSubcategoriesService;
 use App\Modules\Store\Subcategories\Services\FindBySubcategoryIdService;
 use App\Modules\Store\Subcategories\Services\RemoveSubcategoryService;
+use App\Modules\Store\Subcategories\Services\UpdateStatusSubcategoriesService;
 use App\Modules\Store\Subcategories\Services\UpdateSubcategoryService;
 
 class SubcategoriesProvider extends AbstractServiceProvider
@@ -42,6 +44,11 @@ class SubcategoriesProvider extends AbstractServiceProvider
         $this->bind(
             UpdateSubcategoryServiceInterface::class,
             UpdateSubcategoryService::class,
+        );
+
+        $this->bind(
+            UpdateStatusSubcategoriesServiceInterface::class,
+            UpdateStatusSubcategoriesService::class,
         );
 
         $this->bind(

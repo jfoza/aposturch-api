@@ -9,19 +9,13 @@ use App\Modules\Store\Categories\Contracts\CategoriesRepositoryInterface;
 use App\Modules\Store\Categories\Contracts\CreateCategoryServiceInterface;
 use App\Modules\Store\Categories\DTO\CategoriesDTO;
 use App\Modules\Store\Categories\Validations\CategoriesValidations;
-use App\Modules\Store\Subcategories\Contracts\SubcategoriesRepositoryInterface;
-use App\Modules\Store\Subcategories\Validations\SubcategoriesValidations;
 use App\Shared\Enums\RulesEnum;
 use App\Shared\Utils\Transaction;
 
 class CreateCategoryService extends AuthenticatedService implements CreateCategoryServiceInterface
 {
-    private CategoriesDTO $categoriesDTO;
-    private bool $hasSubcategories = false;
-
     public function __construct(
         private readonly CategoriesRepositoryInterface $categoriesRepository,
-        private readonly SubcategoriesRepositoryInterface $subcategoriesRepository,
     ) {}
 
     /**
@@ -31,25 +25,16 @@ class CreateCategoryService extends AuthenticatedService implements CreateCatego
     {
         $this->getPolicy()->havePermission(RulesEnum::STORE_MODULE_CATEGORIES_INSERT->value);
 
-        $this->categoriesDTO = $categoriesDTO;
-
-        $this->handleValidations();
+        CategoriesValidations::categoryExistsByName(
+            $categoriesDTO->name,
+            $this->categoriesRepository
+        );
 
         Transaction::beginTransaction();
 
         try
         {
-            $created = $this->categoriesRepository->create($this->categoriesDTO);
-
-            if($this->hasSubcategories)
-            {
-                $this
-                    ->subcategoriesRepository
-                    ->saveCategory(
-                        $created->id,
-                        $this->categoriesDTO->subcategoriesId
-                    );
-            }
+            $created = $this->categoriesRepository->create($categoriesDTO);
 
             Transaction::commit();
 
@@ -60,27 +45,6 @@ class CreateCategoryService extends AuthenticatedService implements CreateCatego
             Transaction::rollback();
 
             EnvironmentException::dispatchException($e);
-        }
-    }
-
-    /**
-     * @throws AppException
-     */
-    private function handleValidations(): void
-    {
-        $this->hasSubcategories = isset($this->categoriesDTO->subcategoriesId) && count($this->categoriesDTO->subcategoriesId) > 0;
-
-        CategoriesValidations::categoryExistsByName(
-            $this->categoriesDTO->name,
-            $this->categoriesRepository
-        );
-
-        if($this->hasSubcategories)
-        {
-            SubcategoriesValidations::subcategoriesExists(
-                $this->categoriesDTO->subcategoriesId,
-                $this->subcategoriesRepository,
-            );
         }
     }
 }

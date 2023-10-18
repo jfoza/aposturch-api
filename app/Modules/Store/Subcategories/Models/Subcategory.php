@@ -4,8 +4,11 @@ namespace App\Modules\Store\Subcategories\Models;
 
 use App\Base\Infra\Models\Register;
 use App\Modules\Store\Categories\Models\Category;
+use App\Modules\Store\Products\Models\Product;
+use App\Modules\Store\ProductsSubcategories\Models\ProductSubcategory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Subcategory extends Register
 {
@@ -34,5 +37,15 @@ class Subcategory extends Register
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
+    }
+
+    public function product(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            Product::class,
+            ProductSubcategory::tableName(),
+            ProductSubcategory::SUBCATEGORY_ID,
+            ProductSubcategory::PRODUCT_ID,
+        );
     }
 }

@@ -5,6 +5,7 @@ namespace App\Modules\Store\Subcategories\Validations;
 use App\Exceptions\AppException;
 use App\Modules\Store\Categories\Contracts\CategoriesRepositoryInterface;
 use App\Modules\Store\Categories\Models\Category;
+use App\Modules\Store\Products\Contracts\ProductsRepositoryInterface;
 use App\Modules\Store\Subcategories\Contracts\SubcategoriesRepositoryInterface;
 use App\Modules\Store\Subcategories\Models\Subcategory;
 use App\Shared\Enums\MessagesEnum;
@@ -98,15 +99,18 @@ class SubcategoriesValidations
     /**
      * @throws AppException
      */
-    public static function subcategoriesHasBeUsed(Collection $subcategories): void
+    public static function hasProducts(
+        string $subcategoryId,
+        ProductsRepositoryInterface $productsRepository
+    ): void
     {
-        $cannotBeUsed = $subcategories->where(Subcategory::ID, '!=', null)->toArray();
+        $products = $productsRepository->findBySubcategory($subcategoryId);
 
-        if(count($cannotBeUsed) > 0)
+        if($products->isNotEmpty())
         {
             throw new AppException(
-                MessagesEnum::SUBCATEGORY_CANNOT_BE_USED,
-                Response::HTTP_NOT_FOUND
+                MessagesEnum::SUBCATEGORY_HAS_PRODUCTS,
+                Response::HTTP_BAD_REQUEST
             );
         }
     }

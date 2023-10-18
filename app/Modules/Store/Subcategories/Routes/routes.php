@@ -8,4 +8,5 @@ Route::get('/', [SubcategoriesController::class, 'index']);
 Route::get('/id/{id}', [SubcategoriesController::class, 'showById']);
 Route::post('/', [SubcategoriesController::class, 'insert']);
 Route::put('/id/{id}', [SubcategoriesController::class, 'update'])->middleware([MiddlewareEnum::UUID]);
+Route::put('/status', [SubcategoriesController::class, 'updateStatus']);
 Route::delete('/id/{id}', [SubcategoriesController::class, 'delete'])->middleware([MiddlewareEnum::UUID]);

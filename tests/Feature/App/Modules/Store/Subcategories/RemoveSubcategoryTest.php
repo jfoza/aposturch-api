@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\App\Modules\Store\Subcategories;
 
+use App\Modules\Store\Products\Models\Product;
 use App\Modules\Store\Subcategories\Models\Subcategory;
 use App\Shared\Libraries\Uuid;
 use Tests\Feature\App\Features\Auth\Credentials;
@@ -46,6 +47,25 @@ class RemoveSubcategoryTest extends BaseTestCase
         );
 
         $response->assertNotFound();
+    }
+
+    public function test_should_return_error_if_subcategory_has_products()
+    {
+        $this->setAuthorizationBearer(Credentials::ADMIN_MASTER);
+
+        $subcategory = Subcategory::factory()->create();
+
+        $product = Product::factory()->create();
+
+        Subcategory::find($subcategory->id)->product()->sync([$product->id]);
+
+        $response = $this->deleteJson(
+            "$this->endpoint/id/$subcategory->id",
+            [],
+            $this->getAuthorizationBearer()
+        );
+
+        $response->assertBadRequest();
     }
 
     public function test_should_return_error_if_user_does_not_have_access()

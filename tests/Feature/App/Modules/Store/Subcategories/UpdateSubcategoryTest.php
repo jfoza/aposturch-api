@@ -3,6 +3,7 @@
 namespace Tests\Feature\App\Modules\Store\Subcategories;
 
 use App\Modules\Store\Categories\Models\Category;
+use App\Modules\Store\Products\Models\Product;
 use App\Modules\Store\Subcategories\Models\Subcategory;
 use App\Shared\Helpers\RandomStringHelper;
 use App\Shared\Libraries\Uuid;
@@ -40,6 +41,54 @@ class UpdateSubcategoryTest extends BaseTestCase
         );
 
         $response->assertOk();
+    }
+
+    public function test_should_update_unique_subcategory_with_products()
+    {
+        $this->setAuthorizationBearer(Credentials::ADMIN_MASTER);
+
+        $category    = Category::factory()->create();
+        $subcategory = Subcategory::factory()->create();
+        $product     = Product::factory()->create();
+
+        $payload = [
+            'categoryId'  => $category->id,
+            'name'        => RandomStringHelper::alnumGenerate(),
+            'description' => RandomStringHelper::alnumGenerate(),
+            'productsId'  => [$product->id],
+        ];
+
+        $response = $this->putJson(
+            "$this->endpoint/id/$subcategory->id",
+            $payload,
+            $this->getAuthorizationBearer()
+        );
+
+        $response->assertOk();
+    }
+
+    public function test_should_return_error_if_product_id_not_exists()
+    {
+        $this->setAuthorizationBearer(Credentials::ADMIN_MASTER);
+
+        $category    = Category::factory()->create();
+        $subcategory = Subcategory::factory()->create();
+        $product     = Product::factory()->create();
+
+        $payload = [
+            'categoryId'  => $category->id,
+            'name'        => RandomStringHelper::alnumGenerate(),
+            'description' => RandomStringHelper::alnumGenerate(),
+            'productsId'  => [$product->id, Uuid::uuid4Generate()],
+        ];
+
+        $response = $this->putJson(
+            "$this->endpoint/id/$subcategory->id",
+            $payload,
+            $this->getAuthorizationBearer()
+        );
+
+        $response->assertNotFound();
     }
 
     public function test_should_return_error_if_subcategory_id_not_exists()

@@ -218,6 +218,7 @@ return [
         \App\Modules\Membership\Members\Providers\MembersProvider::class,
         \App\Modules\Store\Categories\Providers\CategoriesProvider::class,
         \App\Modules\Store\Subcategories\Providers\SubcategoriesProvider::class,
+        \App\Modules\Store\Products\Providers\ProductsProviders::class,
     ],
 
     /*

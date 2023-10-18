@@ -40,6 +40,7 @@ readonly class CategoriesController
         $filtersDTO->paginationOrder->setColumnOrder($request[FormRequest::COLUMN_ORDER]);
 
         $filtersDTO->name             = $request->name;
+        $filtersDTO->active           = isset($request->active) ? (bool) $request->active : null;
         $filtersDTO->hasSubcategories = isset($request->hasSubcategories) ? (bool) $request->hasSubcategories : null;
 
         $categories = $this->findAllCategoriesService->execute($filtersDTO);
@@ -63,7 +64,6 @@ readonly class CategoriesController
     {
         $dto->name            = $request->name;
         $dto->description     = $request->description;
-        $dto->subcategoriesId = $request->subcategoriesId;
 
         $created = $this->createCategoryService->execute($dto);
 
@@ -78,7 +78,6 @@ readonly class CategoriesController
         $dto->id              = $request->id;
         $dto->name            = $request->name;
         $dto->description     = $request->description;
-        $dto->subcategoriesId = $request->subcategoriesId;
 
         $updated = $this->updateCategoryService->execute($dto);
 

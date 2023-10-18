@@ -3,10 +3,8 @@
 namespace Tests\Feature\App\Modules\Store\Categories;
 
 use App\Modules\Store\Categories\Models\Category;
-use App\Modules\Store\Subcategories\Models\Subcategory;
 use App\Shared\Helpers\RandomStringHelper;
 use App\Shared\Libraries\Uuid;
-use Illuminate\Support\Facades\DB;
 use Tests\Feature\App\Features\Auth\Credentials;
 use Tests\Feature\BaseTestCase;
 
@@ -39,68 +37,6 @@ class UpdateCategoryTest extends BaseTestCase
         );
 
         $response->assertOk();
-    }
-
-    public function test_should_update_unique_category_with_subcategories()
-    {
-        $this->setAuthorizationBearer(Credentials::ADMIN_MASTER);
-
-        $category = Category::factory()->create();
-
-        $subcategory1 = Subcategory::factory()->create();
-        $subcategory2 = Subcategory::factory()->create();
-
-        $subcategoriesIdPayload = [
-            $subcategory1->id,
-            $subcategory2->id,
-        ];
-
-        $response = $this->putJson(
-            "$this->endpoint/id/$category->id",
-            [
-                'name'            => RandomStringHelper::alnumGenerate(),
-                'description'     => RandomStringHelper::alnumGenerate(),
-                'subcategoriesId' => $subcategoriesIdPayload
-            ],
-            $this->getAuthorizationBearer()
-        );
-
-        $subcategories = DB::table(Subcategory::tableName())
-            ->whereIn(Subcategory::ID, $subcategoriesIdPayload)
-            ->get();
-
-        foreach ($subcategories as $subcategory)
-        {
-            $response->assertJsonFragment(['id' => $subcategory->category_id]);
-        }
-
-        $response->assertOk();
-    }
-
-    public function test_should_return_error_if_any_of_the_subcategories_are_not_found()
-    {
-        $this->setAuthorizationBearer(Credentials::ADMIN_MASTER);
-
-        $category = Category::factory()->create();
-
-        $subcategory1 = Subcategory::factory()->create();
-
-        $subcategoriesIdPayload = [
-            $subcategory1->id,
-            Uuid::uuid4Generate(),
-        ];
-
-        $response = $this->putJson(
-            "$this->endpoint/id/$category->id",
-            [
-                'name'            => RandomStringHelper::alnumGenerate(),
-                'description'     => RandomStringHelper::alnumGenerate(),
-                'subcategoriesId' => $subcategoriesIdPayload
-            ],
-            $this->getAuthorizationBearer()
-        );
-
-        $response->assertNotFound();
     }
 
     public function test_should_return_error_if_category_id_not_exists()

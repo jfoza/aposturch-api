@@ -16,6 +16,7 @@ interface SubcategoriesRepositoryInterface
     public function findByCategory(string $categoryId): Collection;
     public function create(SubcategoriesDTO $subcategoriesDTO): object;
     public function save(SubcategoriesDTO $subcategoriesDTO): object;
-    public function saveCategory(string $categoryId, array $subcategoriesId): void;
+    public function saveProducts(string $subcategoryId, array $productsId): void;
+    public function updateStatus(string $id, bool $status): object;
     public function remove(string $id): void;
 }

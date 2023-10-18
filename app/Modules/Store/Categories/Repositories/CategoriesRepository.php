@@ -8,7 +8,6 @@ use App\Modules\Store\Categories\Contracts\CategoriesRepositoryInterface;
 use App\Modules\Store\Categories\DTO\CategoriesDTO;
 use App\Modules\Store\Categories\DTO\CategoriesFiltersDTO;
 use App\Modules\Store\Categories\Models\Category;
-use App\Modules\Store\Subcategories\Models\Subcategory;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 
@@ -38,6 +37,10 @@ class CategoriesRepository implements CategoriesRepositoryInterface
 
                     return $q->withCount('subcategory')->has('subcategory', '=', 0);
                 }
+            )
+            ->when(
+                isset($categoriesFiltersDTO->active),
+                fn($q) => $q->where(Category::tableField(Category::ACTIVE), $categoriesFiltersDTO->active)
             )
             ->orderBy(
                 $this->getColumnName($categoriesFiltersDTO->paginationOrder),
@@ -119,6 +122,7 @@ class CategoriesRepository implements CategoriesRepositoryInterface
         return match ($paginationOrder->getColumnName())
         {
             Category::NAME       => Category::tableField(Category::NAME),
+            Category::ACTIVE     => Category::tableField(Category::ACTIVE),
             Category::CREATED_AT => Category::tableField(Category::CREATED_AT),
             default              => Category::tableField(Category::ID)
         };

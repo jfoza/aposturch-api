@@ -3,7 +3,6 @@
 namespace App\Modules\Store\Categories\Requests;
 
 use App\Base\Http\Requests\FormRequest;
-use App\Shared\Rules\Uuid4Rule;
 
 class CategoriesRequest extends FormRequest
 {
@@ -11,10 +10,7 @@ class CategoriesRequest extends FormRequest
     {
         return [
             'name'            => 'required|string',
-            'description'     => 'nullable|string',
-            'subcategoriesId' => 'nullable|array',
-
-            'subcategoriesId.*' => ['nullable', new Uuid4Rule],
+            'description'     => 'nullable|string'
         ];
     }
 
@@ -23,7 +19,6 @@ class CategoriesRequest extends FormRequest
         return [
             'name'            => 'Name',
             'description'     => 'Description',
-            'subcategoriesId' => 'Subcategories Id'
         ];
     }
 

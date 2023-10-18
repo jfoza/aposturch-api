@@ -2,8 +2,8 @@
 
 namespace App\Modules\Store\Subcategories\Repositories;
 
+use App\Base\Http\Pagination\PaginationOrder;
 use App\Base\Traits\BuilderTrait;
-use App\Modules\Store\Categories\Models\Category;
 use App\Modules\Store\Subcategories\Contracts\SubcategoriesRepositoryInterface;
 use App\Modules\Store\Subcategories\DTO\SubcategoriesDTO;
 use App\Modules\Store\Subcategories\DTO\SubcategoriesFiltersDTO;
@@ -30,13 +30,29 @@ class SubcategoriesRepository implements SubcategoriesRepositoryInterface
             )
             ->when(
                 isset($subcategoriesFiltersDTO->categoryId),
-                fn($q) => $q->whereHas(
-                    'category',
-                    fn($c) => $c->whereIn(
-                        Category::tableField(Category::ID),
-                        $subcategoriesFiltersDTO->categoryId
-                    )
+                fn($c) => $c->where(
+                    Subcategory::tableField(Subcategory::CATEGORY_ID),
+                    $subcategoriesFiltersDTO->categoryId
                 )
+            )
+            ->when(
+                isset($subcategoriesFiltersDTO->hasProducts),
+                function ($q) use($subcategoriesFiltersDTO) {
+                    if($subcategoriesFiltersDTO->hasProducts === true)
+                    {
+                        return $q->withCount('product')->has('product', '>', 0);
+                    }
+
+                    return $q->withCount('product')->has('product', '=', 0);
+                }
+            )
+            ->when(
+                isset($subcategoriesFiltersDTO->active),
+                fn($q) => $q->where(Subcategory::tableField(Subcategory::ACTIVE), $subcategoriesFiltersDTO->active)
+            )
+            ->orderBy(
+                $this->getColumnName($subcategoriesFiltersDTO->paginationOrder),
+                $subcategoriesFiltersDTO->paginationOrder->getColumnOrder(),
             );
 
         return $this->paginateOrGet(
@@ -101,14 +117,24 @@ class SubcategoriesRepository implements SubcategoriesRepositoryInterface
         return (object) ($update);
     }
 
-    public function saveCategory(string $categoryId, array $subcategoriesId): void
+    public function saveProducts(string $subcategoryId, array $productsId): void
     {
-        Subcategory::whereIn(Subcategory::ID, $subcategoriesId)->update([Subcategory::CATEGORY_ID => $categoryId]);
+        Subcategory::find($subcategoryId)->product()->sync($productsId);
     }
 
     public function remove(string $id): void
     {
         Subcategory::where(Subcategory::ID, $id)->delete();
+    }
+
+    public function updateStatus(string $id, bool $status): object
+    {
+        Subcategory::find($id)->update([Subcategory::ACTIVE => $status]);
+
+        return (object) ([
+            Subcategory::ID     => $id,
+            Subcategory::ACTIVE => $status,
+        ]);
     }
 
     private function getBaseQuery(): Builder
@@ -122,5 +148,16 @@ class SubcategoriesRepository implements SubcategoriesRepositoryInterface
                 Subcategory::tableField(Subcategory::ACTIVE),
                 Subcategory::tableField(Subcategory::CREATED_AT),
             );
+    }
+
+    private function getColumnName(PaginationOrder $paginationOrder): string
+    {
+        return match ($paginationOrder->getColumnName())
+        {
+            Subcategory::NAME       => Subcategory::tableField(Subcategory::NAME),
+            Subcategory::ACTIVE     => Subcategory::tableField(Subcategory::ACTIVE),
+            Subcategory::CREATED_AT => Subcategory::tableField(Subcategory::CREATED_AT),
+            default                 => Subcategory::tableField(Subcategory::ID)
+        };
     }
 }
