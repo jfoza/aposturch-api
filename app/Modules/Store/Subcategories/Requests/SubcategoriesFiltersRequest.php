@@ -3,6 +3,7 @@
 namespace App\Modules\Store\Subcategories\Requests;
 
 use App\Base\Http\Requests\FormRequest;
+use App\Shared\Rules\Uuid4Rule;
 
 class SubcategoriesFiltersRequest extends FormRequest
 {
@@ -10,7 +11,7 @@ class SubcategoriesFiltersRequest extends FormRequest
     {
         return $this->mergePaginationOrderRules([
             'name'        => 'nullable|string',
-            'categoryId'  => 'nullable|string',
+            'categoryId'  => ['nullable', 'string', new Uuid4Rule()],
             'active'      => 'nullable|boolean',
             'hasProducts' => 'nullable|boolean',
         ]);

@@ -19,7 +19,6 @@ use App\Shared\Utils\Transaction;
 class UpdateSubcategoryService extends AuthenticatedService implements UpdateSubcategoryServiceInterface
 {
     private SubcategoriesDTO $subcategoriesDTO;
-    private bool $hasProducts = false;
 
     public function __construct(
         private readonly CategoriesRepositoryInterface $categoriesRepository,
@@ -44,10 +43,7 @@ class UpdateSubcategoryService extends AuthenticatedService implements UpdateSub
         {
             $updated = $this->subcategoriesRepository->save($this->subcategoriesDTO);
 
-            if($this->hasProducts)
-            {
-                $this->subcategoriesRepository->saveProducts($updated->id, $this->subcategoriesDTO->productsId);
-            }
+            $this->subcategoriesRepository->saveProducts($updated->id, $this->subcategoriesDTO->productsId);
 
             Transaction::commit();
 
@@ -66,8 +62,6 @@ class UpdateSubcategoryService extends AuthenticatedService implements UpdateSub
      */
     private function handleValidations(): void
     {
-        $this->hasProducts = isset($this->subcategoriesDTO->productsId) && count($this->subcategoriesDTO->productsId) > 0;
-
         SubcategoriesValidations::subcategoryExists(
             $this->subcategoriesDTO->id,
             $this->subcategoriesRepository
@@ -84,7 +78,7 @@ class UpdateSubcategoryService extends AuthenticatedService implements UpdateSub
             $this->categoriesRepository
         );
 
-        if($this->hasProducts)
+        if(count($this->subcategoriesDTO->productsId) > 0)
         {
             ProductsValidations::productsExists(
                 $this->subcategoriesDTO->productsId,

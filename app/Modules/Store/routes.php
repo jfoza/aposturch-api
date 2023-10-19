@@ -17,4 +17,7 @@ Route::prefix('/admin/modules/store')
 
         Route::prefix('/subcategories')
             ->group(app_path('Modules/Store/Subcategories/Routes/routes.php'));
+
+        Route::prefix('/products')
+            ->group(app_path('Modules/Store/Products/Routes/routes.php'));
     });

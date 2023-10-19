@@ -1,0 +1,38 @@
+<?php
+
+namespace App\Modules\Store\Products\Controllers;
+
+use App\Base\Http\Requests\FormRequest;
+use App\Modules\Store\Products\Contracts\FindAllProductsServiceInterface;
+use App\Modules\Store\Products\DTO\ProductsFiltersDTO;
+use App\Modules\Store\Products\Requests\ProductsFiltersRequest;
+use Illuminate\Http\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
+
+readonly class ProductsController
+{
+    public function __construct(
+        private FindAllProductsServiceInterface $findAllProductsService,
+    ) {}
+
+    public function index(
+        ProductsFiltersDTO $dto,
+        ProductsFiltersRequest $request
+    ): JsonResponse
+    {
+        $dto->paginationOrder->setPage($request[FormRequest::PAGE]);
+        $dto->paginationOrder->setPerPage($request[FormRequest::PER_PAGE]);
+        $dto->paginationOrder->setColumnName($request[FormRequest::COLUMN_NAME]);
+        $dto->paginationOrder->setColumnOrder($request[FormRequest::COLUMN_ORDER]);
+
+        $dto->name             = $request->name;
+        $dto->subcategoriesId  = $request->subcategoriesId;
+        $dto->code             = $request->code;
+        $dto->highlight        = $request->highlight;
+        $dto->active           = isset($request->active) ? (bool) $request->active : null;
+
+        $products = $this->findAllProductsService->execute($dto);
+
+        return response()->json($products, Response::HTTP_OK);
+    }
+}

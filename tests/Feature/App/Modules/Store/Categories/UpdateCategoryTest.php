@@ -99,4 +99,63 @@ class UpdateCategoryTest extends BaseTestCase
 
         $response->assertForbidden();
     }
+
+    /**
+     * @dataProvider dataProviderFormErrors
+     *
+     * @param mixed $id
+     * @param mixed $name
+     * @param mixed $description
+     * @return void
+     */
+    public function test_should_return_error_if_has_form_errors(
+        mixed $id,
+        mixed $name,
+        mixed $description,
+    ): void
+    {
+        $this->setAuthorizationBearer(Credentials::ADMIN_MASTER);
+
+        $payload = [
+            'name'        => $name,
+            'description' => $description,
+        ];
+
+        $response = $this->putJson(
+            "$this->endpoint/id/$id",
+            $payload,
+            $this->getAuthorizationBearer()
+        );
+
+        $response->assertUnprocessable();
+    }
+
+    public static function dataProviderFormErrors(): array
+    {
+        return [
+            'Invalid uuid' => [
+                'id'          => 'invalid-uuid',
+                'name'        => 'test',
+                'description' => 'test',
+            ],
+
+            'Empty name param' => [
+                'id'          => Uuid::uuid4Generate(),
+                'name'        => '',
+                'description' => 'test',
+            ],
+
+            'Invalid name param' => [
+                'id'          => Uuid::uuid4Generate(),
+                'name'        => false,
+                'description' => 'test',
+            ],
+
+            'Invalid description param' => [
+                'id'          => Uuid::uuid4Generate(),
+                'name'        => 'test',
+                'description' => true,
+            ]
+        ];
+    }
 }

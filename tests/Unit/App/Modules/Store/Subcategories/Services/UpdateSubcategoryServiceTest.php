@@ -59,6 +59,7 @@ class UpdateSubcategoryServiceTest extends TestCase
         $this->subcategoriesDtoMock->categoryId  = Uuid::uuid4Generate();
         $this->subcategoriesDtoMock->name        = 'test';
         $this->subcategoriesDtoMock->description = 'test';
+        $this->subcategoriesDtoMock->productsId  = [];
     }
 
     public function test_should_update_unique_subcategory()
@@ -83,6 +84,16 @@ class UpdateSubcategoryServiceTest extends TestCase
             ->categoriesRepositoryMock
             ->method('findById')
             ->willReturn((object) ([ Category::ID => Uuid::uuid4Generate() ]));
+
+        $this
+            ->subcategoriesRepositoryMock
+            ->method('save')
+            ->willReturn((object) ([
+                Subcategory::ID          => Uuid::uuid4Generate(),
+                Subcategory::CATEGORY_ID => Uuid::uuid4Generate(),
+                Subcategory::NAME        => 'test',
+                Subcategory::DESCRIPTION => 'test',
+            ]));
 
         $updated = $updateSubcategoryService->execute($this->subcategoriesDtoMock);
 

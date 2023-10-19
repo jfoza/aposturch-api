@@ -19,10 +19,11 @@ class SubcategoriesValidations
      */
     public static function subcategoryExists(
         string $id,
-        SubcategoriesRepositoryInterface $subcategoriesRepository
+        SubcategoriesRepositoryInterface $subcategoriesRepository,
+        bool $getProducts = false
     ): object
     {
-        if(!$subcategory = $subcategoriesRepository->findById($id))
+        if(!$subcategory = $subcategoriesRepository->findById($id, $getProducts))
         {
             throw new AppException(
                 MessagesEnum::SUBCATEGORY_NOT_FOUND,

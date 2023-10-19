@@ -16,7 +16,8 @@ class Product extends Register
     const PRODUCT_NAME        = 'product_name';
     const PRODUCT_DESCRIPTION = 'product_description';
     const PRODUCT_UNIQUE_NAME = 'product_unique_name';
-    const PRODUCT_VALUE       = 'product_value';
+    const PRODUCT_CODE        = 'product_code';
+    const VALUE               = 'value';
     const QUANTITY            = 'quantity';
     const BALANCE             = 'balance';
     const HIGHLIGHT_PRODUCT   = 'highlight_product';
@@ -33,7 +34,7 @@ class Product extends Register
         self::PRODUCT_NAME,
         self::PRODUCT_DESCRIPTION,
         self::PRODUCT_UNIQUE_NAME,
-        self::PRODUCT_VALUE,
+        self::VALUE,
         self::QUANTITY,
         self::BALANCE,
         self::HIGHLIGHT_PRODUCT,

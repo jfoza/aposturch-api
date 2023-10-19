@@ -73,4 +73,52 @@ class InsertCategoryTest extends BaseTestCase
 
         $response->assertForbidden();
     }
+
+    /**
+     * @dataProvider dataProviderFormErrors
+     *
+     * @param mixed $name
+     * @param mixed $description
+     * @return void
+     */
+    public function test_should_return_error_if_has_form_errors(
+        mixed $name,
+        mixed $description,
+    ): void
+    {
+        $this->setAuthorizationBearer(Credentials::ADMIN_MASTER);
+
+        $payload = [
+            'name'        => $name,
+            'description' => $description,
+        ];
+
+        $response = $this->postJson(
+            $this->endpoint,
+            $payload,
+            $this->getAuthorizationBearer()
+        );
+
+        $response->assertUnprocessable();
+    }
+
+    public static function dataProviderFormErrors(): array
+    {
+        return [
+            'Empty name param' => [
+                'name'        => '',
+                'description' => RandomStringHelper::alnumGenerate(),
+            ],
+
+            'Invalid name param' => [
+                'name'        => false,
+                'description' => RandomStringHelper::alnumGenerate(),
+            ],
+
+            'Invalid description param' => [
+                'name'        => RandomStringHelper::alnumGenerate(),
+                'description' => true,
+            ]
+        ];
+    }
 }

@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\App\Modules\Store\Subcategories;
 
+use App\Shared\Libraries\Uuid;
 use Tests\Feature\App\Features\Auth\Credentials;
 use Tests\Feature\BaseTestCase;
 
@@ -84,6 +85,30 @@ class FindAllSubcategoriesTest extends BaseTestCase
         ]);
     }
 
+    public function test_should_return_subcategories_list_with_pagination_order_and_filters()
+    {
+        $this->setAuthorizationBearer(Credentials::ADMIN_MASTER);
+
+        $params = http_build_query([
+            'page'    => $this->page,
+            'perPage' => $this->perPage,
+            'columnName' => 'name',
+            'columnOrder' => 'asc',
+
+            'name'        => 'test',
+            'categoryId'  => Uuid::uuid4Generate(),
+            'active'      => true,
+            'hasProducts' => false,
+        ]);
+
+        $response = $this->getJson(
+            $this->endpoint."?{$params}",
+            $this->getAuthorizationBearer()
+        );
+
+        $response->assertOk();
+    }
+
     public function test_should_return_error_if_user_does_not_have_access_to_module()
     {
         $this->setAuthorizationBearer(Credentials::USER_WITHOUT_MODULES);
@@ -94,5 +119,69 @@ class FindAllSubcategoriesTest extends BaseTestCase
         );
 
         $response->assertForbidden();
+    }
+
+    /**
+     * @dataProvider dataProviderFormErrors
+     *
+     * @param mixed $name
+     * @param mixed $categoryId
+     * @param mixed $active
+     * @param mixed $hasProducts
+     * @return void
+     */
+    public function test_should_return_error_if_has_form_errors(
+        mixed $name,
+        mixed $categoryId,
+        mixed $active,
+        mixed $hasProducts,
+    ): void
+    {
+        $this->setAuthorizationBearer(Credentials::ADMIN_MASTER);
+
+        $params = http_build_query([
+            'page'    => $this->page,
+            'perPage' => $this->perPage,
+            'columnName' => 'name',
+            'columnOrder' => 'asc',
+
+            'name'        => $name,
+            'categoryId'  => $categoryId,
+            'active'      => $active,
+            'hasProducts' => $hasProducts,
+        ]);
+
+        $response = $this->getJson(
+            $this->endpoint."?{$params}",
+            $this->getAuthorizationBearer()
+        );
+
+        $response->assertUnprocessable();
+    }
+
+    public static function dataProviderFormErrors(): array
+    {
+        return [
+            'Invalid category id filter param' => [
+                'name'        => 'test',
+                'categoryId'  => 'invalid-uuid',
+                'active'      => true,
+                'hasProducts' => false,
+            ],
+
+            'Invalid active param' => [
+                'name'        => 'test',
+                'categoryId'  => Uuid::uuid4Generate(),
+                'active'      => 'invalid',
+                'hasProducts' => 0,
+            ],
+
+            'Invalid has products param' => [
+                'name'        => 'test',
+                'categoryId'  => Uuid::uuid4Generate(),
+                'active'      => 1,
+                'hasProducts' => 'invalid',
+            ]
+        ];
     }
 }

@@ -10,7 +10,7 @@ class SubcategoriesRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'categoryId'  => 'required|string',
+            'categoryId'  => ['nullable', 'string', new Uuid4Rule()],
             'name'        => 'required|string',
             'description' => 'nullable|string',
             'productsId'  => 'nullable|array',

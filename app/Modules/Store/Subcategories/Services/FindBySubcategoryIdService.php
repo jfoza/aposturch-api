@@ -24,7 +24,8 @@ class FindBySubcategoryIdService extends AuthenticatedService implements FindByS
 
         return SubcategoriesValidations::subcategoryExists(
             $id,
-            $this->subcategoriesRepository
+            $this->subcategoriesRepository,
+            true
         );
     }
 }

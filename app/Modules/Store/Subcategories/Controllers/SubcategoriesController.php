@@ -82,7 +82,7 @@ readonly class SubcategoriesController
         $dto->categoryId  = $request->categoryId;
         $dto->name        = $request->name;
         $dto->description = $request->description;
-        $dto->productsId  = $request->productsId;
+        $dto->productsId  = isset($request->productsId) ? $request->productsId : [];
 
         $updated = $this->updateSubcategoryService->execute($dto);
 

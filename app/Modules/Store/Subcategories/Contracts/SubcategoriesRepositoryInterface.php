@@ -11,7 +11,7 @@ interface SubcategoriesRepositoryInterface
 {
     public function findAll(SubcategoriesFiltersDTO $subcategoriesFiltersDTO): LengthAwarePaginator|Collection;
     public function findAllByIds(array $subcategoriesId): Collection;
-    public function findById(string $id): ?object;
+    public function findById(string $id, bool $getProducts = false): ?object;
     public function findByName(string $name): ?object;
     public function findByCategory(string $categoryId): Collection;
     public function create(SubcategoriesDTO $subcategoriesDTO): object;

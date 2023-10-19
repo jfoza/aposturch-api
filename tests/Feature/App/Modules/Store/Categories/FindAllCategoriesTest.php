@@ -82,6 +82,28 @@ class FindAllCategoriesTest extends BaseTestCase
         ]);
     }
 
+    public function test_should_return_categories_list_with_pagination_order_and_filters()
+    {
+        $this->setAuthorizationBearer(Credentials::ADMIN_MASTER);
+
+        $params = http_build_query([
+            'page'             => $this->page,
+            'perPage'          => $this->perPage,
+            'columnName'       => 'name',
+            'columnOrder'      => 'asc',
+            'name'             => 'test',
+            'active'           => 1,
+            'hasSubcategories' => 0,
+        ]);
+
+        $response = $this->getJson(
+            $this->endpoint."?{$params}",
+            $this->getAuthorizationBearer()
+        );
+
+        $response->assertOk();
+    }
+
     public function test_should_return_error_if_user_does_not_have_access_to_module()
     {
         $this->setAuthorizationBearer(Credentials::USER_WITHOUT_MODULES);

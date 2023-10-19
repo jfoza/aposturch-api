@@ -68,10 +68,11 @@ class SubcategoriesRepository implements SubcategoriesRepositoryInterface
         return collect($subcategories);
     }
 
-    public function findById(string $id): ?object
+    public function findById(string $id, bool $getProducts = false): ?object
     {
        return $this
            ->getBaseQuery()
+           ->with($getProducts ? ['product'] : [])
            ->where(Subcategory::ID, $id)
            ->first();
     }
@@ -156,8 +157,7 @@ class SubcategoriesRepository implements SubcategoriesRepositoryInterface
         {
             Subcategory::NAME       => Subcategory::tableField(Subcategory::NAME),
             Subcategory::ACTIVE     => Subcategory::tableField(Subcategory::ACTIVE),
-            Subcategory::CREATED_AT => Subcategory::tableField(Subcategory::CREATED_AT),
-            default                 => Subcategory::tableField(Subcategory::ID)
+            default                 => Subcategory::tableField(Subcategory::CREATED_AT)
         };
     }
 }

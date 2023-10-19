@@ -123,8 +123,7 @@ class CategoriesRepository implements CategoriesRepositoryInterface
         {
             Category::NAME       => Category::tableField(Category::NAME),
             Category::ACTIVE     => Category::tableField(Category::ACTIVE),
-            Category::CREATED_AT => Category::tableField(Category::CREATED_AT),
-            default              => Category::tableField(Category::ID)
+            default              => Category::tableField(Category::CREATED_AT)
         };
     }
 }

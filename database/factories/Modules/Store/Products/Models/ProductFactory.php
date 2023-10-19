@@ -21,7 +21,7 @@ class ProductFactory extends Factory
             Product::PRODUCT_NAME => $name,
             Product::PRODUCT_DESCRIPTION => RandomStringHelper::alnumGenerate(),
             Product::PRODUCT_UNIQUE_NAME => $uniqueName,
-            Product::PRODUCT_VALUE => 0.00,
+            Product::VALUE => 0.00,
             Product::QUANTITY => 0,
             Product::BALANCE => 0,
             Product::HIGHLIGHT_PRODUCT => false,

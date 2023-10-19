@@ -18,6 +18,7 @@ class BaseTestCase extends TestCase
     const MEMBERS_ROUTE = '/api/admin/modules/membership/members';
     const STORE_CATEGORIES_ROUTE = '/api/admin/modules/store/categories';
     const STORE_SUBCATEGORIES_ROUTE = '/api/admin/modules/store/subcategories';
+    const STORE_PRODUCTS_ROUTE = '/api/admin/modules/store/products';
 
     private string $email;
     private string $password;
