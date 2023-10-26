@@ -7,7 +7,7 @@ use App\Base\Traits\EnvironmentException;
 use App\Exceptions\AppException;
 use App\Modules\Store\Subcategories\Contracts\SubcategoriesRepositoryInterface;
 use App\Modules\Store\Subcategories\Contracts\UpdateStatusSubcategoriesServiceInterface;
-use App\Modules\Store\Subcategories\Validations\SubcategoriesValidations;
+use App\Modules\Store\Subcategories\Validations\SubcategoriesValidators;
 use App\Shared\Enums\RulesEnum;
 use App\Shared\Utils\Transaction;
 use Illuminate\Support\Collection;
@@ -25,7 +25,7 @@ class UpdateStatusSubcategoriesService extends AuthenticatedService implements U
     {
         $this->getPolicy()->havePermission(RulesEnum::STORE_MODULE_SUBCATEGORIES_STATUS_UPDATE->value);
 
-        $subcategories = SubcategoriesValidations::subcategoriesExists(
+        $subcategories = SubcategoriesValidators::subcategoriesExists(
             $subcategoriesId,
             $this->subcategoriesRepository
         );

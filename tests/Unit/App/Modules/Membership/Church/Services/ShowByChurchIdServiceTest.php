@@ -44,7 +44,7 @@ class ShowByChurchIdServiceTest extends TestCase
         return $showByChurchIdService;
     }
 
-    public function dataProviderShowChurch(): array
+    public static function dataProviderShowChurch(): array
     {
         return [
             'By Admin Master Rule' => [RulesEnum::MEMBERSHIP_MODULE_CHURCH_ADMIN_MASTER_VIEW->value],

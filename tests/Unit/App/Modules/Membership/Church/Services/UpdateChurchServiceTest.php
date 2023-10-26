@@ -54,7 +54,7 @@ class UpdateChurchServiceTest extends TestCase
         return $updateChurchService;
     }
 
-    public function dataProviderUpdateChurch(): array
+    public static function dataProviderUpdateChurch(): array
     {
         return [
             'By Admin Master Rule' => [RulesEnum::MEMBERSHIP_MODULE_CHURCH_ADMIN_MASTER_UPDATE->value],
@@ -67,7 +67,7 @@ class UpdateChurchServiceTest extends TestCase
      *
      * @param string $rule
      * @return void
-     * @throws AppException|UserNotDefinedException
+     * @throws AppException
      */
     public function test_should_update_church(string $rule): void
     {

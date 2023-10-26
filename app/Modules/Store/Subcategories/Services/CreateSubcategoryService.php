@@ -8,11 +8,11 @@ use App\Exceptions\AppException;
 use App\Modules\Store\Categories\Contracts\CategoriesRepositoryInterface;
 use App\Modules\Store\Categories\Validations\CategoriesValidations;
 use App\Modules\Store\Products\Contracts\ProductsRepositoryInterface;
-use App\Modules\Store\Products\Validations\ProductsValidations;
+use App\Modules\Store\Products\Validations\ProductsValidators;
 use App\Modules\Store\Subcategories\Contracts\CreateSubcategoryServiceInterface;
 use App\Modules\Store\Subcategories\Contracts\SubcategoriesRepositoryInterface;
 use App\Modules\Store\Subcategories\DTO\SubcategoriesDTO;
-use App\Modules\Store\Subcategories\Validations\SubcategoriesValidations;
+use App\Modules\Store\Subcategories\Validations\SubcategoriesValidators;
 use App\Shared\Enums\RulesEnum;
 use App\Shared\Utils\Transaction;
 
@@ -73,14 +73,14 @@ class CreateSubcategoryService extends AuthenticatedService implements CreateSub
             $this->categoriesRepository
         );
 
-        SubcategoriesValidations::subcategoryExistsByName(
+        SubcategoriesValidators::subcategoryExistsByName(
             $this->subcategoriesDTO->name,
             $this->subcategoriesRepository
         );
 
         if($this->hasProducts)
         {
-            ProductsValidations::productsExists(
+            ProductsValidators::productsExists(
                 $this->subcategoriesDTO->productsId,
                 $this->productsRepository
             );

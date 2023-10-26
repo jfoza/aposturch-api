@@ -23,7 +23,7 @@ class ProductsFiltersRequest extends FormRequest
         return $this->mergePaginationOrderRules([
             'name'            => 'nullable|string',
             'subcategoriesId' => 'nullable|array',
-            'code'            => 'nullable|integer',
+            'code'            => 'nullable|string',
             'highlight'       => 'nullable|boolean',
             'active'          => 'nullable|boolean',
 

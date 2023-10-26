@@ -35,7 +35,7 @@ class FindAllChurchesServiceTest extends TestCase
         );
     }
 
-    public function dataProviderFindAllChurches(): array
+    public static function dataProviderFindAllChurches(): array
     {
         return [
             'By Admin Master Rule' => [RulesEnum::MEMBERSHIP_MODULE_CHURCH_ADMIN_MASTER_VIEW->value],

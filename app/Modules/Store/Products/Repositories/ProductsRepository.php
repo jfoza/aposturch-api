@@ -31,6 +31,38 @@ class ProductsRepository implements ProductsRepositoryInterface
         );
     }
 
+    public function findById(string $id): ?object
+    {
+        return $this
+            ->getBaseQuery()
+            ->where(Product::tableField(Product::ID), $id)
+            ->first();
+    }
+
+    public function findByName(string $productName): ?object
+    {
+        return $this
+            ->getBaseQuery()
+            ->where(Product::tableField(Product::PRODUCT_NAME), $productName)
+            ->first();
+    }
+
+    public function findByUniqueName(string $productUniqueName): ?object
+    {
+        return $this
+            ->getBaseQuery()
+            ->where(Product::tableField(Product::PRODUCT_UNIQUE_NAME), $productUniqueName)
+            ->first();
+    }
+
+    public function findByCode(string $code): ?object
+    {
+        return $this
+            ->getBaseQuery()
+            ->where(Product::tableField(Product::PRODUCT_CODE), $code)
+            ->first();
+    }
+
     public function findAllByIds(array $productsId): Collection
     {
         $products = $this

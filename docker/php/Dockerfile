@@ -48,6 +48,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     git  \
     curl  \
     libpng-dev \
+    libjpeg-dev \
     libonig-dev \
     libxml2-dev \
     libzip-dev \
@@ -66,7 +67,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     gd \
     zip \
     && docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql \
-    && docker-php-ext-install pdo pdo_pgsql pgsql sockets \
+    && docker-php-ext-configure gd --enable-gd --with-jpeg \
+    && docker-php-ext-install pdo pdo_pgsql pgsql sockets gd \
     && pecl install redis && docker-php-ext-enable redis \
     && mkdir /run/php \
     && ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone \

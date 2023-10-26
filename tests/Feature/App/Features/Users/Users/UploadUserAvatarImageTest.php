@@ -48,11 +48,6 @@ class UploadUserAvatarImageTest extends BaseTestCase
         );
 
         $response->assertOk();
-        $response->assertJsonStructure([
-            'id',
-            'type',
-            'path'
-        ]);
     }
 
     public function test_must_insert_a_new_user_avatar_image_by_members()

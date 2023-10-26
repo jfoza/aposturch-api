@@ -17,6 +17,14 @@ Route::prefix('/admin/auth')
 Route::prefix('/auth')
     ->group(app_path('Features/Auth/Routes/logoutRoute.php'));
 
+// GENERAL
+Route::prefix('/unique-code')
+    ->middleware([
+        MiddlewareEnum::JWT_AUTH,
+        MiddlewareEnum::USER_CHECK
+    ])
+    ->group(app_path('Features/General/UniqueCodePrefixes/Routes/routes.php'));
+
 // PUBLIC
 Route::prefix('/cities')
     ->group(app_path('Features/City/Cities/Routes/citiesRoute.php'));
@@ -24,9 +32,8 @@ Route::prefix('/cities')
 Route::prefix('/states')
     ->group(app_path('Features/City/States/Routes/stateRoute.php'));
 
-
 Route::prefix('/zip-code')
-    ->group(app_path('Features/ZipCode/Http/Routes/zipCodeRoute.php'));
+    ->group(app_path('Features/ZipCode/Routes/zipCodeRoute.php'));
 
 // ADMIN
 Route::prefix('admin')

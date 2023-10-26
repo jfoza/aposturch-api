@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\App\Modules\Store\Products;
 
+use App\Shared\Libraries\Uuid;
 use Tests\Feature\App\Features\Auth\Credentials;
 use Tests\Feature\BaseTestCase;
 
@@ -63,6 +64,31 @@ class FindAllProductsTest extends BaseTestCase
         ]);
     }
 
+    public function test_should_return_categories_list_with_pagination_order_and_filters()
+    {
+        $this->setAuthorizationBearer(Credentials::ADMIN_MASTER);
+
+        $params = http_build_query([
+            'page' => $this->page,
+            'perPage' => $this->perPage,
+            'columnName' => 'product_name',
+            'columnOrder' => 'asc',
+
+            'name' => 'test',
+            'subcategoriesId' => [Uuid::uuid4Generate()],
+            'code' => 10,
+            'highlight' => 0,
+            'active' => 1,
+        ]);
+
+        $response = $this->getJson(
+            $this->endpoint . "?{$params}",
+            $this->getAuthorizationBearer()
+        );
+
+        $response->assertOk();
+    }
+
     public function test_should_return_error_if_user_does_not_have_access_to_module()
     {
         $this->setAuthorizationBearer(Credentials::USER_WITHOUT_MODULES);
@@ -73,5 +99,105 @@ class FindAllProductsTest extends BaseTestCase
         );
 
         $response->assertForbidden();
+    }
+
+    /**
+     * @dataProvider dataProviderFormErrors
+     *
+     * @param mixed $page
+     * @param mixed $perPage
+     * @param mixed $name
+     * @param mixed $subcategoriesId
+     * @param mixed $code
+     * @param mixed $highlight
+     * @param mixed $active
+     * @return void
+     */
+    public function test_should_return_error_if_has_form_errors(
+        mixed $page,
+        mixed $perPage,
+        mixed $name,
+        mixed $subcategoriesId,
+        mixed $code,
+        mixed $highlight,
+        mixed $active,
+    ): void
+    {
+        $this->setAuthorizationBearer(Credentials::ADMIN_MASTER);
+
+        $params = http_build_query([
+            'page'        => $page,
+            'perPage'     => $perPage,
+            'columnName'  => 'name',
+            'columnOrder' => 'asc',
+
+            'name'            => $name,
+            'subcategoriesId' => $subcategoriesId,
+            'code'            => $code,
+            'highlight'       => $highlight,
+            'active'          => $active,
+        ]);
+
+        $response = $this->getJson(
+            $this->endpoint."?{$params}",
+            $this->getAuthorizationBearer()
+        );
+
+        $response->assertUnprocessable();
+    }
+
+    public static function dataProviderFormErrors(): array
+    {
+        return [
+            'Empty page param' => [
+                'page'            => null,
+                'perPage'         => 10,
+                'name'            => 'test',
+                'subcategoriesId' => [Uuid::uuid4Generate()],
+                'code'            => 1,
+                'highlight'       => 0,
+                'active'          => 1,
+            ],
+
+            'Empty per page param' => [
+                'page'            => 1,
+                'perPage'         => '',
+                'name'            => 'test',
+                'subcategoriesId' => [Uuid::uuid4Generate()],
+                'code'            => 1,
+                'highlight'       => 0,
+                'active'          => 1,
+            ],
+
+            'Invalid subcategories id param' => [
+                'page'            => 1,
+                'perPage'         => 10,
+                'name'            => 'test',
+                'subcategoriesId' => [Uuid::uuid4Generate(), 'invalid-uuid'],
+                'code'            => 1,
+                'highlight'       => 0,
+                'active'          => 1,
+            ],
+
+            'Invalid highlight param' => [
+                'page'            => 1,
+                'perPage'         => 10,
+                'name'            => 'test',
+                'subcategoriesId' => [Uuid::uuid4Generate()],
+                'code'            => 1,
+                'highlight'       => 'false',
+                'active'          => 1,
+            ],
+
+            'Invalid active param' => [
+                'page'            => 1,
+                'perPage'         => 10,
+                'name'            => 'test',
+                'subcategoriesId' => [Uuid::uuid4Generate()],
+                'code'            => 1,
+                'highlight'       => 0,
+                'active'          => 'true',
+            ],
+        ];
     }
 }

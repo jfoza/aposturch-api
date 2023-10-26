@@ -34,7 +34,7 @@ class ShowAdminUserServiceTest extends TestCase
         );
     }
 
-    public function dataProviderShowAdminUser(): array
+    public static function dataProviderShowAdminUser(): array
     {
         return [
             'By Support Rule' => [RulesEnum::ADMIN_USERS_SUPPORT_VIEW->value],

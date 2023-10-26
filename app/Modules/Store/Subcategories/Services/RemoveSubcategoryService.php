@@ -8,7 +8,7 @@ use App\Exceptions\AppException;
 use App\Modules\Store\Products\Contracts\ProductsRepositoryInterface;
 use App\Modules\Store\Subcategories\Contracts\RemoveSubcategoryServiceInterface;
 use App\Modules\Store\Subcategories\Contracts\SubcategoriesRepositoryInterface;
-use App\Modules\Store\Subcategories\Validations\SubcategoriesValidations;
+use App\Modules\Store\Subcategories\Validations\SubcategoriesValidators;
 use App\Shared\Enums\RulesEnum;
 use App\Shared\Utils\Transaction;
 
@@ -26,12 +26,12 @@ class RemoveSubcategoryService extends AuthenticatedService implements RemoveSub
     {
         $this->getPolicy()->havePermission(RulesEnum::STORE_MODULE_SUBCATEGORIES_DELETE->value);
 
-        SubcategoriesValidations::subcategoryExists(
+        SubcategoriesValidators::subcategoryExists(
             $id,
             $this->subcategoriesRepository
         );
 
-        SubcategoriesValidations::hasProducts(
+        SubcategoriesValidators::hasProducts(
             $id,
             $this->productsRepository
         );

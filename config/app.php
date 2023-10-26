@@ -210,6 +210,8 @@ return [
         \App\Features\ZipCode\Providers\ZipCodeProvider::class,
         \App\Features\General\Images\Providers\ImagesProvider::class,
         \App\Features\Module\Modules\Providers\ModulesProvider::class,
+        \App\Features\General\UniqueCodePrefixes\Providers\UniqueCodeGeneratorBusinessProvider::class,
+        \App\Features\General\UniqueCodePrefixes\Providers\UniqueCodePrefixesProvider::class,
 
         /*
          * Modules...

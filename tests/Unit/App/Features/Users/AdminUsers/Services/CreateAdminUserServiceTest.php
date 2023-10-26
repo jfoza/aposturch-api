@@ -64,7 +64,7 @@ class CreateAdminUserServiceTest extends TestCase
         $this->userDtoMock->profileId = $profileId;
     }
 
-    public function dataProviderInsertAdminUser(): array
+    public static function dataProviderInsertAdminUser(): array
     {
         return [
             'By Support Rule' => [

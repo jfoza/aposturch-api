@@ -129,6 +129,11 @@ DO $$
         _rule88 uuid := uuid_generate_v4();
         _rule89 uuid := uuid_generate_v4();
         _rule90 uuid := uuid_generate_v4();
+        _rule91 uuid := uuid_generate_v4();
+        _rule92 uuid := uuid_generate_v4();
+        _rule93 uuid := uuid_generate_v4();
+        _rule94 uuid := uuid_generate_v4();
+        _rule95 uuid := uuid_generate_v4();
 
     BEGIN
         INSERT INTO module.modules (id, module_description, module_unique_name, active)
@@ -267,7 +272,14 @@ DO $$
 
             (_rule88, 'STORE_MODULE_CATEGORIES_STATUS_UPDATE',    'STORE_MODULE_CATEGORIES_STATUS', _update_action),
             (_rule89, 'STORE_MODULE_SUBCATEGORIES_STATUS_UPDATE', 'STORE_MODULE_SUBCATEGORIES_STATUS', _update_action),
-            (_rule90, 'STORE_MODULE_PRODUCTS_STATUS_UPDATE',      'STORE_MODULE_PRODUCTS_STATUS', _update_action);
+            (_rule90, 'STORE_MODULE_PRODUCTS_STATUS_UPDATE',      'STORE_MODULE_PRODUCTS_STATUS', _update_action),
+
+            (_rule91, 'UNIQUE_CODE_PREFIXES_VIEW',   'UNIQUE_CODE_PREFIXES', _view_action),
+            (_rule92, 'UNIQUE_CODE_PREFIXES_INSERT', 'UNIQUE_CODE_PREFIXES', _insert_action),
+            (_rule93, 'UNIQUE_CODE_PREFIXES_UPDATE', 'UNIQUE_CODE_PREFIXES', _update_action),
+            (_rule94, 'UNIQUE_CODE_PREFIXES_DELETE', 'UNIQUE_CODE_PREFIXES', _delete_action),
+
+            (_rule95, 'UNIQUE_CODE_GENERATOR', 'UNIQUE_CODE_GENERATOR', _view_action);
 
 
         INSERT INTO users.modules_rules (rule_id, module_id)
@@ -402,6 +414,11 @@ DO $$
             (_profile1, _rule88),
             (_profile1, _rule89),
             (_profile1, _rule90),
+            (_profile1, _rule91),
+            (_profile1, _rule92),
+            (_profile1, _rule93),
+            (_profile1, _rule94),
+            (_profile1, _rule95),
 
             -- ADMIN MASTER
             (_profile2, _rule1),
@@ -456,6 +473,11 @@ DO $$
             (_profile2, _rule88),
             (_profile2, _rule89),
             (_profile2, _rule90),
+            (_profile2, _rule91),
+            (_profile2, _rule92),
+            (_profile2, _rule93),
+            (_profile2, _rule94),
+            (_profile2, _rule95),
 
             -- ADMIN CHURCH
             (_profile3, _rule1),
@@ -500,6 +522,11 @@ DO $$
             (_profile3, _rule88),
             (_profile3, _rule89),
             (_profile3, _rule90),
+            (_profile3, _rule91),
+            (_profile3, _rule92),
+            (_profile3, _rule93),
+            (_profile3, _rule94),
+            (_profile3, _rule95),
 
             -- ADMIN MODULE
             (_profile4, _rule1),
@@ -540,6 +567,11 @@ DO $$
             (_profile4, _rule88),
             (_profile4, _rule89),
             (_profile4, _rule90),
+            (_profile4, _rule91),
+            (_profile4, _rule92),
+            (_profile4, _rule93),
+            (_profile4, _rule94),
+            (_profile4, _rule95),
 
             -- ASSISTANT
             (_profile5, _rule1),
@@ -572,7 +604,12 @@ DO $$
             (_profile5, _rule82),
             (_profile5, _rule84),
             (_profile5, _rule85),
-            (_profile5, _rule86)
+            (_profile5, _rule86),
+            (_profile5, _rule91),
+            (_profile5, _rule92),
+            (_profile5, _rule93),
+            (_profile5, _rule94),
+            (_profile5, _rule95)
             ;
 
         -- MEMBER

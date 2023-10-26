@@ -22,7 +22,7 @@ class CreateAdminUserTest extends BaseTestCase
         $this->setAuthorizationBearer(Credentials::ADMIN_MASTER);
     }
 
-    public function dataProviderFormError(): array
+    public static function dataProviderFormError(): array
     {
         return [
             'Name empty' => [

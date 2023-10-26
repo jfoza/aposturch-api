@@ -35,7 +35,7 @@ class FindAllAdminUsersServiceTest extends TestCase
         );
     }
 
-    public function dataProviderFindAllAdminUsers(): array
+    public static function dataProviderFindAllAdminUsers(): array
     {
         return [
             'By Support Rule' => [RulesEnum::ADMIN_USERS_SUPPORT_VIEW->value],

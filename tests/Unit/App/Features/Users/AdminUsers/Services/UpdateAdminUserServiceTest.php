@@ -61,7 +61,7 @@ class UpdateAdminUserServiceTest extends TestCase
         $this->userDtoMock->active    = true;
     }
 
-    public function dataProviderUpdateAdminUser(): array
+    public static function dataProviderUpdateAdminUser(): array
     {
         return [
             'By Support Rule'  => [

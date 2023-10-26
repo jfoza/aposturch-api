@@ -11,6 +11,8 @@ enum MessagesEnum: string {
     case NOT_FOUND = 'Not found.';
     case TOO_MANY_REQUESTS = 'Too Many Attempts.';
     case ACCESS_DENIED = 'Acesso negado a este recurso.';
+    case INVALID_CODE_TYPE = 'Tipo de código inválido.';
+    case UNIQUE_CODE_PREFIX_NOT_FOUND = 'Prefixo não encontrado.';
 
     case REGISTER_NOT_FOUND = 'Registro não encontrado.';
     case INVALID_UUID = 'O valor enviado não é um Uuid válido.';
@@ -74,12 +76,16 @@ enum MessagesEnum: string {
 
     // MODULES - STORE
     case CATEGORY_NOT_FOUND = 'Categoria não encontrada.';
-    case CATEGORY_NAME_ALREADY_EXISTS = 'Já existe uma categoria com este nome. Escolha outro.';
+    case CATEGORY_NAME_ALREADY_EXISTS = 'Já existe uma categoria com este nome. Escolha outro e tente novamente.';
     case CATEGORY_HAS_SUBCATEGORIES = 'Esta categoria possui subcategorias vinculadas a ela, remova estes vínculos e tente novamente.';
 
     case SUBCATEGORY_NOT_FOUND = 'Subcategoria não encontrada.';
-    case SUBCATEGORY_NAME_ALREADY_EXISTS = 'Já existe uma subcategoria com este nome. Escolha outro.';
+    case SUBCATEGORY_NAME_ALREADY_EXISTS = 'Já existe uma subcategoria com este nome. Escolha outro e tente novamente.';
     case SUBCATEGORY_HAS_PRODUCTS = 'Esta subcategoria possui produtos vinculados a ela, remova estes vínculos e tente novamente.';
 
     case PRODUCT_NOT_FOUND = 'Produto não encontrado.';
+    case PRODUCT_NAME_ALREADY_EXISTS = 'Já existe um produto com este nome em nossa base.';
+    case PRODUCT_UNIQUE_NAME_ALREADY_EXISTS = 'Não foi possível gerar um nome único para este produto. Escolha outro nome e tente novamente.';
+    case PRODUCT_CODE_ALREADY_EXISTS = 'Já existe um produto com este código em nossa base.';
+    case BALANCE_IS_GREATER_THAN_THE_AMOUNT = 'O saldo não pode ser maior que a quantidade.';
 }

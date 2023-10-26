@@ -66,7 +66,7 @@ class ChurchUploadImageServiceTest extends TestCase
         $this->imagesDtoMock->id = $this->imageId;
     }
 
-    public function dataProviderUploadImage(): array
+    public static function dataProviderUploadImage(): array
     {
         return [
             'By Admin Master Rule' => [RulesEnum::MEMBERSHIP_MODULE_CHURCH_ADMIN_MASTER_IMAGE_UPLOAD->value],
@@ -79,7 +79,7 @@ class ChurchUploadImageServiceTest extends TestCase
      *
      * @param string $rule
      * @return void
-     * @throws AppException|UserNotDefinedException
+     * @throws AppException
      */
     public function test_should_insert_new_church_image(string $rule): void
     {

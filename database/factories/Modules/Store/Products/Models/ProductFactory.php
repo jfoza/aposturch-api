@@ -17,10 +17,13 @@ class ProductFactory extends Factory
 
         $uniqueName = Helpers::stringUniqueName($name);
 
+        $productCode = strtoupper(RandomStringHelper::alphaGenerate(2).RandomStringHelper::numericGenerate(5));
+
         return [
             Product::PRODUCT_NAME => $name,
             Product::PRODUCT_DESCRIPTION => RandomStringHelper::alnumGenerate(),
             Product::PRODUCT_UNIQUE_NAME => $uniqueName,
+            Product::PRODUCT_CODE => $productCode,
             Product::VALUE => 0.00,
             Product::QUANTITY => 0,
             Product::BALANCE => 0,

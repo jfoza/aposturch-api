@@ -34,6 +34,7 @@ class Product extends Register
         self::PRODUCT_NAME,
         self::PRODUCT_DESCRIPTION,
         self::PRODUCT_UNIQUE_NAME,
+        self::PRODUCT_CODE,
         self::VALUE,
         self::QUANTITY,
         self::BALANCE,

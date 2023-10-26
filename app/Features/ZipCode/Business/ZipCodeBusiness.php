@@ -3,11 +3,11 @@
 namespace App\Features\ZipCode\Business;
 
 use App\Exceptions\AppException;
-use App\Shared\Helpers\Helpers;
 use App\Features\City\Cities\Contracts\CityRepositoryInterface;
 use App\Features\ZipCode\Contracts\ZipCodeBusinessInterface;
-use App\Features\ZipCode\Http\Responses\ZipCodeResponse;
+use App\Features\ZipCode\Responses\ZipCodeResponse;
 use App\Features\ZipCode\Services\AddressByZipCodeService;
+use App\Shared\Helpers\Helpers;
 
 readonly class ZipCodeBusiness implements ZipCodeBusinessInterface
 {

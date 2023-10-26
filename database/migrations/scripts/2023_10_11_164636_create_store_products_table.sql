@@ -6,7 +6,7 @@ create table "store".products
     product_name varchar not null,
     product_description text,
     product_unique_name varchar unique not null,
-    product_code bigserial not null,
+    product_code varchar not null,
     value decimal(6,2) not null default 0.00,
     quantity bigint not null default 0,
     balance bigint not null default 0,

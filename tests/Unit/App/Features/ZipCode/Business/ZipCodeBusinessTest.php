@@ -5,7 +5,7 @@ namespace Tests\Unit\App\Features\ZipCode\Business;
 use App\Features\City\Cities\Contracts\CityRepositoryInterface;
 use App\Features\City\Cities\Repositories\CityRepository;
 use App\Features\ZipCode\Business\ZipCodeBusiness;
-use App\Features\ZipCode\Http\Responses\ZipCodeResponse;
+use App\Features\ZipCode\Responses\ZipCodeResponse;
 use App\Features\ZipCode\Services\AddressByZipCodeService;
 use PHPUnit\Framework\MockObject\MockObject;
 use Tests\TestCase;

@@ -14,6 +14,8 @@ class BaseTestCase extends TestCase
     const CITIES_ROUTE = '/api/cities';
     const MODULES_ROUTE = '/api/admin/modules';
     const ZIP_CODE_ROUTE = '/api/zip-code';
+    const UNIQUE_CODE_GENERATOR = '/api/unique-code/generator';
+    const UNIQUE_CODE_PREFIXES = '/api/unique-code/prefixes';
     const CHURCHES_ROUTE = '/api/admin/modules/membership/churches';
     const MEMBERS_ROUTE = '/api/admin/modules/membership/members';
     const STORE_CATEGORIES_ROUTE = '/api/admin/modules/store/categories';

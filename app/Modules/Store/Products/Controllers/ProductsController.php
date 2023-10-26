@@ -4,15 +4,18 @@ namespace App\Modules\Store\Products\Controllers;
 
 use App\Base\Http\Requests\FormRequest;
 use App\Modules\Store\Products\Contracts\FindAllProductsServiceInterface;
+use App\Modules\Store\Products\Contracts\ShowByProductIdServiceInterface;
 use App\Modules\Store\Products\DTO\ProductsFiltersDTO;
 use App\Modules\Store\Products\Requests\ProductsFiltersRequest;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 readonly class ProductsController
 {
     public function __construct(
         private FindAllProductsServiceInterface $findAllProductsService,
+        private ShowByProductIdServiceInterface $showByProductIdService,
     ) {}
 
     public function index(
@@ -28,11 +31,20 @@ readonly class ProductsController
         $dto->name             = $request->name;
         $dto->subcategoriesId  = $request->subcategoriesId;
         $dto->code             = $request->code;
-        $dto->highlight        = $request->highlight;
+        $dto->highlight        = isset($request->highlight) ? (bool) $request->highlight : null;
         $dto->active           = isset($request->active) ? (bool) $request->active : null;
 
         $products = $this->findAllProductsService->execute($dto);
 
         return response()->json($products, Response::HTTP_OK);
+    }
+
+    public function showById(Request $request): JsonResponse
+    {
+        $id = $request->id;
+
+        $product = $this->showByProductIdService->execute($id);
+
+        return response()->json($product, Response::HTTP_OK);
     }
 }
