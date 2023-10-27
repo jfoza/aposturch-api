@@ -5,14 +5,14 @@ namespace App\Modules\Store\Products\Traits;
 use App\Base\Http\Pagination\PaginationOrder;
 use App\Modules\Store\Products\DTO\ProductsFiltersDTO;
 use App\Modules\Store\Products\Models\Product;
-use App\Modules\Store\Subcategories\Models\Subcategory;
+use App\Modules\Store\Categories\Models\Category;
 use Illuminate\Database\Eloquent\Builder;
 
 trait ProductsListsTrait
 {
     public function getBaseQuery(): Builder
     {
-        return Product::with(['subcategory'])
+        return Product::with(['category'])
             ->select(
                 Product::tableField(Product::ID),
                 Product::tableField(Product::PRODUCT_NAME),
@@ -41,12 +41,12 @@ trait ProductsListsTrait
                 )
             )
             ->when(
-                isset($productsFiltersDTO->subcategoriesId),
+                isset($productsFiltersDTO->categoriesId),
                 fn($q) => $q->whereHas(
-                    'subcategory',
+                    'category',
                     fn($s) => $s->whereIn(
-                        Subcategory::tableField(Subcategory::ID),
-                        $productsFiltersDTO->subcategoriesId
+                        Category::tableField(Category::ID),
+                        $productsFiltersDTO->categoriesId
                     )
                 )
             )

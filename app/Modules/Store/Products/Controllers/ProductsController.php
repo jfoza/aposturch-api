@@ -28,11 +28,11 @@ readonly class ProductsController
         $dto->paginationOrder->setColumnName($request[FormRequest::COLUMN_NAME]);
         $dto->paginationOrder->setColumnOrder($request[FormRequest::COLUMN_ORDER]);
 
-        $dto->name             = $request->name;
-        $dto->subcategoriesId  = $request->subcategoriesId;
-        $dto->code             = $request->code;
-        $dto->highlight        = isset($request->highlight) ? (bool) $request->highlight : null;
-        $dto->active           = isset($request->active) ? (bool) $request->active : null;
+        $dto->name         = $request->name;
+        $dto->categoriesId = $request->categoriesId;
+        $dto->code         = $request->code;
+        $dto->highlight    = isset($request->highlight) ? (bool) $request->highlight : null;
+        $dto->active       = isset($request->active) ? (bool) $request->active : null;
 
         $products = $this->findAllProductsService->execute($dto);
 

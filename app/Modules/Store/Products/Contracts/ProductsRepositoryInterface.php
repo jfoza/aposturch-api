@@ -14,5 +14,5 @@ interface ProductsRepositoryInterface
     public function findByUniqueName(string $productUniqueName): ?object;
     public function findByCode(string $code): ?object;
     public function findAllByIds(array $productsId): Collection;
-    public function findBySubcategory(string $subcategoryId): Collection;
+    public function findByCategory(string $categoryId): Collection;
 }

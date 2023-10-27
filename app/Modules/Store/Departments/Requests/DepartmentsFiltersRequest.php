@@ -17,7 +17,7 @@ class DepartmentsFiltersRequest extends FormRequest
         return $this->mergePaginationOrderRules([
             'name' => 'nullable|string',
             'active' => 'nullable|boolean',
-            'hasSubcategories' => 'nullable|boolean',
+            'hasCategories' => 'nullable|boolean',
         ]);
     }
 
@@ -26,7 +26,7 @@ class DepartmentsFiltersRequest extends FormRequest
         return $this->mergePaginationOrderAttributes([
             'name' => 'Name',
             'active' => 'Active',
-            'hasSubcategories' => 'Has Subcategories'
+            'hasCategories' => 'Has Categories'
         ]);
     }
 

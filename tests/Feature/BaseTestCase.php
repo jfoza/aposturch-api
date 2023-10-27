@@ -19,7 +19,7 @@ class BaseTestCase extends TestCase
     const CHURCHES_ROUTE = '/api/admin/modules/membership/churches';
     const MEMBERS_ROUTE = '/api/admin/modules/membership/members';
     const STORE_DEPARTMENTS_ROUTE = '/api/admin/modules/store/departments';
-    const STORE_SUBCATEGORIES_ROUTE = '/api/admin/modules/store/subcategories';
+    const STORE_CATEGORIES_ROUTE = '/api/admin/modules/store/categories';
     const STORE_PRODUCTS_ROUTE = '/api/admin/modules/store/products';
 
     private string $email;

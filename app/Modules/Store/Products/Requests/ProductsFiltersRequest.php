@@ -21,26 +21,26 @@ class ProductsFiltersRequest extends FormRequest
     public function rules(): array
     {
         return $this->mergePaginationOrderRules([
-            'name'            => 'nullable|string',
-            'subcategoriesId' => 'nullable|array',
-            'code'            => 'nullable|string',
-            'highlight'       => 'nullable|boolean',
-            'active'          => 'nullable|boolean',
+            'name'         => 'nullable|string',
+            'categoriesId' => 'nullable|array',
+            'code'         => 'nullable|string',
+            'highlight'    => 'nullable|boolean',
+            'active'       => 'nullable|boolean',
 
-            'subcategoriesId.*' => ['nullable', new Uuid4Rule]
+            'categoriesId.*' => ['nullable', new Uuid4Rule]
         ]);
     }
 
     public function attributes(): array
     {
         return $this->mergePaginationOrderAttributes([
-            'name'            => 'Name',
-            'subcategoriesId' => 'Subcategories Id',
-            'code'            => 'Code',
-            'highlight'       => 'Highlight',
-            'active'          => 'Active',
+            'name'         => 'Name',
+            'categoriesId' => 'Categories Id',
+            'code'         => 'Code',
+            'highlight'    => 'Highlight',
+            'active'       => 'Active',
 
-            'subcategoriesId.*' => 'Subcategories Id',
+            'categoriesId.*' => 'Categories Id',
         ]);
     }
 

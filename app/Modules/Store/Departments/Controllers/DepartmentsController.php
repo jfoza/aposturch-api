@@ -41,7 +41,7 @@ readonly class DepartmentsController
 
         $filtersDTO->name             = $request->name;
         $filtersDTO->active           = isset($request->active) ? (bool) $request->active : null;
-        $filtersDTO->hasSubcategories = isset($request->hasSubcategories) ? (bool) $request->hasSubcategories : null;
+        $filtersDTO->hasCategories = isset($request->hasCategories) ? (bool) $request->hasCategories : null;
 
         $departments = $this->findAllDepartmentsService->execute($filtersDTO);
 

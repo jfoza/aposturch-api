@@ -41,9 +41,9 @@ class ProductsPersistenceRepository implements ProductsPersistenceRepositoryInte
         return (object) ($update);
     }
 
-    public function saveSubcategories(string $productId, array $subcategoriesId): void
+    public function saveCategories(string $productId, array $categoriesId): void
     {
-        Product::find($productId)->subcategory()->sync($subcategoriesId);
+        Product::find($productId)->category()->sync($categoriesId);
     }
 
     public function saveStatus(string $id, bool $status): object

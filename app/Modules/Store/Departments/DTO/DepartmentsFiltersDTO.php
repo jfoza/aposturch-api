@@ -8,5 +8,5 @@ class DepartmentsFiltersDTO extends FiltersDTO
 {
     public ?string $name;
     public ?bool $active;
-    public ?bool $hasSubcategories;
+    public ?bool $hasCategories;
 }

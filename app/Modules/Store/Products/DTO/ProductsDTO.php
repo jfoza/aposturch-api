@@ -12,6 +12,6 @@ class ProductsDTO
     public float   $value;
     public int     $quantity;
     public int     $balance;
-    public ?array  $subcategoriesId;
+    public ?array  $categoriesId;
     public bool    $highlightProduct;
 }

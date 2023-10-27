@@ -32,7 +32,7 @@ class FindByProductIdTest extends BaseTestCase
             'highlight_product',
             'active',
             'created_at',
-            'subcategory',
+            'category',
         ];
     }
 

@@ -3,7 +3,7 @@
 namespace Tests\Feature\App\Modules\Store\Products;
 
 use App\Modules\Store\Products\Models\Product;
-use App\Modules\Store\Subcategories\Models\Subcategory;
+use App\Modules\Store\Categories\Models\Category;
 use App\Shared\Helpers\RandomStringHelper;
 use App\Shared\Libraries\Uuid;
 use Tests\Feature\App\Features\Auth\Credentials;
@@ -32,7 +32,7 @@ class UpdateProductTest extends BaseTestCase
             'quantity'           => 10,
             'balance'            => 10,
             'highlightProduct'   => false,
-            'subcategoriesId'    => [],
+            'categoriesId'       => [],
         ];
     }
 
@@ -42,10 +42,10 @@ class UpdateProductTest extends BaseTestCase
 
         $payload = $this->getPayload();
 
-        $subcategory = Subcategory::factory()->create();
+        $category = Category::factory()->create();
         $product     = Product::factory()->create();
 
-        $payload['subcategoriesId'] = [$subcategory->id];
+        $payload['categoriesId'] = [$category->id];
 
         $response = $this->putJson(
             "$this->endpoint/id/$product->id",
@@ -64,7 +64,7 @@ class UpdateProductTest extends BaseTestCase
 
         $product = Uuid::uuid4Generate();
 
-        $payload['subcategoriesId'] = [Uuid::uuid4Generate()];
+        $payload['categoriesId'] = [Uuid::uuid4Generate()];
 
         $response = $this->putJson(
             "$this->endpoint/id/$product",
@@ -81,13 +81,13 @@ class UpdateProductTest extends BaseTestCase
 
         $payload = $this->getPayload();
 
-        $subcategory = Subcategory::factory()->create();
+        $category = Category::factory()->create();
 
         $product1 = Product::factory()->create();
         $product2 = Product::factory()->create();
 
-        $payload['subcategoriesId'] = [$subcategory->id];
-        $payload['productName']     = $product2->product_name;
+        $payload['categoriesId'] = [$category->id];
+        $payload['productName']  = $product2->product_name;
 
         $response = $this->putJson(
             "$this->endpoint/id/$product1->id",
@@ -104,13 +104,13 @@ class UpdateProductTest extends BaseTestCase
 
         $payload = $this->getPayload();
 
-        $subcategory = Subcategory::factory()->create();
+        $category = Category::factory()->create();
 
         $product1 = Product::factory()->create();
         $product2 = Product::factory()->create();
 
-        $payload['subcategoriesId'] = [$subcategory->id];
-        $payload['productCode']     = $product2->product_code;
+        $payload['categoriesId'] = [$category->id];
+        $payload['productCode']  = $product2->product_code;
 
         $response = $this->putJson(
             "$this->endpoint/id/$product1->id",
@@ -121,7 +121,7 @@ class UpdateProductTest extends BaseTestCase
         $response->assertBadRequest();
     }
 
-    public function test_should_return_error_if_subcategory_id_not_exists()
+    public function test_should_return_error_if_category_id_not_exists()
     {
         $this->setAuthorizationBearer(Credentials::ADMIN_MASTER);
 
@@ -129,7 +129,7 @@ class UpdateProductTest extends BaseTestCase
 
         $product = Product::factory()->create();
 
-        $payload['subcategoriesId'] = [Uuid::uuid4Generate()];
+        $payload['categoriesId'] = [Uuid::uuid4Generate()];
 
         $response = $this->putJson(
             "$this->endpoint/id/$product->id",
@@ -148,7 +148,7 @@ class UpdateProductTest extends BaseTestCase
 
         $product = Uuid::uuid4Generate();
 
-        $payload['subcategoriesId'] = [Uuid::uuid4Generate()];
+        $payload['categoriesId'] = [Uuid::uuid4Generate()];
 
         $response = $this->putJson(
             "$this->endpoint/id/$product",
@@ -170,7 +170,7 @@ class UpdateProductTest extends BaseTestCase
      * @param mixed $quantity
      * @param mixed $balance
      * @param mixed $highlightProduct
-     * @param mixed $subcategoriesId
+     * @param mixed $categoriesId
      * @return void
      */
     public function test_should_return_error_if_has_form_errors(
@@ -182,7 +182,7 @@ class UpdateProductTest extends BaseTestCase
         mixed $quantity,
         mixed $balance,
         mixed $highlightProduct,
-        mixed $subcategoriesId,
+        mixed $categoriesId,
     ): void
     {
         $this->setAuthorizationBearer(Credentials::ADMIN_MASTER);
@@ -195,7 +195,7 @@ class UpdateProductTest extends BaseTestCase
             'quantity'           => $quantity,
             'balance'            => $balance,
             'highlightProduct'   => $highlightProduct,
-            'subcategoriesId'    => $subcategoriesId,
+            'categoriesId'       => $categoriesId,
         ];
 
         $response = $this->putJson(
@@ -221,7 +221,7 @@ class UpdateProductTest extends BaseTestCase
                 'quantity'           => 10,
                 'balance'            => 10,
                 'highlightProduct'   => false,
-                'subcategoriesId'    => [],
+                'categoriesId'       => [],
             ],
 
             'Empty product name param' => [
@@ -233,7 +233,7 @@ class UpdateProductTest extends BaseTestCase
                 'quantity'           => 10,
                 'balance'            => 10,
                 'highlightProduct'   => false,
-                'subcategoriesId'    => [],
+                'categoriesId'       => [],
             ],
 
             'Invalid product description param' => [
@@ -245,7 +245,7 @@ class UpdateProductTest extends BaseTestCase
                 'quantity'           => 10,
                 'balance'            => 10,
                 'highlightProduct'   => false,
-                'subcategoriesId'    => [],
+                'categoriesId'       => [],
             ],
 
             'Empty product code param' => [
@@ -257,7 +257,7 @@ class UpdateProductTest extends BaseTestCase
                 'quantity'           => 10,
                 'balance'            => 10,
                 'highlightProduct'   => false,
-                'subcategoriesId'    => [],
+                'categoriesId'       => [],
             ],
 
             'Empty product value param' => [
@@ -269,7 +269,7 @@ class UpdateProductTest extends BaseTestCase
                 'quantity'           => 10,
                 'balance'            => 10,
                 'highlightProduct'   => false,
-                'subcategoriesId'    => [],
+                'categoriesId'       => [],
             ],
 
             'Invalid product value param case 1' => [
@@ -281,7 +281,7 @@ class UpdateProductTest extends BaseTestCase
                 'quantity'           => 10,
                 'balance'            => 10,
                 'highlightProduct'   => false,
-                'subcategoriesId'    => [],
+                'categoriesId'       => [],
             ],
 
             'Invalid product value param case 2' => [
@@ -293,7 +293,7 @@ class UpdateProductTest extends BaseTestCase
                 'quantity'           => 10,
                 'balance'            => 10,
                 'highlightProduct'   => false,
-                'subcategoriesId'    => [],
+                'categoriesId'       => [],
             ],
 
             'Empty product quantity param' => [
@@ -305,7 +305,7 @@ class UpdateProductTest extends BaseTestCase
                 'quantity'           => null,
                 'balance'            => 10,
                 'highlightProduct'   => false,
-                'subcategoriesId'    => [],
+                'categoriesId'       => [],
             ],
 
             'Invalid product quantity param' => [
@@ -317,7 +317,7 @@ class UpdateProductTest extends BaseTestCase
                 'quantity'           => -11,
                 'balance'            => -13,
                 'highlightProduct'   => false,
-                'subcategoriesId'    => [],
+                'categoriesId'       => [],
             ],
 
             'Empty balance param' => [
@@ -329,7 +329,7 @@ class UpdateProductTest extends BaseTestCase
                 'quantity'           => 2,
                 'balance'            => null,
                 'highlightProduct'   => false,
-                'subcategoriesId'    => [],
+                'categoriesId'       => [],
             ],
 
             'Balance greater than the amount' => [
@@ -341,7 +341,7 @@ class UpdateProductTest extends BaseTestCase
                 'quantity'           => 2,
                 'balance'            => 10,
                 'highlightProduct'   => false,
-                'subcategoriesId'    => [],
+                'categoriesId'       => [],
             ],
 
             'Invalid highlight product param' => [
@@ -353,10 +353,10 @@ class UpdateProductTest extends BaseTestCase
                 'quantity'           => 10,
                 'balance'            => 10,
                 'highlightProduct'   => 'false',
-                'subcategoriesId'    => [],
+                'categoriesId'       => [],
             ],
 
-            'Invalid subcategory id param' => [
+            'Invalid category id param' => [
                 'id'                 => Uuid::uuid4Generate(),
                 'productName'        => 'test',
                 'productDescription' => 'test',
@@ -365,7 +365,7 @@ class UpdateProductTest extends BaseTestCase
                 'quantity'           => 10,
                 'balance'            => 10,
                 'highlightProduct'   => false,
-                'subcategoriesId'    => [Uuid::uuid4Generate(), 'invalid-uuid'],
+                'categoriesId'       => [Uuid::uuid4Generate(), 'invalid-uuid'],
             ],
         ];
     }

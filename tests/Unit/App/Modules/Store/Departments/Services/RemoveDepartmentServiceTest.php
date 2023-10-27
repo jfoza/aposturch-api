@@ -7,8 +7,8 @@ use App\Modules\Store\Departments\Contracts\DepartmentsRepositoryInterface;
 use App\Modules\Store\Departments\Models\Department;
 use App\Modules\Store\Departments\Repositories\DepartmentsRepository;
 use App\Modules\Store\Departments\Services\RemoveDepartmentService;
-use App\Modules\Store\Subcategories\Contracts\SubcategoriesRepositoryInterface;
-use App\Modules\Store\Subcategories\Repositories\SubcategoriesRepository;
+use App\Modules\Store\Categories\Contracts\CategoriesRepositoryInterface;
+use App\Modules\Store\Categories\Repositories\CategoriesRepository;
 use App\Shared\ACL\Policy;
 use App\Shared\Enums\MessagesEnum;
 use App\Shared\Enums\RulesEnum;
@@ -21,21 +21,21 @@ use Tests\TestCase;
 class RemoveDepartmentServiceTest extends TestCase
 {
     private  MockObject|DepartmentsRepositoryInterface $departmentsRepositoryMock;
-    private  MockObject|SubcategoriesRepositoryInterface $subcategoriesRepositoryMock;
+    private  MockObject|CategoriesRepositoryInterface $categoriesRepositoryMock;
 
     public function setUp(): void
     {
         parent::setUp();
 
         $this->departmentsRepositoryMock = $this->createMock(DepartmentsRepository::class);
-        $this->subcategoriesRepositoryMock = $this->createMock(SubcategoriesRepository::class);
+        $this->categoriesRepositoryMock  = $this->createMock(CategoriesRepository::class);
     }
 
     public function getRemoveDepartmentService(): RemoveDepartmentService
     {
         return new RemoveDepartmentService(
             $this->departmentsRepositoryMock,
-            $this->subcategoriesRepositoryMock,
+            $this->categoriesRepositoryMock,
         );
     }
 
@@ -53,7 +53,7 @@ class RemoveDepartmentServiceTest extends TestCase
             ->willReturn((object) ([ Department::ID => Uuid::uuid4Generate() ]));
 
         $this
-            ->subcategoriesRepositoryMock
+            ->categoriesRepositoryMock
             ->method('findByDepartment')
             ->willReturn(Collection::empty());
 
@@ -62,7 +62,7 @@ class RemoveDepartmentServiceTest extends TestCase
         $this->assertTrue(true);
     }
 
-    public function test_should_return_exception_if_department_has_subcategories()
+    public function test_should_return_exception_if_department_has_categories()
     {
         $removeDepartmentService = $this->getRemoveDepartmentService();
 
@@ -76,7 +76,7 @@ class RemoveDepartmentServiceTest extends TestCase
             ->willReturn((object) ([ Department::ID => Uuid::uuid4Generate() ]));
 
         $this
-            ->subcategoriesRepositoryMock
+            ->categoriesRepositoryMock
             ->method('findByDepartment')
             ->willReturn(
                 Collection::make([
@@ -86,7 +86,7 @@ class RemoveDepartmentServiceTest extends TestCase
 
         $this->expectException(AppException::class);
         $this->expectExceptionCode(Response::HTTP_BAD_REQUEST);
-        $this->expectExceptionMessage(json_encode(MessagesEnum::DEPARTMENT_HAS_SUBCATEGORIES));
+        $this->expectExceptionMessage(json_encode(MessagesEnum::DEPARTMENT_HAS_CATEGORIES));
 
         $removeDepartmentService->execute(Uuid::uuid4Generate());
     }

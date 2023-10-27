@@ -75,7 +75,7 @@ class FindAllProductsTest extends BaseTestCase
             'columnOrder' => 'asc',
 
             'name' => 'test',
-            'subcategoriesId' => [Uuid::uuid4Generate()],
+            'categoriesId' => [Uuid::uuid4Generate()],
             'code' => 10,
             'highlight' => 0,
             'active' => 1,
@@ -107,7 +107,7 @@ class FindAllProductsTest extends BaseTestCase
      * @param mixed $page
      * @param mixed $perPage
      * @param mixed $name
-     * @param mixed $subcategoriesId
+     * @param mixed $categoriesId
      * @param mixed $code
      * @param mixed $highlight
      * @param mixed $active
@@ -117,7 +117,7 @@ class FindAllProductsTest extends BaseTestCase
         mixed $page,
         mixed $perPage,
         mixed $name,
-        mixed $subcategoriesId,
+        mixed $categoriesId,
         mixed $code,
         mixed $highlight,
         mixed $active,
@@ -131,11 +131,11 @@ class FindAllProductsTest extends BaseTestCase
             'columnName'  => 'name',
             'columnOrder' => 'asc',
 
-            'name'            => $name,
-            'subcategoriesId' => $subcategoriesId,
-            'code'            => $code,
-            'highlight'       => $highlight,
-            'active'          => $active,
+            'name'         => $name,
+            'categoriesId' => $categoriesId,
+            'code'         => $code,
+            'highlight'    => $highlight,
+            'active'       => $active,
         ]);
 
         $response = $this->getJson(
@@ -150,53 +150,53 @@ class FindAllProductsTest extends BaseTestCase
     {
         return [
             'Empty page param' => [
-                'page'            => null,
-                'perPage'         => 10,
-                'name'            => 'test',
-                'subcategoriesId' => [Uuid::uuid4Generate()],
-                'code'            => 1,
-                'highlight'       => 0,
-                'active'          => 1,
+                'page'         => null,
+                'perPage'      => 10,
+                'name'         => 'test',
+                'categoriesId' => [Uuid::uuid4Generate()],
+                'code'         => 1,
+                'highlight'    => 0,
+                'active'       => 1,
             ],
 
             'Empty per page param' => [
-                'page'            => 1,
-                'perPage'         => '',
-                'name'            => 'test',
-                'subcategoriesId' => [Uuid::uuid4Generate()],
-                'code'            => 1,
-                'highlight'       => 0,
-                'active'          => 1,
+                'page'         => 1,
+                'perPage'      => '',
+                'name'         => 'test',
+                'categoriesId' => [Uuid::uuid4Generate()],
+                'code'         => 1,
+                'highlight'    => 0,
+                'active'       => 1,
             ],
 
-            'Invalid subcategories id param' => [
-                'page'            => 1,
-                'perPage'         => 10,
-                'name'            => 'test',
-                'subcategoriesId' => [Uuid::uuid4Generate(), 'invalid-uuid'],
-                'code'            => 1,
-                'highlight'       => 0,
-                'active'          => 1,
+            'Invalid categories id param' => [
+                'page'         => 1,
+                'perPage'      => 10,
+                'name'         => 'test',
+                'categoriesId' => [Uuid::uuid4Generate(), 'invalid-uuid'],
+                'code'         => 1,
+                'highlight'    => 0,
+                'active'       => 1,
             ],
 
             'Invalid highlight param' => [
-                'page'            => 1,
-                'perPage'         => 10,
-                'name'            => 'test',
-                'subcategoriesId' => [Uuid::uuid4Generate()],
-                'code'            => 1,
-                'highlight'       => 'false',
-                'active'          => 1,
+                'page'         => 1,
+                'perPage'      => 10,
+                'name'         => 'test',
+                'categoriesId' => [Uuid::uuid4Generate()],
+                'code'         => 1,
+                'highlight'    => 'false',
+                'active'       => 1,
             ],
 
             'Invalid active param' => [
-                'page'            => 1,
-                'perPage'         => 10,
-                'name'            => 'test',
-                'subcategoriesId' => [Uuid::uuid4Generate()],
-                'code'            => 1,
-                'highlight'       => 0,
-                'active'          => 'true',
+                'page'         => 1,
+                'perPage'      => 10,
+                'name'         => 'test',
+                'categoriesId' => [Uuid::uuid4Generate()],
+                'code'         => 1,
+                'highlight'    => 0,
+                'active'       => 'true',
             ],
         ];
     }

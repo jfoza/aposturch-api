@@ -7,7 +7,7 @@ use App\Base\DTO\FiltersDTO;
 class ProductsFiltersDTO extends FiltersDTO
 {
     public ?string $name;
-    public ?array  $subcategoriesId;
+    public ?array  $categoriesId;
     public ?string $code;
     public ?bool   $highlight;
     public ?bool   $active;

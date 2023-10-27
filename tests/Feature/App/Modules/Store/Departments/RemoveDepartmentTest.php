@@ -3,7 +3,7 @@
 namespace Tests\Feature\App\Modules\Store\Departments;
 
 use App\Modules\Store\Departments\Models\Department;
-use App\Modules\Store\Subcategories\Models\Subcategory;
+use App\Modules\Store\Categories\Models\Category;
 use App\Shared\Helpers\RandomStringHelper;
 use App\Shared\Libraries\Uuid;
 use Tests\Feature\App\Features\Auth\Credentials;
@@ -50,16 +50,16 @@ class RemoveDepartmentTest extends BaseTestCase
         $response->assertNotFound();
     }
 
-    public function test_should_return_error_if_department_has_subcategories()
+    public function test_should_return_error_if_department_has_categories()
     {
         $this->setAuthorizationBearer(Credentials::ADMIN_MASTER);
 
         $department = Department::factory()->create();
 
-        Subcategory::factory()->create([
-            Subcategory::DEPARTMENT_ID => $department->id,
-            Subcategory::NAME          => RandomStringHelper::alnumGenerate(),
-            Subcategory::DESCRIPTION   => RandomStringHelper::alnumGenerate(),
+        Category::factory()->create([
+            Category::DEPARTMENT_ID => $department->id,
+            Category::NAME          => RandomStringHelper::alnumGenerate(),
+            Category::DESCRIPTION   => RandomStringHelper::alnumGenerate(),
         ]);
 
         $response = $this->deleteJson(

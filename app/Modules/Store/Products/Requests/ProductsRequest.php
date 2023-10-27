@@ -19,9 +19,9 @@ class ProductsRequest extends FormRequest
             'quantity'           => 'required|integer|min:0',
             'balance'            => 'nullable|integer|min:0',
             'highlightProduct'   => 'required|boolean',
-            'subcategoriesId'    => 'nullable|array',
+            'categoriesId'       => 'nullable|array',
 
-            'subcategoriesId.*'  => ['nullable', new Uuid4Rule]
+            'categoriesId.*'  => ['nullable', new Uuid4Rule]
         ];
 
         if($this->method() == HttpRequestMethodsEnum::PUT->value)
@@ -40,8 +40,8 @@ class ProductsRequest extends FormRequest
             'value'              => 'Value',
             'quantity'           => 'Quantity',
             'highlightProduct'   => 'Highlight Product',
-            'subcategoriesId'    => 'Subcategories Id',
-            'subcategoriesId.*'  => 'Subcategories Id',
+            'categoriesId'       => 'Categories Id',
+            'categoriesId.*'     => 'Categories Id',
         ];
     }
 

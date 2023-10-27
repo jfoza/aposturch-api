@@ -31,7 +31,7 @@ readonly class ProductsPersistenceController
         $dto->quantity           = $request->quantity;
         $dto->balance            = $request->quantity;
         $dto->highlightProduct   = $request->highlightProduct;
-        $dto->subcategoriesId    = isset($request->subcategoriesId) ? $request->subcategoriesId : [];
+        $dto->categoriesId    = isset($request->categoriesId) ? $request->categoriesId : [];
 
         $created = $this->createProductService->execute($dto);
 
@@ -51,7 +51,7 @@ readonly class ProductsPersistenceController
         $dto->quantity           = $request->quantity;
         $dto->balance            = $request->balance;
         $dto->highlightProduct   = $request->highlightProduct;
-        $dto->subcategoriesId    = isset($request->subcategoriesId) ? $request->subcategoriesId : [];
+        $dto->categoriesId    = isset($request->categoriesId) ? $request->categoriesId : [];
 
         $updated = $this->updateProductService->execute($dto);
 

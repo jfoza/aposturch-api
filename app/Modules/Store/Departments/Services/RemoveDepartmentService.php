@@ -8,15 +8,15 @@ use App\Exceptions\AppException;
 use App\Modules\Store\Departments\Contracts\DepartmentsRepositoryInterface;
 use App\Modules\Store\Departments\Contracts\RemoveDepartmentServiceInterface;
 use App\Modules\Store\Departments\Validations\DepartmentsValidations;
-use App\Modules\Store\Subcategories\Contracts\SubcategoriesRepositoryInterface;
+use App\Modules\Store\Categories\Contracts\CategoriesRepositoryInterface;
 use App\Shared\Enums\RulesEnum;
 use App\Shared\Utils\Transaction;
 
 class RemoveDepartmentService extends AuthenticatedService implements RemoveDepartmentServiceInterface
 {
     public function __construct(
-        private readonly DepartmentsRepositoryInterface   $departmentsRepository,
-        private readonly SubcategoriesRepositoryInterface $subcategoriesRepository,
+        private readonly DepartmentsRepositoryInterface $departmentsRepository,
+        private readonly CategoriesRepositoryInterface  $categoriesRepository,
     ) {}
 
     /**
@@ -31,9 +31,9 @@ class RemoveDepartmentService extends AuthenticatedService implements RemoveDepa
             $this->departmentsRepository,
         );
 
-        DepartmentsValidations::hasSubcategories(
+        DepartmentsValidations::hasCategories(
             $id,
-            $this->subcategoriesRepository
+            $this->categoriesRepository
         );
 
         Transaction::beginTransaction();

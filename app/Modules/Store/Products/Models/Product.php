@@ -3,8 +3,8 @@
 namespace App\Modules\Store\Products\Models;
 
 use App\Base\Infra\Models\Register;
-use App\Modules\Store\ProductsSubcategories\Models\ProductSubcategory;
-use App\Modules\Store\Subcategories\Models\Subcategory;
+use App\Modules\Store\ProductsCategories\Models\ProductCategory;
+use App\Modules\Store\Categories\Models\Category;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
@@ -41,13 +41,13 @@ class Product extends Register
         self::HIGHLIGHT_PRODUCT,
     ];
 
-    public function subcategory(): BelongsToMany
+    public function category(): BelongsToMany
     {
         return $this->belongsToMany(
-            Subcategory::class,
-            ProductSubcategory::tableName(),
-            ProductSubcategory::PRODUCT_ID,
-            ProductSubcategory::SUBCATEGORY_ID,
+            Category::class,
+            ProductCategory::tableName(),
+            ProductCategory::PRODUCT_ID,
+            ProductCategory::CATEGORY_ID,
         );
     }
 }

@@ -28,14 +28,14 @@ class DepartmentsRepository implements DepartmentsRepositoryInterface
                 )
             )
             ->when(
-                isset($departmentsFiltersDTO->hasSubcategories),
+                isset($departmentsFiltersDTO->hasCategories),
                 function ($q) use($departmentsFiltersDTO) {
-                    if($departmentsFiltersDTO->hasSubcategories === true)
+                    if($departmentsFiltersDTO->hasCategories === true)
                     {
-                        return $q->withCount('subcategory')->has('subcategory', '>', 0);
+                        return $q->withCount('category')->has('category', '>', 0);
                     }
 
-                    return $q->withCount('subcategory')->has('subcategory', '=', 0);
+                    return $q->withCount('category')->has('category', '=', 0);
                 }
             )
             ->when(

@@ -5,7 +5,7 @@ namespace App\Modules\Store\Departments\Validations;
 use App\Exceptions\AppException;
 use App\Modules\Store\Departments\Contracts\DepartmentsRepositoryInterface;
 use App\Modules\Store\Departments\Models\Department;
-use App\Modules\Store\Subcategories\Contracts\SubcategoriesRepositoryInterface;
+use App\Modules\Store\Categories\Contracts\CategoriesRepositoryInterface;
 use App\Shared\Enums\MessagesEnum;
 use Illuminate\Support\Collection;
 use Symfony\Component\HttpFoundation\Response;
@@ -71,17 +71,17 @@ class DepartmentsValidations
     /**
      * @throws AppException
      */
-    public static function hasSubcategories(
+    public static function hasCategories(
         string $departmentId,
-        SubcategoriesRepositoryInterface $subcategoriesRepository
+        CategoriesRepositoryInterface $categoriesRepository
     ): void
     {
-        $subcategories = $subcategoriesRepository->findByDepartment($departmentId);
+        $categories = $categoriesRepository->findByDepartment($departmentId);
 
-        if($subcategories->isNotEmpty())
+        if($categories->isNotEmpty())
         {
             throw new AppException(
-                MessagesEnum::DEPARTMENT_HAS_SUBCATEGORIES,
+                MessagesEnum::DEPARTMENT_HAS_CATEGORIES,
                 Response::HTTP_BAD_REQUEST
             );
         }

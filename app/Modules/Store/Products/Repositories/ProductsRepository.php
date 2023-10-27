@@ -7,7 +7,7 @@ use App\Modules\Store\Products\Contracts\ProductsRepositoryInterface;
 use App\Modules\Store\Products\DTO\ProductsFiltersDTO;
 use App\Modules\Store\Products\Models\Product;
 use App\Modules\Store\Products\Traits\ProductsListsTrait;
-use App\Modules\Store\Subcategories\Models\Subcategory;
+use App\Modules\Store\Categories\Models\Category;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 
@@ -73,14 +73,14 @@ class ProductsRepository implements ProductsRepositoryInterface
         return collect($products);
     }
 
-    public function findBySubcategory(string $subcategoryId): Collection
+    public function findByCategory(string $categoryId): Collection
     {
         $products = $this
             ->getBaseQuery()
             ->whereRelation(
-                'subcategory',
-                Subcategory::tableField(Subcategory::ID),
-                $subcategoryId
+                'category',
+                Category::tableField(Category::ID),
+                $categoryId
             )
             ->get();
 

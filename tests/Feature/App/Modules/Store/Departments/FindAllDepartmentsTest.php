@@ -90,13 +90,13 @@ class FindAllDepartmentsTest extends BaseTestCase
         $this->setAuthorizationBearer(Credentials::ADMIN_MASTER);
 
         $params = http_build_query([
-            'page'             => $this->page,
-            'perPage'          => $this->perPage,
-            'columnName'       => 'name',
-            'columnOrder'      => 'asc',
-            'name'             => 'test',
-            'active'           => 1,
-            'hasSubcategories' => 0,
+            'page'          => $this->page,
+            'perPage'       => $this->perPage,
+            'columnName'    => 'name',
+            'columnOrder'   => 'asc',
+            'name'          => 'test',
+            'active'        => 1,
+            'hasCategories' => 0,
         ]);
 
         $response = $this->getJson(

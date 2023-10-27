@@ -10,9 +10,9 @@ use App\Modules\Store\Products\Models\Product;
 use App\Modules\Store\Products\Repositories\ProductsPersistenceRepository;
 use App\Modules\Store\Products\Repositories\ProductsRepository;
 use App\Modules\Store\Products\Services\CreateProductService;
-use App\Modules\Store\Subcategories\Contracts\SubcategoriesRepositoryInterface;
-use App\Modules\Store\Subcategories\Models\Subcategory;
-use App\Modules\Store\Subcategories\Repositories\SubcategoriesRepository;
+use App\Modules\Store\Categories\Contracts\CategoriesRepositoryInterface;
+use App\Modules\Store\Categories\Models\Category;
+use App\Modules\Store\Categories\Repositories\CategoriesRepository;
 use App\Shared\ACL\Policy;
 use App\Shared\Enums\MessagesEnum;
 use App\Shared\Enums\RulesEnum;
@@ -26,7 +26,7 @@ class CreateProductServiceTest extends TestCase
 {
     private  MockObject|ProductsPersistenceRepositoryInterface $productsPersistenceRepositoryMock;
     private  MockObject|ProductsRepositoryInterface            $productsRepositoryMock;
-    private  MockObject|SubcategoriesRepositoryInterface       $subcategoriesRepositoryMock;
+    private  MockObject|CategoriesRepositoryInterface       $categoriesRepositoryMock;
 
     private  MockObject|ProductsDTO $productsDtoMock;
 
@@ -36,7 +36,7 @@ class CreateProductServiceTest extends TestCase
 
         $this->productsPersistenceRepositoryMock = $this->createMock(ProductsPersistenceRepository::class);
         $this->productsRepositoryMock            = $this->createMock(ProductsRepository::class);
-        $this->subcategoriesRepositoryMock       = $this->createMock(SubcategoriesRepository::class);
+        $this->categoriesRepositoryMock          = $this->createMock(CategoriesRepository::class);
 
         $this->productsDtoMock = $this->createMock(ProductsDTO::class);
     }
@@ -46,7 +46,7 @@ class CreateProductServiceTest extends TestCase
         return new CreateProductService(
             $this->productsPersistenceRepositoryMock,
             $this->productsRepositoryMock,
-            $this->subcategoriesRepositoryMock,
+            $this->categoriesRepositoryMock,
         );
     }
 
@@ -57,7 +57,7 @@ class CreateProductServiceTest extends TestCase
         $this->productsDtoMock->productCode        = 'LV0000';
         $this->productsDtoMock->value              = 50;
         $this->productsDtoMock->quantity           = 10;
-        $this->productsDtoMock->subcategoriesId    = [];
+        $this->productsDtoMock->categoriesId       = [];
         $this->productsDtoMock->highlightProduct   = false;
     }
 
@@ -91,7 +91,7 @@ class CreateProductServiceTest extends TestCase
         $this->assertIsObject($created);
     }
 
-    public function test_should_create_new_product_with_subcategories()
+    public function test_should_create_new_product_with_categories()
     {
         $createProductService = $this->getCreateProductService();
 
@@ -101,9 +101,9 @@ class CreateProductServiceTest extends TestCase
 
         $this->populateDTO();
 
-        $subcategoryId = Uuid::uuid4Generate();
+        $categoryId = Uuid::uuid4Generate();
 
-        $this->productsDtoMock->subcategoriesId = [$subcategoryId];
+        $this->productsDtoMock->categoriesId = [$categoryId];
 
         $this
             ->productsRepositoryMock
@@ -116,11 +116,11 @@ class CreateProductServiceTest extends TestCase
             ->willReturn(null);
 
         $this
-            ->subcategoriesRepositoryMock
+            ->categoriesRepositoryMock
             ->method('findAllByIds')
             ->willReturn(
                 Collection::make([
-                    (object) ([Subcategory::ID => $subcategoryId])
+                    (object) ([Category::ID => $categoryId])
                 ])
             );
 
@@ -183,7 +183,7 @@ class CreateProductServiceTest extends TestCase
         $createProductService->execute($this->productsDtoMock);
     }
 
-    public function test_should_return_exception_if_subcategory_id_not_exists()
+    public function test_should_return_exception_if_category_id_not_exists()
     {
         $createProductService = $this->getCreateProductService();
 
@@ -193,7 +193,7 @@ class CreateProductServiceTest extends TestCase
 
         $this->populateDTO();
 
-        $this->productsDtoMock->subcategoriesId = [Uuid::uuid4Generate()];
+        $this->productsDtoMock->categoriesId = [Uuid::uuid4Generate()];
 
         $this
             ->productsRepositoryMock
@@ -206,16 +206,16 @@ class CreateProductServiceTest extends TestCase
             ->willReturn(null);
 
         $this
-            ->subcategoriesRepositoryMock
+            ->categoriesRepositoryMock
             ->method('findAllByIds')
             ->willReturn(
                 Collection::make([
-                    (object) ([Subcategory::ID => Uuid::uuid4Generate()])
+                    (object) ([Category::ID => Uuid::uuid4Generate()])
                 ])
             );
         $this->expectException(AppException::class);
         $this->expectExceptionCode(Response::HTTP_NOT_FOUND);
-        $this->expectExceptionMessage(json_encode(MessagesEnum::SUBCATEGORY_NOT_FOUND));
+        $this->expectExceptionMessage(json_encode(MessagesEnum::CATEGORY_NOT_FOUND));
 
         $createProductService->execute($this->productsDtoMock);
     }

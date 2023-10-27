@@ -3,7 +3,7 @@
 namespace App\Modules\Store\Departments\Models;
 
 use App\Base\Infra\Models\Register;
-use App\Modules\Store\Subcategories\Models\Subcategory;
+use App\Modules\Store\Categories\Models\Category;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
@@ -29,8 +29,8 @@ class Department extends Register
         self::ACTIVE,
     ];
 
-    public function subcategory(): HasMany
+    public function category(): HasMany
     {
-        return $this->hasMany(Subcategory::class);
+        return $this->hasMany(Category::class);
     }
 }

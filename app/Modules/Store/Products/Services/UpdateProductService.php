@@ -10,8 +10,8 @@ use App\Modules\Store\Products\Contracts\ProductsRepositoryInterface;
 use App\Modules\Store\Products\Contracts\UpdateProductServiceInterface;
 use App\Modules\Store\Products\DTO\ProductsDTO;
 use App\Modules\Store\Products\Validations\ProductsValidators;
-use App\Modules\Store\Subcategories\Contracts\SubcategoriesRepositoryInterface;
-use App\Modules\Store\Subcategories\Validations\SubcategoriesValidators;
+use App\Modules\Store\Categories\Contracts\CategoriesRepositoryInterface;
+use App\Modules\Store\Categories\Validations\CategoriesValidators;
 use App\Shared\Enums\RulesEnum;
 use App\Shared\Helpers\Helpers;
 use App\Shared\Utils\Transaction;
@@ -21,7 +21,7 @@ class UpdateProductService extends AuthenticatedService implements UpdateProduct
     public function __construct(
         private readonly ProductsPersistenceRepositoryInterface $productsPersistenceRepository,
         private readonly ProductsRepositoryInterface            $productsRepository,
-        private readonly SubcategoriesRepositoryInterface       $subcategoriesRepository,
+        private readonly CategoriesRepositoryInterface          $categoriesRepository,
     ) {}
 
     /**
@@ -53,11 +53,11 @@ class UpdateProductService extends AuthenticatedService implements UpdateProduct
             $productsDTO->balance,
         );
 
-        if(count($productsDTO->subcategoriesId) > 0)
+        if(count($productsDTO->categoriesId) > 0)
         {
-            SubcategoriesValidators::subcategoriesExists(
-                $productsDTO->subcategoriesId,
-                $this->subcategoriesRepository
+            CategoriesValidators::categoriesExists(
+                $productsDTO->categoriesId,
+                $this->categoriesRepository
             );
         }
 
@@ -73,9 +73,9 @@ class UpdateProductService extends AuthenticatedService implements UpdateProduct
 
             $this
                 ->productsPersistenceRepository
-                ->saveSubcategories(
+                ->saveCategories(
                     $product->id,
-                    $productsDTO->subcategoriesId
+                    $productsDTO->categoriesId
                 );
 
             Transaction::commit();

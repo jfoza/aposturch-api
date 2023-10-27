@@ -77,11 +77,11 @@ enum MessagesEnum: string {
     // MODULES - STORE
     case DEPARTMENT_NOT_FOUND = 'Departamento não encontrado.';
     case DEPARTMENT_NAME_ALREADY_EXISTS = 'Já existe um departamento com este nome. Escolha outro e tente novamente.';
-    case DEPARTMENT_HAS_SUBCATEGORIES = 'Este departamento possui subcategorias vinculadas a ela, remova estes vínculos e tente novamente.';
+    case DEPARTMENT_HAS_CATEGORIES = 'Este departamento possui categorias vinculadas a ela, remova estes vínculos e tente novamente.';
 
-    case SUBCATEGORY_NOT_FOUND = 'Subcategoria não encontrada.';
-    case SUBCATEGORY_NAME_ALREADY_EXISTS = 'Já existe uma subcategoria com este nome. Escolha outro e tente novamente.';
-    case SUBCATEGORY_HAS_PRODUCTS = 'Esta subcategoria possui produtos vinculados a ela, remova estes vínculos e tente novamente.';
+    case CATEGORY_NOT_FOUND = 'Ccategoria não encontrada.';
+    case CATEGORY_NAME_ALREADY_EXISTS = 'Já existe uma categoria com este nome. Escolha outro e tente novamente.';
+    case CATEGORY_HAS_PRODUCTS = 'Esta categoria possui produtos vinculados a ela, remova estes vínculos e tente novamente.';
 
     case PRODUCT_NOT_FOUND = 'Produto não encontrado.';
     case PRODUCT_NAME_ALREADY_EXISTS = 'Já existe um produto com este nome em nossa base.';
