@@ -3,9 +3,9 @@
 namespace Tests\Unit\App\Modules\Store\Subcategories\Services;
 
 use App\Exceptions\AppException;
-use App\Modules\Store\Categories\Contracts\CategoriesRepositoryInterface;
-use App\Modules\Store\Categories\Models\Category;
-use App\Modules\Store\Categories\Repositories\CategoriesRepository;
+use App\Modules\Store\Departments\Contracts\DepartmentsRepositoryInterface;
+use App\Modules\Store\Departments\Models\Department;
+use App\Modules\Store\Departments\Repositories\DepartmentsRepository;
 use App\Modules\Store\Products\Contracts\ProductsRepositoryInterface;
 use App\Modules\Store\Products\Models\Product;
 use App\Modules\Store\Products\Repositories\ProductsRepository;
@@ -25,7 +25,7 @@ use Tests\TestCase;
 
 class UpdateSubcategoryServiceTest extends TestCase
 {
-    private  MockObject|CategoriesRepositoryInterface $categoriesRepositoryMock;
+    private  MockObject|DepartmentsRepositoryInterface $departmentsRepositoryMock;
     private  MockObject|SubcategoriesRepositoryInterface $subcategoriesRepositoryMock;
     private  MockObject|ProductsRepositoryInterface $productsRepositoryMock;
 
@@ -35,7 +35,7 @@ class UpdateSubcategoryServiceTest extends TestCase
     {
         parent::setUp();
 
-        $this->categoriesRepositoryMock    = $this->createMock(CategoriesRepository::class);
+        $this->departmentsRepositoryMock    = $this->createMock(DepartmentsRepository::class);
         $this->subcategoriesRepositoryMock = $this->createMock(SubcategoriesRepository::class);
         $this->productsRepositoryMock      = $this->createMock(ProductsRepository::class);
 
@@ -47,7 +47,7 @@ class UpdateSubcategoryServiceTest extends TestCase
     public function getUpdateSubcategoryService(): UpdateSubcategoryService
     {
         return new UpdateSubcategoryService(
-            $this->categoriesRepositoryMock,
+            $this->departmentsRepositoryMock,
             $this->subcategoriesRepositoryMock,
             $this->productsRepositoryMock
         );
@@ -55,11 +55,11 @@ class UpdateSubcategoryServiceTest extends TestCase
 
     public function setDto(): void
     {
-        $this->subcategoriesDtoMock->id          = Uuid::uuid4Generate();
-        $this->subcategoriesDtoMock->categoryId  = Uuid::uuid4Generate();
-        $this->subcategoriesDtoMock->name        = 'test';
-        $this->subcategoriesDtoMock->description = 'test';
-        $this->subcategoriesDtoMock->productsId  = [];
+        $this->subcategoriesDtoMock->id           = Uuid::uuid4Generate();
+        $this->subcategoriesDtoMock->departmentId = Uuid::uuid4Generate();
+        $this->subcategoriesDtoMock->name         = 'test';
+        $this->subcategoriesDtoMock->description  = 'test';
+        $this->subcategoriesDtoMock->productsId   = [];
     }
 
     public function test_should_update_unique_subcategory()
@@ -81,18 +81,18 @@ class UpdateSubcategoryServiceTest extends TestCase
             ->willReturn(null);
 
         $this
-            ->categoriesRepositoryMock
+            ->departmentsRepositoryMock
             ->method('findById')
-            ->willReturn((object) ([ Category::ID => Uuid::uuid4Generate() ]));
+            ->willReturn((object) ([ Department::ID => Uuid::uuid4Generate() ]));
 
         $this
             ->subcategoriesRepositoryMock
             ->method('save')
             ->willReturn((object) ([
-                Subcategory::ID          => Uuid::uuid4Generate(),
-                Subcategory::CATEGORY_ID => Uuid::uuid4Generate(),
-                Subcategory::NAME        => 'test',
-                Subcategory::DESCRIPTION => 'test',
+                Subcategory::ID            => Uuid::uuid4Generate(),
+                Subcategory::DEPARTMENT_ID => Uuid::uuid4Generate(),
+                Subcategory::NAME          => 'test',
+                Subcategory::DESCRIPTION   => 'test',
             ]));
 
         $updated = $updateSubcategoryService->execute($this->subcategoriesDtoMock);
@@ -123,9 +123,9 @@ class UpdateSubcategoryServiceTest extends TestCase
             ->willReturn(null);
 
         $this
-            ->categoriesRepositoryMock
+            ->departmentsRepositoryMock
             ->method('findById')
-            ->willReturn((object) ([ Category::ID => Uuid::uuid4Generate() ]));
+            ->willReturn((object) ([ Department::ID => Uuid::uuid4Generate() ]));
 
         $this
             ->productsRepositoryMock
@@ -138,10 +138,10 @@ class UpdateSubcategoryServiceTest extends TestCase
             ->subcategoriesRepositoryMock
             ->method('save')
             ->willReturn((object) ([
-                Subcategory::ID          => Uuid::uuid4Generate(),
-                Subcategory::CATEGORY_ID => Uuid::uuid4Generate(),
-                Subcategory::NAME        => 'test',
-                Subcategory::DESCRIPTION => 'test',
+                Subcategory::ID            => Uuid::uuid4Generate(),
+                Subcategory::DEPARTMENT_ID => Uuid::uuid4Generate(),
+                Subcategory::NAME          => 'test',
+                Subcategory::DESCRIPTION   => 'test',
             ]));
 
         $updated = $updateSubcategoryService->execute($this->subcategoriesDtoMock);
@@ -170,9 +170,9 @@ class UpdateSubcategoryServiceTest extends TestCase
             ->willReturn(null);
 
         $this
-            ->categoriesRepositoryMock
+            ->departmentsRepositoryMock
             ->method('findById')
-            ->willReturn((object) ([ Category::ID => Uuid::uuid4Generate() ]));
+            ->willReturn((object) ([ Department::ID => Uuid::uuid4Generate() ]));
 
         $this
             ->productsRepositoryMock
@@ -233,7 +233,7 @@ class UpdateSubcategoryServiceTest extends TestCase
         $updateSubcategoryService->execute($this->subcategoriesDtoMock);
     }
 
-    public function test_should_return_error_if_category_id_not_exists()
+    public function test_should_return_error_if_department_id_not_exists()
     {
         $updateSubcategoryService = $this->getUpdateSubcategoryService();
 
@@ -252,13 +252,13 @@ class UpdateSubcategoryServiceTest extends TestCase
             ->willReturn(null);
 
         $this
-            ->categoriesRepositoryMock
+            ->departmentsRepositoryMock
             ->method('findById')
             ->willReturn(null);
 
         $this->expectException(AppException::class);
         $this->expectExceptionCode(Response::HTTP_NOT_FOUND);
-        $this->expectExceptionMessage(json_encode(MessagesEnum::CATEGORY_NOT_FOUND));
+        $this->expectExceptionMessage(json_encode(MessagesEnum::DEPARTMENT_NOT_FOUND));
 
         $updateSubcategoryService->execute($this->subcategoriesDtoMock);
     }

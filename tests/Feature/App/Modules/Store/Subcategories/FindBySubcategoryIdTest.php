@@ -22,12 +22,12 @@ class FindBySubcategoryIdTest extends BaseTestCase
     {
         return [
             'id',
-            'category_id',
+            'department_id',
             'name',
             'description',
             'active',
             'created_at',
-            'category',
+            'department',
         ];
     }
 

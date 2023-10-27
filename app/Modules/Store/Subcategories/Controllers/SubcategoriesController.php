@@ -39,10 +39,10 @@ readonly class SubcategoriesController
         $filtersDTO->paginationOrder->setColumnName($request[FormRequest::COLUMN_NAME]);
         $filtersDTO->paginationOrder->setColumnOrder($request[FormRequest::COLUMN_ORDER]);
 
-        $filtersDTO->name        = $request->name;
-        $filtersDTO->categoryId  = $request->categoryId;
-        $filtersDTO->active      = isset($request->active) ? (bool) $request->active : null;
-        $filtersDTO->hasProducts = isset($request->hasProducts) ? (bool) $request->hasProducts : null;
+        $filtersDTO->name         = $request->name;
+        $filtersDTO->departmentId = $request->departmentId;
+        $filtersDTO->active       = isset($request->active) ? (bool) $request->active : null;
+        $filtersDTO->hasProducts  = isset($request->hasProducts) ? (bool) $request->hasProducts : null;
 
         $subcategories = $this->findAllSubcategoriesService->execute($filtersDTO);
 
@@ -63,10 +63,10 @@ readonly class SubcategoriesController
         SubcategoriesRequest $request
     ): JsonResponse
     {
-        $dto->categoryId  = $request->categoryId;
-        $dto->name        = $request->name;
-        $dto->description = $request->description;
-        $dto->productsId  = $request->productsId;
+        $dto->departmentId = $request->departmentId;
+        $dto->name         = $request->name;
+        $dto->description  = $request->description;
+        $dto->productsId   = $request->productsId;
 
         $created = $this->createSubcategoryService->execute($dto);
 
@@ -78,11 +78,11 @@ readonly class SubcategoriesController
         SubcategoriesRequest $request
     ): JsonResponse
     {
-        $dto->id          = $request->id;
-        $dto->categoryId  = $request->categoryId;
-        $dto->name        = $request->name;
-        $dto->description = $request->description;
-        $dto->productsId  = isset($request->productsId) ? $request->productsId : [];
+        $dto->id           = $request->id;
+        $dto->departmentId = $request->departmentId;
+        $dto->name         = $request->name;
+        $dto->description  = $request->description;
+        $dto->productsId   = isset($request->productsId) ? $request->productsId : [];
 
         $updated = $this->updateSubcategoryService->execute($dto);
 

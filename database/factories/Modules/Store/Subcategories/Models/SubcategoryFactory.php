@@ -2,7 +2,7 @@
 
 namespace Database\Factories\Modules\Store\Subcategories\Models;
 
-use App\Modules\Store\Categories\Models\Category;
+use App\Modules\Store\Departments\Models\Department;
 use App\Modules\Store\Subcategories\Models\Subcategory;
 use App\Shared\Helpers\RandomStringHelper;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -13,10 +13,10 @@ class SubcategoryFactory extends Factory
 
     public function definition(): array
     {
-        $category = Category::factory()->create();
+        $department = Department::factory()->create();
 
         return [
-            Subcategory::CATEGORY_ID => $category->id,
+            Subcategory::DEPARTMENT_ID => $department->id,
             Subcategory::NAME => RandomStringHelper::alnumGenerate(),
             Subcategory::DESCRIPTION => RandomStringHelper::alnumGenerate(),
         ];

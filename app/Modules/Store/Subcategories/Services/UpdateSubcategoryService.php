@@ -5,8 +5,8 @@ namespace App\Modules\Store\Subcategories\Services;
 use App\Base\Services\AuthenticatedService;
 use App\Base\Traits\EnvironmentException;
 use App\Exceptions\AppException;
-use App\Modules\Store\Categories\Contracts\CategoriesRepositoryInterface;
-use App\Modules\Store\Categories\Validations\CategoriesValidations;
+use App\Modules\Store\Departments\Contracts\DepartmentsRepositoryInterface;
+use App\Modules\Store\Departments\Validations\DepartmentsValidations;
 use App\Modules\Store\Products\Contracts\ProductsRepositoryInterface;
 use App\Modules\Store\Products\Validations\ProductsValidators;
 use App\Modules\Store\Subcategories\Contracts\SubcategoriesRepositoryInterface;
@@ -21,9 +21,9 @@ class UpdateSubcategoryService extends AuthenticatedService implements UpdateSub
     private SubcategoriesDTO $subcategoriesDTO;
 
     public function __construct(
-        private readonly CategoriesRepositoryInterface $categoriesRepository,
+        private readonly DepartmentsRepositoryInterface   $categoriesRepository,
         private readonly SubcategoriesRepositoryInterface $subcategoriesRepository,
-        private readonly ProductsRepositoryInterface $productsRepository,
+        private readonly ProductsRepositoryInterface      $productsRepository,
     ) {}
 
     /**
@@ -73,8 +73,8 @@ class UpdateSubcategoryService extends AuthenticatedService implements UpdateSub
             $this->subcategoriesRepository
         );
 
-        CategoriesValidations::categoryExists(
-            $this->subcategoriesDTO->categoryId,
+        DepartmentsValidations::departmentExists(
+            $this->subcategoriesDTO->departmentId,
             $this->categoriesRepository
         );
 

@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\App\Modules\Store\Subcategories;
 
-use App\Modules\Store\Categories\Models\Category;
+use App\Modules\Store\Departments\Models\Department;
 use App\Modules\Store\Products\Models\Product;
 use App\Modules\Store\Subcategories\Models\Subcategory;
 use App\Shared\Helpers\RandomStringHelper;
@@ -25,12 +25,12 @@ class InsertSubcategoryTest extends BaseTestCase
     {
         $this->setAuthorizationBearer(Credentials::ADMIN_MASTER);
 
-        $category = Category::factory()->create();
+        $department = Department::factory()->create();
 
         $payload = [
-            'categoryId' => $category->id,
-            'name'        => RandomStringHelper::alnumGenerate(),
-            'description' => RandomStringHelper::alnumGenerate(),
+            'departmentId' => $department->id,
+            'name'         => RandomStringHelper::alnumGenerate(),
+            'description'  => RandomStringHelper::alnumGenerate(),
         ];
 
         $response = $this->postJson(
@@ -46,15 +46,15 @@ class InsertSubcategoryTest extends BaseTestCase
     {
         $this->setAuthorizationBearer(Credentials::ADMIN_MASTER);
 
-        $category = Category::factory()->create();
+        $department = Department::factory()->create();
 
         $product = Product::factory()->create();
 
         $payload = [
-            'categoryId'  => $category->id,
-            'name'        => RandomStringHelper::alnumGenerate(),
-            'description' => RandomStringHelper::alnumGenerate(),
-            'productsId'  => [$product->id]
+            'departmentId' => $department->id,
+            'name'         => RandomStringHelper::alnumGenerate(),
+            'description'  => RandomStringHelper::alnumGenerate(),
+            'productsId'   => [$product->id]
         ];
 
         $response = $this->postJson(
@@ -70,15 +70,15 @@ class InsertSubcategoryTest extends BaseTestCase
     {
         $this->setAuthorizationBearer(Credentials::ADMIN_MASTER);
 
-        $category = Category::factory()->create();
+        $department = Department::factory()->create();
 
         $product = Product::factory()->create();
 
         $payload = [
-            'categoryId'  => $category->id,
-            'name'        => RandomStringHelper::alnumGenerate(),
-            'description' => RandomStringHelper::alnumGenerate(),
-            'productsId'  => [$product->id, Uuid::uuid4Generate()]
+            'departmentId' => $department->id,
+            'name'         => RandomStringHelper::alnumGenerate(),
+            'description'  => RandomStringHelper::alnumGenerate(),
+            'productsId'   => [$product->id, Uuid::uuid4Generate()]
         ];
 
         $response = $this->postJson(
@@ -90,16 +90,16 @@ class InsertSubcategoryTest extends BaseTestCase
         $response->assertNotFound();
     }
 
-    public function test_should_return_error_if_category_id_not_exists()
+    public function test_should_return_error_if_department_id_not_exists()
     {
         $this->setAuthorizationBearer(Credentials::ADMIN_MASTER);
 
-        $category = Uuid::uuid4Generate();
+        $department = Uuid::uuid4Generate();
 
         $payload = [
-            'categoryId' => $category,
-            'name'        => RandomStringHelper::alnumGenerate(),
-            'description' => RandomStringHelper::alnumGenerate(),
+            'departmentId' => $department,
+            'name'         => RandomStringHelper::alnumGenerate(),
+            'description'  => RandomStringHelper::alnumGenerate(),
         ];
 
         $response = $this->postJson(
@@ -115,14 +115,14 @@ class InsertSubcategoryTest extends BaseTestCase
     {
         $this->setAuthorizationBearer(Credentials::ADMIN_MASTER);
 
-        $category = Category::factory()->create();
+        $department = Department::factory()->create();
 
         $subcategory = Subcategory::factory()->create();
 
         $payload = [
-            'categoryId' => $category->id,
-            'name'        => $subcategory->name,
-            'description' => RandomStringHelper::alnumGenerate(),
+            'departmentId' => $department->id,
+            'name'         => $subcategory->name,
+            'description'  => RandomStringHelper::alnumGenerate(),
         ];
 
         $response = $this->postJson(
@@ -138,12 +138,12 @@ class InsertSubcategoryTest extends BaseTestCase
     {
         $this->setAuthorizationBearer(Credentials::USER_WITHOUT_MODULES);
 
-        $category = Category::factory()->create();
+        $department = Department::factory()->create();
 
         $payload = [
-            'categoryId' => $category->id,
-            'name'        => RandomStringHelper::alnumGenerate(),
-            'description' => RandomStringHelper::alnumGenerate(),
+            'departmentId' => $department->id,
+            'name'         => RandomStringHelper::alnumGenerate(),
+            'description'  => RandomStringHelper::alnumGenerate(),
         ];
 
         $response = $this->postJson(
@@ -158,14 +158,14 @@ class InsertSubcategoryTest extends BaseTestCase
     /**
      * @dataProvider dataProviderFormErrors
      *
-     * @param mixed $categoryId
+     * @param mixed $departmentId
      * @param mixed $name
      * @param mixed $description
      * @param mixed $productsId
      * @return void
      */
     public function test_should_return_error_if_has_form_errors(
-        mixed $categoryId,
+        mixed $departmentId,
         mixed $name,
         mixed $description,
         mixed $productsId,
@@ -174,10 +174,10 @@ class InsertSubcategoryTest extends BaseTestCase
         $this->setAuthorizationBearer(Credentials::ADMIN_MASTER);
 
         $payload = [
-            'categoryId'  => $categoryId,
-            'name'        => $name,
-            'description' => $description,
-            'productsId'  => $productsId,
+            'departmentId' => $departmentId,
+            'name'         => $name,
+            'description'  => $description,
+            'productsId'   => $productsId,
         ];
 
         $response = $this->postJson(
@@ -192,39 +192,39 @@ class InsertSubcategoryTest extends BaseTestCase
     public static function dataProviderFormErrors(): array
     {
         return [
-            'Invalid category id param' => [
-                'categoryId'  => 'invalid-uuid',
-                'name'        => 'test',
-                'description' => RandomStringHelper::alnumGenerate(),
-                'productsId'  => [],
+            'Invalid department id param' => [
+                'departmentId' => 'invalid-uuid',
+                'name'         => 'test',
+                'description'  => RandomStringHelper::alnumGenerate(),
+                'productsId'   => [],
             ],
 
             'Empty name param' => [
-                'categoryId'  => Uuid::uuid4Generate(),
-                'name'        => '',
-                'description' => RandomStringHelper::alnumGenerate(),
-                'productsId'  => [],
+                'departmentId' => Uuid::uuid4Generate(),
+                'name'         => '',
+                'description'  => RandomStringHelper::alnumGenerate(),
+                'productsId'   => [],
             ],
 
             'Invalid name param' => [
-                'categoryId'  => Uuid::uuid4Generate(),
-                'name'        => false,
-                'description' => RandomStringHelper::alnumGenerate(),
-                'productsId'  => [],
+                'departmentId' => Uuid::uuid4Generate(),
+                'name'         => false,
+                'description'  => RandomStringHelper::alnumGenerate(),
+                'productsId'   => [],
             ],
 
             'Invalid description param' => [
-                'categoryId'  => Uuid::uuid4Generate(),
-                'name'        => RandomStringHelper::alnumGenerate(),
-                'description' => true,
-                'productsId'  => [],
+                'departmentId' => Uuid::uuid4Generate(),
+                'name'         => RandomStringHelper::alnumGenerate(),
+                'description'  => true,
+                'productsId'   => [],
             ],
 
             'Invalid products id param' => [
-                'categoryId'  => Uuid::uuid4Generate(),
-                'name'        => 'test',
-                'description' => RandomStringHelper::alnumGenerate(),
-                'productsId'  => [Uuid::uuid4Generate(), 'invalid-uuid'],
+                'departmentId' => Uuid::uuid4Generate(),
+                'name'         => 'test',
+                'description'  => RandomStringHelper::alnumGenerate(),
+                'productsId'   => [Uuid::uuid4Generate(), 'invalid-uuid'],
             ]
         ];
     }

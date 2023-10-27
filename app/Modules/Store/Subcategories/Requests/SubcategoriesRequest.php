@@ -10,10 +10,10 @@ class SubcategoriesRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'categoryId'  => ['nullable', 'string', new Uuid4Rule()],
-            'name'        => 'required|string',
-            'description' => 'nullable|string',
-            'productsId'  => 'nullable|array',
+            'departmentId' => ['required', 'string', new Uuid4Rule()],
+            'name'         => 'required|string',
+            'description'  => 'nullable|string',
+            'productsId'   => 'nullable|array',
 
             'productsId.*' => ['nullable', new Uuid4Rule()],
         ];
@@ -22,10 +22,10 @@ class SubcategoriesRequest extends FormRequest
     public function attributes(): array
     {
         return [
-            'categoryId'  => 'Category Id',
-            'name'        => 'Name',
-            'description' => 'Description',
-            'productsId'  => 'Products Id',
+            'departmentId' => 'Department Id',
+            'name'         => 'Name',
+            'description'  => 'Description',
+            'productsId'   => 'Products Id',
         ];
     }
 

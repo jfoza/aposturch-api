@@ -3,8 +3,8 @@
 namespace App\Modules\Store\Subcategories\Validations;
 
 use App\Exceptions\AppException;
-use App\Modules\Store\Categories\Contracts\CategoriesRepositoryInterface;
-use App\Modules\Store\Categories\Models\Category;
+use App\Modules\Store\Departments\Contracts\DepartmentsRepositoryInterface;
+use App\Modules\Store\Departments\Models\Department;
 use App\Modules\Store\Products\Contracts\ProductsRepositoryInterface;
 use App\Modules\Store\Subcategories\Contracts\SubcategoriesRepositoryInterface;
 use App\Modules\Store\Subcategories\Models\Subcategory;

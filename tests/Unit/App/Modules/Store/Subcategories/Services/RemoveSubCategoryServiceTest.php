@@ -3,7 +3,7 @@
 namespace Tests\Unit\App\Modules\Store\Subcategories\Services;
 
 use App\Exceptions\AppException;
-use App\Modules\Store\Categories\Models\Category;
+use App\Modules\Store\Departments\Models\Department;
 use App\Modules\Store\Products\Contracts\ProductsRepositoryInterface;
 use App\Modules\Store\Products\Models\Product;
 use App\Modules\Store\Products\Repositories\ProductsRepository;
@@ -51,7 +51,7 @@ class RemoveSubCategoryServiceTest extends TestCase
         $this
             ->subcategoriesRepositoryMock
             ->method('findById')
-            ->willReturn((object) ([ Category::ID => Uuid::uuid4Generate() ]));
+            ->willReturn((object) ([ Department::ID => Uuid::uuid4Generate() ]));
 
         $this
             ->productsRepositoryMock
@@ -94,7 +94,7 @@ class RemoveSubCategoryServiceTest extends TestCase
         $this
             ->subcategoriesRepositoryMock
             ->method('findById')
-            ->willReturn((object) ([ Category::ID => Uuid::uuid4Generate() ]));
+            ->willReturn((object) ([ Department::ID => Uuid::uuid4Generate() ]));
 
         $this
             ->productsRepositoryMock

@@ -26,12 +26,12 @@ class FindAllSubcategoriesTest extends BaseTestCase
     {
         return [
             'id',
-            'category_id',
+            'department_id',
             'name',
             'description',
             'active',
             'created_at',
-            'category',
+            'department',
         ];
     }
 
@@ -95,10 +95,10 @@ class FindAllSubcategoriesTest extends BaseTestCase
             'columnName' => 'name',
             'columnOrder' => 'asc',
 
-            'name'        => 'test',
-            'categoryId'  => Uuid::uuid4Generate(),
-            'active'      => true,
-            'hasProducts' => false,
+            'name'         => 'test',
+            'departmentId' => Uuid::uuid4Generate(),
+            'active'       => true,
+            'hasProducts'  => false,
         ]);
 
         $response = $this->getJson(
@@ -125,14 +125,14 @@ class FindAllSubcategoriesTest extends BaseTestCase
      * @dataProvider dataProviderFormErrors
      *
      * @param mixed $name
-     * @param mixed $categoryId
+     * @param mixed $departmentId
      * @param mixed $active
      * @param mixed $hasProducts
      * @return void
      */
     public function test_should_return_error_if_has_form_errors(
         mixed $name,
-        mixed $categoryId,
+        mixed $departmentId,
         mixed $active,
         mixed $hasProducts,
     ): void
@@ -145,10 +145,10 @@ class FindAllSubcategoriesTest extends BaseTestCase
             'columnName' => 'name',
             'columnOrder' => 'asc',
 
-            'name'        => $name,
-            'categoryId'  => $categoryId,
-            'active'      => $active,
-            'hasProducts' => $hasProducts,
+            'name'         => $name,
+            'departmentId' => $departmentId,
+            'active'       => $active,
+            'hasProducts'  => $hasProducts,
         ]);
 
         $response = $this->getJson(
@@ -162,25 +162,25 @@ class FindAllSubcategoriesTest extends BaseTestCase
     public static function dataProviderFormErrors(): array
     {
         return [
-            'Invalid category id filter param' => [
-                'name'        => 'test',
-                'categoryId'  => 'invalid-uuid',
-                'active'      => true,
-                'hasProducts' => false,
+            'Invalid department id filter param' => [
+                'name'         => 'test',
+                'departmentId' => 'invalid-uuid',
+                'active'       => true,
+                'hasProducts'  => false,
             ],
 
             'Invalid active param' => [
-                'name'        => 'test',
-                'categoryId'  => Uuid::uuid4Generate(),
-                'active'      => 'invalid',
-                'hasProducts' => 0,
+                'name'         => 'test',
+                'departmentId' => Uuid::uuid4Generate(),
+                'active'       => 'invalid',
+                'hasProducts'  => 0,
             ],
 
             'Invalid has products param' => [
-                'name'        => 'test',
-                'categoryId'  => Uuid::uuid4Generate(),
-                'active'      => 1,
-                'hasProducts' => 'invalid',
+                'name'         => 'test',
+                'departmentId' => Uuid::uuid4Generate(),
+                'active'       => 1,
+                'hasProducts'  => 'invalid',
             ]
         ];
     }

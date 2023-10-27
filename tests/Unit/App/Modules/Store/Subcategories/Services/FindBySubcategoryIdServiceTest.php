@@ -42,7 +42,7 @@ class FindBySubcategoryIdServiceTest extends TestCase
         ]);
     }
 
-    public function test_should_return_unique_category()
+    public function test_should_return_unique_subcategory()
     {
         $findBySubcategoryIdService = $this->getFindBySubcategoryIdService();
 
@@ -55,12 +55,12 @@ class FindBySubcategoryIdServiceTest extends TestCase
             ->method('findById')
             ->willReturn($this->getSubcategory());
 
-        $category = $findBySubcategoryIdService->execute(Uuid::uuid4Generate());
+        $subcategory = $findBySubcategoryIdService->execute(Uuid::uuid4Generate());
 
-        $this->assertIsObject($category);
+        $this->assertIsObject($subcategory);
     }
 
-    public function test_should_return_exception_if_category_not_exists()
+    public function test_should_return_exception_if_subcategory_not_exists()
     {
         $findBySubcategoryIdService = $this->getFindBySubcategoryIdService();
 

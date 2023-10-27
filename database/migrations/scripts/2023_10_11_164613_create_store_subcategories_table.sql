@@ -3,7 +3,7 @@ CREATE SCHEMA IF NOT EXISTS store;
 create table "store".subcategories
 (
     id uuid default uuid_generate_v4() not null primary key,
-    category_id uuid constraint "SubcategoriesCategoryIdFk" references "store".categories on delete restrict,
+    department_id uuid constraint "SubcategoriesDepartmentIdFk" references "store".departments on delete restrict,
     name varchar not null,
     description varchar,
     active boolean not null default true,

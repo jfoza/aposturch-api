@@ -5,8 +5,8 @@ namespace App\Modules\Store\Subcategories\Services;
 use App\Base\Services\AuthenticatedService;
 use App\Base\Traits\EnvironmentException;
 use App\Exceptions\AppException;
-use App\Modules\Store\Categories\Contracts\CategoriesRepositoryInterface;
-use App\Modules\Store\Categories\Validations\CategoriesValidations;
+use App\Modules\Store\Departments\Contracts\DepartmentsRepositoryInterface;
+use App\Modules\Store\Departments\Validations\DepartmentsValidations;
 use App\Modules\Store\Products\Contracts\ProductsRepositoryInterface;
 use App\Modules\Store\Products\Validations\ProductsValidators;
 use App\Modules\Store\Subcategories\Contracts\CreateSubcategoryServiceInterface;
@@ -22,9 +22,9 @@ class CreateSubcategoryService extends AuthenticatedService implements CreateSub
     private bool $hasProducts = false;
 
     public function __construct(
-        private readonly CategoriesRepositoryInterface $categoriesRepository,
+        private readonly DepartmentsRepositoryInterface   $departmentsRepository,
         private readonly SubcategoriesRepositoryInterface $subcategoriesRepository,
-        private readonly ProductsRepositoryInterface $productsRepository,
+        private readonly ProductsRepositoryInterface      $productsRepository,
     ) {}
 
     /**
@@ -68,9 +68,9 @@ class CreateSubcategoryService extends AuthenticatedService implements CreateSub
     {
         $this->hasProducts = isset($this->subcategoriesDTO->productsId) && count($this->subcategoriesDTO->productsId) > 0;
 
-        CategoriesValidations::categoryExists(
-            $this->subcategoriesDTO->categoryId,
-            $this->categoriesRepository
+        DepartmentsValidations::departmentExists(
+            $this->subcategoriesDTO->departmentId,
+            $this->departmentsRepository
         );
 
         SubcategoriesValidators::subcategoryExistsByName(

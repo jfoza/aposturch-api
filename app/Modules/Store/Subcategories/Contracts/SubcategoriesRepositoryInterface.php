@@ -13,7 +13,7 @@ interface SubcategoriesRepositoryInterface
     public function findAllByIds(array $subcategoriesId): Collection;
     public function findById(string $id, bool $getProducts = false): ?object;
     public function findByName(string $name): ?object;
-    public function findByCategory(string $categoryId): Collection;
+    public function findByDepartment(string $departmentId): Collection;
     public function create(SubcategoriesDTO $subcategoriesDTO): object;
     public function save(SubcategoriesDTO $subcategoriesDTO): object;
     public function saveProducts(string $subcategoryId, array $productsId): void;

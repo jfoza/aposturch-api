@@ -29,10 +29,10 @@ class SubcategoriesRepository implements SubcategoriesRepositoryInterface
                 )
             )
             ->when(
-                isset($subcategoriesFiltersDTO->categoryId),
+                isset($subcategoriesFiltersDTO->departmentId),
                 fn($c) => $c->where(
-                    Subcategory::tableField(Subcategory::CATEGORY_ID),
-                    $subcategoriesFiltersDTO->categoryId
+                    Subcategory::tableField(Subcategory::DEPARTMENT_ID),
+                    $subcategoriesFiltersDTO->departmentId
                 )
             )
             ->when(
@@ -85,11 +85,11 @@ class SubcategoriesRepository implements SubcategoriesRepositoryInterface
             ->first();
     }
 
-    public function findByCategory(string $categoryId): Collection
+    public function findByDepartment(string $departmentId): Collection
     {
         $subcategories = $this
             ->getBaseQuery()
-            ->where(Subcategory::CATEGORY_ID, $categoryId)
+            ->where(Subcategory::DEPARTMENT_ID, $departmentId)
             ->get();
 
         return collect($subcategories);
@@ -98,19 +98,19 @@ class SubcategoriesRepository implements SubcategoriesRepositoryInterface
     public function create(SubcategoriesDTO $subcategoriesDTO): object
     {
         return Subcategory::create([
-            Subcategory::CATEGORY_ID => $subcategoriesDTO->categoryId,
-            Subcategory::NAME        => $subcategoriesDTO->name,
-            Subcategory::DESCRIPTION => $subcategoriesDTO->description,
+            Subcategory::DEPARTMENT_ID => $subcategoriesDTO->departmentId,
+            Subcategory::NAME          => $subcategoriesDTO->name,
+            Subcategory::DESCRIPTION   => $subcategoriesDTO->description,
         ]);
     }
 
     public function save(SubcategoriesDTO $subcategoriesDTO): object
     {
         $update = [
-            Subcategory::ID          => $subcategoriesDTO->id,
-            Subcategory::CATEGORY_ID => $subcategoriesDTO->categoryId,
-            Subcategory::NAME        => $subcategoriesDTO->name,
-            Subcategory::DESCRIPTION => $subcategoriesDTO->description,
+            Subcategory::ID            => $subcategoriesDTO->id,
+            Subcategory::DEPARTMENT_ID => $subcategoriesDTO->departmentId,
+            Subcategory::NAME          => $subcategoriesDTO->name,
+            Subcategory::DESCRIPTION   => $subcategoriesDTO->description,
         ];
 
         Subcategory::find($subcategoriesDTO->id)->update($update);
@@ -140,10 +140,10 @@ class SubcategoriesRepository implements SubcategoriesRepositoryInterface
 
     private function getBaseQuery(): Builder
     {
-        return Subcategory::with('category')
+        return Subcategory::with('department')
             ->select(
                 Subcategory::tableField(Subcategory::ID),
-                Subcategory::tableField(Subcategory::CATEGORY_ID),
+                Subcategory::tableField(Subcategory::DEPARTMENT_ID),
                 Subcategory::tableField(Subcategory::NAME),
                 Subcategory::tableField(Subcategory::DESCRIPTION),
                 Subcategory::tableField(Subcategory::ACTIVE),

@@ -65,7 +65,7 @@ class FindAllSubcategoriesServiceTest extends TestCase
         $this->assertInstanceOf(Collection::class, $subcategories);
     }
 
-    public function test_should_return_categories_list()
+    public function test_should_return_departments_list()
     {
         $findAllSubcategoriesService = $this->getFindAllSubcategoriesService();
 

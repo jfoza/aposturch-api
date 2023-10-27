@@ -24,7 +24,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropColumns('store.subcategories', ['category_id']);
+        Schema::dropColumns('store.subcategories', ['department_id']);
         Schema::dropIfExists('store.subcategories');
     }
 };

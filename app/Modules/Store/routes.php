@@ -12,8 +12,8 @@ Route::prefix('/admin/modules/store')
         MiddlewareHelper::getModuleAccess(ModulesRulesEnum::STORE_MODULE_VIEW->value)
     ])
     ->group(function () {
-        Route::prefix('/categories')
-            ->group(app_path('Modules/Store/Categories/Routes/routes.php'));
+        Route::prefix('/departments')
+            ->group(app_path('Modules/Store/Departments/Routes/routes.php'));
 
         Route::prefix('/subcategories')
             ->group(app_path('Modules/Store/Subcategories/Routes/routes.php'));

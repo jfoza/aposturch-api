@@ -75,9 +75,9 @@ enum MessagesEnum: string {
     case CHURCH_NOT_FOUND = 'Igreja não encontrada';
 
     // MODULES - STORE
-    case CATEGORY_NOT_FOUND = 'Categoria não encontrada.';
-    case CATEGORY_NAME_ALREADY_EXISTS = 'Já existe uma categoria com este nome. Escolha outro e tente novamente.';
-    case CATEGORY_HAS_SUBCATEGORIES = 'Esta categoria possui subcategorias vinculadas a ela, remova estes vínculos e tente novamente.';
+    case DEPARTMENT_NOT_FOUND = 'Departamento não encontrado.';
+    case DEPARTMENT_NAME_ALREADY_EXISTS = 'Já existe um departamento com este nome. Escolha outro e tente novamente.';
+    case DEPARTMENT_HAS_SUBCATEGORIES = 'Este departamento possui subcategorias vinculadas a ela, remova estes vínculos e tente novamente.';
 
     case SUBCATEGORY_NOT_FOUND = 'Subcategoria não encontrada.';
     case SUBCATEGORY_NAME_ALREADY_EXISTS = 'Já existe uma subcategoria com este nome. Escolha outro e tente novamente.';
