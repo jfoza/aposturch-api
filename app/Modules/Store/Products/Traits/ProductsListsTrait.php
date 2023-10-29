@@ -54,7 +54,8 @@ trait ProductsListsTrait
                 isset($productsFiltersDTO->code),
                 fn($q) => $q->where(
                     Product::tableField(Product::PRODUCT_CODE),
-                    $productsFiltersDTO->code
+                    'ilike',
+                    "%$productsFiltersDTO->code%"
                 )
             )
             ->when(
