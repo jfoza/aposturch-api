@@ -24,7 +24,7 @@ class MembersRepository implements MembersRepositoryInterface
         $builder = $this
             ->baseQueryBuilderFilters($membersFiltersDTO)
             ->orderBy(
-                $membersFiltersDTO->paginationOrder->defineCustomColumnName(Profile::tableField(Profile::ID)),
+                $membersFiltersDTO->paginationOrder->defineCustomColumnName(Member::tableField(Member::CREATED_AT)),
                 $membersFiltersDTO->paginationOrder->getColumnOrder()
             );
 

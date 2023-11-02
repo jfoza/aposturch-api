@@ -85,7 +85,7 @@ class FindAllProductsServiceTest extends TestCase
 
         $this->productsFiltersDtoMock->paginationOrder->setPage(1);
         $this->productsFiltersDtoMock->paginationOrder->setPerPage(10);
-        $this->productsFiltersDtoMock->paginationOrder->setColumnOrder(Product::PRODUCT_NAME);
+        $this->productsFiltersDtoMock->paginationOrder->setColumnName(Product::PRODUCT_NAME);
         $this->productsFiltersDtoMock->paginationOrder->setColumnOrder('asc');
 
         $this

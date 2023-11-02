@@ -79,7 +79,7 @@ class CreateMemberTest extends BaseTestCase
             $this->getAuthorizationBearer()
         );
 
-        $response->assertOk();
+        $response->assertCreated();
     }
 
     /**

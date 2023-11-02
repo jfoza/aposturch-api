@@ -82,7 +82,7 @@ readonly class MembersController
 
         $created = $this->createMemberService->execute($userDTO);
 
-        return response()->json($created, Response::HTTP_OK);
+        return response()->json($created, Response::HTTP_CREATED);
     }
 
     public function updateStatus(Request $request): JsonResponse
