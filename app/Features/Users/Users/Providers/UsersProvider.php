@@ -4,10 +4,12 @@ namespace App\Features\Users\Users\Providers;
 
 use App\Base\Providers\AbstractServiceProvider;
 use App\Features\Users\AdminUsers\Contracts\ShowAuthenticatedUserServiceInterface;
+use App\Features\Users\Users\Contracts\RemoveUserAvatarServiceInterface;
 use App\Features\Users\Users\Contracts\UserEmailAlreadyExistsServiceInterface;
 use App\Features\Users\Users\Contracts\UsersRepositoryInterface;
 use App\Features\Users\Users\Contracts\UserUploadImageServiceInterface;
 use App\Features\Users\Users\Repositories\UsersRepository;
+use App\Features\Users\Users\Services\RemoveUserAvatarService;
 use App\Features\Users\Users\Services\ShowAuthenticatedUserService;
 use App\Features\Users\Users\Services\UserEmailAlreadyExistsService;
 use App\Features\Users\Users\Services\UserUploadImageService;
@@ -40,6 +42,11 @@ class UsersProvider extends AbstractServiceProvider
         $this->bind(
             UserUploadImageServiceInterface::class,
             UserUploadImageService::class,
+        );
+
+        $this->bind(
+            RemoveUserAvatarServiceInterface::class,
+            RemoveUserAvatarService::class,
         );
     }
 }

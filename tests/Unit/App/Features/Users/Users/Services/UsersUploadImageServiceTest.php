@@ -118,7 +118,7 @@ class UsersUploadImageServiceTest extends TestCase
     }
 
     /**
-     * @dataProvider dataProviderUploadImageDifferentUser
+     * @dataProvider dataProviderUploadImage
      *
      * @param string $rule
      * @param string $profileUniqueName
@@ -226,16 +226,14 @@ class UsersUploadImageServiceTest extends TestCase
     }
 
     /**
-     * @dataProvider dataProviderUploadImageDifferentUser
+     * @dataProvider dataProviderUploadImage
      *
      * @param string $rule
-     * @param string $profileUniqueName
      * @return void
      * @throws AppException
      */
     public function test_should_return_exception_if_user_member_not_exists(
         string $rule,
-        string $profileUniqueName,
     ): void
     {
         $usersUploadImageService = $this->getUsersUploadImageService();

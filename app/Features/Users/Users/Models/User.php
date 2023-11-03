@@ -98,7 +98,7 @@ class User
 
     public function image(): BelongsTo
     {
-        return $this->belongsTo(Image::class);
+        return $this->belongsTo(Image::class, User::AVATAR_ID, Image::ID);
     }
 
     public function profile(): BelongsToMany

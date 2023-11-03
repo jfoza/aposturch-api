@@ -133,4 +133,18 @@ class UsersValidations
             );
         }
     }
+
+    /**
+     * @throws AppException
+     */
+    public static function userHasImage(mixed $user): void
+    {
+        if(empty($user->image))
+        {
+            throw new AppException(
+                MessagesEnum::USER_WITHOUT_IMAGE,
+                Response::HTTP_BAD_REQUEST
+            );
+        }
+    }
 }

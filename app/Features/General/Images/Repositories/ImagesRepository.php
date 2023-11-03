@@ -29,7 +29,7 @@ class ImagesRepository implements ImagesRepositoryInterface
             ]);
     }
 
-    public function remove(string $id)
+    public function remove(string $id): void
     {
         Image::where(Image::ID, $id)->delete();
     }

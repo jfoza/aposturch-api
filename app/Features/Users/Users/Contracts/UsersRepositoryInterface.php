@@ -17,5 +17,5 @@ interface UsersRepositoryInterface
     public function saveModules(string $userId, array $modules): void;
     public function saveNewPassword(string $userId, string $password);
     public function saveStatus(string $userId, bool $status);
-    public function saveAvatar(string $userId, string $imageId);
+    public function saveAvatar(string $userId, string|null $imageId);
 }

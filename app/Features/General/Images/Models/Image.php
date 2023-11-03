@@ -33,7 +33,7 @@ class Image extends Register
 
     public function user(): HasOne
     {
-        return $this->hasOne(User::class);
+        return $this->hasOne(User::class, Image::ID, User::AVATAR_ID);
     }
 
     public function church(): BelongsToMany

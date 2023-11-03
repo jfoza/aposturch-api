@@ -43,6 +43,7 @@ enum MessagesEnum: string {
     case PHONE_ALREADY_EXISTS = 'O número de telefone informado já existe no sistema.';
     case INVALID_CURRENT_PASSWORD = 'Senha atual inválida';
     case PERSON_NOT_FOUND = 'Registro Pessoa não encontrado.';
+    case USER_WITHOUT_IMAGE = 'Este usuário não possui imagens vinculadas.';
 
 
     // City

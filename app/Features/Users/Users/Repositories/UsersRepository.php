@@ -12,7 +12,7 @@ class UsersRepository implements UsersRepositoryInterface
 {
     public function findById(string $id): ?object
     {
-        return User::with('profile')->where(User::ID, $id)->first();
+        return User::with(['profile', 'image'])->where(User::ID, $id)->first();
     }
 
     public function findByEmail(string $email): ?object
@@ -95,7 +95,7 @@ class UsersRepository implements UsersRepositoryInterface
         return User::where(User::ID, $userId)->update([User::ACTIVE => $status]);
     }
 
-    public function saveAvatar(string $userId, string $imageId)
+    public function saveAvatar(string $userId, string|null $imageId)
     {
         return User::where(User::ID, $userId)->update([User::AVATAR_ID => $imageId]);
     }

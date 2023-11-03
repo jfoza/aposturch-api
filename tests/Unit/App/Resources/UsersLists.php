@@ -2,6 +2,8 @@
 
 namespace Tests\Unit\App\Resources;
 
+use App\Features\General\Images\Enums\TypeUploadImageEnum;
+use App\Features\General\Images\Models\Image;
 use App\Features\Module\Modules\Models\Module;
 use App\Features\Persons\Infra\Models\Person;
 use App\Features\Users\AdminUsers\Models\AdminUser;
@@ -36,18 +38,14 @@ class UsersLists
         string $profileUniqueName = null,
     ): object
     {
-        if(is_null($id))
-        {
-            $id = Uuid::uuid4Generate();
-        }
-
         return (object) ([
-            User::NAME     => "UserName",
-            User::EMAIL    => "email.example@email.com",
-            User::PASSWORD => "$2y$10$3D5HkxDb1U1qGxldZ6Bi6eCLrmRE4U8wXoRFfm4vWCYoJP1toiRGa",
-            User::ACTIVE   => true,
-            User::ID       => $id,
-            'person'       => (object) ([
+            User::ID        => !is_null($id) ? $id : Uuid::uuid4Generate(),
+            User::AVATAR_ID => Uuid::uuid4Generate(),
+            User::NAME      => "UserName",
+            User::EMAIL     => "email.example@email.com",
+            User::PASSWORD  => "$2y$10$3D5HkxDb1U1qGxldZ6Bi6eCLrmRE4U8wXoRFfm4vWCYoJP1toiRGa",
+            User::ACTIVE    => true,
+            'person'        => (object) ([
                 Person::ID    => Uuid::uuid4Generate(),
                 Person::PHONE => '51998765432'
             ]),
@@ -56,6 +54,11 @@ class UsersLists
                     Profile::ID    => Uuid::uuid4Generate(),
                     Profile::UNIQUE_NAME => $profileUniqueName
                 ])
+            ]),
+            'image' => (object) ([
+                Image::ID => Uuid::uuid4Generate(),
+                Image::PATH => 'test',
+                Image::TYPE => TypeUploadImageEnum::USER_AVATAR->value
             ]),
         ]);
     }

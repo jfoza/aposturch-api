@@ -41,6 +41,7 @@ class MembersRepository implements MembersRepositoryInterface
     public function findByUserId(string $id): ?object
     {
         return $this->getBaseQueryBuilder()
+            ->with('user.image')
             ->where(User::tableField(User::ID), $id)
             ->first();
     }

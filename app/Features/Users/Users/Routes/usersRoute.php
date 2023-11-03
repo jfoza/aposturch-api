@@ -12,3 +12,4 @@ Route::get('/email/{email}', [UsersController::class, 'userEmailAlreadyExists'])
 Route::put('/status/id/{id}', [UsersController::class, 'updateStatus'])->middleware(MiddlewareEnum::UUID);
 
 Route::post('/upload/image', [UsersUploadImageController::class, 'store']);
+Route::delete('/image/id/{id}', [UsersUploadImageController::class, 'delete'])->middleware(MiddlewareEnum::UUID);

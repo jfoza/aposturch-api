@@ -2,9 +2,12 @@
 
 namespace Tests\Unit\App\Resources;
 
+use App\Features\General\Images\Enums\TypeUploadImageEnum;
+use App\Features\General\Images\Models\Image;
 use App\Features\Module\Modules\Models\Module;
 use App\Features\Persons\Infra\Models\Person;
 use App\Features\Users\Profiles\Enums\ProfileUniqueNameEnum;
+use App\Features\Users\Users\Models\User;
 use App\Modules\Membership\Members\Enums\MembersDataAliasEnum;
 use App\Modules\Membership\Members\Models\Member;
 use App\Shared\Libraries\Uuid;
@@ -52,7 +55,14 @@ class MemberLists
             MembersDataAliasEnum::UF => 'RS',
             'church' => !empty($churches) ? $churches : Collection::make(),
             'user' => (object) ([
-                'module' => !empty($modules) ? $modules : Collection::make()
+                User::ID => $userId,
+                User::AVATAR_ID => Uuid::uuid4Generate(),
+                'module' => !empty($modules) ? $modules : Collection::make(),
+                'image' => (object) ([
+                    Image::ID => Uuid::uuid4Generate(),
+                    Image::PATH => 'test',
+                    Image::TYPE => TypeUploadImageEnum::USER_AVATAR->value
+                ]),
             ]),
         ]);
     }

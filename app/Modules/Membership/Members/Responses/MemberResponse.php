@@ -2,6 +2,7 @@
 
 namespace App\Modules\Membership\Members\Responses;
 
+use App\Shared\Helpers\Helpers;
 use Illuminate\Database\Eloquent\Collection as DatabaseCollection;
 
 class MemberResponse
@@ -22,10 +23,17 @@ class MemberResponse
     public ?string $profileId;
     public ?string $profileDescription;
     public ?object $church;
+    public ?array $image = null;
     public DatabaseCollection $modules;
 
     public function setMemberResponse(object $member): void
     {
+        if($image = !empty($member->user->image) ? $member->user->image : null) {
+            $this->image['id']   = $image->id;
+            $this->image['type'] = $image->type;
+            $this->image['path'] = Helpers::getApiUrl("storage/{$image->path}");
+        }
+
         $this->userId             = $member->user_id;
         $this->name               = $member->name;
         $this->email              = $member->email;
