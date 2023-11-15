@@ -7,5 +7,5 @@ use App\Features\Auth\Responses\AuthResponse;
 
 interface AuthBusinessInterface
 {
-    public function authenticate(AuthDTO $authDTO): AuthResponse;
+    public function handle(AuthDTO $authDTO): AuthResponse;
 }

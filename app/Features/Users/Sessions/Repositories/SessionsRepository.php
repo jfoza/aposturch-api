@@ -4,7 +4,6 @@ namespace App\Features\Users\Sessions\Repositories;
 
 use App\Features\Auth\DTO\AuthDTO;
 use App\Features\Users\Sessions\Contracts\SessionsRepositoryInterface;
-use App\Features\Users\Sessions\DTO\SessionDTO;
 use App\Features\Users\Sessions\Models\Session;
 use Illuminate\Database\Eloquent\Collection;
 
@@ -34,14 +33,15 @@ class SessionsRepository implements SessionsRepositoryInterface
         Session::where(Session::USER_ID, $userId)->update([Session::ACTIVE => false]);
     }
 
-    public function create(SessionDTO $sessionDTO)
+    public function create(AuthDTO $authDTO)
     {
         return Session::create([
-            Session::USER_ID      => $sessionDTO->userId,
-            Session::INITIAL_DATE => $sessionDTO->initialDate,
-            Session::FINAL_DATE   => $sessionDTO->finalDate,
-            Session::TOKEN        => $sessionDTO->token,
-            Session::IP_ADDRESS   => $sessionDTO->ipAddress,
+            Session::USER_ID      => $authDTO->userId,
+            Session::INITIAL_DATE => $authDTO->initialDate,
+            Session::FINAL_DATE   => $authDTO->finalDate,
+            Session::TOKEN        => $authDTO->token,
+            Session::IP_ADDRESS   => $authDTO->ipAddress,
+            Session::AUTH_TYPE    => $authDTO->authType,
         ]);
     }
 }

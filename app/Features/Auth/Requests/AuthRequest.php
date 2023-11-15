@@ -4,14 +4,14 @@ namespace App\Features\Auth\Requests;
 
 use App\Base\Http\Requests\FormRequest;
 
-class SessionsRequest extends FormRequest
+class AuthRequest extends FormRequest
 {
-    public function authorize()
+    public function authorize(): true
     {
         return true;
     }
 
-    public function rules()
+    public function rules(): array
     {
         return [
             'email'    => 'required|email:rfc,dns',

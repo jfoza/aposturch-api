@@ -10,6 +10,7 @@ use App\Features\Users\Rules\Contracts\RulesRepositoryInterface;
 use App\Features\Users\Rules\Infra\Repositories\RulesRepository;
 use App\Features\Users\Users\Contracts\UsersRepositoryInterface;
 use App\Features\Users\Users\Repositories\UsersRepository;
+use App\Shared\Enums\AuthTypesEnum;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
@@ -34,6 +35,7 @@ final class ShowAuthUserServiceTest extends TestCase
 
         $this->authDtoMock->email = 'test@email.com';
         $this->authDtoMock->password = 'pass';
+        $this->authDtoMock->authType = AuthTypesEnum::EMAIL_PASSWORD->value;
     }
 
     public function getShowAuthUserService(): ShowAuthUserService

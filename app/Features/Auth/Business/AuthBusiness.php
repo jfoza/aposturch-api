@@ -1,21 +1,26 @@
 <?php
 
 namespace App\Features\Auth\Business;
-;
 
+use App\Base\Traits\EnvironmentException;
 use App\Exceptions\AppException;
 use App\Features\Auth\Contracts\AuthBusinessInterface;
 use App\Features\Auth\Contracts\AuthGenerateServiceInterface;
+use App\Features\Auth\Contracts\ShowAuthUserServiceInterface;
 use App\Features\Auth\DTO\AuthDTO;
 use App\Features\Auth\Responses\AuthResponse;
-use App\Features\Auth\Services\ShowAuthUserService;
 use App\Features\Users\Sessions\Contracts\CreateSessionDataServiceInterface;
+use App\Shared\Enums\AuthTypesEnum;
 use App\Shared\Helpers\Helpers;
+use Laravel\Socialite\Facades\Socialite;
+use Symfony\Component\HttpFoundation\Response;
 
 readonly class AuthBusiness implements AuthBusinessInterface
 {
+    private AuthDTO $authDTO;
+
     public function __construct(
-        private ShowAuthUserService $showAuthUserService,
+        private ShowAuthUserServiceInterface $showAuthUserService,
         private AuthGenerateServiceInterface $authGenerateService,
         private CreateSessionDataServiceInterface $createSessionDataService,
     ) {}
@@ -23,22 +28,46 @@ readonly class AuthBusiness implements AuthBusinessInterface
     /**
      * @throws AppException
      */
-    public function authenticate(AuthDTO $authDTO): AuthResponse
+    public function handle(AuthDTO $authDTO): AuthResponse
     {
-        $authUserResponse    = $this->showAuthUserService->execute($authDTO);
+        $this->authDTO = $authDTO;
+
+        if($this->authDTO->authType == AuthTypesEnum::GOOGLE->value)
+        {
+            $this->setAuthByGoogle();
+        }
+
+        $authUserResponse    = $this->showAuthUserService->execute($this->authDTO);
         $authGenerateService = $this->authGenerateService->execute($authUserResponse);
 
         $initialDate = Helpers::getCurrentTimestampCarbon();
         $finalDate   = Helpers::getCurrentTimestampCarbon()->addDays(2);
 
-        $authDTO->sessionDTO->userId      = $authUserResponse->id;
-        $authDTO->sessionDTO->initialDate = $initialDate;
-        $authDTO->sessionDTO->finalDate   = $finalDate;
-        $authDTO->sessionDTO->token       = $authGenerateService->accessToken;
-        $authDTO->sessionDTO->ipAddress   = $authDTO->ipAddress;
+        $this->authDTO->userId      = $authUserResponse->id;
+        $this->authDTO->initialDate = $initialDate;
+        $this->authDTO->finalDate   = $finalDate;
+        $this->authDTO->token       = $authGenerateService->accessToken;
 
-        $this->createSessionDataService->execute($authDTO->sessionDTO);
+        $this->createSessionDataService->execute($this->authDTO);
 
         return $authGenerateService;
+    }
+
+    /**
+     * @return void
+     * @throws AppException
+     */
+    private function setAuthByGoogle(): void
+    {
+        try
+        {
+            $response = Socialite::driver('google')->stateless()->userFromToken($this->authDTO->googleAuthToken);
+
+            $this->authDTO->email = $response->email;
+        }
+        catch (\Exception $e)
+        {
+            EnvironmentException::dispatchException($e, Response::HTTP_UNAUTHORIZED);
+        }
     }
 }

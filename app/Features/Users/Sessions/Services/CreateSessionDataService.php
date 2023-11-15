@@ -2,9 +2,9 @@
 
 namespace App\Features\Users\Sessions\Services;
 
+use App\Features\Auth\DTO\AuthDTO;
 use App\Features\Users\Sessions\Contracts\CreateSessionDataServiceInterface;
 use App\Features\Users\Sessions\Contracts\SessionsRepositoryInterface;
-use App\Features\Users\Sessions\DTO\SessionDTO;
 use App\Features\Users\Sessions\Models\Session;
 
 readonly class CreateSessionDataService implements CreateSessionDataServiceInterface
@@ -13,8 +13,8 @@ readonly class CreateSessionDataService implements CreateSessionDataServiceInter
         private SessionsRepositoryInterface $sessionsRepository
     ) {}
 
-    public function execute(SessionDTO $sessionDTO): Session
+    public function execute(AuthDTO $authDTO): Session
     {
-        return $this->sessionsRepository->create($sessionDTO);
+        return $this->sessionsRepository->create($authDTO);
     }
 }

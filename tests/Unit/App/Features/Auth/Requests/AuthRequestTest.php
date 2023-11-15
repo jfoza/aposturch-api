@@ -2,10 +2,10 @@
 
 namespace Tests\Unit\App\Features\Auth\Requests;
 
-use App\Features\Auth\Requests\SessionsRequest;
+use App\Features\Auth\Requests\AuthRequest;
 use Tests\TestCase;
 
-class SessionsRequestTest extends TestCase
+class AuthRequestTest extends TestCase
 {
     private array $rules;
     private array $attributes;
@@ -27,7 +27,7 @@ class SessionsRequestTest extends TestCase
 
     public function test_should_return_correct_rules()
     {
-        $request = new SessionsRequest();
+        $request = new AuthRequest();
 
         $rules = $request->rules();
 
@@ -36,7 +36,7 @@ class SessionsRequestTest extends TestCase
 
     public function test_should_return_correct_attributes()
     {
-        $request = new SessionsRequest();
+        $request = new AuthRequest();
 
         $attr = $request->attributes();
 

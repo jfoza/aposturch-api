@@ -75,7 +75,7 @@ DO $$
 
         _user_uuid   uuid    = uuid_generate_v4();
         _name        varchar = 'Giuseppe Foza';
-        _email       varchar = 'gfozza@hotmail.com';
+        _email       varchar = 'jofender.foza@gmail.com';
         _password    varchar = general.generate_bcrypt_hash('Teste123');
 
         _profile varchar := 'ADMIN_MASTER';

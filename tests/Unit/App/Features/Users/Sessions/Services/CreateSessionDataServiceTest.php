@@ -2,19 +2,21 @@
 
 namespace Tests\Unit\App\Features\Users\Sessions\Services;
 
+use App\Features\Auth\DTO\AuthDTO;
 use App\Features\Users\Sessions\Contracts\SessionsRepositoryInterface;
-use App\Features\Users\Sessions\DTO\SessionDTO;
 use App\Features\Users\Sessions\Models\Session;
 use App\Features\Users\Sessions\Repositories\SessionsRepository;
 use App\Features\Users\Sessions\Services\CreateSessionDataService;
+use App\Shared\Enums\AuthTypesEnum;
+use App\Shared\Helpers\Helpers;
+use App\Shared\Libraries\Uuid;
 use PHPUnit\Framework\MockObject\MockObject;
-use Ramsey\Uuid\Uuid;
 use Tests\TestCase;
 
 class CreateSessionDataServiceTest extends TestCase
 {
     private MockObject|SessionsRepositoryInterface $sessionsRepositoryMock;
-    private MockObject|SessionDTO $sessionDtoMock;
+    private MockObject|AuthDTO $authDtoMock;
 
     protected function setUp(): void
     {
@@ -22,7 +24,14 @@ class CreateSessionDataServiceTest extends TestCase
 
         $this->sessionsRepositoryMock = $this->createMock(SessionsRepository::class);
 
-        $this->sessionDtoMock = $this->createMock(SessionDTO::class);
+        $this->authDtoMock = $this->createMock(AuthDTO::class);
+
+        $this->authDtoMock->userId      = Uuid::uuid4Generate();
+        $this->authDtoMock->initialDate = Helpers::getCurrentTimestampCarbon();
+        $this->authDtoMock->finalDate   = Helpers::getCurrentTimestampCarbon()->addDays(2);
+        $this->authDtoMock->token       = hash('sha256', Uuid::uuid4Generate());;
+        $this->authDtoMock->ipAddress   = '192.168.1.5';
+        $this->authDtoMock->authType    = AuthTypesEnum::EMAIL_PASSWORD->value;
     }
 
     public function getCreateSessionDataService(): CreateSessionDataService
@@ -38,10 +47,10 @@ class CreateSessionDataServiceTest extends TestCase
             ->sessionsRepositoryMock
             ->method('create')
             ->willReturn(Session::make([
-                Session::ID => Uuid::uuid4()->toString(),
+                Session::ID => Uuid::uuid4Generate(),
             ]));
 
-        $created = $createSessionDataService->execute($this->sessionDtoMock);
+        $created = $createSessionDataService->execute($this->authDtoMock);
 
         $this->assertInstanceOf(Session::class, $created);
     }

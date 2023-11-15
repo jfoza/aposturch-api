@@ -14,6 +14,7 @@ class Session extends Register
     const FINAL_DATE   = 'final_date';
     const TOKEN        = 'token';
     const IP_ADDRESS   = 'ip_address';
+    const AUTH_TYPE    = 'auth_type';
     const ACTIVE       = 'active';
 
     protected $table = 'users.sessions';
@@ -29,6 +30,7 @@ class Session extends Register
         self::FINAL_DATE,
         self::TOKEN,
         self::IP_ADDRESS,
+        self::AUTH_TYPE,
         self::ACTIVE,
     ];
 

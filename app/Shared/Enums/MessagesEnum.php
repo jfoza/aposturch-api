@@ -13,6 +13,7 @@ enum MessagesEnum: string {
     case ACCESS_DENIED = 'Acesso negado a este recurso.';
     case INVALID_CODE_TYPE = 'Tipo de código inválido.';
     case UNIQUE_CODE_PREFIX_NOT_FOUND = 'Prefixo não encontrado.';
+    case IMPOSSIBLE = 'Não foi possível realizar a sua solicitação.';
 
     case REGISTER_NOT_FOUND = 'Registro não encontrado.';
     case INVALID_UUID = 'O valor enviado não é um Uuid válido.';

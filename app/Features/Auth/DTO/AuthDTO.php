@@ -2,15 +2,18 @@
 
 namespace App\Features\Auth\DTO;
 
-use App\Features\Users\Sessions\DTO\SessionDTO;
+use Carbon\Carbon;
 
 class AuthDTO
 {
-    public string|null $email;
-    public string|null $password;
-    public string|null $ipAddress;
+    public string $authType;
+    public string $email;
+    public ?string $password;
+    public ?string $ipAddress;
+    public ?string $googleAuthToken;
 
-    public function __construct(
-        public SessionDTO $sessionDTO
-    ) {}
+    public string $userId;
+    public Carbon $initialDate;
+    public Carbon $finalDate;
+    public string $token;
 }

@@ -8,6 +8,14 @@ create table "users".sessions
     final_date timestamp,
     token text not null,
     ip_address inet not null,
+    auth_type varchar(20) not null
+        constraint ck_type
+            check ((auth_type)::text = ANY
+        ((ARRAY [
+        'EMAIL_PASSWORD'::character varying,
+        'GOOGLE'::character varying,
+        'MICROSOFT'::character varying
+        ])::text[])),
     active boolean default true,
     created_at timestamp default now() not null,
     updated_at timestamp default now() not null

@@ -62,7 +62,7 @@ class FindAllAdminUsersTest extends BaseTestCase
             'page'    => $this->page,
             'perPage' => $this->perPage,
             'name'    => 'Giuseppe',
-            'email'   => 'gfozza@hotmail.com',
+            'email'   => 'jofender.foza@gmail.com',
         ]);
 
         $response = $this->getJson(

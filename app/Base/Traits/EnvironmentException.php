@@ -14,7 +14,7 @@ class EnvironmentException
     /**
      * @throws AppException
      */
-    public static function dispatchException(Exception $e)
+    public static function dispatchException(Exception $e, int $httpStatus = null)
     {
         $info = App::environment([EnvironmentEnum::LOCAL->value])
             ? $e->getMessage()
@@ -22,7 +22,7 @@ class EnvironmentException
 
         throw new AppException(
             $info,
-            Response::HTTP_INTERNAL_SERVER_ERROR
+            !is_null($httpStatus) ? $httpStatus : Response::HTTP_INTERNAL_SERVER_ERROR
         );
     }
 }
