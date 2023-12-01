@@ -9,5 +9,6 @@ class ImagesDTO
     public ?string $id;
     public ?string $path;
     public ?string $type;
+    public ?string $origin;
     public UploadedFile $image;
 }

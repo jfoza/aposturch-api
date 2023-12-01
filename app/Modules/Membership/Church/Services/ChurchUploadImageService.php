@@ -7,6 +7,7 @@ use App\Base\Traits\EnvironmentException;
 use App\Exceptions\AppException;
 use App\Features\General\Images\Contracts\ImagesRepositoryInterface;
 use App\Features\General\Images\DTO\ImagesDTO;
+use App\Features\General\Images\Enums\TypeOriginImageEnum;
 use App\Features\General\Images\Enums\TypeUploadImageEnum;
 use App\Modules\Membership\Church\Contracts\ChurchRepositoryInterface;
 use App\Modules\Membership\Church\Contracts\ChurchUploadImageServiceInterface;
@@ -101,6 +102,7 @@ class ChurchUploadImageService extends AuthenticatedService implements ChurchUpl
             );
 
             $this->imagesDTO->type = TypeUploadImageEnum::PRODUCT->value;
+            $this->imagesDTO->origin = TypeOriginImageEnum::UPLOAD->value;
             $this->imagesDTO->path = $this->imagesDTO->image->store(TypeUploadImageEnum::CHURCH->value);
 
             $imageData = $this->imagesRepository->create($this->imagesDTO);

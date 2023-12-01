@@ -12,6 +12,13 @@ create table "general".images
                    'user-avatar'::character varying,
                    'church'::character varying
                 ])::text[])),
+    origin varchar(20) not null
+        constraint ck_origin_type
+            check ((origin)::text = ANY
+                   ((ARRAY [
+                       'upload'::character varying,
+                       'link'::character varying
+                       ])::text[])),
     creator_id uuid,
     updater_id uuid,
     created_at  timestamp default now() not null,

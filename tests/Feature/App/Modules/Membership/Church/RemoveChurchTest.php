@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\App\Modules\Membership\Church;
 
+use App\Features\General\Images\Enums\TypeOriginImageEnum;
 use App\Features\General\Images\Enums\TypeUploadImageEnum;
 use App\Features\General\Images\Models\Image;
 use App\Modules\Membership\Church\Models\Church;
@@ -41,10 +42,12 @@ class RemoveChurchTest extends BaseTestCase
         $church = Church::factory()->create();
 
         $type = TypeUploadImageEnum::CHURCH->value;
+        $origin = TypeOriginImageEnum::UPLOAD->value;
 
         $image = Image::factory()->create([
             Image::TYPE => $type,
             Image::PATH => $type."/test.png",
+            Image::ORIGIN => $origin,
         ]);
 
         Church::find($church->id)->imagesChurch()->sync([$image->id]);

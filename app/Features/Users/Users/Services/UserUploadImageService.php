@@ -6,6 +6,7 @@ use App\Base\Traits\EnvironmentException;
 use App\Exceptions\AppException;
 use App\Features\General\Images\Contracts\ImagesRepositoryInterface;
 use App\Features\General\Images\DTO\ImagesDTO;
+use App\Features\General\Images\Enums\TypeOriginImageEnum;
 use App\Features\General\Images\Enums\TypeUploadImageEnum;
 use App\Features\Users\Profiles\Enums\ProfileUniqueNameEnum;
 use App\Features\Users\Users\Contracts\UsersRepositoryInterface;
@@ -113,6 +114,7 @@ class UserUploadImageService extends MembersBaseService implements UserUploadIma
         try
         {
             $this->imagesDTO->type = TypeUploadImageEnum::USER_AVATAR->value;
+            $this->imagesDTO->origin = TypeOriginImageEnum::UPLOAD->value;
             $this->imagesDTO->path = $this->imagesDTO->image->store(TypeUploadImageEnum::USER_AVATAR->value);
 
             $imageData = $this->imagesRepository->create($this->imagesDTO);

@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\App\Modules\Membership\Church;
 
+use App\Features\General\Images\Enums\TypeOriginImageEnum;
 use App\Features\General\Images\Enums\TypeUploadImageEnum;
 use App\Features\General\Images\Models\Image;
 use App\Modules\Membership\Church\Models\Church;
@@ -63,7 +64,8 @@ class UploadChurchImageTest extends BaseTestCase
 
         $imageCreated = Image::factory()->create([
             Image::PATH => 'product/test.png',
-            Image::TYPE => TypeUploadImageEnum::PRODUCT,
+            Image::TYPE => TypeUploadImageEnum::PRODUCT->value,
+            Image::ORIGIN => TypeOriginImageEnum::UPLOAD->value,
         ]);
 
         Church::find($church->id)->imagesChurch()->sync([$imageCreated->id]);

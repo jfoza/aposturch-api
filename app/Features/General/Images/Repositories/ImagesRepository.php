@@ -16,8 +16,9 @@ class ImagesRepository implements ImagesRepositoryInterface
     public function create(ImagesDTO $imagesDTO): object
     {
         return Image::create([
-            Image::PATH => $imagesDTO->path,
-            Image::TYPE => $imagesDTO->type,
+            Image::PATH   => $imagesDTO->path,
+            Image::TYPE   => $imagesDTO->type,
+            Image::ORIGIN => $imagesDTO->origin,
         ]);
     }
 
@@ -25,7 +26,7 @@ class ImagesRepository implements ImagesRepositoryInterface
     {
         Image::where(Image::ID, $imagesDTO->id)
             ->update([
-                Image::PATH => $imagesDTO->path,
+                Image::PATH   => $imagesDTO->path,
             ]);
     }
 

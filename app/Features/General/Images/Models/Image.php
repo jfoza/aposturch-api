@@ -17,6 +17,7 @@ class Image extends Register
     const ID = 'id';
     const PATH = 'path';
     const TYPE = 'type';
+    const ORIGIN = 'origin';
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
 
@@ -29,6 +30,7 @@ class Image extends Register
     protected $fillable = [
         self::PATH,
         self::TYPE,
+        self::ORIGIN,
     ];
 
     public function user(): HasOne
