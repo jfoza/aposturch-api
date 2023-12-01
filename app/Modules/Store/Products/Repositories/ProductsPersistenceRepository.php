@@ -15,9 +15,9 @@ class ProductsPersistenceRepository implements ProductsPersistenceRepositoryInte
             Product::PRODUCT_DESCRIPTION => $productsDTO->productDescription,
             Product::PRODUCT_UNIQUE_NAME => $productsDTO->productUniqueName,
             Product::PRODUCT_CODE        => $productsDTO->productCode,
-            Product::VALUE               => $productsDTO->value,
-            Product::QUANTITY            => $productsDTO->quantity,
-            Product::BALANCE             => $productsDTO->balance,
+            Product::PRODUCT_VALUE       => $productsDTO->value,
+            Product::PRODUCT_QUANTITY    => $productsDTO->quantity,
+            Product::PRODUCT_BALANCE     => $productsDTO->balance,
             Product::HIGHLIGHT_PRODUCT   => $productsDTO->highlightProduct,
         ]);
     }
@@ -30,9 +30,9 @@ class ProductsPersistenceRepository implements ProductsPersistenceRepositoryInte
             Product::PRODUCT_DESCRIPTION => $productsDTO->productDescription,
             Product::PRODUCT_UNIQUE_NAME => $productsDTO->productUniqueName,
             Product::PRODUCT_CODE        => $productsDTO->productCode,
-            Product::VALUE               => $productsDTO->value,
-            Product::QUANTITY            => $productsDTO->quantity,
-            Product::BALANCE             => $productsDTO->balance,
+            Product::PRODUCT_VALUE       => $productsDTO->value,
+            Product::PRODUCT_QUANTITY    => $productsDTO->quantity,
+            Product::PRODUCT_BALANCE     => $productsDTO->balance,
             Product::HIGHLIGHT_PRODUCT   => $productsDTO->highlightProduct,
         ];
 

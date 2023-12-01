@@ -40,10 +40,6 @@ COPY ./docker/php/local/xdebug.ini /tmp/
 COPY ./docker/scheduler/supervisord.conf /etc/supervisord-scheduler.conf
 COPY ./docker/scheduler/entrypoint.sh /usr/bin/entrypoint-scheduler.sh
 
-# Configs for Horizon
-COPY ./docker/horizon/supervisord.conf /etc/supervisord-horizon.conf
-COPY ./docker/horizon/entrypoint.sh /usr/bin/entrypoint-horizon.sh
-
 RUN apt-get update && apt-get install -y --no-install-recommends \
     git  \
     curl  \

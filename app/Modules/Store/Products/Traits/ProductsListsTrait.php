@@ -19,9 +19,9 @@ trait ProductsListsTrait
                 Product::tableField(Product::PRODUCT_DESCRIPTION),
                 Product::tableField(Product::PRODUCT_UNIQUE_NAME),
                 Product::tableField(Product::PRODUCT_CODE),
-                Product::tableField(Product::VALUE),
-                Product::tableField(Product::QUANTITY),
-                Product::tableField(Product::BALANCE),
+                Product::tableField(Product::PRODUCT_VALUE),
+                Product::tableField(Product::PRODUCT_QUANTITY),
+                Product::tableField(Product::PRODUCT_BALANCE),
                 Product::tableField(Product::HIGHLIGHT_PRODUCT),
                 Product::tableField(Product::ACTIVE),
                 Product::tableField(Product::CREATED_AT),
@@ -39,6 +39,23 @@ trait ProductsListsTrait
                     'ilike',
                     "%$productsFiltersDTO->name%"
                 )
+            )
+            ->when(
+                isset($productsFiltersDTO->nameOrCode),
+                fn($q) => $q
+                    ->where(
+                        fn($aux) => $aux
+                            ->where(
+                                Product::tableField(Product::PRODUCT_NAME),
+                                'ilike',
+                                "$productsFiltersDTO->nameOrCode%"
+                            )
+                            ->orWhere(
+                                Product::tableField(Product::PRODUCT_CODE),
+                                'ilike',
+                                "$productsFiltersDTO->nameOrCode%"
+                            )
+                    )
             )
             ->when(
                 isset($productsFiltersDTO->categoriesId),
@@ -79,8 +96,8 @@ trait ProductsListsTrait
         return match ($paginationOrder->getColumnName())
         {
             Product::PRODUCT_NAME      => Product::tableField(Product::PRODUCT_NAME),
-            Product::VALUE             => Product::tableField(Product::VALUE),
-            Product::BALANCE           => Product::tableField(Product::BALANCE),
+            Product::PRODUCT_VALUE     => Product::tableField(Product::PRODUCT_VALUE),
+            Product::PRODUCT_BALANCE   => Product::tableField(Product::PRODUCT_BALANCE),
             Product::HIGHLIGHT_PRODUCT => Product::tableField(Product::HIGHLIGHT_PRODUCT),
             Product::ACTIVE            => Product::tableField(Product::ACTIVE),
 

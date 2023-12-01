@@ -1,0 +1,16 @@
+{
+    "name": "root/app",
+    "autoload": {
+        "psr-4": {
+            "Root\\App\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Teste"
+        }
+    ],
+    "require": {
+        "php-amqplib/php-amqplib": "^2.0"
+    }
+}

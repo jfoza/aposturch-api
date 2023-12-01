@@ -29,6 +29,7 @@ readonly class ProductsController
         $dto->paginationOrder->setColumnOrder($request[FormRequest::COLUMN_ORDER]);
 
         $dto->name         = $request->name;
+        $dto->nameOrCode   = $request->nameOrCode;
         $dto->categoriesId = $request->categoriesId;
         $dto->code         = $request->code;
         $dto->highlight    = isset($request->highlight) ? (bool) $request->highlight : null;

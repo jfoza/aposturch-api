@@ -7,9 +7,9 @@ create table "store".products
     product_description text,
     product_unique_name varchar unique not null,
     product_code varchar not null,
-    value decimal(6,2) not null default 0.00,
-    quantity bigint not null default 0,
-    balance bigint not null default 0,
+    product_value decimal(6,2) not null default 0.00,
+    product_quantity bigint not null default 0,
+    product_balance bigint not null default 0,
     highlight_product boolean not null default false,
     product_image text,
     active boolean not null default true,
@@ -24,11 +24,11 @@ create function product_balance_validate() returns trigger
 as
 $$
 BEGIN
-    IF COALESCE(NEW.BALANCE,OLD.BALANCE) > COALESCE(NEW.QUANTITY,OLD.QUANTITY) THEN
+    IF COALESCE(NEW.product_balance,OLD.product_balance) > COALESCE(NEW.product_quantity,OLD.product_quantity) THEN
         RAISE EXCEPTION 'The balance cannot be greater than the amount!';
     END IF;
 
-    IF NEW.BALANCE < 0 THEN
+    IF NEW.product_balance < 0 THEN
         RAISE EXCEPTION 'Quantity unavailable!';
         RETURN NULL;
     END IF;

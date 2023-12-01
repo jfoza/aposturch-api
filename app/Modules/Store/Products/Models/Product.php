@@ -17,9 +17,9 @@ class Product extends Register
     const PRODUCT_DESCRIPTION = 'product_description';
     const PRODUCT_UNIQUE_NAME = 'product_unique_name';
     const PRODUCT_CODE        = 'product_code';
-    const VALUE               = 'value';
-    const QUANTITY            = 'quantity';
-    const BALANCE             = 'balance';
+    const PRODUCT_VALUE       = 'product_value';
+    const PRODUCT_QUANTITY    = 'product_quantity';
+    const PRODUCT_BALANCE     = 'product_balance';
     const HIGHLIGHT_PRODUCT   = 'highlight_product';
     const ACTIVE              = 'active';
     const CREATED_AT          = 'created_at';
@@ -35,9 +35,9 @@ class Product extends Register
         self::PRODUCT_DESCRIPTION,
         self::PRODUCT_UNIQUE_NAME,
         self::PRODUCT_CODE,
-        self::VALUE,
-        self::QUANTITY,
-        self::BALANCE,
+        self::PRODUCT_VALUE,
+        self::PRODUCT_QUANTITY,
+        self::PRODUCT_BALANCE,
         self::HIGHLIGHT_PRODUCT,
     ];
 

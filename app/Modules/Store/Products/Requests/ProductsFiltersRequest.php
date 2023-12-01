@@ -12,8 +12,8 @@ class ProductsFiltersRequest extends FormRequest
 
     public array $sorting = [
         Product::PRODUCT_NAME,
-        Product::VALUE,
-        Product::BALANCE,
+        Product::PRODUCT_VALUE,
+        Product::PRODUCT_BALANCE,
         Product::HIGHLIGHT_PRODUCT,
         Product::ACTIVE,
     ];
@@ -22,6 +22,7 @@ class ProductsFiltersRequest extends FormRequest
     {
         return $this->mergePaginationOrderRules([
             'name'         => 'nullable|string',
+            'nameOrCode'   => 'nullable|string',
             'categoriesId' => 'nullable|array',
             'code'         => 'nullable|string',
             'highlight'    => 'nullable|boolean',
