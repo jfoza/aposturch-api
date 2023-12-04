@@ -46,6 +46,11 @@ class ProductsPersistenceRepository implements ProductsPersistenceRepositoryInte
         Product::find($productId)->category()->sync($categoriesId);
     }
 
+    public function saveImages(string $productId, array $imagesId): void
+    {
+        Product::find($productId)->image()->sync($imagesId);
+    }
+
     public function saveStatus(string $id, bool $status): object
     {
         Product::where(Product::ID, $id)->update([Product::ACTIVE => $status]);

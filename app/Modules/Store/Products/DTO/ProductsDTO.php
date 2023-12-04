@@ -2,6 +2,8 @@
 
 namespace App\Modules\Store\Products\DTO;
 
+use App\Features\General\Images\DTO\ImagesDTO;
+
 class ProductsDTO
 {
     public ?string $id;
@@ -13,5 +15,10 @@ class ProductsDTO
     public int     $quantity;
     public int     $balance;
     public ?array  $categoriesId;
+    public ?array  $imageLinks;
     public bool    $highlightProduct;
+
+    public function __construct(
+        public ImagesDTO $imagesDTO
+    ) {}
 }

@@ -2,27 +2,33 @@
 
 namespace App\Modules\Store\Products\Services;
 
-use App\Base\Services\AuthenticatedService;
-use App\Base\Traits\EnvironmentException;
+use App\Base\Exceptions\EnvironmentException;
 use App\Exceptions\AppException;
+use App\Features\General\Images\Contracts\ImagesRepositoryInterface;
+use App\Modules\Store\Categories\Contracts\CategoriesRepositoryInterface;
+use App\Modules\Store\Categories\Validations\CategoriesValidators;
 use App\Modules\Store\Products\Contracts\CreateProductServiceInterface;
 use App\Modules\Store\Products\Contracts\ProductsPersistenceRepositoryInterface;
 use App\Modules\Store\Products\Contracts\ProductsRepositoryInterface;
 use App\Modules\Store\Products\DTO\ProductsDTO;
+use App\Modules\Store\Products\Generics\ProductsServiceGeneric;
 use App\Modules\Store\Products\Validations\ProductsValidators;
-use App\Modules\Store\Categories\Contracts\CategoriesRepositoryInterface;
-use App\Modules\Store\Categories\Validations\CategoriesValidators;
 use App\Shared\Enums\RulesEnum;
 use App\Shared\Helpers\Helpers;
 use App\Shared\Utils\Transaction;
 
-class CreateProductService extends AuthenticatedService implements CreateProductServiceInterface
+class CreateProductService extends ProductsServiceGeneric implements CreateProductServiceInterface
 {
     public function __construct(
         private readonly ProductsPersistenceRepositoryInterface $productsPersistenceRepository,
         private readonly ProductsRepositoryInterface            $productsRepository,
         private readonly CategoriesRepositoryInterface          $categoriesRepository,
-    ) {}
+        private readonly ImagesRepositoryInterface              $imagesRepository,
+    )
+    {
+        $this->setImagesRepository($this->imagesRepository);
+        $this->setProductsPersistenceRepository($this->productsPersistenceRepository);
+    }
 
     /**
      * @throws AppException
@@ -57,18 +63,23 @@ class CreateProductService extends AuthenticatedService implements CreateProduct
 
             $productsDTO->productCode = strtoupper($productsDTO->productCode);
 
-            $product = $this->productsPersistenceRepository->create($productsDTO);
+            $productCreated = $this->productsPersistenceRepository->create($productsDTO);
 
             $this
                 ->productsPersistenceRepository
                 ->saveCategories(
-                    $product->id,
+                    $productCreated->id,
                     $productsDTO->categoriesId
                 );
 
+            if(count($productsDTO->imageLinks) > 0)
+            {
+                $this->createSaveImageLinks($productsDTO, $productCreated);
+            }
+
             Transaction::commit();
 
-            return $product;
+            return $productCreated;
         }
         catch (\Exception $e)
         {

@@ -2,7 +2,7 @@
 
 namespace App\Modules\Membership\Members\Services\Updates;
 
-use App\Base\Traits\EnvironmentException;
+use App\Base\Exceptions\EnvironmentException;
 use App\Exceptions\AppException;
 use App\Features\City\Cities\Contracts\CityRepositoryInterface;
 use App\Features\City\Cities\Validations\CityValidations;

@@ -2,8 +2,8 @@
 
 namespace App\Modules\Membership\Members\Services\Updates;
 
+use App\Base\Exceptions\EnvironmentException;
 use App\Base\Traits\AutomaticLogoutTrait;
-use App\Base\Traits\EnvironmentException;
 use App\Base\Validations\ProfileHierarchyValidation;
 use App\Exceptions\AppException;
 use App\Features\Users\Profiles\Contracts\ProfilesRepositoryInterface;

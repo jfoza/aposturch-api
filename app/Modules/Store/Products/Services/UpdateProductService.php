@@ -2,27 +2,33 @@
 
 namespace App\Modules\Store\Products\Services;
 
-use App\Base\Services\AuthenticatedService;
-use App\Base\Traits\EnvironmentException;
+use App\Base\Exceptions\EnvironmentException;
 use App\Exceptions\AppException;
+use App\Features\General\Images\Contracts\ImagesRepositoryInterface;
+use App\Modules\Store\Categories\Contracts\CategoriesRepositoryInterface;
+use App\Modules\Store\Categories\Validations\CategoriesValidators;
 use App\Modules\Store\Products\Contracts\ProductsPersistenceRepositoryInterface;
 use App\Modules\Store\Products\Contracts\ProductsRepositoryInterface;
 use App\Modules\Store\Products\Contracts\UpdateProductServiceInterface;
 use App\Modules\Store\Products\DTO\ProductsDTO;
+use App\Modules\Store\Products\Generics\ProductsServiceGeneric;
 use App\Modules\Store\Products\Validations\ProductsValidators;
-use App\Modules\Store\Categories\Contracts\CategoriesRepositoryInterface;
-use App\Modules\Store\Categories\Validations\CategoriesValidators;
 use App\Shared\Enums\RulesEnum;
 use App\Shared\Helpers\Helpers;
 use App\Shared\Utils\Transaction;
 
-class UpdateProductService extends AuthenticatedService implements UpdateProductServiceInterface
+class UpdateProductService extends ProductsServiceGeneric implements UpdateProductServiceInterface
 {
     public function __construct(
         private readonly ProductsPersistenceRepositoryInterface $productsPersistenceRepository,
         private readonly ProductsRepositoryInterface            $productsRepository,
         private readonly CategoriesRepositoryInterface          $categoriesRepository,
-    ) {}
+        private readonly ImagesRepositoryInterface              $imagesRepository,
+    )
+    {
+        $this->setImagesRepository($this->imagesRepository);
+        $this->setProductsPersistenceRepository($this->productsPersistenceRepository);
+    }
 
     /**
      * @throws AppException
@@ -77,6 +83,8 @@ class UpdateProductService extends AuthenticatedService implements UpdateProduct
                     $product->id,
                     $productsDTO->categoriesId
                 );
+
+            $this->createSaveImageLinks($productsDTO, $product);
 
             Transaction::commit();
 

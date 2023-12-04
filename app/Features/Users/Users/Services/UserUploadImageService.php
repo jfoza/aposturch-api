@@ -2,7 +2,8 @@
 
 namespace App\Features\Users\Users\Services;
 
-use App\Base\Traits\EnvironmentException;
+use App\Base\Exceptions\EnvironmentException;
+use App\Base\Traits\UploadImagesTrait;
 use App\Exceptions\AppException;
 use App\Features\General\Images\Contracts\ImagesRepositoryInterface;
 use App\Features\General\Images\DTO\ImagesDTO;
@@ -19,6 +20,10 @@ use App\Shared\Utils\Transaction;
 
 class UserUploadImageService extends MembersBaseService implements UserUploadImageServiceInterface
 {
+    use UploadImagesTrait;
+
+    private mixed $user;
+
     public function __construct(
         protected MembersRepositoryInterface $membersRepository,
         protected readonly UsersRepositoryInterface $usersRepository,
@@ -57,7 +62,7 @@ class UserUploadImageService extends MembersBaseService implements UserUploadIma
      */
     private function uploadByAdminMaster(): ?object
     {
-        UsersValidations::validateUserExistsById(
+        $this->user = UsersValidations::validateUserExistsById(
             $this->userId,
             $this->usersRepository
         );
@@ -70,10 +75,12 @@ class UserUploadImageService extends MembersBaseService implements UserUploadIma
      */
     private function uploadByAdminChurch(): ?object
     {
-        $this->findOrFailWithHierarchy(
+        $member = $this->findOrFailWithHierarchy(
             $this->userId,
             ProfileUniqueNameEnum::ADMIN_CHURCH->value
         );
+
+        $this->user = $member->user;
 
         return $this->baseUploadOperation();
     }
@@ -83,10 +90,12 @@ class UserUploadImageService extends MembersBaseService implements UserUploadIma
      */
     private function uploadByAdminModule(): ?object
     {
-        $this->findOrFailWithHierarchy(
+        $member = $this->findOrFailWithHierarchy(
             $this->userId,
             ProfileUniqueNameEnum::ADMIN_MODULE->value
         );
+
+        $this->user = $member->user;
 
         return $this->baseUploadOperation();
     }
@@ -96,10 +105,12 @@ class UserUploadImageService extends MembersBaseService implements UserUploadIma
      */
     private function uploadByAssistant(): ?object
     {
-        $this->findOrFailWithHierarchy(
+        $member = $this->findOrFailWithHierarchy(
             $this->userId,
             ProfileUniqueNameEnum::ASSISTANT->value
         );
+
+        $this->user = $member->user;
 
         return $this->baseUploadOperation();
     }
@@ -113,9 +124,15 @@ class UserUploadImageService extends MembersBaseService implements UserUploadIma
 
         try
         {
-            $this->imagesDTO->type = TypeUploadImageEnum::USER_AVATAR->value;
+            $this->removeUserMemberImageIfAlreadyExists(
+                $this->user,
+                $this->usersRepository,
+                $this->imagesRepository
+            );
+
+            $this->imagesDTO->type   = TypeUploadImageEnum::USER_AVATAR->value;
             $this->imagesDTO->origin = TypeOriginImageEnum::UPLOAD->value;
-            $this->imagesDTO->path = $this->imagesDTO->image->store(TypeUploadImageEnum::USER_AVATAR->value);
+            $this->imagesDTO->path   = $this->imagesDTO->image->store(TypeUploadImageEnum::USER_AVATAR->value);
 
             $imageData = $this->imagesRepository->create($this->imagesDTO);
 

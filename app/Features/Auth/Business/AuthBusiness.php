@@ -2,7 +2,7 @@
 
 namespace App\Features\Auth\Business;
 
-use App\Base\Traits\EnvironmentException;
+use App\Base\Exceptions\EnvironmentException;
 use App\Exceptions\AppException;
 use App\Features\Auth\Contracts\AuthBusinessInterface;
 use App\Features\Auth\Contracts\AuthGenerateServiceInterface;

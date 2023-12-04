@@ -2,21 +2,21 @@
 
 namespace App\Modules\Membership\Church\Services;
 
+use App\Base\Exceptions\EnvironmentException;
 use App\Base\Services\AuthenticatedService;
-use App\Base\Traits\EnvironmentException;
+use App\Base\Traits\UploadImagesTrait;
 use App\Exceptions\AppException;
 use App\Features\General\Images\Contracts\ImagesRepositoryInterface;
 use App\Modules\Membership\Church\Contracts\ChurchRepositoryInterface;
 use App\Modules\Membership\Church\Contracts\RemoveChurchServiceInterface;
-use App\Modules\Membership\Church\Traits\ChurchOperationsTrait;
 use App\Modules\Membership\Church\Traits\RemoveChurchValidationsTrait;
 use App\Shared\Enums\RulesEnum;
 use App\Shared\Utils\Transaction;
 
 class RemoveChurchService extends AuthenticatedService implements RemoveChurchServiceInterface
 {
-    use ChurchOperationsTrait;
     use RemoveChurchValidationsTrait;
+    use UploadImagesTrait;
 
     public function __construct(
         private readonly ChurchRepositoryInterface $churchRepository,
@@ -39,8 +39,8 @@ class RemoveChurchService extends AuthenticatedService implements RemoveChurchSe
 
         try
         {
-            $this->removeImageIfAlreadyExists(
-                $church,
+            $this->removeChurchImageIfAlreadyExists(
+                $this->church,
                 $this->churchRepository,
                 $this->imagesRepository
             );

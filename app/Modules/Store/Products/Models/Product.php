@@ -3,8 +3,10 @@
 namespace App\Modules\Store\Products\Models;
 
 use App\Base\Infra\Models\Register;
+use App\Features\General\Images\Models\Image;
 use App\Modules\Store\ProductsCategories\Models\ProductCategory;
 use App\Modules\Store\Categories\Models\Category;
+use App\Modules\Store\ProductsImages\Models\ProductImage;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
@@ -48,6 +50,16 @@ class Product extends Register
             ProductCategory::tableName(),
             ProductCategory::PRODUCT_ID,
             ProductCategory::CATEGORY_ID,
+        );
+    }
+
+    public function image(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            Image::class,
+            ProductImage::tableName(),
+            ProductImage::PRODUCT_ID,
+            ProductImage::IMAGE_ID,
         );
     }
 }

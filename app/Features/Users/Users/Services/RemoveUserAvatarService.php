@@ -2,7 +2,8 @@
 
 namespace App\Features\Users\Users\Services;
 
-use App\Base\Traits\EnvironmentException;
+use App\Base\Exceptions\EnvironmentException;
+use App\Base\Traits\UploadImagesTrait;
 use App\Exceptions\AppException;
 use App\Features\General\Images\Contracts\ImagesRepositoryInterface;
 use App\Features\Users\Profiles\Enums\ProfileUniqueNameEnum;
@@ -13,12 +14,13 @@ use App\Modules\Membership\Members\Contracts\MembersRepositoryInterface;
 use App\Modules\Membership\Members\Services\MembersBaseService;
 use App\Shared\Enums\RulesEnum;
 use App\Shared\Utils\Transaction;
-use Illuminate\Support\Facades\Storage;
 
 class RemoveUserAvatarService extends MembersBaseService implements RemoveUserAvatarServiceInterface
 {
     private mixed $user;
     private string $userId;
+
+    use UploadImagesTrait;
 
     public function __construct(
         protected MembersRepositoryInterface $membersRepository,
@@ -118,15 +120,11 @@ class RemoveUserAvatarService extends MembersBaseService implements RemoveUserAv
 
         try
         {
-            $this->usersRepository->saveAvatar($this->userId, null);
-
-            $this->imagesRepository->remove($this->user->avatar_id);
-
-            $path = !empty($this->user->image->path) ? $this->user->image->path : null;
-
-            if(!is_null($path) && Storage::exists($path)) {
-                Storage::delete($path);
-            }
+            $this->removeUserMemberImageIfAlreadyExists(
+                $this->user,
+                $this->usersRepository,
+                $this->imagesRepository
+            );
 
             Transaction::commit();
         }

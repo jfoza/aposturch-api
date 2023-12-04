@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Base\Traits;
+namespace App\Base\Exceptions;
 
 use App\Exceptions\AppException;
 use App\Shared\Enums\EnvironmentEnum;

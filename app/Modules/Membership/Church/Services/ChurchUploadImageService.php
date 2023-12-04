@@ -2,8 +2,9 @@
 
 namespace App\Modules\Membership\Church\Services;
 
+use App\Base\Exceptions\EnvironmentException;
 use App\Base\Services\AuthenticatedService;
-use App\Base\Traits\EnvironmentException;
+use App\Base\Traits\UploadImagesTrait;
 use App\Exceptions\AppException;
 use App\Features\General\Images\Contracts\ImagesRepositoryInterface;
 use App\Features\General\Images\DTO\ImagesDTO;
@@ -11,14 +12,13 @@ use App\Features\General\Images\Enums\TypeOriginImageEnum;
 use App\Features\General\Images\Enums\TypeUploadImageEnum;
 use App\Modules\Membership\Church\Contracts\ChurchRepositoryInterface;
 use App\Modules\Membership\Church\Contracts\ChurchUploadImageServiceInterface;
-use App\Modules\Membership\Church\Traits\ChurchOperationsTrait;
 use App\Modules\Membership\Church\Validations\ChurchValidations;
 use App\Shared\Enums\RulesEnum;
 use App\Shared\Utils\Transaction;
 
 class ChurchUploadImageService extends AuthenticatedService implements ChurchUploadImageServiceInterface
 {
-    use ChurchOperationsTrait;
+    use UploadImagesTrait;
 
     private ImagesDTO $imagesDTO;
     private string $churchId;
@@ -95,15 +95,15 @@ class ChurchUploadImageService extends AuthenticatedService implements ChurchUpl
 
         try
         {
-            $this->removeImageIfAlreadyExists(
+            $this->removeChurchImageIfAlreadyExists(
                 $this->church,
                 $this->churchRepository,
                 $this->imagesRepository
             );
 
-            $this->imagesDTO->type = TypeUploadImageEnum::PRODUCT->value;
+            $this->imagesDTO->type   = TypeUploadImageEnum::CHURCH->value;
             $this->imagesDTO->origin = TypeOriginImageEnum::UPLOAD->value;
-            $this->imagesDTO->path = $this->imagesDTO->image->store(TypeUploadImageEnum::CHURCH->value);
+            $this->imagesDTO->path   = $this->imagesDTO->image->store(TypeUploadImageEnum::CHURCH->value);
 
             $imageData = $this->imagesRepository->create($this->imagesDTO);
 

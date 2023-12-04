@@ -2,13 +2,13 @@
 
 namespace App\Modules\Store\Categories\Services;
 
+use App\Base\Exceptions\EnvironmentException;
 use App\Base\Services\AuthenticatedService;
-use App\Base\Traits\EnvironmentException;
 use App\Exceptions\AppException;
-use App\Modules\Store\Products\Contracts\ProductsRepositoryInterface;
-use App\Modules\Store\Categories\Contracts\RemoveCategoryServiceInterface;
 use App\Modules\Store\Categories\Contracts\CategoriesRepositoryInterface;
+use App\Modules\Store\Categories\Contracts\RemoveCategoryServiceInterface;
 use App\Modules\Store\Categories\Validations\CategoriesValidators;
+use App\Modules\Store\Products\Contracts\ProductsRepositoryInterface;
 use App\Shared\Enums\RulesEnum;
 use App\Shared\Utils\Transaction;
 

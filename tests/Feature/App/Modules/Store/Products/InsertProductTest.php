@@ -32,6 +32,11 @@ class InsertProductTest extends BaseTestCase
             'quantity'           => 10,
             'highlightProduct'   => false,
             'categoriesId'       => [],
+            'imageLinks'         => [
+                'https://images-na.ssl-images-amazon.com/images/I/41XbfSiYscL._AC_SX184_.jpg',
+                'https://images-na.ssl-images-amazon.com/images/I/41TsvI70n9L._AC_SX184_.jpg',
+                'https://images-na.ssl-images-amazon.com/images/I/51Hg0c-RYsL._AC_SX184_.jpg'
+            ],
         ];
     }
 
@@ -136,6 +141,7 @@ class InsertProductTest extends BaseTestCase
      * @param mixed $quantity
      * @param mixed $highlightProduct
      * @param mixed $categoriesId
+     * @param mixed $imageLinks
      * @return void
      */
     public function test_should_return_error_if_has_form_errors(
@@ -146,6 +152,7 @@ class InsertProductTest extends BaseTestCase
         mixed $quantity,
         mixed $highlightProduct,
         mixed $categoriesId,
+        mixed $imageLinks,
     ): void
     {
         $this->setAuthorizationBearer(Credentials::ADMIN_MASTER);
@@ -158,6 +165,7 @@ class InsertProductTest extends BaseTestCase
             'quantity'           => $quantity,
             'highlightProduct'   => $highlightProduct,
             'categoriesId'       => $categoriesId,
+            'imageLinks'         => $imageLinks,
         ];
 
         $response = $this->postJson(
@@ -182,6 +190,7 @@ class InsertProductTest extends BaseTestCase
                 'quantity'           => 10,
                 'highlightProduct'   => false,
                 'categoriesId'       => [],
+                'imageLinks'         => [],
             ],
 
             'Invalid product description param' => [
@@ -192,6 +201,7 @@ class InsertProductTest extends BaseTestCase
                 'quantity'           => 10,
                 'highlightProduct'   => false,
                 'categoriesId'       => [],
+                'imageLinks'         => [],
             ],
 
             'Empty product code param' => [
@@ -202,6 +212,7 @@ class InsertProductTest extends BaseTestCase
                 'quantity'           => 10,
                 'highlightProduct'   => false,
                 'categoriesId'       => [],
+                'imageLinks'         => [],
             ],
 
             'Empty product value param' => [
@@ -212,6 +223,7 @@ class InsertProductTest extends BaseTestCase
                 'quantity'           => 10,
                 'highlightProduct'   => false,
                 'categoriesId'       => [],
+                'imageLinks'         => [],
             ],
 
             'Invalid product value param case 1' => [
@@ -222,6 +234,7 @@ class InsertProductTest extends BaseTestCase
                 'quantity'           => 10,
                 'highlightProduct'   => false,
                 'categoriesId'       => [],
+                'imageLinks'         => [],
             ],
 
             'Invalid product value param case 2' => [
@@ -232,6 +245,7 @@ class InsertProductTest extends BaseTestCase
                 'quantity'           => 10,
                 'highlightProduct'   => false,
                 'categoriesId'       => [],
+                'imageLinks'         => [],
             ],
 
             'Empty product quantity param' => [
@@ -242,6 +256,7 @@ class InsertProductTest extends BaseTestCase
                 'quantity'           => null,
                 'highlightProduct'   => false,
                 'categoriesId'       => [],
+                'imageLinks'         => [],
             ],
 
             'Invalid product quantity param' => [
@@ -252,6 +267,7 @@ class InsertProductTest extends BaseTestCase
                 'quantity'           => -2,
                 'highlightProduct'   => false,
                 'categoriesId'       => [],
+                'imageLinks'         => [],
             ],
 
             'Invalid highlight product param' => [
@@ -261,17 +277,49 @@ class InsertProductTest extends BaseTestCase
                 'value'              => 100.25,
                 'quantity'           => 10,
                 'highlightProduct'   => 'false',
-                'categoriesId'    => [],
+                'categoriesId'       => [],
+                'imageLinks'         => [],
             ],
 
             'Invalid category id param' => [
-                'productName'        => '',
+                'productName'        => RandomStringHelper::alnumGenerate(),
                 'productDescription' => '',
                 'productCode'        => $productCode,
                 'value'              => 100.25,
                 'quantity'           => 10,
                 'highlightProduct'   => false,
                 'categoriesId'       => [Uuid::uuid4Generate(), 'invalid-uuid'],
+                'imageLinks'         => [],
+            ],
+
+            'Invalid image links param' => [
+                'productName'        => RandomStringHelper::alnumGenerate(),
+                'productDescription' => '',
+                'productCode'        => $productCode,
+                'value'              => 100.25,
+                'quantity'           => 10,
+                'highlightProduct'   => false,
+                'categoriesId'       => [Uuid::uuid4Generate()],
+                'imageLinks'         => [
+                    'https://images-na.ssl-images-amazon.com/images/I/51Hg0c-RYsL._AC_SX184_.jpg',
+                    'invalid-link'
+                ],
+            ],
+
+            'More than three image links' => [
+                'productName'        => RandomStringHelper::alnumGenerate(),
+                'productDescription' => '',
+                'productCode'        => $productCode,
+                'value'              => 100.25,
+                'quantity'           => 10,
+                'highlightProduct'   => false,
+                'categoriesId'       => [Uuid::uuid4Generate()],
+                'imageLinks'         => [
+                    'https://images-na.ssl-images-amazon.com/images/I/51Hg0c-RYsL._AC_SX184_.jpg',
+                    'https://images-na.ssl-images-amazon.com/images/I/51Hg0c-RYsL._AC_SX184_.jpg',
+                    'https://images-na.ssl-images-amazon.com/images/I/51Hg0c-RYsL._AC_SX184_.jpg',
+                    'https://images-na.ssl-images-amazon.com/images/I/51Hg0c-RYsL._AC_SX184_.jpg',
+                ],
             ],
         ];
     }

@@ -2,8 +2,8 @@
 
 namespace App\Features\Users\Users\Services;
 
+use App\Base\Exceptions\EnvironmentException;
 use App\Base\Services\AuthenticatedService;
-use App\Base\Traits\EnvironmentException;
 use App\Base\Validations\ProfileHierarchyValidation;
 use App\Exceptions\AppException;
 use App\Features\Users\Profiles\Enums\ProfileUniqueNameEnum;

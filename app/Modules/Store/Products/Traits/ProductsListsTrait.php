@@ -3,16 +3,32 @@
 namespace App\Modules\Store\Products\Traits;
 
 use App\Base\Http\Pagination\PaginationOrder;
+use App\Features\General\Images\Enums\TypeOriginImageEnum;
+use App\Features\General\Images\Models\Image;
 use App\Modules\Store\Products\DTO\ProductsFiltersDTO;
 use App\Modules\Store\Products\Models\Product;
 use App\Modules\Store\Categories\Models\Category;
+use App\Shared\Helpers\Helpers;
+use Illuminate\Contracts\Database\Query\Expression;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\DB;
 
 trait ProductsListsTrait
 {
     public function getBaseQuery(): Builder
     {
-        return Product::with(['category'])
+        return Product::with([
+            'category',
+            'image' => function($q) {
+                return $q
+                    ->select(
+                        Image::tableField(Image::ID),
+                        Image::tableField(Image::TYPE),
+                        Image::tableField(Image::ORIGIN),
+                        $this->generateImagePath()
+                    );
+            }
+        ])
             ->select(
                 Product::tableField(Product::ID),
                 Product::tableField(Product::PRODUCT_NAME),
@@ -91,7 +107,7 @@ trait ProductsListsTrait
             );
     }
 
-    private function getColumnName(PaginationOrder $paginationOrder): string
+    public function getColumnName(PaginationOrder $paginationOrder): string
     {
         return match ($paginationOrder->getColumnName())
         {
@@ -103,5 +119,21 @@ trait ProductsListsTrait
 
             default => Product::tableField(Product::CREATED_AT)
         };
+    }
+
+    public function generateImagePath(): Expression
+    {
+        $imageUploadLink = Helpers::getApiUrl("storage/");
+
+        $origin     = Image::tableField(Image::ORIGIN);
+        $path       = Image::tableField(Image::PATH);
+        $uploadType = TypeOriginImageEnum::UPLOAD->value;
+
+        return DB::raw("
+            CASE
+                WHEN $origin = '$uploadType' THEN CONCAT('$imageUploadLink', $path)
+                ELSE $path
+            END
+        ");
     }
 }

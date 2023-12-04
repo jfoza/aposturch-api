@@ -2,8 +2,8 @@
 
 namespace App\Modules\Store\Products\Services;
 
+use App\Base\Exceptions\EnvironmentException;
 use App\Base\Services\AuthenticatedService;
-use App\Base\Traits\EnvironmentException;
 use App\Exceptions\AppException;
 use App\Modules\Store\Products\Contracts\ProductsPersistenceRepositoryInterface;
 use App\Modules\Store\Products\Contracts\ProductsRepositoryInterface;

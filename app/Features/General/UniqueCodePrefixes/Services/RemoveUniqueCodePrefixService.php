@@ -2,8 +2,8 @@
 
 namespace App\Features\General\UniqueCodePrefixes\Services;
 
+use App\Base\Exceptions\EnvironmentException;
 use App\Base\Services\AuthenticatedService;
-use App\Base\Traits\EnvironmentException;
 use App\Exceptions\AppException;
 use App\Features\General\UniqueCodePrefixes\Contracts\RemoveUniqueCodePrefixServiceInterface;
 use App\Features\General\UniqueCodePrefixes\Contracts\UniqueCodePrefixesRepositoryInterface;

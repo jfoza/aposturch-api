@@ -2,11 +2,11 @@
 
 namespace App\Modules\Store\Departments\Services;
 
+use App\Base\Exceptions\EnvironmentException;
 use App\Base\Services\AuthenticatedService;
-use App\Base\Traits\EnvironmentException;
 use App\Exceptions\AppException;
-use App\Modules\Store\Departments\Contracts\DepartmentsRepositoryInterface;
 use App\Modules\Store\Departments\Contracts\CreateDepartmentServiceInterface;
+use App\Modules\Store\Departments\Contracts\DepartmentsRepositoryInterface;
 use App\Modules\Store\Departments\DTO\DepartmentsDTO;
 use App\Modules\Store\Departments\Validations\DepartmentsValidations;
 use App\Shared\Enums\RulesEnum;

@@ -2,8 +2,8 @@
 
 namespace App\Modules\Store\Departments\Services;
 
+use App\Base\Exceptions\EnvironmentException;
 use App\Base\Services\AuthenticatedService;
-use App\Base\Traits\EnvironmentException;
 use App\Exceptions\AppException;
 use App\Modules\Store\Departments\Contracts\DepartmentsRepositoryInterface;
 use App\Modules\Store\Departments\Contracts\UpdateDepartmentServiceInterface;

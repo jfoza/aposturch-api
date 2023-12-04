@@ -3,6 +3,9 @@
 namespace Tests\Unit\App\Modules\Store\Products\Services;
 
 use App\Exceptions\AppException;
+use App\Features\General\Images\Contracts\ImagesRepositoryInterface;
+use App\Features\General\Images\DTO\ImagesDTO;
+use App\Features\General\Images\Repositories\ImagesRepository;
 use App\Modules\Store\Products\Contracts\ProductsPersistenceRepositoryInterface;
 use App\Modules\Store\Products\Contracts\ProductsRepositoryInterface;
 use App\Modules\Store\Products\DTO\ProductsDTO;
@@ -27,6 +30,7 @@ class UpdateProductServiceTest extends TestCase
     private  MockObject|ProductsPersistenceRepositoryInterface $productsPersistenceRepositoryMock;
     private  MockObject|ProductsRepositoryInterface            $productsRepositoryMock;
     private  MockObject|CategoriesRepositoryInterface          $categoriesRepositoryMock;
+    private  MockObject|ImagesRepositoryInterface              $imagesRepository;
 
     private  MockObject|ProductsDTO $productsDtoMock;
 
@@ -37,8 +41,11 @@ class UpdateProductServiceTest extends TestCase
         $this->productsPersistenceRepositoryMock = $this->createMock(ProductsPersistenceRepository::class);
         $this->productsRepositoryMock            = $this->createMock(ProductsRepository::class);
         $this->categoriesRepositoryMock          = $this->createMock(CategoriesRepository::class);
+        $this->imagesRepository                  = $this->createMock(ImagesRepository::class);
 
         $this->productsDtoMock = $this->createMock(ProductsDTO::class);
+
+        $this->productsDtoMock->imagesDTO = $this->createMock(ImagesDTO::class);
     }
 
     public function getUpdateProductService(): UpdateProductService
@@ -47,6 +54,7 @@ class UpdateProductServiceTest extends TestCase
             $this->productsPersistenceRepositoryMock,
             $this->productsRepositoryMock,
             $this->categoriesRepositoryMock,
+            $this->imagesRepository
         );
     }
 
@@ -60,6 +68,7 @@ class UpdateProductServiceTest extends TestCase
         $this->productsDtoMock->quantity           = 10;
         $this->productsDtoMock->balance            = 10;
         $this->productsDtoMock->categoriesId       = [];
+        $this->productsDtoMock->imageLinks         = [];
         $this->productsDtoMock->highlightProduct   = false;
     }
 

@@ -4,7 +4,6 @@ namespace App\Modules\Store\Products\Requests;
 
 use App\Base\Http\Requests\FormRequest;
 use App\Shared\Enums\HttpRequestMethodsEnum;
-use App\Shared\Rules\ProductCodeRule;
 use App\Shared\Rules\Uuid4Rule;
 
 class ProductsRequest extends FormRequest
@@ -20,8 +19,10 @@ class ProductsRequest extends FormRequest
             'balance'            => 'nullable|integer|min:0',
             'highlightProduct'   => 'required|boolean',
             'categoriesId'       => 'nullable|array',
+            'imageLinks'         => 'nullable|array|max:3',
 
-            'categoriesId.*'  => ['nullable', new Uuid4Rule]
+            'categoriesId.*'  => ['nullable', new Uuid4Rule],
+            'imageLinks.*'    => ['nullable', 'url'],
         ];
 
         if($this->method() == HttpRequestMethodsEnum::PUT->value)
@@ -41,7 +42,10 @@ class ProductsRequest extends FormRequest
             'quantity'           => 'Quantity',
             'highlightProduct'   => 'Highlight Product',
             'categoriesId'       => 'Categories Id',
+            'imageLinks'         => 'Image Links',
+
             'categoriesId.*'     => 'Categories Id',
+            'imageLinks.*'       => 'Image Links',
         ];
     }
 
