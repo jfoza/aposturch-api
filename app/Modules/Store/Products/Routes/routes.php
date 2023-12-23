@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [ProductsController::class, 'index']);
 Route::get('/id/{id}', [ProductsController::class, 'showById'])->middleware([MiddlewareEnum::UUID]);
+Route::get('/unique-name/{uniqueName}', [ProductsController::class, 'showByUniqueName']);
 Route::post('/', [ProductsPersistenceController::class, 'insert']);
 Route::put('/id/{id}', [ProductsPersistenceController::class, 'update'])->middleware([MiddlewareEnum::UUID]);
 Route::put('/status', [ProductsPersistenceController::class, 'updateStatus']);

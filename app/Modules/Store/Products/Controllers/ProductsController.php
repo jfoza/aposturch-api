@@ -5,6 +5,7 @@ namespace App\Modules\Store\Products\Controllers;
 use App\Base\Http\Requests\FormRequest;
 use App\Modules\Store\Products\Contracts\FindAllProductsServiceInterface;
 use App\Modules\Store\Products\Contracts\ShowByProductIdServiceInterface;
+use App\Modules\Store\Products\Contracts\ShowByProductUniqueNameServiceInterface;
 use App\Modules\Store\Products\DTO\ProductsFiltersDTO;
 use App\Modules\Store\Products\Requests\ProductsFiltersRequest;
 use Illuminate\Http\JsonResponse;
@@ -16,6 +17,7 @@ readonly class ProductsController
     public function __construct(
         private FindAllProductsServiceInterface $findAllProductsService,
         private ShowByProductIdServiceInterface $showByProductIdService,
+        private ShowByProductUniqueNameServiceInterface $showByProductUniqueNameService,
     ) {}
 
     public function index(
@@ -45,6 +47,15 @@ readonly class ProductsController
         $id = $request->id;
 
         $product = $this->showByProductIdService->execute($id);
+
+        return response()->json($product, Response::HTTP_OK);
+    }
+
+    public function showByUniqueName(Request $request): JsonResponse
+    {
+        $uniqueName = $request->uniqueName;
+
+        $product = $this->showByProductUniqueNameService->execute($uniqueName);
 
         return response()->json($product, Response::HTTP_OK);
     }

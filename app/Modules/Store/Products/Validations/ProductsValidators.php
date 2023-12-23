@@ -33,6 +33,25 @@ class ProductsValidators
     /**
      * @throws AppException
      */
+    public static function productExistsByUniqueName(
+        string $productUniqueName,
+        ProductsRepositoryInterface $productsRepository
+    ): object
+    {
+        if(!$product = $productsRepository->findByUniqueName($productUniqueName))
+        {
+            throw new AppException(
+                MessagesEnum::PRODUCT_NOT_FOUND,
+                Response::HTTP_NOT_FOUND
+            );
+        }
+
+        return $product;
+    }
+
+    /**
+     * @throws AppException
+     */
     public static function productsExists(
         array $productsIdPayload,
         ProductsRepositoryInterface $productsRepository
@@ -66,23 +85,6 @@ class ProductsValidators
         {
             throw new AppException(
                 MessagesEnum::PRODUCT_NAME_ALREADY_EXISTS,
-                Response::HTTP_BAD_REQUEST
-            );
-        }
-    }
-
-    /**
-     * @throws AppException
-     */
-    public static function productExistsByUniqueName(
-        string $productUniqueName,
-        ProductsRepositoryInterface $productsRepository
-    ): void
-    {
-        if($productsRepository->findByUniqueName($productUniqueName))
-        {
-            throw new AppException(
-                MessagesEnum::PRODUCT_UNIQUE_NAME_ALREADY_EXISTS,
                 Response::HTTP_BAD_REQUEST
             );
         }
