@@ -19,7 +19,7 @@ class AdminUsersFiltersRequest extends FormRequest
         return $this->mergePaginationOrderRules([
             'name'      => $nullableString,
             'profileId' => ['nullable', 'string', new Uuid4Rule],
-            'email'     => 'nullable|email:rfc,dns',
+            'email'     => 'nullable|email',
         ]);
     }
 

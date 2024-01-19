@@ -5,6 +5,7 @@ namespace App\Modules\Membership\Members\Requests;
 use App\Base\Http\Requests\FormRequest;
 use App\Shared\Enums\StatesEnum;
 use App\Shared\Rules\ManyUuidv4Rule;
+use App\Shared\Rules\NoSpecialCharactersRule;
 use App\Shared\Rules\Uuid4Rule;
 
 class MembersRequest extends FormRequest
@@ -20,8 +21,10 @@ class MembersRequest extends FormRequest
         $requiredUuid4 = ['string', 'required', new Uuid4Rule];
         $requiredManyUuid4 = ['required', new ManyUuidv4Rule];
 
+        $namesRules = ['required', 'string', new NoSpecialCharactersRule];
+
         return [
-            'name'                 => $requiredString,
+            'name'                 => $namesRules,
             'email'                => 'required|email',
             'password'             => $requiredString,
             'passwordConfirmation' => 'required|same:password',

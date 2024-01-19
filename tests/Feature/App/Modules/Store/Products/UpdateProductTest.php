@@ -25,8 +25,8 @@ class UpdateProductTest extends BaseTestCase
         $productCode = strtoupper(RandomStringHelper::alphaGenerate(2).RandomStringHelper::numericGenerate(5));
 
         return [
-            'productName'        => RandomStringHelper::alnumGenerate(),
-            'productDescription' => RandomStringHelper::alnumGenerate(),
+            'productName'        => RandomStringHelper::stringsGenerate(),
+            'productDescription' => RandomStringHelper::stringsGenerate(),
             'productCode'        => $productCode,
             'value'              => 100.25,
             'quantity'           => 10,

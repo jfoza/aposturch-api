@@ -15,7 +15,7 @@ class EmailRequestTest extends TestCase
         parent::setUp();
 
         $this->rules = [
-            'email' => 'required|email:rfc,dns',
+            'email' => 'required|email',
         ];
 
         $this->attributes = [

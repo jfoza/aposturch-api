@@ -10,8 +10,10 @@ class ProductsRequest extends FormRequest
 {
     public function rules(): array
     {
+        $namesRules = ['required', 'string'];
+
         $rules = [
-            'productName'        => 'required|string',
+            'productName'        => $namesRules,
             'productDescription' => 'nullable|string',
             'productCode'        => ['required', 'string'],
             'value'              => 'required|decimal:0,2|min:0',

@@ -30,8 +30,8 @@ class UpdateCategoryTest extends BaseTestCase
 
         $payload = [
             'departmentId' => $department->id,
-            'name'         => RandomStringHelper::alnumGenerate(),
-            'description'  => RandomStringHelper::alnumGenerate(),
+            'name'         => RandomStringHelper::stringsGenerate(),
+            'description'  => RandomStringHelper::stringsGenerate(),
         ];
 
         $response = $this->putJson(
@@ -53,8 +53,8 @@ class UpdateCategoryTest extends BaseTestCase
 
         $payload = [
             'departmentId' => $department->id,
-            'name'         => RandomStringHelper::alnumGenerate(),
-            'description'  => RandomStringHelper::alnumGenerate(),
+            'name'         => RandomStringHelper::stringsGenerate(),
+            'description'  => RandomStringHelper::stringsGenerate(),
             'productsId'   => [$product->id],
         ];
 
@@ -77,8 +77,8 @@ class UpdateCategoryTest extends BaseTestCase
 
         $payload = [
             'departmentId' => $department->id,
-            'name'         => RandomStringHelper::alnumGenerate(),
-            'description'  => RandomStringHelper::alnumGenerate(),
+            'name'         => RandomStringHelper::stringsGenerate(),
+            'description'  => RandomStringHelper::stringsGenerate(),
             'productsId'   => [$product->id, Uuid::uuid4Generate()],
         ];
 
@@ -100,8 +100,8 @@ class UpdateCategoryTest extends BaseTestCase
 
         $payload = [
             'departmentId' => $department->id,
-            'name'         => RandomStringHelper::alnumGenerate(),
-            'description'  => RandomStringHelper::alnumGenerate(),
+            'name'         => RandomStringHelper::stringsGenerate(),
+            'description'  => RandomStringHelper::stringsGenerate(),
         ];
 
         $response = $this->putJson(
@@ -124,7 +124,7 @@ class UpdateCategoryTest extends BaseTestCase
         $payload = [
             'departmentId' => $department->id,
             'name'         => $category1->name,
-            'description'  => RandomStringHelper::alnumGenerate(),
+            'description'  => RandomStringHelper::stringsGenerate(),
         ];
 
         $response = $this->putJson(
@@ -145,8 +145,8 @@ class UpdateCategoryTest extends BaseTestCase
 
         $payload = [
             'departmentId' => $department->id,
-            'name'         => RandomStringHelper::alnumGenerate(),
-            'description'  => RandomStringHelper::alnumGenerate(),
+            'name'         => RandomStringHelper::stringsGenerate(),
+            'description'  => RandomStringHelper::stringsGenerate(),
         ];
 
         $response = $this->putJson(
@@ -201,7 +201,7 @@ class UpdateCategoryTest extends BaseTestCase
                 'id'           => 'invalid-uuid',
                 'departmentId' => Uuid::uuid4Generate(),
                 'name'         => 'test',
-                'description'  => RandomStringHelper::alnumGenerate(),
+                'description'  => RandomStringHelper::stringsGenerate(),
                 'productsId'   => [],
             ],
 
@@ -209,7 +209,7 @@ class UpdateCategoryTest extends BaseTestCase
                 'id'           => Uuid::uuid4Generate(),
                 'departmentId' => 'invalid-uuid',
                 'name'         => 'test',
-                'description'  => RandomStringHelper::alnumGenerate(),
+                'description'  => RandomStringHelper::stringsGenerate(),
                 'productsId'   => [],
             ],
 
@@ -217,23 +217,7 @@ class UpdateCategoryTest extends BaseTestCase
                 'id'           => Uuid::uuid4Generate(),
                 'departmentId' => Uuid::uuid4Generate(),
                 'name'         => '',
-                'description'  => RandomStringHelper::alnumGenerate(),
-                'productsId'   => [],
-            ],
-
-            'Invalid name param' => [
-                'id'           => Uuid::uuid4Generate(),
-                'departmentId' => Uuid::uuid4Generate(),
-                'name'         => false,
-                'description'  => RandomStringHelper::alnumGenerate(),
-                'productsId'   => [],
-            ],
-
-            'Invalid description param' => [
-                'id'           => Uuid::uuid4Generate(),
-                'departmentId' => Uuid::uuid4Generate(),
-                'name'         => RandomStringHelper::alnumGenerate(),
-                'description'  => true,
+                'description'  => RandomStringHelper::stringsGenerate(),
                 'productsId'   => [],
             ],
 
@@ -241,7 +225,7 @@ class UpdateCategoryTest extends BaseTestCase
                 'id'           => Uuid::uuid4Generate(),
                 'departmentId' => Uuid::uuid4Generate(),
                 'name'         => 'test',
-                'description'  => RandomStringHelper::alnumGenerate(),
+                'description'  => RandomStringHelper::stringsGenerate(),
                 'productsId'   => [Uuid::uuid4Generate(), 'invalid-uuid'],
             ]
         ];

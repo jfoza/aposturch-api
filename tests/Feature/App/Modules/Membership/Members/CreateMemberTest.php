@@ -33,7 +33,7 @@ class CreateMemberTest extends BaseTestCase
 
     public function getPayload(): array
     {
-        $name  = $this->faker->name;
+        $name  = $this->faker->regexify('[A-Za-z0-9 ]{10}');
         $email  = $this->faker->email;
         $phone = Helpers::onlyNumbers($this->faker->phoneNumber);
 

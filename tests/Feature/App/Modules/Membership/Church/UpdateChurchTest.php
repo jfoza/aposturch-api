@@ -31,7 +31,7 @@ class UpdateChurchTest extends BaseTestCase
 
         $city = City::where(City::DESCRIPTION, 'Novo Hamburgo')->first();
 
-        $name = RandomStringHelper::alnumGenerate();
+        $name = RandomStringHelper::stringsGenerate();
 
         $payload = [
             "name" => $name,
@@ -129,7 +129,7 @@ class UpdateChurchTest extends BaseTestCase
     {
         $city = City::where(City::DESCRIPTION, 'Novo Hamburgo')->first();
 
-        $name = RandomStringHelper::alnumGenerate();
+        $name = RandomStringHelper::stringsGenerate();
 
         $payload = [
             "name" => $name,
@@ -163,7 +163,7 @@ class UpdateChurchTest extends BaseTestCase
     {
         $church = Church::factory()->create();
 
-        $name = RandomStringHelper::alnumGenerate();
+        $name = RandomStringHelper::stringsGenerate();
 
         $payload = [
             "name" => $name,

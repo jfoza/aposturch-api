@@ -3,16 +3,17 @@
 namespace App\Modules\Membership\Members\Requests\Updates;
 
 use App\Base\Http\Requests\FormRequest;
+use App\Shared\Rules\NoSpecialCharactersRule;
 
 class GeneralDataUpdateRequest extends FormRequest
 {
     public function rules(): array
     {
-        $requiredString = 'required|string';
+        $requiredString = ['required', 'string', new NoSpecialCharactersRule];
 
         return [
             'name'   => $requiredString,
-            'email'  => 'required|email:rfc,dns',
+            'email'  => 'required|email',
             'phone'  => $requiredString,
         ];
     }

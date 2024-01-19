@@ -8,8 +8,10 @@ class DepartmentsRequest extends FormRequest
 {
     public function rules(): array
     {
+        $namesRules = ['required', 'string'];
+
         return [
-            'name'        => 'required|string',
+            'name'        => $namesRules,
             'description' => 'nullable|string'
         ];
     }

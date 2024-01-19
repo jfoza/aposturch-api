@@ -9,9 +9,11 @@ class CategoriesRequest extends FormRequest
 {
     public function rules(): array
     {
+        $namesRules = ['required', 'string'];
+
         return [
             'departmentId' => ['required', 'string', new Uuid4Rule()],
-            'name'         => 'required|string',
+            'name'         => $namesRules,
             'description'  => 'nullable|string',
             'productsId'   => 'nullable|array',
 

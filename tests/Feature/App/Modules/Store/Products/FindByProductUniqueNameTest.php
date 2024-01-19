@@ -1,6 +1,6 @@
 <?php
 
-namespace Feature\App\Modules\Store\Products;
+namespace Tests\Feature\App\Modules\Store\Products;
 
 use App\Modules\Store\Products\Models\Product;
 use App\Shared\Libraries\Uuid;

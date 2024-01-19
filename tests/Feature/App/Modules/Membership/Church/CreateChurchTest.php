@@ -4,6 +4,7 @@ namespace Tests\Feature\App\Modules\Membership\Church;
 
 use App\Features\City\Cities\Models\City;
 use App\Shared\Helpers\RandomStringHelper;
+use Faker\Generator;
 use Tests\Feature\App\Features\Auth\Credentials;
 use Tests\Feature\BaseTestCase;
 use Tests\Feature\Resources\Modules\Churches\ChurchesDataProviders;
@@ -14,11 +15,15 @@ class CreateChurchTest extends BaseTestCase
 
     private string $endpoint;
 
+    private Generator $faker;
+
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->endpoint = self::CHURCHES_ROUTE;
+
+        $this->faker = app(Generator::class);
 
         $this->setAuthorizationBearer(Credentials::ADMIN_MASTER);
     }
@@ -27,12 +32,10 @@ class CreateChurchTest extends BaseTestCase
     {
         $city = City::where(City::DESCRIPTION, 'Novo Hamburgo')->first();
 
-        $name = RandomStringHelper::alnumGenerate();
-
         $payload = [
-            "name" => $name,
+            "name" => $this->faker->regexify('[A-Za-z0-9 ]{10}'),
             "phone" => "51999999999",
-            "email" => $name."@gmail.com",
+            "email" => $this->faker->email,
             "youtube" => "",
             "facebook" => "",
             "instagram" => "",

@@ -3,6 +3,7 @@
 namespace App\Modules\Membership\Church\Requests;
 
 use App\Base\Http\Requests\FormRequest;
+use App\Shared\Rules\NoSpecialCharactersRule;
 use App\Shared\Rules\StatesRule;
 use App\Shared\Rules\Uuid4Rule;
 
@@ -16,12 +17,14 @@ class ChurchRequest extends FormRequest
     public function rules(): array
     {
         $nullableString = 'nullable|string';
-        $nullableStringEmail = 'nullable|email:rfc,dns';
+        $nullableStringEmail = 'nullable|email';
         $requiredString = 'required|string';
         $requiredBoolean = 'required|bool';
 
+        $namesRules = ['required', 'string', new NoSpecialCharactersRule];
+
         return [
-            'name'               => $requiredString,
+            'name'               => $namesRules,
             'phone'              => $nullableString.'|min:10|max:11',
             'email'              => $nullableStringEmail,
             'youtube'            => $nullableString,

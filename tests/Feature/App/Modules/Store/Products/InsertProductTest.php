@@ -25,8 +25,8 @@ class InsertProductTest extends BaseTestCase
         $productCode = strtoupper(RandomStringHelper::alphaGenerate(2).RandomStringHelper::numericGenerate(5));
 
         return [
-            'productName'        => RandomStringHelper::alnumGenerate(),
-            'productDescription' => RandomStringHelper::alnumGenerate(),
+            'productName'        => RandomStringHelper::stringsGenerate(),
+            'productDescription' => RandomStringHelper::stringsGenerate(),
             'productCode'        => $productCode,
             'value'              => 100.25,
             'quantity'           => 10,
@@ -184,7 +184,7 @@ class InsertProductTest extends BaseTestCase
         return [
             'Empty product name param' => [
                 'productName'        => '',
-                'productDescription' => RandomStringHelper::alnumGenerate(),
+                'productDescription' => RandomStringHelper::stringsGenerate(),
                 'productCode'        => $productCode,
                 'value'              => 100.25,
                 'quantity'           => 10,
@@ -194,7 +194,7 @@ class InsertProductTest extends BaseTestCase
             ],
 
             'Invalid product description param' => [
-                'productName'        => RandomStringHelper::alnumGenerate(),
+                'productName'        => RandomStringHelper::stringsGenerate(),
                 'productDescription' => ['test'],
                 'productCode'        => $productCode,
                 'value'              => 100.25,
@@ -205,8 +205,8 @@ class InsertProductTest extends BaseTestCase
             ],
 
             'Empty product code param' => [
-                'productName'        => RandomStringHelper::alnumGenerate(),
-                'productDescription' => RandomStringHelper::alnumGenerate(),
+                'productName'        => RandomStringHelper::stringsGenerate(),
+                'productDescription' => RandomStringHelper::stringsGenerate(),
                 'productCode'        => '',
                 'value'              => 10,
                 'quantity'           => 10,
@@ -216,8 +216,8 @@ class InsertProductTest extends BaseTestCase
             ],
 
             'Empty product value param' => [
-                'productName'        => RandomStringHelper::alnumGenerate(),
-                'productDescription' => RandomStringHelper::alnumGenerate(),
+                'productName'        => RandomStringHelper::stringsGenerate(),
+                'productDescription' => RandomStringHelper::stringsGenerate(),
                 'productCode'        => $productCode,
                 'value'              => '',
                 'quantity'           => 10,
@@ -227,8 +227,8 @@ class InsertProductTest extends BaseTestCase
             ],
 
             'Invalid product value param case 1' => [
-                'productName'        => RandomStringHelper::alnumGenerate(),
-                'productDescription' => RandomStringHelper::alnumGenerate(),
+                'productName'        => RandomStringHelper::stringsGenerate(),
+                'productDescription' => RandomStringHelper::stringsGenerate(),
                 'productCode'        => $productCode,
                 'value'              => -23,
                 'quantity'           => 10,
@@ -238,8 +238,8 @@ class InsertProductTest extends BaseTestCase
             ],
 
             'Invalid product value param case 2' => [
-                'productName'        => RandomStringHelper::alnumGenerate(),
-                'productDescription' => RandomStringHelper::alnumGenerate(),
+                'productName'        => RandomStringHelper::stringsGenerate(),
+                'productDescription' => RandomStringHelper::stringsGenerate(),
                 'productCode'        => $productCode,
                 'value'              => 10.236,
                 'quantity'           => 10,
@@ -249,8 +249,8 @@ class InsertProductTest extends BaseTestCase
             ],
 
             'Empty product quantity param' => [
-                'productName'        => RandomStringHelper::alnumGenerate(),
-                'productDescription' => RandomStringHelper::alnumGenerate(),
+                'productName'        => RandomStringHelper::stringsGenerate(),
+                'productDescription' => RandomStringHelper::stringsGenerate(),
                 'productCode'        => $productCode,
                 'value'              => 100.25,
                 'quantity'           => null,
@@ -260,8 +260,8 @@ class InsertProductTest extends BaseTestCase
             ],
 
             'Invalid product quantity param' => [
-                'productName'        => RandomStringHelper::alnumGenerate(),
-                'productDescription' => RandomStringHelper::alnumGenerate(),
+                'productName'        => RandomStringHelper::stringsGenerate(),
+                'productDescription' => RandomStringHelper::stringsGenerate(),
                 'productCode'        => $productCode,
                 'value'              => 100.25,
                 'quantity'           => -2,
@@ -271,7 +271,7 @@ class InsertProductTest extends BaseTestCase
             ],
 
             'Invalid highlight product param' => [
-                'productName'        => RandomStringHelper::alnumGenerate(),
+                'productName'        => RandomStringHelper::stringsGenerate(),
                 'productDescription' => '',
                 'productCode'        => $productCode,
                 'value'              => 100.25,
@@ -282,7 +282,7 @@ class InsertProductTest extends BaseTestCase
             ],
 
             'Invalid category id param' => [
-                'productName'        => RandomStringHelper::alnumGenerate(),
+                'productName'        => RandomStringHelper::stringsGenerate(),
                 'productDescription' => '',
                 'productCode'        => $productCode,
                 'value'              => 100.25,
@@ -293,7 +293,7 @@ class InsertProductTest extends BaseTestCase
             ],
 
             'Invalid image links param' => [
-                'productName'        => RandomStringHelper::alnumGenerate(),
+                'productName'        => RandomStringHelper::stringsGenerate(),
                 'productDescription' => '',
                 'productCode'        => $productCode,
                 'value'              => 100.25,
@@ -307,7 +307,7 @@ class InsertProductTest extends BaseTestCase
             ],
 
             'More than three image links' => [
-                'productName'        => RandomStringHelper::alnumGenerate(),
+                'productName'        => RandomStringHelper::stringsGenerate(),
                 'productDescription' => '',
                 'productCode'        => $productCode,
                 'value'              => 100.25,

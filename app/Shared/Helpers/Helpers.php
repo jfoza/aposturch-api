@@ -17,7 +17,14 @@ class Helpers
     {
         $string = strtolower(self::removeAccents($string));
 
+        $string = self::removeSpecialCharacters($string);
+
         return preg_replace('/[\s-]+/' , '-' , $string);
+    }
+
+    public static function removeSpecialCharacters($string = null): array|string|null
+    {
+        return preg_replace('/[^A-Za-z0-9]/', '', $string);
     }
 
     public static function removeAccents($string = null) {

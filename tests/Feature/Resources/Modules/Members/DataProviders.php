@@ -71,6 +71,23 @@ trait DataProviders
                 'district'             => 'teste',
                 'uf'                   => 'RS'
             ],
+            'Invalid name' => [
+                'name'                 => '#@$Test',
+                'email'                => 'test@email.com',
+                'password'             => 'Teste123',
+                'passwordConfirmation' => 'Teste123',
+                'profileId'            => Uuid::uuid4Generate(),
+                'modulesId'            => [Uuid::uuid4Generate()],
+                'churchId'             => Uuid::uuid4Generate(),
+                'cityId'               => Uuid::uuid4Generate(),
+                'phone'                => '51999999999',
+                'zipCode'              => '99999999',
+                'address'              => 'teste',
+                'numberAddress'        => '23',
+                'complement'           => '',
+                'district'             => 'teste',
+                'uf'                   => 'RS'
+            ],
             'Empty email' => [
                 'name'                 => 'test',
                 'email'                => '',
@@ -545,12 +562,17 @@ trait DataProviders
                 'email' => Credentials::ASSISTANT_1,
                 'phone' => '51999999999',
             ],
+            'Invalid name' => [
+                'name'  => '#$@Test',
+                'email' => Credentials::ASSISTANT_1,
+                'phone' => '51999999999',
+            ],
             'Empty email' => [
                 'name'  => 'Usuario auxiliar 1',
                 'email' => '',
                 'phone' => '51999999999',
             ],
-            'Invalid name' => [
+            'Invalid email' => [
                 'name'  => "Usuario auxiliar 1",
                 'email' => 'invalid-email@',
                 'phone' => '51999999999',

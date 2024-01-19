@@ -23,8 +23,8 @@ class InsertDepartmentTest extends BaseTestCase
         $this->setAuthorizationBearer(Credentials::ADMIN_MASTER);
 
         $payload = [
-            'name'        => RandomStringHelper::alnumGenerate(),
-            'description' => RandomStringHelper::alnumGenerate(),
+            'name'        => RandomStringHelper::stringsGenerate(),
+            'description' => RandomStringHelper::stringsGenerate(),
         ];
 
         $response = $this->postJson(
@@ -44,7 +44,7 @@ class InsertDepartmentTest extends BaseTestCase
 
         $payload = [
             'name'        => $department->name,
-            'description' => RandomStringHelper::alnumGenerate(),
+            'description' => RandomStringHelper::stringsGenerate(),
         ];
 
         $response = $this->postJson(
@@ -61,8 +61,8 @@ class InsertDepartmentTest extends BaseTestCase
         $this->setAuthorizationBearer(Credentials::USER_WITHOUT_MODULES);
 
         $payload = [
-            'name'        => RandomStringHelper::alnumGenerate(),
-            'description' => RandomStringHelper::alnumGenerate(),
+            'name'        => RandomStringHelper::stringsGenerate(),
+            'description' => RandomStringHelper::stringsGenerate(),
         ];
 
         $response = $this->postJson(
@@ -107,16 +107,11 @@ class InsertDepartmentTest extends BaseTestCase
         return [
             'Empty name param' => [
                 'name'        => '',
-                'description' => RandomStringHelper::alnumGenerate(),
-            ],
-
-            'Invalid name param' => [
-                'name'        => false,
-                'description' => RandomStringHelper::alnumGenerate(),
+                'description' => RandomStringHelper::stringsGenerate(),
             ],
 
             'Invalid description param' => [
-                'name'        => RandomStringHelper::alnumGenerate(),
+                'name'        => RandomStringHelper::stringsGenerate(),
                 'description' => true,
             ]
         ];

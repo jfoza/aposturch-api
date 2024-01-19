@@ -4,7 +4,7 @@ namespace Tests\Feature\App\Features\Users\AdminUsers;
 
 use App\Features\Users\Profiles\Enums\ProfileUniqueNameEnum;
 use App\Features\Users\Profiles\Models\Profile;
-use App\Shared\Helpers\RandomStringHelper;
+use Faker\Generator;
 use Ramsey\Uuid\Nonstandard\Uuid;
 use Tests\Feature\App\Features\Auth\Credentials;
 use Tests\Feature\BaseTestCase;
@@ -13,11 +13,15 @@ class CreateAdminUserTest extends BaseTestCase
 {
     private string $endpoint;
 
+    private Generator $faker;
+
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->endpoint = self::ADMIN_USERS_ROUTE;
+
+        $this->faker = app(Generator::class);
 
         $this->setAuthorizationBearer(Credentials::ADMIN_MASTER);
     }
@@ -27,6 +31,14 @@ class CreateAdminUserTest extends BaseTestCase
         return [
             'Name empty' => [
                 '',
+                'email@email.com',
+                'pass',
+                'pass',
+                true,
+                Uuid::uuid4()->toString()
+            ],
+            'Invalid name' => [
+                '#@$test',
                 'email@email.com',
                 'pass',
                 'pass',
@@ -96,11 +108,9 @@ class CreateAdminUserTest extends BaseTestCase
     {
         $profile = Profile::where(Profile::UNIQUE_NAME, ProfileUniqueNameEnum::ADMIN_MASTER)->first();
 
-        $name = RandomStringHelper::alnumGenerate();
-
         $payload = [
-            'name'                 => $name,
-            'email'                => $name.'@email.com',
+            'name'                 => $this->faker->regexify('[A-Za-z0-9 ]{10}'),
+            'email'                => $this->faker->email,
             'password'             => 'pass',
             'passwordConfirmation' => 'pass',
             'profileId'            => $profile->id
@@ -152,11 +162,9 @@ class CreateAdminUserTest extends BaseTestCase
 
     public function test_should_return_error_if_profile_not_exists()
     {
-        $name = RandomStringHelper::alnumGenerate();
-
         $payload = [
-            'name'                 => $name,
-            'email'                => $name.'@email.com',
+            'name'                 => $this->faker->regexify('[A-Za-z0-9 ]{10}'),
+            'email'                => $this->faker->email,
             'password'             => "pass",
             'passwordConfirmation' => "pass",
             'profileId'            => Uuid::uuid4()->toString()

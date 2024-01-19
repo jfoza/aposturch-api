@@ -7,6 +7,7 @@ use App\Features\Users\Profiles\Enums\ProfileUniqueNameEnum;
 use App\Features\Users\Profiles\Models\Profile;
 use App\Features\Users\Users\Models\User;
 use App\Shared\Helpers\RandomStringHelper;
+use Faker\Generator;
 use Ramsey\Uuid\Nonstandard\Uuid;
 use Tests\Feature\App\Features\Auth\Credentials;
 use Tests\Feature\BaseTestCase;
@@ -14,12 +15,15 @@ use Tests\Feature\BaseTestCase;
 class UpdateAdminUserTest extends BaseTestCase
 {
     private string $endpoint;
+    private Generator $faker;
 
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->endpoint = self::ADMIN_USERS_ROUTE;
+
+        $this->faker = app(Generator::class);
 
         $this->setAuthorizationBearer(Credentials::ADMIN_MASTER);
     }
@@ -29,6 +33,13 @@ class UpdateAdminUserTest extends BaseTestCase
         return [
             'Name empty' => [
                 '',
+                'email@email.com',
+                '',
+                '',
+                true,
+            ],
+            'Invalid name' => [
+                '#@$Test',
                 'email@email.com',
                 '',
                 '',
@@ -60,8 +71,6 @@ class UpdateAdminUserTest extends BaseTestCase
 
     public function test_should_update_a_unique_admin_user()
     {
-        $name = RandomStringHelper::alnumGenerate();
-
         $user = User::factory()->create();
 
         $profile = Profile::where(Profile::UNIQUE_NAME, ProfileUniqueNameEnum::ADMIN_MASTER)->first();
@@ -73,8 +82,8 @@ class UpdateAdminUserTest extends BaseTestCase
         User::find($user->id)->profile()->sync([$profile->id]);
 
         $payload = [
-            'name'    => $name,
-            'email'   => $name.'@email.com',
+            'name'  => $this->faker->regexify('[A-Za-z0-9 ]{10}'),
+            'email' => $this->faker->email,
         ];
 
         $response = $this->putJson(
@@ -101,8 +110,8 @@ class UpdateAdminUserTest extends BaseTestCase
         User::find($user->id)->profile()->sync([$profile->id]);
 
         $payload = [
-            'name'                 => $name,
-            'email'                => $name.'@email.com',
+            'name'                 => $this->faker->regexify('[A-Za-z0-9 ]{10}'),
+            'email'                => $this->faker->email,
             'password'             => 'new-pass',
             'passwordConfirmation' => 'new-pass',
         ];
@@ -120,8 +129,6 @@ class UpdateAdminUserTest extends BaseTestCase
     {
         $user1 = User::first();
 
-        $name = RandomStringHelper::alnumGenerate();
-
         $user2 = User::factory()->create();
 
         $profile = Profile::where(Profile::UNIQUE_NAME, ProfileUniqueNameEnum::ADMIN_MASTER)->first();
@@ -133,7 +140,7 @@ class UpdateAdminUserTest extends BaseTestCase
         User::find($user2->id)->profile()->sync([$profile->id]);
 
         $payload = [
-            'name'    => $name,
+            'name'    => $this->faker->regexify('[A-Za-z0-9 ]{10}'),
             'email'   => $user2->email,
         ];
 

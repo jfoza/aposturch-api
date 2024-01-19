@@ -28,6 +28,25 @@ trait ChurchesDataProviders
                 "uf" => "RS",
                 "cityId" => Uuid::uuid4()->toString(),
             ],
+            'Invalid name' => [
+                "name" => '@#$test',
+                "responsibleMembers" => [
+                    Uuid::uuid4()->toString()
+                ],
+                "phone" => "51999999999",
+                "email" => "test@gmail.com",
+                "youtube" => "",
+                "facebook" => "",
+                "instagram" => "",
+                "zipCode" => "93320012",
+                "address" => "Av. Nações Unidas",
+                "numberAddress" => "2815",
+                "complement" => "",
+                "district" => "Rio Branco",
+                "active" => true,
+                "uf" => "RS",
+                "cityId" => Uuid::uuid4()->toString(),
+            ],
             'Invalid Phone value' => [
                 "name" => 'test',
                 "responsibleMembers" => [

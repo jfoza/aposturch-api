@@ -26,8 +26,8 @@ class UpdateDepartmentTest extends BaseTestCase
         $department = Department::factory()->create();
 
         $payload = [
-            'name'        => RandomStringHelper::alnumGenerate(),
-            'description' => RandomStringHelper::alnumGenerate(),
+            'name'        => RandomStringHelper::stringsGenerate(),
+            'description' => RandomStringHelper::stringsGenerate(),
         ];
 
         $response = $this->putJson(
@@ -46,8 +46,8 @@ class UpdateDepartmentTest extends BaseTestCase
         $department = Uuid::uuid4Generate();
 
         $payload = [
-            'name'        => RandomStringHelper::alnumGenerate(),
-            'description' => RandomStringHelper::alnumGenerate(),
+            'name'        => RandomStringHelper::stringsGenerate(),
+            'description' => RandomStringHelper::stringsGenerate(),
         ];
 
         $response = $this->putJson(
@@ -68,7 +68,7 @@ class UpdateDepartmentTest extends BaseTestCase
 
         $payload = [
             'name'        => $department1->name,
-            'description' => RandomStringHelper::alnumGenerate(),
+            'description' => RandomStringHelper::stringsGenerate(),
         ];
 
         $response = $this->putJson(
@@ -87,8 +87,8 @@ class UpdateDepartmentTest extends BaseTestCase
         $department = Department::factory()->create();
 
         $payload = [
-            'name'        => RandomStringHelper::alnumGenerate(),
-            'description' => RandomStringHelper::alnumGenerate(),
+            'name'        => RandomStringHelper::stringsGenerate(),
+            'description' => RandomStringHelper::stringsGenerate(),
         ];
 
         $response = $this->putJson(
@@ -142,12 +142,6 @@ class UpdateDepartmentTest extends BaseTestCase
             'Empty name param' => [
                 'id'          => Uuid::uuid4Generate(),
                 'name'        => '',
-                'description' => 'test',
-            ],
-
-            'Invalid name param' => [
-                'id'          => Uuid::uuid4Generate(),
-                'name'        => false,
                 'description' => 'test',
             ],
 

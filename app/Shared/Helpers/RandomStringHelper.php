@@ -26,6 +26,13 @@ class RandomStringHelper
         return substr(str_shuffle(str_repeat($pool, ceil($len / strlen($pool)))), 0, $len);
     }
 
+    public static function stringsGenerate(int $len = 8): string
+    {
+        $pool = 'abcdefghilkmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+        return substr(str_shuffle(str_repeat($pool, ceil($len / strlen($pool)))), 0, $len);
+    }
+
     public static function numericGenerate(int $len = 8): string
     {
         $pool = '0123456789';
